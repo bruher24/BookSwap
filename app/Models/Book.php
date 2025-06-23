@@ -18,6 +18,10 @@ class Book extends Model
         'type_id',
     ];
 
+    public $appends = [
+        'mainAuthor'
+    ];
+
     public function authors()
     {
         return $this->belongsToMany(Author::class);
@@ -31,5 +35,10 @@ class Book extends Model
     public function genres()
     {
         return $this->belongsToMany(Genre::class);
+    }
+
+    public function getMainAuthorAttribute()
+    {
+        return $this->authors()->first()->formattedName;
     }
 }

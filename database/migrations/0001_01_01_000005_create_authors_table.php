@@ -19,7 +19,10 @@ return new class extends Migration
             $table->date('birthdate')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['lastname', 'firstname', 'patronymic']);
         });
+
     }
 
     /**

@@ -11,21 +11,20 @@ class AuthorSeeder extends Seeder
     {
         $authors = [
             [
-                'lastname' => 'test 1',
-                'firstname' => 'test 1',
-                'patronymic' => 'test 1',
+                'lastname' => 'Тестов',
+                'firstname' => 'Автор',
+                'patronymic' => 'Книгович',
                 'birthdate' => '1990-01-01',
             ],
             [
-                'lastname' => 'test 2',
-                'firstname' => 'test 2',
-                'patronymic' => 'test 2',
+                'lastname' => 'Пушкин',
+                'firstname' => 'Александр',
+                'patronymic' => 'Сергеевич',
                 'birthdate' => '1990-01-01',
             ],
             [
-                'lastname' => 'test 3',
-                'firstname' => 'test 3',
-                'patronymic' => 'test 3',
+                'lastname' => 'Лавкрафт',
+                'firstname' => 'Говард',
                 'birthdate' => '1990-01-01',
             ],
         ];
