@@ -15,7 +15,7 @@
 
                 <li>
                     <a class="nav-link px-2 text-white"
-                       href="">
+                       href="{{ route('about') }}">
                         О нас
                     </a>
                 </li>

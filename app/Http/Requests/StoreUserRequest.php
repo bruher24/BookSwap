@@ -21,9 +21,11 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $name = $this->request->get('name');
+        $email = $this->request->get('email');
         return [
-            'name' => 'required|string|max:50',
-            'email' => 'required|email',
+            'name' => 'required|string|max:50|unique:users, name' . ($name ? ', ' . $name : ''),
+            'email' => 'required|email|unique:users, email' . ($email ? ', ' . $email : ''),
             'password' => 'required|string',
         ];
     }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class UserRepository implements RepositoryInterface
 {
 
-    public function create(array $data)
+    public function create(array $data): User
     {
         $user = new User($data);
         if (!$user->save()) {
@@ -20,17 +20,25 @@ class UserRepository implements RepositoryInterface
         return $user;
     }
 
-    public function update(int $id, array $data)
+    public function update(int $id, array $data): User
     {
-        // TODO: Implement update() method.
+        $user = User::find($id);
+        if (!$user->update($data)) {
+            throw new \Exception('Ошибка при обновлении пользователя');
+        }
+        $user->refresh();
+        return $user;
     }
 
-    public function delete(int $id)
+    public function delete(int $id): void
     {
-        User::destroy($id);
+        $user = User::find($id);
+        if(!$user->delete()) {
+            throw new \Exception('Ошибка при удалении пользователя');
+        }
     }
 
-    public function all(): Collection
+    public function getAll(): Collection
     {
         return User::all();
     }

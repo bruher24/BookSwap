@@ -10,7 +10,7 @@ interface RepositoryInterface
 
     public function delete(int $id);
 
-    public function all();
+    public function getAll();
 
     public function get($id);
 }

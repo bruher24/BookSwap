@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Services\BookService;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class BookController extends Controller
 {
@@ -14,7 +15,8 @@ class BookController extends Controller
         $this->bookService = new BookService();
     }
 
-    public function index(){
+    public function index(): View
+    {
         $books = $this->bookService->getAllBooks();
         return view('books.index', compact('books'));
     }

@@ -3,5 +3,6 @@
     О нас
 @endsection
 @section('main')
-
+    {{--        TODO: спросить у Крис--}}
+    @include('carousel')
 @endsection

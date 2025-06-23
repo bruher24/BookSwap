@@ -35,6 +35,15 @@ class UserController extends Controller
         return redirect()->intended()->with('success', 'Вы успешо зарегистрировались!');
     }
 
+    public function update(StoreUserRequest $request, int $userId): RedirectResponse
+    {
+        $validated = $request->validated();
+        if ($this->userService->update($userId, $validated)) {
+            // TODO: return redirect
+        }
+        // TODO: return redirect
+    }
+
     public function show($id) // TODO: return type
     {
         $user = $this->userService->get($id);

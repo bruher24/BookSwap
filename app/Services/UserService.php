@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserService
 {
@@ -25,28 +27,40 @@ class UserService
         return true;
     }
 
-    public function update(array $data, int $id)
+    public function update(int $id, array $data): bool
     {
-
+        try {
+            $this->userRepository->update($id, $data);
+        } catch (\Exception $e) {
+            logger($e->getMessage());
+            return false;
+        }
+        return true;
     }
 
-    public function delete(int $id)
+    public function delete(int $id): bool
     {
-
+        try {
+            $this->userRepository->delete($id);
+        } catch (\Exception $e) {
+            logger($e->getMessage());
+            return false;
+        }
+        return true;
     }
 
-    public function getAll()
+    public function getAll(): Collection
     {
-
+        return $this->userRepository->getAll();
     }
 
-    public function get(int $id)
+    public function get(int $id): User
     {
         try {
             $user = $this->userRepository->get($id);
         } catch (ModelNotFoundException $e) {
             logger($e->getMessage());
-            return null;
+            return new User();
         }
         return $user;
     }
