@@ -13,7 +13,6 @@
                         <h6 class="mb-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; min-height: 2.5em; line-height: 1.25em;" title="Очень длинное название товара, которое не помещается в две строки и будет обрезано с многоточием">
                             {{ $book->mainAuthor }} {{ $book->name }}
                         </h6>
-                        <p class="mb-0 fw-bold mt-auto">999 ₽</p>
                     </div>
                 </div>
             @endforeach
