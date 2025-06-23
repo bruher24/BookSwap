@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('publishing_house', 100);
-            $table->date('publication_year');
+            $table->year('publication_year');
             $table->string('isbn', 20)->nullable();
             $table->integer('page_count', false, true);
             $table->foreignId('type_id')->constrained('book_types')->onDelete('cascade')->onUpdate('cascade');

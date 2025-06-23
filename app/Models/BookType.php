@@ -9,4 +9,12 @@ class BookType extends Model
 {
     use SoftDeletes;
 
+    public $fillable = [
+        'name',
+    ];
+
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
 }
