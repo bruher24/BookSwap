@@ -54,13 +54,13 @@ class UserService
         return $this->userRepository->getAll();
     }
 
-    public function get(int $id): User
+    public function get(int $id): User | false
     {
         try {
             $user = $this->userRepository->get($id);
         } catch (ModelNotFoundException $e) {
             logger($e->getMessage());
-            return new User();
+            return false;
         }
         return $user;
     }

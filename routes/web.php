@@ -17,8 +17,7 @@ Route::prefix('users')->controller(UserController::class)->name('users.')->group
     Route::post('/login', 'login')->name('login');
     Route::get('/profile/{section?}', 'profile')->name('profile');
     Route::get('/logout', 'logout')->name('logout');
-    Route::get('/{user}', 'show')->name('show');
-    Route::get('/{user}/edit', 'edit')->name('edit');
+    Route::get('/{user}/books', 'books')->name('books');
     Route::patch('/{user}', 'update')->name('update');
     Route::delete('/{user}', 'destroy')->name('destroy');
 });

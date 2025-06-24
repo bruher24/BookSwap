@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -34,6 +37,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public $appends = [
+        'mainRole',
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -45,5 +52,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function books(): HasMany
+    {
+        return $this->hasMany(Book::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->mainRole == Role::ADMIN_ROLE_ID;
+    }
+
+    public function getMainRoleAttribute()
+    {
+        return $this->roles()->min('id');
     }
 }

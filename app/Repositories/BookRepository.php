@@ -2,33 +2,12 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\RepositoryInterface;
+use App\Models\Book;
 
-class BookRepository implements RepositoryInterface
+class BookRepository extends Repository
 {
-
-    public function create(array $data)
+    public function __construct()
     {
-        // TODO: Implement create() method.
-    }
-
-    public function update(int $id, array $data)
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function delete(int $id)
-    {
-        // TODO: Implement delete() method.
-    }
-
-    public function all()
-    {
-        // TODO: Implement all() method.
-    }
-
-    public function get($id)
-    {
-        // TODO: Implement get() method.
+        parent::__construct(new Book());
     }
 }

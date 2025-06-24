@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -77,18 +78,18 @@ class UserController extends Controller
         // TODO: return redirect
     }
 
-    public function show($id) // TODO: return type
+    public function books(int $id): View|RedirectResponse
     {
-        $user = $this->userService->get($id);
-        if (!isset($user)) {
+        $user = Auth::user() ?? $this->userService->get($id);
+        if (!$user) {
             return back()->withErrors(['error' => 'Пользователь не найден.']);
         }
-        return view('show', compact('user'));
+        $books = $user->books()->get();
+        return view('show', compact('books'));
     }
 
     public function profile(string $section = 'personal'): View
     {
-        $user = $this->userService->get(Auth::id());
-        return view("profile.$section", ['user' => $user, 'section' => $section]);
+        return view("profile.$section", compact('section'));
     }
 }

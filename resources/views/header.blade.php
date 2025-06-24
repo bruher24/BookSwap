@@ -1,7 +1,8 @@
 <header class="p-3 text-bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="{{ route('home') }}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="{{ route('home') }}"
+               class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="#" alt="BookSwap">
             </a>
             <!--NAVBAR-->
@@ -14,7 +15,42 @@
                 </li>
 
                 <li>
-                    <a class="nav-link px-2 text-white"
+                    <a class="nav-link text-secondary dropdown-toggle" id="dropdownUser1"
+                       data-bs-toggle="dropdown" aria-expanded="false"
+                       style="cursor: pointer">
+                        Каталог
+                    </a>
+                    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                        <li>
+                            <a class="dropdown-item"
+                               href="{{ route('books.index') }}">
+                                Полный список книг
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="{{ route('users.logout') }}">
+                                Жанры
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="{{ route('users.logout') }}">
+                                Авторы
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="nav-link px-2 text-secondary"
+                       href="{{ route('users.books', ['user' => auth()->id()]) }}">
+                        Мои книги
+                    </a>
+                </li>
+
+                <li>
+                    <a class="nav-link px-2 text-secondary"
                        href="{{ route('about') }}">
                         О нас
                     </a>
@@ -40,7 +76,8 @@
                     <a class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1"
                        data-bs-toggle="dropdown" aria-expanded="false"
                        style="cursor: pointer">
-                        <img src="{{ isset(auth()->user()->photo) ? auth()->user()->photo->src : '/storage/avatar.png'}}" alt="Avatar" width="40"
+                        <img src="{{ isset(auth()->user()->photo) ? auth()->user()->photo->src : '/storage/avatar.png'}}"
+                             alt="Avatar" width="40"
                              height="40"
                              class="rounded-circle">
                     </a>

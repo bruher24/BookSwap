@@ -12,6 +12,7 @@ class BookSeeder extends Seeder
     {
         $books = [
             [
+                'user_id' => 2,
                 'name' => 'Book 1',
                 'publishing_house' => 'Питер',
                 'publication_year' => '2020',
@@ -19,6 +20,7 @@ class BookSeeder extends Seeder
                 'page_count' => 300,
             ],
             [
+                'user_id' => 2,
                 'name' => 'Book 2',
                 'publishing_house' => 'ЕЕЕ',
                 'publication_year' => '2020',
@@ -26,6 +28,7 @@ class BookSeeder extends Seeder
                 'page_count' => 300,
             ],
             [
+                'user_id' => 3,
                 'name' => 'Book 3',
                 'publishing_house' => 'фывфыв',
                 'publication_year' => '2020',

@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('author_book', function (Blueprint $table) {
-            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('book_id')->constrained('books')->onDelete('cascade')->onUpdate('cascade');
+        Schema::create('role_user', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('author_book');
+        Schema::dropIfExists('role_user');
     }
 };
