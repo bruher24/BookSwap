@@ -77,19 +77,22 @@ class UserController extends Controller
         // TODO: return redirect
     }
 
-    public function books(int $id): View|RedirectResponse
+    public function books(Request $request, int $id): View|RedirectResponse
     {
         $user = Auth::user() ?? $this->userService->get($id);
         if (!$user) {
             return back()->withErrors(['error' => 'Пользователь не найден.']);
         }
-        $books = $user->books()->with(['genres', 'authors', 'type'])->get();
-        $genres = $books->flatMap->genres->unique();
-        $authors = $books->flatMap->authors->unique();
-        $years = $books->pluck('publication_year')->unique();
-        $types = $books->pluck('type')->filter()->unique();
 
-        return view('user.books', compact('books', 'genres', 'authors', 'years', 'types'));
+        [$books, $params] = $this->userService->books($id);
+
+        return view('user.books', [
+            'books' => $books,
+            'genres' => $params['genres'],
+            'authors' => $params['authors'],
+            'years' => $params['years'],
+            'types' => $params['types'],
+        ]);
     }
 
     public function profile(string $section = 'personal'): View

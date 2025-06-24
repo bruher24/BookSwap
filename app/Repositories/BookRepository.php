@@ -16,10 +16,14 @@ class BookRepository extends Repository
 
     public function where(array $conditions): Collection
     {
-        dd($conditions);
         $genres = Genre::whereIn('id', $conditions['genres'])->get();
         $authors = Author::whereIn('id', $conditions['authors'])->get();
         $books = Book::whereAttachedTo($genres, $authors)->get();
         return $books;
+    }
+
+    public function byUser(int $userId): Collection
+    {
+        return Book::where('user_id', $userId)->get();
     }
 }

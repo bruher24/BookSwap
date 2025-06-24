@@ -10,4 +10,12 @@ class UserService extends Service
     {
         parent::__construct(new UserRepository());
     }
+
+    public function books(int $userId): array
+    {
+        $booksService = new BookService();
+        $books = $booksService->byUser($userId);
+        $params = $booksService->params($books);
+        return [$books, $params];
+    }
 }
