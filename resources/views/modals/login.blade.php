@@ -12,7 +12,7 @@
                     @csrf
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control rounded-3" name="email" id="floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">Email или имя пользователя</label>
+                        <label for="floatingInput">Email</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control rounded-3" name="password" id="floatingPassword" placeholder="Password">

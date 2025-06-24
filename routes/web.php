@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -30,4 +32,12 @@ Route::prefix('books')->controller(BookController::class)->name('books.')->group
     Route::get('/{book}/edit', 'edit')->name('edit');
     Route::patch('/{book}', 'update')->name('update');
     Route::delete('/{book}', 'destroy')->name('destroy');
+});
+
+Route::prefix('genres')->controller(GenreController::class)->name('genres.')->group(function () {
+   Route::get('/', 'index')->name('index');
+});
+
+Route::prefix('authors')->controller(AuthorController::class)->name('authors.')->group(function () {
+    Route::get('/', 'index')->name('index');
 });

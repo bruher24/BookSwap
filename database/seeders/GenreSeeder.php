@@ -11,14 +11,14 @@ class GenreSeeder extends Seeder
     {
         $genres = [
             [
-                'name' => 'Genre 1',
+                'name' => 'Детектив',
             ],
             [
-                'name' => 'Genre 2',
+                'name' => 'Фантастика',
 
             ],
             [
-                'name' => 'Genre 3',
+                'name' => 'Учебник',
 
             ],
         ];

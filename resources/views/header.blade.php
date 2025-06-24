@@ -15,12 +15,12 @@
                 </li>
 
                 <li>
-                    <a class="nav-link text-secondary dropdown-toggle" id="dropdownUser1"
-                       data-bs-toggle="dropdown" aria-expanded="false"
+                    <a class="nav-link text-secondary dropdown-toggle" id="dropdownCatalog1"
+                       data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
                        style="cursor: pointer">
                         Каталог
                     </a>
-                    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                    <ul class="dropdown-menu text-small" aria-labelledby="dropdownCatalog1">
                         <li>
                             <a class="dropdown-item"
                                href="{{ route('books.index') }}">
@@ -29,25 +29,27 @@
                         </li>
                         <li>
                             <a class="dropdown-item"
-                               href="{{ route('users.logout') }}">
+                               href="{{ route('genres.index') }}">
                                 Жанры
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item"
-                               href="{{ route('users.logout') }}">
+                               href="{{ route('authors.index') }}">
                                 Авторы
                             </a>
                         </li>
                     </ul>
                 </li>
 
-                <li>
-                    <a class="nav-link px-2 text-secondary"
-                       href="{{ route('users.books', ['user' => auth()->id()]) }}">
-                        Мои книги
-                    </a>
-                </li>
+                @auth
+                    <li>
+                        <a class="nav-link px-2 text-secondary"
+                           href="{{ route('users.books', ['user' => auth()->id()]) }}">
+                            Мои книги
+                        </a>
+                    </li>
+                @endauth
 
                 <li>
                     <a class="nav-link px-2 text-secondary"

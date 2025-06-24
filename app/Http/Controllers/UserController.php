@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -84,8 +83,13 @@ class UserController extends Controller
         if (!$user) {
             return back()->withErrors(['error' => 'Пользователь не найден.']);
         }
-        $books = $user->books()->get();
-        return view('show', compact('books'));
+        $books = $user->books()->with(['genres', 'authors', 'type'])->get();
+        $genres = $books->flatMap->genres->unique();
+        $authors = $books->flatMap->authors->unique();
+        $years = $books->pluck('publication_year')->unique();
+        $types = $books->pluck('type')->filter()->unique();
+
+        return view('user.books', compact('books', 'genres', 'authors', 'years', 'types'));
     }
 
     public function profile(string $section = 'personal'): View
