@@ -1,5 +1,5 @@
 <!--FILTERS-->
-<form>
+<form method="post" action="{{ route('users.books', ['user' => $user]) }}">
     <div class="btn-group mt-2" role="group" aria-label="Filters">
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-outline-dark dropdown-toggle"
@@ -60,5 +60,10 @@
                 @endforeach
             </ul>
         </div>
+    </div>
+    <div class="btn-group mt-2 ms-2">
+        <button type="submit" class="btn btn-outline-dark">
+            Применить
+        </button>
     </div>
 </form>
