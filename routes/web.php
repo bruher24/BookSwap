@@ -10,11 +10,13 @@ Route::controller(MainController::class)->group(function () {
     Route::get('about', 'about')->name('about');
 });
 
+
 Route::prefix('users')->controller(UserController::class)->name('users.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/create', 'create')->name('create');
     Route::post('/login', 'login')->name('login');
-    Route::post('/logout', 'logout')->name('logout');
+    Route::get('/profile/{section?}', 'profile')->name('profile');
+    Route::get('/logout', 'logout')->name('logout');
     Route::get('/{user}', 'show')->name('show');
     Route::get('/{user}/edit', 'edit')->name('edit');
     Route::patch('/{user}', 'update')->name('update');

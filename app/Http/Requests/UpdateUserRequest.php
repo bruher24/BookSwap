@@ -3,16 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,8 +22,8 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50|unique:users,name',
-            'email' => 'required|email|unique:users,email',
+            'name' => 'required|string|max:50|unique:users,name,' . $this->user()->id,
+            'email' => 'required|email|unique:users,email,' . $this->user()->id,
             'password' => 'required|string',
         ];
     }

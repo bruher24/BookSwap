@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use \Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
@@ -16,13 +19,20 @@ class UserController extends Controller
         $this->userService = new UserService();
     }
 
+    public function index()
+    {
+        $users = $this->userService->getAll();
+        // TODO: return view
+//        return view('users.index', compact('users'));
+    }
+
     public function create(StoreUserRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $remember = $request->input('remember');
         if (!$this->userService->create($validated)) {
             return back()->withErrors([
-                'error' => 'Ошибка при создании пользователя'
+                'error' => 'Ошибка при создании пользователя.'
             ]);
         }
 
@@ -35,7 +45,30 @@ class UserController extends Controller
         return redirect()->intended()->with('success', 'Вы успешо зарегистрировались!');
     }
 
-    public function update(StoreUserRequest $request, int $userId): RedirectResponse
+    public function login(Request $request): RedirectResponse
+    {
+        if (!Auth::attempt([
+            'email' => $request->input('email'),
+            'password' => $request->input('password')
+        ], $request->input('remember'))) {
+            return back()->withErrors([
+                'Введена неправильная комбинация email и пароля.'
+            ]);
+        }
+        $request->session()->regenerate();
+        return redirect()->intended()->with('success', 'Добро пожаловать!');
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')->with('success', 'Вы успешно вышли из аккаунта.');
+    }
+
+    public function update(UpdateUserRequest $request, int $userId): RedirectResponse
     {
         $validated = $request->validated();
         if ($this->userService->update($userId, $validated)) {
@@ -48,8 +81,14 @@ class UserController extends Controller
     {
         $user = $this->userService->get($id);
         if (!isset($user)) {
-            return back()->withErrors(['error' => 'Пользователь не найден']);
+            return back()->withErrors(['error' => 'Пользователь не найден.']);
         }
-        return view('users.show', compact('user'));
+        return view('show', compact('user'));
+    }
+
+    public function profile(string $section = 'personal'): View
+    {
+        $user = $this->userService->get(Auth::id());
+        return view("profile.$section", ['user' => $user, 'section' => $section]);
     }
 }
