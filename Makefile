@@ -19,3 +19,6 @@ stop:
 
 bash:
 	docker compose exec -it app bash
+
+roll:
+	curl ascii.live/rick
