@@ -78,7 +78,7 @@
                     <a class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1"
                        data-bs-toggle="dropdown" aria-expanded="false"
                        style="cursor: pointer">
-                        {{--                        TODO: переместить дефолтный аватар в базу--}}
+{{--                        TODO: переместить дефолтный аватар в базу--}}
                         <img src="{{ isset(auth()->user()->photo) ? auth()->user()->photo->src : '/storage/avatar.png'}}"
                              alt="Avatar" width="40"
                              height="40"

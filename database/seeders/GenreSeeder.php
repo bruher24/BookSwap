@@ -21,6 +21,26 @@ class GenreSeeder extends Seeder
                 'name' => 'Учебник',
 
             ],
+            [
+                'name' => 'test1',
+
+            ],
+            [
+                'name' => 'test2',
+
+            ],
+            [
+                'name' => 'test3',
+
+            ],
+            [
+                'name' => 'test4',
+
+            ],
+            [
+                'name' => 'test5',
+
+            ],
         ];
         collect($genres)->each(function ($genre) {
             Genre::create($genre);

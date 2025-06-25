@@ -20,11 +20,16 @@ class BookService extends Service
         if (!isset($books)) {
             $books = $this->getAll();
         }
-        $result['genres'] = $books->flatMap->genres->unique();
-        $result['authors'] = $books->flatMap->authors->unique();
+        $result['genres'] = $books->flatMap->genres->unique('name');
+        $result['authors'] = $books->flatMap->authors->unique(function ($author) {
+            return implode('|', [
+                $author->lastname,
+                $author->firstname,
+                $author->patronymic ?? ''
+            ]);
+        });
         $result['years'] = $books->pluck('publication_year')->unique();
         $result['types'] = $books->pluck('type')->filter()->unique();
-
         return $result ?? [];
     }
 

@@ -27,6 +27,11 @@ class AuthorSeeder extends Seeder
                 'firstname' => 'Говард',
                 'birthdate' => '1990-01-01',
             ],
+            [
+                'lastname' => 'Министерство',
+                'firstname' => 'Образования',
+                'birthdate' => '1991-01-01',
+            ],
         ];
         collect($authors)->each(function ($author) {
             Author::create($author);

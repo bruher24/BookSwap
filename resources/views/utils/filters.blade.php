@@ -14,9 +14,9 @@
                     data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                 Жанр
             </button>
-            <ul class="dropdown-menu p-0">
+            <ul class="dropdown-menu p-0 overflow-scroll" style="height: 300%;">
                 @foreach($params['genres'] as $genre)
-                    <li>
+                    <li class="me-2">
                         <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
                                id="btn-check-genre-{{ $genre->id }}" name="genre-{{ $genre->id }}"
                                 @checked(isset($filters['genre']) && in_array($genre->id, $filters['genre']))>
@@ -32,9 +32,9 @@
                     data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                 Автор
             </button>
-            <ul class="dropdown-menu p-0">
+            <ul class="dropdown-menu p-0 overflow-scroll" style="height: 300%;">
                 @foreach($params['authors'] as $author)
-                    <li>
+                    <li class="me-2">
                         <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
                                id="btn-check-author-{{ $author->id }}" name="author-{{ $author->id }}"
                                 @checked(isset($filters['author']) && in_array($author->id, $filters['author']))>
@@ -50,9 +50,9 @@
                     data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                 Год издания
             </button>
-            <ul class="dropdown-menu p-0">
+            <ul class="dropdown-menu p-0 overflow-scroll" style="height: 300%;">
                 @foreach($params['years'] as $year)
-                    <li>
+                    <li class="me-2">
                         <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
                                id="btn-check-year-{{ $year }}" name="year-{{ $year }}"
                                 @checked(isset($filters['year']) && in_array($year, $filters['year']))>
@@ -67,7 +67,7 @@
                     data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                 Тип
             </button>
-            <ul class="dropdown-menu p-0">
+            <ul class="pe-2 dropdown-menu p-0 overflow-scroll" style="height: 300%; min-width: 165px;">
                 @foreach($params['types'] as $type)
                     <li>
                         <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
