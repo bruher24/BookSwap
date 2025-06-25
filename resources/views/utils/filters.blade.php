@@ -1,5 +1,6 @@
 <!--FILTERS-->
-<form method="post" action="{{ route('users.books', ['user' => $user]) }}">
+<form id="filtersForm" method="post" action="{{ route('users.books', ['user' => $user]) }}">
+    @csrf
     <div class="btn-group mt-2" role="group" aria-label="Filters">
         <div class="btn-group" role="group">
             <button type="button" class="btn btn-outline-dark dropdown-toggle"
@@ -9,8 +10,11 @@
             <ul class="dropdown-menu p-0">
                 @foreach($genres as $genre)
                     <li>
-                        <input type="checkbox" class="btn-check dropdown-item" id="btn-check-genre-{{ $genre->id }}" autocomplete="off">
-                        <label class="btn form-control text-start" for="btn-check-genre-{{ $genre->id }}">{{ $genre->name }}</label>
+                        <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
+                               id="btn-check-genre-{{ $genre->id }}" name="genre-{{ $genre->id }}"
+                                @checked(isset($filters['genre']) && in_array($genre->id, $filters['genre']))>
+                        <label class="btn form-control text-start"
+                               for="btn-check-genre-{{ $genre->id }}">{{ $genre->name }}</label>
                     </li>
                 @endforeach
             </ul>
@@ -24,8 +28,11 @@
             <ul class="dropdown-menu p-0">
                 @foreach($authors as $author)
                     <li>
-                        <input type="checkbox" class="btn-check dropdown-item" id="btn-check-author-{{ $author->id }}" autocomplete="off">
-                        <label class="btn form-control text-start" for="btn-check-author-{{ $author->id }}">{{ $author->formattedName }}</label>
+                        <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
+                               id="btn-check-author-{{ $author->id }}" name="author-{{ $author->id }}"
+                                @checked(isset($filters['author']) && in_array($author->id, $filters['author']))>
+                        <label class="btn form-control text-start"
+                               for="btn-check-author-{{ $author->id }}">{{ $author->formattedName }}</label>
                     </li>
                 @endforeach
             </ul>
@@ -39,7 +46,9 @@
             <ul class="dropdown-menu p-0">
                 @foreach($years as $year)
                     <li>
-                        <input type="checkbox" class="btn-check dropdown-item" id="btn-check-year-{{ $year }}" autocomplete="off">
+                        <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
+                               id="btn-check-year-{{ $year }}" name="year-{{ $year }}"
+                                @checked(isset($filters['year']) && in_array($year, $filters['year']))>
                         <label class="btn form-control text-start" for="btn-check-year-{{ $year }}">{{ $year }}</label>
                     </li>
                 @endforeach
@@ -54,15 +63,18 @@
             <ul class="dropdown-menu p-0">
                 @foreach($types as $type)
                     <li>
-                        <input type="checkbox" class="btn-check dropdown-item" id="btn-check-type-{{ $type->id }}" autocomplete="off">
-                        <label class="btn form-control text-start" for="btn-check-type-{{ $type->id }}">{{ $type->name }}</label>
+                        <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
+                               id="btn-check-type-{{ $type->id }}" name="type-{{ $type->id }}"
+                                @checked(isset($filters['type']) && in_array($type->id, $filters['type']))>
+                        <label class="btn form-control text-start"
+                               for="btn-check-type-{{ $type->id }}">{{ $type->name }}</label>
                     </li>
                 @endforeach
             </ul>
         </div>
     </div>
     <div class="btn-group mt-2 ms-2">
-        <button type="submit" class="btn btn-outline-dark">
+        <button type="submit" id="filterBooksBtn" class="btn btn-outline-dark">
             Применить
         </button>
     </div>

@@ -14,16 +14,43 @@ class BookRepository extends Repository
         parent::__construct(new Book());
     }
 
-    public function where(array $conditions): Collection
+    public function byUser(int $userId, array $filters = []): Collection
     {
-        $genres = Genre::whereIn('id', $conditions['genres'])->get();
-        $authors = Author::whereIn('id', $conditions['authors'])->get();
-        $books = Book::whereAttachedTo($genres, $authors)->get();
-        return $books;
+        $books = $this->where($filters);
+        return $books->where('user_id', $userId);
     }
 
-    public function byUser(int $userId): Collection
+    public function where(array $conditions): Collection
     {
-        return Book::where('user_id', $userId)->get();
+        if (empty($conditions)) {
+            return $this->getAll();
+        }
+
+        $books = Book::where('deleted_at', null);
+
+        $genres = new Collection();
+        if (isset($conditions['genre'])) {
+            $genres = Genre::whereIn('id', $conditions['genre'])->get();
+            $books->whereHas('genres', function ($query) use ($genres) {
+                $query->whereIn('id', $genres->pluck('id'));
+            });
+        }
+
+        $authors = new Collection();
+        if (isset($conditions['author'])) {
+            $authors = Author::whereIn('id', $conditions['author'])->get();
+            $books->whereHas('authors', function ($query) use ($authors) {
+                $query->whereIn('id', $authors->pluck('id'));
+            });
+        }
+
+        if (isset($conditions['year'])) {
+            $books->whereIn('publication_year', $conditions['year']);
+        }
+
+        if (isset($conditions['type'])) {
+            $books->whereIn('type_id', $conditions['type']);
+        }
+        return $books->get();
     }
 }

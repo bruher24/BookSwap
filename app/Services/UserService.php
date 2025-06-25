@@ -11,11 +11,11 @@ class UserService extends Service
         parent::__construct(new UserRepository());
     }
 
-    public function books(int $userId): array
+    public function books(int $userId, array $filters = []): array
     {
         $booksService = new BookService();
-        $books = $booksService->byUser($userId);
-        $params = $booksService->params($books);
+        $books = $booksService->byUser($userId, $filters);
+        $params = $booksService->params($userId);
         return [$books, $params];
     }
 }

@@ -77,14 +77,23 @@ class UserController extends Controller
         // TODO: return redirect
     }
 
-    public function books(Request $request, int $id): View|RedirectResponse
+    public function books(Request $request, int $userId): View|RedirectResponse
     {
-        $user = Auth::user() ?? $this->userService->get($id);
+        $filters = [];
+        if ($request->isMethod('POST')) {
+            $inputFilters = $request->except('_token');
+            foreach ($inputFilters as $key => $value) {
+                [$field, $id] = explode('-', $key);
+                $filters[$field] = $filters[$field] ?? [];
+                $filters[$field][] = $id;
+            }
+        }
+        $user = Auth::user() ?? $this->userService->get($userId);
         if (!$user) {
             return back()->withErrors(['error' => 'Пользователь не найден.']);
         }
 
-        [$books, $params] = $this->userService->books($id);
+        [$books, $params] = $this->userService->books($userId, $filters);
 
         return view('user.books', [
             'books' => $books,
@@ -92,6 +101,7 @@ class UserController extends Controller
             'authors' => $params['authors'],
             'years' => $params['years'],
             'types' => $params['types'],
+            'filters' => $filters,
         ]);
     }
 
