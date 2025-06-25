@@ -82,11 +82,7 @@ class UserController extends Controller
         $filters = [];
         if ($request->isMethod('POST')) {
             $inputFilters = $request->except('_token');
-            foreach ($inputFilters as $key => $value) {
-                [$field, $id] = explode('-', $key);
-                $filters[$field] = $filters[$field] ?? [];
-                $filters[$field][] = $id;
-            }
+            $filters = $this->userService->formatFilters($inputFilters);
         }
         $user = Auth::user() ?? $this->userService->get($userId);
         if (!$user) {

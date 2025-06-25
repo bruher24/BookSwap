@@ -73,4 +73,15 @@ abstract class Service
         }
         return false;
     }
+
+    public function formatFilters(array $inputFilters): array
+    {
+        $filters = [];
+        foreach ($inputFilters as $key => $value) {
+            [$field, $id] = explode('-', $key);
+            $filters[$field] = $filters[$field] ?? [];
+            $filters[$field][] = $id;
+        }
+        return $filters;
+    }
 }
