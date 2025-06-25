@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
             $user = new User($userData);
             $user->save();
             $user->refresh();
-            $user->roles()->attach($user->id  == 1 ? 1 : 2);
+            $user->roles()->attach($user->id == 1 ? 1 : 2);
             $user->save();
         });
     }

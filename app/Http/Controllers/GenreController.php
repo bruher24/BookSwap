@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
-    private GenreService  $genreService;
+    private GenreService $genreService;
+
     public function __construct()
     {
         $this->genreService = new GenreService();

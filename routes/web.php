@@ -25,7 +25,7 @@ Route::prefix('users')->controller(UserController::class)->name('users.')->group
 });
 
 Route::prefix('books')->controller(BookController::class)->name('books.')->group(function () {
-    Route::get('/', 'index')->name('index');
+    Route::match(['post', 'get'], '/', 'index')->name('index');
     Route::get('/create', 'create')->name('create');
     Route::post('/store', 'store')->name('store');
     Route::get('/{book}', 'show')->name('show');

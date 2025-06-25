@@ -11,37 +11,48 @@ class BookController extends Controller
 {
     private BookService $bookService;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->bookService = new BookService();
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $books = $this->bookService->getAll();
-        return view('books.index', compact('books'));
+        $filters = [];
+        if ($request->isMethod('POST')) {
+            $inputFilters = $request->except('_token');
+            foreach ($inputFilters as $key => $value) {
+                [$field, $id] = explode('-', $key);
+                $filters[$field] = $filters[$field] ?? [];
+                $filters[$field][] = $id;
+            }
+        }
+        $books = $this->bookService->where($filters);
+        $params = $this->bookService->params();
+        return view('books.index', compact('books', 'params', 'filters'));
     }
 
-    public function create(){
-
+    public function create()
+    {
     }
 
-    public function store(Request $request){
-
+    public function store(Request $request)
+    {
     }
 
-    public function show(Book $book){
-
+    public function show(Book $book)
+    {
     }
 
-    public function edit(Book $book){
-
+    public function edit(Book $book)
+    {
     }
 
-    public function update(Request $request, Book $book){
-
+    public function update(Request $request, Book $book)
+    {
     }
 
-    public function destroy(Book $book){
-
+    public function destroy(Book $book)
+    {
     }
 }

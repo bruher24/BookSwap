@@ -12,15 +12,19 @@ class BookService extends Service
         parent::__construct(new BookRepository());
     }
 
-    public function params(int $userId): array
+    public function params(int $userId = null): array
     {
-        $books = $this->byUser($userId);
-        if ($books) {
-            $result['genres'] = $books->flatMap->genres->unique();
-            $result['authors'] = $books->flatMap->authors->unique();
-            $result['years'] = $books->pluck('publication_year')->unique();
-            $result['types'] = $books->pluck('type')->filter()->unique();
+        if (isset($userId)) {
+            $books = $this->byUser($userId);
         }
+        if (!isset($books)) {
+            $books = $this->getAll();
+        }
+        $result['genres'] = $books->flatMap->genres->unique();
+        $result['authors'] = $books->flatMap->authors->unique();
+        $result['years'] = $books->pluck('publication_year')->unique();
+        $result['types'] = $books->pluck('type')->filter()->unique();
+
         return $result ?? [];
     }
 

@@ -29,7 +29,7 @@ class AuthorSeeder extends Seeder
             ],
         ];
         collect($authors)->each(function ($author) {
-           Author::create($author);
+            Author::create($author);
         });
     }
 }

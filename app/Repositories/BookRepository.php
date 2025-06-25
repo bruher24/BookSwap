@@ -28,7 +28,6 @@ class BookRepository extends Repository
 
         $books = Book::where('deleted_at', null);
 
-        $genres = new Collection();
         if (isset($conditions['genre'])) {
             $genres = Genre::whereIn('id', $conditions['genre'])->get();
             $books->whereHas('genres', function ($query) use ($genres) {
@@ -36,7 +35,6 @@ class BookRepository extends Repository
             });
         }
 
-        $authors = new Collection();
         if (isset($conditions['author'])) {
             $authors = Author::whereIn('id', $conditions['author'])->get();
             $books->whereHas('authors', function ($query) use ($authors) {

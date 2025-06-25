@@ -95,14 +95,7 @@ class UserController extends Controller
 
         [$books, $params] = $this->userService->books($userId, $filters);
 
-        return view('user.books', [
-            'books' => $books,
-            'genres' => $params['genres'],
-            'authors' => $params['authors'],
-            'years' => $params['years'],
-            'types' => $params['types'],
-            'filters' => $filters,
-        ]);
+        return view('user.books', compact('books', 'params', 'filters'));
     }
 
     public function profile(string $section = 'personal'): View

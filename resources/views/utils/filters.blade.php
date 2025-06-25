@@ -1,5 +1,12 @@
 <!--FILTERS-->
-<form id="filtersForm" method="post" action="{{ route('users.books', ['user' => $user]) }}">
+<form id="filtersForm" method="post"
+      action="
+      @if (request()->routeIs('users.books'))
+      {{ route('users.books', ['user' => $user]) }}
+      @else
+      {{ route('books.index') }}
+      @endif
+      ">
     @csrf
     <div class="btn-group mt-2" role="group" aria-label="Filters">
         <div class="btn-group" role="group">
@@ -8,7 +15,7 @@
                 Жанр
             </button>
             <ul class="dropdown-menu p-0">
-                @foreach($genres as $genre)
+                @foreach($params['genres'] as $genre)
                     <li>
                         <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
                                id="btn-check-genre-{{ $genre->id }}" name="genre-{{ $genre->id }}"
@@ -26,7 +33,7 @@
                 Автор
             </button>
             <ul class="dropdown-menu p-0">
-                @foreach($authors as $author)
+                @foreach($params['authors'] as $author)
                     <li>
                         <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
                                id="btn-check-author-{{ $author->id }}" name="author-{{ $author->id }}"
@@ -44,7 +51,7 @@
                 Год издания
             </button>
             <ul class="dropdown-menu p-0">
-                @foreach($years as $year)
+                @foreach($params['years'] as $year)
                     <li>
                         <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
                                id="btn-check-year-{{ $year }}" name="year-{{ $year }}"
@@ -61,7 +68,7 @@
                 Тип
             </button>
             <ul class="dropdown-menu p-0">
-                @foreach($types as $type)
+                @foreach($params['types'] as $type)
                     <li>
                         <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
                                id="btn-check-type-{{ $type->id }}" name="type-{{ $type->id }}"

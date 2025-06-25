@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Repository;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -20,7 +21,7 @@ abstract class Service
     {
         try {
             $this->repository->create($data);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             logger($e->getMessage());
             return false;
         }
@@ -31,7 +32,7 @@ abstract class Service
     {
         try {
             $this->repository->update($id, $data);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             logger($e->getMessage());
             return false;
         }
@@ -42,7 +43,7 @@ abstract class Service
     {
         try {
             $this->repository->delete($id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             logger($e->getMessage());
             return false;
         }
@@ -54,7 +55,7 @@ abstract class Service
         return $this->repository->getAll();
     }
 
-    public function get(int $id): Model | false
+    public function get(int $id): Model|false
     {
         try {
             $user = $this->repository->get($id);
@@ -65,7 +66,7 @@ abstract class Service
         return $user;
     }
 
-    public function where(array $conditions): Collection | false
+    public function where(array $conditions): Collection|false
     {
         if (method_exists($this->repository, 'where')) {
             return $this->repository->where($conditions);

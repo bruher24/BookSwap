@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\RepositoryInterface;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -20,7 +21,7 @@ abstract class Repository implements RepositoryInterface
     {
         $object = new $this->model($data);
         if (!$object->save()) {
-            throw new \Exception("Ошибка при сохранении записи");
+            throw new Exception("Ошибка при сохранении записи");
         }
         $object->refresh();
         return $object;
@@ -30,7 +31,7 @@ abstract class Repository implements RepositoryInterface
     {
         $object = $this->model::find($id);
         if (!$object->update($data)) {
-            throw new \Exception('Ошибка при обновлении записи');
+            throw new Exception('Ошибка при обновлении записи');
         }
         $object->refresh();
         return $object;
@@ -40,7 +41,7 @@ abstract class Repository implements RepositoryInterface
     {
         $object = $this->model::find($id);
         if (!$object->delete()) {
-            throw new \Exception('Ошибка при удалении записи');
+            throw new Exception('Ошибка при удалении записи');
         }
     }
 

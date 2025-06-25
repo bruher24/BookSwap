@@ -22,11 +22,6 @@ class Book extends Model
         'mainAuthor'
     ];
 
-    public function authors()
-    {
-        return $this->belongsToMany(Author::class);
-    }
-
     public function type()
     {
         return $this->belongsTo(BookType::class);
@@ -40,5 +35,10 @@ class Book extends Model
     public function getMainAuthorAttribute()
     {
         return $this->authors()->first()->formattedName;
+    }
+
+    public function authors()
+    {
+        return $this->belongsToMany(Author::class);
     }
 }
