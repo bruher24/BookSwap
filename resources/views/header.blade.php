@@ -2,7 +2,7 @@
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="{{ route('home') }}"
-               class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+               class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none" style="margin-right: 8px">
                 <img src="#" alt="BookSwap">
             </a>
             <!--NAVBAR-->
@@ -17,7 +17,7 @@
                 <li>
                     <a class="nav-link text-secondary dropdown-toggle" id="dropdownCatalog1"
                        data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
-                       style="cursor: pointer">
+                       style="cursor: pointer; padding: 8px;">
                         Каталог
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownCatalog1">
