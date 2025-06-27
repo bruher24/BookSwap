@@ -3,7 +3,6 @@ import $ from 'jquery';
 $(function () {
     let authors = [];
     let selectedAuthors = [];
-    let oldValue = 'Выберите автора...'; // Вынесено в область видимости модуля
 
     $('#addBookBtn').click(function () {
         authorsListRequest().then(function (response) {
