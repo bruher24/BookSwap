@@ -3,61 +3,79 @@ import $ from 'jquery';
 $(function () {
     let authors = [];
     let selectedAuthors = [];
+    let oldValue; // Вынесено в область видимости модуля
+
     $('#addBookBtn').click(function() {
-        authorsListRequest().then(function (response){
+        authorsListRequest().then(function (response) {
             authors = JSON.parse(response);
-            console.log(authors)
-            authors.forEach((author) =>{
+            console.log(authors);
+            authors.forEach((author) => {
                 const option = `<option value="${author.id}">${author.fullName}</option>`;
                 $('#floatingAuthorId').append(option);
             });
-        })
-
+        });
     });
 
-    let oldValue;
+    // Делегирование событий для ВСЕХ select (включая динамически добавленные)
+    $(document).on('focus', '.authorDiv select', function() {
+        oldValue = $(this).val(); // Запоминаем текущее значение
+    }).on('change', '.authorDiv select', function() {
+        const $select = $(this);
+        const newValue = $select.val();
 
-    $('#floatingAuthorId').on('focus', function (){
-        oldValue = this.value;
-    }).change(function(){
-        if (typeof this.value !== 'string') {
-            const index = selectedAuthors.indexOf(oldValue);
-            if (index > -1) {
-                selectedAuthors.splice(index, 1);
-            }
-            selectedAuthors.push(this.value);
+        // Проверка на дубликат
+        if (newValue && selectedAuthors.includes(newValue)) {
+            alert('Этот автор уже выбран в другом поле!');
+            $select.val(oldValue); // Возвращаем предыдущее значение
+            return;
         }
-        console.log(selectedAuthors);
+
+        // Удаляем старое значение (если было)
+        if (oldValue && selectedAuthors.includes(oldValue)) {
+            selectedAuthors = selectedAuthors.filter(id => id !== oldValue);
+        }
+
+        // Добавляем новое значение (если не пустое)
+        if (newValue) {
+            selectedAuthors.push(newValue);
+        }
+
+        console.log('Выбранные авторы:', selectedAuthors);
     });
 
-    $('#addAuthorBtn').click(function(){
-        const selector = $('.authorDiv');
-
-        const count = selector.length;
-        if (count >= 3) {
+    $('#addAuthorBtn').click(function() {
+        const $authorDivs = $('.authorDiv');
+        if ($authorDivs.length >= 3) {
             alert('Добавлен максимум авторов!');
             return;
         }
 
-        const authorDiv = selector.last();
-        const newDiv = authorDiv.clone();
-        const firstId = selector.first().children('select').first().attr('id');
-        let newId = firstId + count;
-        newDiv.children('select').attr('id', newId);
-        newDiv.children('label').html('Дополнительный автор');
-        newDiv.children('label').attr('for', newId);
+        // Клонируем последний select и очищаем его значение
+        const $lastAuthorDiv = $authorDivs.last();
+        const $newDiv = $lastAuthorDiv.clone();
 
-        authorDiv.after(newDiv);
+        // Генерируем новый ID для select и label
+        const newId = 'floatingAuthorId_' + $authorDivs.length;
+        const newName = 'authorId' + + $authorDivs.length;
+        $newDiv.find('select')
+            .attr('id', newId)
+            .attr('name', newName)
+            .val('Выберите автора...'); // Сбрасываем выбранное значение
+
+        $newDiv.find('label')
+            .attr('for', newId)
+            .text('Дополнительный автор');
+
+        $lastAuthorDiv.after($newDiv);
     });
 
-
-
-    $('#saveBookBtn').click(function () {
+    $('#saveBookBtn').click(function() {
         const form = $('#addBookForm');
         const formData = getFormData(form);
-        console.log(formData)
+        console.log(formData);
     });
 });
+
 
 function getFormData(form) {
     const formData = form.serializeArray().reduce(function (obj, item) {
