@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('seller_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('buyer_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->dateTime('date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
