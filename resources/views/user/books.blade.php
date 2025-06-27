@@ -9,7 +9,7 @@
         @include('utils.filters')
 
         <div class="d-inline text-end">
-            <button type="button" class="mt-2 btn btn-outline-dark float-end" data-bs-toggle="modal"
+            <button id="addBookBtn" type="button" class="mt-2 btn btn-outline-dark float-end" data-bs-toggle="modal"
                     data-bs-target="#modalAddBook">Добавить книгу</button>
         </div>
 

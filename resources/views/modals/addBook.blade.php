@@ -19,9 +19,6 @@
                     <div class="form-floating mb-3 authorDiv">
                         <select class="mainInput form-control form-select rounded-3" name="authorId" id="floatingAuthorId">
                             <option selected disabled>Выберите автора...</option>
-                            @foreach($authors as $author)
-                                <option value="{{ $author->id }}">{{ $author->fullName }}</option>
-                            @endforeach
                         </select>
                         <label for="floatingAuthorId">Автор</label>
                     </div>
@@ -77,7 +74,7 @@
                         <label for="floatingPhoto">Фотография</label>
                     </div>
 
-                    <button id="addBookBtn" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button">Сохранить</button>
+                    <button id="saveBookBtn" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button">Сохранить</button>
                 </form>
             </div>
         </div>
