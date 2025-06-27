@@ -3,7 +3,7 @@ import $ from 'jquery';
 $(function () {
     let authors = [];
     let selectedAuthors = [];
-    let oldValue; // Вынесено в область видимости модуля
+    let oldValue = 'Выберите автора...'; // Вынесено в область видимости модуля
 
     $('#addBookBtn').click(function () {
         authorsListRequest().then(function (response) {
@@ -17,31 +17,32 @@ $(function () {
     });
 
     // Делегирование событий для ВСЕХ select (включая динамически добавленные)
-    $(document).on('focus', '.authorDiv select', function () {
-        oldValue = $(this).val(); // Запоминаем текущее значение
-    }).on('change', '.authorDiv select', function () {
-        const $select = $(this);
-        const newValue = $select.val();
+    $(document)
+        .on('focus', '.authorDiv select', function() {
+            $(this).data('old-value', $(this).val()); // Сохраняем текущее значение
+        })
+        .on('change', '.authorDiv select', function() {
+            const $select = $(this);
+            const newValue = $select.val();
+            const oldValue = $select.data('old-value');
 
-        // Проверка на дубликат
-        if (newValue && selectedAuthors.includes(newValue)) {
-            alert('Этот автор уже выбран в другом поле!');
-            $select.val(oldValue); // Возвращаем предыдущее значение
-            return;
-        }
+            // Проверка на дубликат
+            if (newValue && newValue !== 'Выберите автора...' && selectedAuthors.includes(newValue)) {
+                alert('Этот автор уже выбран в другом поле!');
+                $select.val(oldValue === null ? 'Выберите автора...' : oldValue);
+                return;
+            }
 
-        // Удаляем старое значение (если было)
-        if (oldValue && selectedAuthors.includes(oldValue)) {
-            selectedAuthors = selectedAuthors.filter(id => id !== oldValue);
-        }
+            // Обновляем массив выбранных авторов
+            if (oldValue && oldValue !== 'Выберите автора...') {
+                selectedAuthors = selectedAuthors.filter(id => id !== oldValue);
+            }
+            if (newValue && newValue !== 'Выберите автора...') {
+                selectedAuthors.push(newValue);
+            }
 
-        // Добавляем новое значение (если не пустое)
-        if (newValue) {
-            selectedAuthors.push(newValue);
-        }
-
-        console.log('Выбранные авторы:', selectedAuthors);
-    });
+            console.log('Выбранные авторы:', selectedAuthors);
+        });
 
     $('#addAuthorBtn').click(function () {
         const $authorDivs = $('.authorDiv');
