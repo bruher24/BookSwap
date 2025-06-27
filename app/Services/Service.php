@@ -12,6 +12,8 @@ abstract class Service
 {
     protected Repository $repository;
 
+    protected array $ucFirstFields;
+
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
@@ -19,8 +21,9 @@ abstract class Service
 
     public function create(array $data): bool
     {
+        $formattedData = $this->formatData($data);
         try {
-            $this->repository->create($data);
+            $this->repository->create($formattedData);
         } catch (Exception $e) {
             logger($e->getMessage());
             return false;
@@ -83,5 +86,15 @@ abstract class Service
             $filters[$field][] = $id;
         }
         return $filters;
+    }
+
+    protected function formatData(array $data): array
+    {
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 }

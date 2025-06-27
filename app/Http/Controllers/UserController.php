@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Services\AuthorService;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -13,10 +14,12 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     private UserService $userService;
+    private AuthorService $authorService;
 
     public function __construct()
     {
         $this->userService = new UserService();
+        $this->authorService = new AuthorService();
     }
 
     public function index()
@@ -91,7 +94,9 @@ class UserController extends Controller
 
         [$books, $params] = $this->userService->books($userId, $filters);
 
-        return view('user.books', compact('books', 'params', 'filters'));
+        $authors = $this->authorService->getAll();
+
+        return view('user.books', compact('books', 'params', 'filters', 'authors'));
     }
 
     public function profile(string $section = 'personal'): View

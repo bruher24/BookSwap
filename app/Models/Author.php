@@ -18,6 +18,7 @@ class Author extends Model
 
     public $appends = [
         'formattedName',
+        'fullName',
     ];
 
     public function books()
@@ -32,4 +33,8 @@ class Author extends Model
             . ($this->patronymic ? mb_substr($this->patronymic, 0, 1) : '');
     }
 
+    public function getFullNameAttribute()
+    {
+        return "$this->lastname $this->firstname" . ($this->patronymic ? " $this->patronimyc" : '');
+    }
 }

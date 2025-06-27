@@ -8,37 +8,43 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
 
-Route::controller(MainController::class)->group(function () {
-    Route::get('/', 'index')->name('home');
-    Route::get('about', 'about')->name('about');
-});
+Route::controller(MainController::class)
+    ->group(function () {
+        Route::get('/', 'index')->name('home');
+        Route::get('about', 'about')->name('about');
+    });
 
 
-Route::prefix('users')->middleware(CheckAuth::class)->controller(UserController::class)->name('users.')->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::post('/create', 'create')->name('create')->withoutMiddleware(CheckAuth::class);
-    Route::post('/login', 'login')->name('login')->withoutMiddleware(CheckAuth::class);
-    Route::get('/profile/{section?}', 'profile')->name('profile');
-    Route::get('/logout', 'logout')->name('logout');
-    Route::match(['post', 'get'], '/{user}/books', 'books')->name('books');
-    Route::patch('/{user}', 'update')->name('update');
-    Route::delete('/{user}', 'destroy')->name('destroy');
-});
+Route::prefix('users')->middleware(CheckAuth::class)->controller(UserController::class)->name('users.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/create', 'create')->name('create')->withoutMiddleware(CheckAuth::class);
+        Route::post('/login', 'login')->name('login')->withoutMiddleware(CheckAuth::class);
+        Route::get('/profile/{section?}', 'profile')->name('profile');
+        Route::get('/logout', 'logout')->name('logout');
+        Route::match(['post', 'get'], '/{user}/books', 'books')->name('books');
+        Route::patch('/{user}', 'update')->name('update');
+        Route::delete('/{user}', 'destroy')->name('destroy');
+    });
 
-Route::prefix('books')->middleware(CheckAuth::class)->controller(BookController::class)->name('books.')->group(function () {
-    Route::match(['post', 'get'], '/', 'index')->name('index')->withoutMiddleware(CheckAuth::class);
-    Route::get('/create', 'create')->name('create');
-    Route::post('/store', 'store')->name('store');
-    Route::get('/{book}', 'show')->name('show');
-    Route::get('/{book}/edit', 'edit')->name('edit');
-    Route::patch('/{book}', 'update')->name('update');
-    Route::delete('/{book}', 'destroy')->name('destroy');
-});
+Route::prefix('books')->middleware(CheckAuth::class)->controller(BookController::class)->name('books.')
+    ->group(
+        function () {
+            Route::match(['post', 'get'], '/', 'index')->name('index')->withoutMiddleware(CheckAuth::class);
+            Route::post('/store', 'store')->name('store');
+            Route::get('/{book}', 'show')->name('show');
+            Route::get('/{book}/edit', 'edit')->name('edit');
+            Route::patch('/{book}', 'update')->name('update');
+            Route::delete('/{book}', 'destroy')->name('destroy');
+        }
+    );
 
-Route::prefix('genres')->controller(GenreController::class)->name('genres.')->group(function () {
-    Route::get('/', 'index')->name('index');
-});
+Route::prefix('genres')->controller(GenreController::class)->name('genres.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
 
-Route::prefix('authors')->controller(AuthorController::class)->name('authors.')->group(function () {
-    Route::get('/', 'index')->name('index');
-});
+Route::prefix('authors')->controller(AuthorController::class)->name('authors.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+    });

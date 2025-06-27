@@ -6,6 +6,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Genre;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class BookRepository extends Repository
 {
@@ -50,5 +51,12 @@ class BookRepository extends Repository
             $books->whereIn('type_id', $conditions['type']);
         }
         return $books->get();
+    }
+
+    public function create(array $data): Model
+    {
+        $book = parent::create($data);
+        $book->authors()->attach();
+
     }
 }

@@ -1,5 +1,5 @@
 <!--FILTERS-->
-<form id="filtersForm" method="post"
+<form class="d-inline" id="filtersForm" method="post"
       action="
       @if (request()->routeIs('users.books'))
       {{ route('users.books', ['user' => $user]) }}

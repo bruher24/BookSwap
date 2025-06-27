@@ -10,6 +10,10 @@ class BookService extends Service
     public function __construct()
     {
         parent::__construct(new BookRepository());
+        $this->ucFirstFields = [
+            'name',
+            'publishing_house',
+        ];
     }
 
     public function params(int $userId = null): array
@@ -39,5 +43,11 @@ class BookService extends Service
             return $this->repository->byUser($userId, $filters);
         }
         return false;
+    }
+
+    public function create(array $data): bool
+    {
+
+        return parent::create($data);
     }
 }

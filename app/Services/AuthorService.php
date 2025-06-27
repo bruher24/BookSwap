@@ -9,5 +9,10 @@ class AuthorService extends Service
     public function __construct()
     {
         parent::__construct(new AuthorRepository());
+        $this->ucFirstFields = [
+            'lastname',
+            'firstname',
+            'patronymic',
+        ];
     }
 }

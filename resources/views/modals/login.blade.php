@@ -1,4 +1,3 @@
-{{--TODO: нужно ли?--}}
 <div class="modal fade modal-sheet p-4 py-md-5" tabindex="-1" role="dialog" id="modalLogin">
     <div class="modal-dialog">
         <div class="modal-content rounded-4 shadow">

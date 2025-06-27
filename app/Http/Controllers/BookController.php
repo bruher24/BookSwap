@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookRequest;
 use App\Models\Book;
 use App\Services\BookService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class BookController extends Controller
@@ -32,8 +35,16 @@ class BookController extends Controller
     {
     }
 
-    public function store(Request $request)
+    public function store(StoreBookRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
+        if (!$this->bookService->create($validated)) {
+            return back()->withErrors([
+                'error' => 'Ошибка при сохранении книги.'
+            ]);
+        }
+        return redirect()->route('books.index')->with('success', 'Книга успешно сохранена!');
+
     }
 
     public function show(Book $book)

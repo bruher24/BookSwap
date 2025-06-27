@@ -9,5 +9,8 @@ class GenreService extends Service
     public function __construct()
     {
         parent::__construct(new GenreRepository());
+        $this->ucFirstFields = [
+            'name',
+        ];
     }
 }
