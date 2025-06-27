@@ -5,7 +5,7 @@ $(function () {
     let selectedAuthors = [];
     let oldValue; // Вынесено в область видимости модуля
 
-    $('#addBookBtn').click(function() {
+    $('#addBookBtn').click(function () {
         authorsListRequest().then(function (response) {
             authors = JSON.parse(response);
             console.log(authors);
@@ -17,9 +17,9 @@ $(function () {
     });
 
     // Делегирование событий для ВСЕХ select (включая динамически добавленные)
-    $(document).on('focus', '.authorDiv select', function() {
+    $(document).on('focus', '.authorDiv select', function () {
         oldValue = $(this).val(); // Запоминаем текущее значение
-    }).on('change', '.authorDiv select', function() {
+    }).on('change', '.authorDiv select', function () {
         const $select = $(this);
         const newValue = $select.val();
 
@@ -43,7 +43,7 @@ $(function () {
         console.log('Выбранные авторы:', selectedAuthors);
     });
 
-    $('#addAuthorBtn').click(function() {
+    $('#addAuthorBtn').click(function () {
         const $authorDivs = $('.authorDiv');
         if ($authorDivs.length >= 3) {
             alert('Добавлен максимум авторов!');
@@ -56,7 +56,7 @@ $(function () {
 
         // Генерируем новый ID для select и label
         const newId = 'floatingAuthorId_' + $authorDivs.length;
-        const newName = 'authorId' + + $authorDivs.length;
+        const newName = 'authorId' + +$authorDivs.length;
         $newDiv.find('select')
             .attr('id', newId)
             .attr('name', newName)
@@ -69,7 +69,7 @@ $(function () {
         $lastAuthorDiv.after($newDiv);
     });
 
-    $('#saveBookBtn').click(function() {
+    $('#saveBookBtn').click(function () {
         const form = $('#addBookForm');
         const formData = getFormData(form);
         console.log(formData);
@@ -87,6 +87,9 @@ function getFormData(form) {
 }
 
 function formatData(formData) {
+    for (const [value, key] of Object.entries(formData)) {
+        console.log(value, key);
+    }
     return formData;
 }
 
@@ -101,8 +104,7 @@ function mainInputs(callback) {
     });
 }
 
-async function authorsListRequest()
-{
+async function authorsListRequest() {
     return await $.ajax({
         url: '/authors/',
         type: 'get',
