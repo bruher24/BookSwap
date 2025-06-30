@@ -41,6 +41,7 @@
     </div>
 @endif
 @include('header')
+<div id="ajaxAlerts" style="position: fixed; top: 20px; right: 20px; z-index: 1100;"></div>
 <main>
     @yield('main')
 </main>

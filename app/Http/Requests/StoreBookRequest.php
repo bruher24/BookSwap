@@ -24,26 +24,37 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:100|unique:books,name',
-            'author_id' => 'nullable|integer|exists:authors,id',
+            'author_id' => 'required_without_all:authorLastName,authorFirstname,authorPatronymic|integer|exists:authors,id',
+            'author_id1' => 'nullable|integer|exists:authors,id',
+            'author_id2' => 'nullable|integer|exists:authors,id',
             'authorLastname' => [
+                'required_without:author_id',
                 'string',
                 'max:100',
                 function ($attribute, $value, $fail) {
                     $exists = Author::where('lastname', request('authorLastname'))
-                    ->where('firstname', request('authorFirstname'))
-                    ->where('patronymic', request('authorPatronymic'))
-                    ->exists();
+                        ->where('firstname', request('authorFirstname'))
+                        ->where('patronymic', request('authorPatronymic'))
+                        ->exists();
                     if ($exists) {
                         $fail('Автор с таким ФИО уже существует');
                     }
                 }
             ],
-            'authorFirstname' => 'string|max:100',
-            'authorPatronymic' => 'nullable|string|max:100',
-            'authorBirthdate' => ['date', Rule::date()->beforeOrEqual(today()->subYears(16))],
-            'pageCount' => 'required|integer|min:1',
+            'authorFirstname' => 'required_without:author_id|string|max:100',
+            'authorPatronymic' => 'required_without:author_id|string|max:100',
+            'authorBirthdate' => [
+                'required_without:author_id',
+                'date',
+                Rule::date()->beforeOrEqual(today()->subYears(16))
+            ],
+            'page_count' => 'required|integer|min:1',
             'photo' => 'nullable|string|unique:photos,src',
+            'publishing_house' => 'string',
+            'publication_year' => Rule::date()->format('Y'),
+            'type_id' => 'integer|exists:book_types,id',
         ];
     }
 }

@@ -11,6 +11,7 @@ class Book extends Model
 
     public $fillable = [
         'name',
+        'user_id',
         'publishing_house',
         'publication_year',
         'isbn',

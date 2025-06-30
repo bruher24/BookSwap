@@ -53,10 +53,13 @@ class BookRepository extends Repository
         return $books->get();
     }
 
-    public function create(array $data): Model
+    public function attach($book, $authors): void
     {
-        $book = parent::create($data);
-        $book->authors()->attach();
-
+        if (isset($authors['ids'])) {
+            $book->authors()->attach($authors['ids']);
+        }
+        if (isset($authors['new'])) {
+            $book->authors()->create($authors['new']);
+        }
     }
 }

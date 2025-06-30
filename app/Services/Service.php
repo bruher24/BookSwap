@@ -19,16 +19,26 @@ abstract class Service
         $this->repository = $repository;
     }
 
-    public function create(array $data): bool
+    public function create(array $data): Model|false
     {
         $formattedData = $this->formatData($data);
         try {
-            $this->repository->create($formattedData);
+            $book = $this->repository->create($formattedData);
         } catch (Exception $e) {
             logger($e->getMessage());
             return false;
         }
-        return true;
+        return $book;
+    }
+
+    protected function formatData(array $data): array
+    {
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 
     public function update(int $id, array $data): bool
@@ -86,15 +96,5 @@ abstract class Service
             $filters[$field][] = $id;
         }
         return $filters;
-    }
-
-    protected function formatData(array $data): array
-    {
-        foreach ($data as $key => &$value) {
-            if (in_array($key, $this->ucFirstFields)) {
-                $value = ucfirst($value);
-            }
-        }
-        return $data;
     }
 }

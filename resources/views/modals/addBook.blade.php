@@ -9,27 +9,30 @@
             <div class="modal-body p-5 pt-0">
                 <form id="addBookForm" method="post" action="{{ route('books.store') }}">
                     @csrf
-                    <input class="mainInput" type="hidden" name="userId" value="{{ $user->id }}">
+                    <input class="mainInput" type="hidden" name="user_id" value="{{ $user->id }}">
                     <div class="form-floating mb-3">
-                        <input type="text" class="mainInput form-control rounded-3" name="name" id="floatingInput" required
+                        <input type="text" class="mainInput form-control rounded-3" name="name" id="floatingInput"
+                               required
                                placeholder="Мастер и маргарита">
                         <label for="floatingInput">Название</label>
                     </div>
 
                     <div class="form-floating mb-3 authorDiv">
-                        <select class="mainInput form-control form-select rounded-3" name="authorId" id="floatingAuthorId">
-                            <option selected disabled>Выберите автора...</option>
+                        <select class="mainInput form-control form-select rounded-3" name="author_id"
+                                id="floatingAuthorId">
+                            <option selected value="0">Выберите автора...</option>
                         </select>
                         <label for="floatingAuthorId">Автор</label>
                     </div>
 
-                    <button class="btn btn-sm btn-outline-secondary mb-3" type="button"
+                    <button id="createAuthorBtn" class="btn btn-sm btn-outline-secondary mb-3" type="button"
                             data-bs-toggle="collapse" data-bs-target="#authorFieldsCollapse"
                             aria-expanded="false" aria-controls="authorFieldsCollapse">
                         Создать нового автора
                     </button>
 
-                    <button id="addAuthorBtn" class="btn btn-sm btn-outline-secondary mb-3" type="button" aria-expanded="false">
+                    <button id="addAuthorBtn" class="btn btn-sm btn-outline-secondary mb-3" type="button"
+                            aria-expanded="false">
                         Добавить автора
                     </button>
 
@@ -38,25 +41,29 @@
                             <p class="text-muted mb-3"><small>Если не нашли нужного автора в списке</small></p>
 
                             <div class="form-floating mb-3">
-                                <input type="text" class="additionalInput form-control rounded-3" name="authorLastname" id="floatingAuthorLastname"
+                                <input type="text" class="additionalInput form-control rounded-3" name="authorLastname"
+                                       id="floatingAuthorLastname"
                                        placeholder="Пушкин">
                                 <label for="floatingAuthorLastname">Фамилия автора</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="text" class="additionalInput form-control rounded-3" name="authorFirstname" id="floatingAuthorFirstname"
+                                <input type="text" class="additionalInput form-control rounded-3" name="authorFirstname"
+                                       id="floatingAuthorFirstname"
                                        placeholder="Александр">
                                 <label for="floatingAuthorFirstname">Имя автора</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="text" class="additionalInput form-control rounded-3" name="authorPatronymic" id="floatingAuthorPatronymic"
+                                <input type="text" class="additionalInput form-control rounded-3"
+                                       name="authorPatronymic" id="floatingAuthorPatronymic"
                                        placeholder="Сергеевич">
                                 <label for="floatingAuthorPatronymic">Отчество автора (при наличии)</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="date" class="additionalInput form-control rounded-3" name="authorBirthdate" id="floatingAuthorBirthdate"
+                                <input type="date" class="additionalInput form-control rounded-3" name="authorBirthdate"
+                                       id="floatingAuthorBirthdate"
                                        placeholder="06.06.1799">
                                 <label for="floatingAuthorBirthdate">Дата рождения автора</label>
                             </div>
@@ -64,7 +71,8 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="number" min="1" class="mainInput form-control rounded-3" name="pageCount" id="floatingPageCount" required
+                        <input type="number" min="1" class="mainInput form-control rounded-3" name="page_count"
+                               id="floatingPageCount" required
                                placeholder="501">
                         <label for="floatingPageCount">Кол-во страниц</label>
                     </div>
@@ -74,7 +82,9 @@
                         <label for="floatingPhoto">Фотография</label>
                     </div>
 
-                    <button id="saveBookBtn" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button">Сохранить</button>
+                    <button id="saveBookBtn" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button">
+                        Сохранить
+                    </button>
                 </form>
             </div>
         </div>
