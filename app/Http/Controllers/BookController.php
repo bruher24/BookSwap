@@ -50,8 +50,13 @@ class BookController extends Controller
         ]);
     }
 
-    public function show(Book $book)
+    public function show(int $bookId)
     {
+        $book = Book::find($bookId);
+        return response()->json([
+            'success' => true,
+            'book' => $book,
+        ]);
     }
 
     public function edit(Book $book)

@@ -1,16 +1,16 @@
 $(function () {
-    let authors = [];
+    // let authors = [];
     let selectedAuthors = [];
 
-    $('#addBookBtn').click(function () {
-        authorsListRequest().then(function (response) {
-            authors = JSON.parse(response);
-            authors.forEach((author) => {
-                const option = `<option value="${author.id}">${author.fullName}</option>`;
-                $('#floatingAuthorId').append(option);
-            });
-        });
-    });
+    // $('.bookBtn').click(function () {
+    //     authorsListRequest().then(function (response) {
+    //         authors = JSON.parse(response);
+    //         authors.forEach((author) => {
+    //             const option = `<option value="${author.id}">${author.fullName}</option>`;
+    //             $('#floatingAuthorId').append(option);
+    //         });
+    //     });
+    // });
 
     // Делегирование событий для ВСЕХ select (включая динамически добавленные)
     $(document).on('focus', '.authorDiv select', function () {
@@ -71,7 +71,7 @@ $(function () {
         if (result.success === true) {
             showAlert('success', 'Книга успешно сохранена!');
             // Дополнительные действия при успехе
-            $('#modalAddBook').modal('hide');
+            $('#modalBookForm').modal('hide');
             form[0].reset();
         } else {
             showAlert('danger', 'Ошибка при сохранении книги');
@@ -117,14 +117,14 @@ function inputsCallback(selector = '.mainInput', callback) {
     });
 }
 
-async function authorsListRequest() {
-    return await $.ajax({
-        url: '/authors/',
-        type: 'get',
-        async: true,
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-    });
-}
+// async function authorsListRequest() {
+//     return await $.ajax({
+//         url: '/authors/',
+//         type: 'get',
+//         async: true,
+//         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+//     });
+// }
 
 async function storeBookRequest(data) {
 

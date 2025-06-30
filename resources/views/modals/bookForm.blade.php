@@ -1,4 +1,4 @@
-<div class="modal fade modal-sheet p-4 py-md-5" tabindex="-1" role="dialog" id="modalAddBook">
+<div class="modal fade modal-sheet p-4 py-md-5" tabindex="-1" role="dialog" id="modalBookForm">
     <div class="modal-dialog">
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">

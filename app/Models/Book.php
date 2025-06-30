@@ -23,6 +23,12 @@ class Book extends Model
         'mainAuthor'
     ];
 
+    protected $with = [
+        'authors',
+        'type',
+        'genres'
+    ];
+
     public function type()
     {
         return $this->belongsTo(BookType::class);
