@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 $(function () {
     let authors = [];
     let selectedAuthors = [];
