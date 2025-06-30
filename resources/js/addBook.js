@@ -1,16 +1,10 @@
 $(function () {
-    // let authors = [];
     let selectedAuthors = [];
 
-    // $('.bookBtn').click(function () {
-    //     authorsListRequest().then(function (response) {
-    //         authors = JSON.parse(response);
-    //         authors.forEach((author) => {
-    //             const option = `<option value="${author.id}">${author.fullName}</option>`;
-    //             $('#floatingAuthorId').append(option);
-    //         });
-    //     });
-    // });
+    $('#addBookBtn').click(function () {
+        $('#modalTitle').html('Добавить книгу');
+        $('#bookForm')[0].reset();
+    });
 
     // Делегирование событий для ВСЕХ select (включая динамически добавленные)
     $(document).on('focus', '.authorDiv select', function () {
@@ -63,7 +57,7 @@ $(function () {
     });
 
     $('#saveBookBtn').click(async function () {
-        const form = $('#addBookForm');
+        const form = $('#bookForm');
         const formData = getFormData(form);
         console.log(formData);
         const result = await storeBookRequest(formData);
@@ -116,15 +110,6 @@ function inputsCallback(selector = '.mainInput', callback) {
         callback(property, val, $(this));
     });
 }
-
-// async function authorsListRequest() {
-//     return await $.ajax({
-//         url: '/authors/',
-//         type: 'get',
-//         async: true,
-//         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-//     });
-// }
 
 async function storeBookRequest(data) {
 

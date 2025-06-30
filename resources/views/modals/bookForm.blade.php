@@ -2,19 +2,26 @@
     <div class="modal-dialog">
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h1 class="fw-bold mb-0 fs-2">Добавить книгу</h1>
+                <h1 id="modalTitle" class="fw-bold mb-0 fs-2">Добавить книгу</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body p-5 pt-0">
-                <form id="addBookForm" method="post" action="{{ route('books.store') }}">
+                <form id="bookForm" method="post" action="{{ route('books.store') }}">
                     @csrf
                     <input class="mainInput" type="hidden" name="user_id" value="{{ $user->id }}">
                     <div class="form-floating mb-3">
-                        <input type="text" class="mainInput form-control rounded-3" name="name" id="floatingInput"
+                        <input type="text" class="mainInput form-control rounded-3" name="name" id="floatingBookName"
                                required
                                placeholder="Мастер и маргарита">
-                        <label for="floatingInput">Название</label>
+                        <label for="floatingBookName">Название</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select type="text" class="mainInput form-control form-select rounded-3" name="type_id" id="floatingType">
+                            <option selected value="0">Выберите тип...</option>
+                        </select>
+                        <label for="floatingType">Тип</label>
                     </div>
 
                     <div class="form-floating mb-3 authorDiv">
@@ -75,6 +82,25 @@
                                id="floatingPageCount" required
                                placeholder="501">
                         <label for="floatingPageCount">Кол-во страниц</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" min="1" class="mainInput form-control rounded-3" name="publishing_house"
+                               id="floatingPublishingHouse" required
+                               placeholder="Питер">
+                        <label for="floatingPublishingHouse">Издательство</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="number" min="1" class="mainInput form-control rounded-3" name="publication_year"
+                               id="floatingPublicationYear" required
+                               placeholder="1984">
+                        <label for="floatingPublicationYear">Год издания</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="mainInput form-control rounded-3" name="isbn" id="floatingIsbn">
+                        <label for="floatingIsbn">ISBN</label>
                     </div>
 
                     <div class="form-floating mb-3">
