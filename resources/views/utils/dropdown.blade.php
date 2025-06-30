@@ -2,6 +2,8 @@
     <li><a class="dropdown-item rounded-2 active" href="#">Action</a></li>
     <li><a class="dropdown-item rounded-2" href="#">Another action</a></li>
     <li><a class="dropdown-item rounded-2" href="#">Something else here</a></li>
-    <li><hr class="dropdown-divider"></li>
+    <li>
+        <hr class="dropdown-divider">
+    </li>
     <li><a class="dropdown-item rounded-2" href="#">Separated link</a></li>
 </ul>

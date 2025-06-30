@@ -4,7 +4,7 @@
     <div class="mb-4">
         <h5 class="mb-4">Тип аккаунта</h5>
         <h1>убрать оно вообще</h1>
-{{--    TODO: тут вообще все перелопатить надо    --}}
+        {{--    TODO: тут вообще все перелопатить надо    --}}
         <form method="post" action="{{url("user/switch_type")}}">
             <div class="row g-4 mb-4">
                 <div class="col-md-6">
@@ -16,15 +16,16 @@
                                     <p class="text-muted mb-0 small">Аккаунт, который используется сотрудником</p>
                                 </div>
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="doctor_check" name="doctor_check"
-                                        @checked($role === 'doctor' || $role === 'admin')>
+                                    <input class="form-check-input" type="checkbox" id="doctor_check"
+                                           name="doctor_check"
+                                            @checked($role === 'doctor' || $role === 'admin')>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-{{--            --}}
+            {{--            --}}
             @if($role === 'doctor' || $role === 'admin')
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -48,7 +49,8 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="experience" class="form-label">Стаж (лет)</label>
-                            <input type="number" class="form-control" id="experience" name="experience" value="{{ $user->doctor->stage }}" placeholder="Укажите ваш стаж" min="0">
+                            <input type="number" class="form-control" id="experience" name="experience"
+                                   value="{{ $user->doctor->stage }}" placeholder="Укажите ваш стаж" min="0">
                         </div>
                     </div>
                 </div>
@@ -60,7 +62,7 @@
                     </div>
                 </div>
             @endif
-{{--            --}}
+            {{--            --}}
 
         </form>
     </div>

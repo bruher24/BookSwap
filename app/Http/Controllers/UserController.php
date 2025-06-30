@@ -8,7 +8,7 @@ use App\Services\AuthorService;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use \Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class UserController extends Controller

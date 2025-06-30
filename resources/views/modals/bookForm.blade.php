@@ -18,7 +18,8 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <select type="text" class="mainInput form-control form-select rounded-3" name="type_id" id="floatingTypeId">
+                        <select type="text" class="mainInput form-control form-select rounded-3" name="type_id"
+                                id="floatingTypeId">
                             <option selected value="0">Выберите тип...</option>
                         </select>
                         <label for="floatingTypeId">Тип</label>
