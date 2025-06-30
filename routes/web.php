@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\TypeController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -24,7 +25,7 @@ Route::prefix('users')->middleware(CheckAuth::class)->controller(UserController:
         Route::get('/logout', 'logout')->name('logout');
         Route::match(['post', 'get'], '/{user}/books', 'books')->name('books');
         Route::patch('/{user}', 'update')->name('update');
-        Route::delete('/{user}', 'destroy')->name('destroy');
+        Route::delete('/{user}', 'delete')->name('delete');
     });
 
 Route::prefix('books')->middleware(CheckAuth::class)->controller(BookController::class)->name('books.')
@@ -35,7 +36,7 @@ Route::prefix('books')->middleware(CheckAuth::class)->controller(BookController:
             Route::get('/{book}', 'show')->name('show');
             Route::get('/{book}/edit', 'edit')->name('edit');
             Route::patch('/{book}', 'update')->name('update');
-            Route::delete('/{book}', 'destroy')->name('destroy');
+            Route::delete('/{book}', 'delete')->name('delete');
         }
     );
 
@@ -45,6 +46,11 @@ Route::prefix('genres')->controller(GenreController::class)->name('genres.')
     });
 
 Route::prefix('authors')->controller(AuthorController::class)->name('authors.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
+
+Route::prefix('types')->controller(TypeController::class)->name('types.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
     });

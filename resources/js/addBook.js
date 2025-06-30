@@ -64,9 +64,9 @@ $(function () {
 
         if (result.success === true) {
             showAlert('success', 'Книга успешно сохранена!');
-            // Дополнительные действия при успехе
             $('#modalBookForm').modal('hide');
             form[0].reset();
+            window.location.reload();
         } else {
             showAlert('danger', 'Ошибка при сохранении книги');
             // Вывод ошибок валидации

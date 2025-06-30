@@ -52,7 +52,7 @@ class BookController extends Controller
 
     public function show(int $bookId)
     {
-        $book = Book::find($bookId);
+        $book = $this->bookService->get($bookId);
         return response()->json([
             'success' => true,
             'book' => $book,
@@ -67,7 +67,15 @@ class BookController extends Controller
     {
     }
 
-    public function destroy(Book $book)
+    public function delete(int $bookId): JsonResponse
     {
+        if ($this->bookService->delete($bookId)) {
+            return response()->json([
+                'success' => true,
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+        ]);
     }
 }

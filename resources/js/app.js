@@ -1,4 +1,4 @@
 import './bootstrap';
-import './authorsLoad.js';
+import './dataLoad.js';
 import './addBook.js';
 import './bookMenu.js';

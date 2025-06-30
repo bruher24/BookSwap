@@ -6,9 +6,9 @@ $('.book-card').on('contextmenu', function (e) {
     const menu = $(
         `<ul class="custom-context-menu dropdown-menu show position-fixed" 
                 style="display: block; z-index: 1000;">
-                <li><a class="dropdown-item" href="">Поделиться</a></li>
+                <li><button class="dropdown-item" >Поделиться</button></li>
                 <li><button id="editBookBtn" class="bookBtn link dropdown-item">Изменить книгу</button></li>
-                <li><a class="dropdown-item link-danger" href="/books/${bookId}/delete">Удалить книгу</a></li>
+                <li><button id="deleteBookBtn" class="link-danger dropdown-item">Удалить книгу</button></li>
             </ul>`
     );
 
@@ -36,6 +36,19 @@ $('.book-card').on('contextmenu', function (e) {
         menu.remove();
         $(document).off('click.contextmenu');
     });
+
+    $('#deleteBookBtn').on('click', function () {
+        if (confirm('Вы уверены, что хотите удалить эту книгу?')) {
+            deleteBook(bookId).then(function (response) {
+                if (response.data.success === true) {
+                    window.location.reload();
+                    showAlert('success', 'Книга успешно удалена!');
+                } else {
+                    showAlert('danger', 'Ошибка при удалении книги!');
+                }
+            });
+        }
+    });
 });
 
 
@@ -44,7 +57,7 @@ function fillBookData(bookId) {
         const book = bookData.data.book;
         console.log(book);
         $('#floatingBookName').val(book.name);
-        $('#floatingType').val(book.type_id);
+        $('#floatingTypeId').val(book.type_id);
 
         const authors = book.authors;
         for (let i = 0; i < authors.length; i++) {
@@ -63,15 +76,15 @@ function fillBookData(bookId) {
 
 async function getBookData(bookId) {
     try {
-        const reponse = await $.ajax({
+        const response = await $.ajax({
             url: `/books/${bookId}`,
             type: 'get',
             async: true,
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         });
         return {
-            success: true,
-            data: reponse
+            success: response.success,
+            data: response,
         };
     } catch (error) {
         console.error('Ошибка:', error);
@@ -80,4 +93,44 @@ async function getBookData(bookId) {
             errors: error.responseJSON?.errors || {error: [error.responseJSON?.message || 'Произошла ошибка']}
         };
     }
+}
+
+async function deleteBook(bookId) {
+    const token = $('input[name="_token"]').val();
+    try {
+        const response = await $.ajax({
+            url: `/books/${bookId}`,
+            type: 'delete',
+            async: true,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: {
+                _token: token,
+            },
+        });
+        return {
+            success: true,
+            data: response
+        };
+    } catch (error) {
+        console.error('Ошибка:', error);
+        return {
+            success: false,
+            errors: error.responseJSON?.errors || {error: [error.responseJSON?.message || 'Произошла ошибка']}
+        };
+    }
+}
+
+function showAlert(type, message) {
+    const alertHtml = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+
+    $('#ajaxAlerts').append(alertHtml);
+
+    setTimeout(() => {
+        $('.alert').alert('close');
+    }, 5000);
 }
