@@ -23,11 +23,35 @@ class BookRepository extends Repository
 
     public function where(array $conditions): Collection
     {
+        // TODO: stopped here, test why it returns all the books
+        if (isset($conditions['publishing_house']))
+            dd($conditions);
         if (empty($conditions)) {
             return $this->getAll();
         }
 
         $books = Book::where('deleted_at', null);
+
+        if (isset($conditions['name'])) {
+            $books->where('name', 'like', '%' . $conditions['name'] . '%');
+        }
+
+        if (isset($conditions['publishing_house'])) {
+            $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
+        }
+
+        if (isset($conditions['lastname'])) {
+            dd($books->authors()->where('lastname', 'like', '%' . $conditions['lastname'] . '%'));
+            $books->authors()->where('lastname', 'like', '%' . $conditions['lastname'] . '%');
+        }
+
+        if (isset($conditions['firstname'])) {
+            $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
+        }
+
+        if (isset($conditions['patronymic'])) {
+            $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
+        }
 
         if (isset($conditions['genre'])) {
             $genres = Genre::whereIn('id', $conditions['genre'])->get();

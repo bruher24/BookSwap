@@ -1,7 +1,7 @@
 build:
-	docker compoe build
+	docker compose build
 	docker compose up -d app
-	docker compose exec app composer update
+	docker compose exec app composer install
 	docker compose exec app npm i
 	docker compose exec app php artisan key:generate
 	docker compose down

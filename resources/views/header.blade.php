@@ -59,10 +59,13 @@
                 </li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="search" class="form-control form-control-dark text-bg-white" placeholder="Поиск..."
+            <form method="get" action="{{ route('books.index') }}" id="searchForm"
+                  class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                <input id="searchInput" name="search" type="search" class="form-control form-control-dark text-bg-white"
+                       placeholder="Поиск..."
                        aria-label="Search">
             </form>
+
             @guest
                 <div class="text-end">
                     <button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal"

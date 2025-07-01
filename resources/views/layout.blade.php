@@ -19,7 +19,9 @@
 <body class="font-sans antialiased">
 @include('modals.register')
 @include('modals.login')
-@include('modals.bookForm')
+@auth
+    @include('modals.bookForm')
+@endauth
 @include('utils.alert')
 @if ($errors->any())
     <div class="alert alert-danger">

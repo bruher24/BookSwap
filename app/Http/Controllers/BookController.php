@@ -22,13 +22,22 @@ class BookController extends Controller
     public function index(Request $request): View
     {
         $filters = [];
+
+        if ($request->has('search')) {
+            $books = $this->bookService->search($request->search);
+            dd($books);
+        }
+
         if ($request->isMethod('POST')) {
             $inputFilters = $request->except('_token');
             $filters = $this->bookService->formatFilters($inputFilters);
         }
-        $books = $this->bookService->where($filters);
+
+        $books = $books ?? $this->bookService->where($filters);
+
         $allBooks = $this->bookService->getAll();
         $params = $this->bookService->params($allBooks);
+
         return view('books.index', compact('books', 'params', 'filters'));
     }
 

@@ -68,11 +68,44 @@ class BookService extends Service
                     $this->repository->attach($book, $authors);
                 }
             } catch (Exception $e) {
-                dd($e->getMessage());
                 logger($e->getMessage());
                 return false;
             }
             return true;
+        }
+        return false;
+    }
+
+    public function search(string $search): Collection | false
+    {
+        $words = explode(' ', $search);
+        foreach ($words as &$word) {
+            $word = trim($word);
+            $word = mb_ucfirst(mb_strtolower($word));
+
+            $found = $this->find($word);
+            dd($found['field']);
+            return $found;
+        }
+        return false;
+    }
+
+    private function find($word) {
+        $fields = [
+            'name',
+            'publishing_house',
+            'firstname',
+            'lastname',
+            'patronymic',
+        ];
+        foreach ($fields as $field) {
+            $found = $this->where([
+                $field => $word,
+            ]);
+            if ($found->count() > 0) {
+                $found['field'] = $field;
+                return $found;
+            }
         }
         return false;
     }
