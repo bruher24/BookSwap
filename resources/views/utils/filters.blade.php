@@ -85,4 +85,10 @@
             Применить
         </button>
     </div>
+
+    <div class="btn-group mt-2 ms-2">
+        <button type="button" id="dropFiltersBtn" class="btn btn-outline-dark">
+            Сбросить
+        </button>
+    </div>
 </form>

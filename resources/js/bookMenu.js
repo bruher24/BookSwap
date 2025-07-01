@@ -38,6 +38,8 @@ $('.book-card').on('contextmenu', function (e) {
     });
 
     $('#deleteBookBtn').on('click', function () {
+        menu.remove();
+        $(document).off('click.contextmenu');
         if (confirm('Вы уверены, что хотите удалить эту книгу?')) {
             deleteBook(bookId).then(function (response) {
                 if (response.data.success === true) {
