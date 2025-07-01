@@ -27,7 +27,8 @@ class BookController extends Controller
             $filters = $this->bookService->formatFilters($inputFilters);
         }
         $books = $this->bookService->where($filters);
-        $params = $this->bookService->params();
+        $allBooks = $this->bookService->getAll();
+        $params = $this->bookService->params($allBooks);
         return view('books.index', compact('books', 'params', 'filters'));
     }
 
