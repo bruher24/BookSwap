@@ -13,4 +13,20 @@ class GenreService extends Service
             'name',
         ];
     }
+
+    public function books(array $filters = []): array
+    {
+        $booksService = new BookService();
+        $books = $booksService->where($filters);
+        $allBooks = $booksService->where(['genre' => [$filters['genre']]]);
+        $params = $this->params($allBooks);
+        return [$books, $params];
+    }
+
+    public function params($books): array
+    {
+        $params = parent::params($books);
+        unset($params['genres']);
+        return $params;
+    }
 }

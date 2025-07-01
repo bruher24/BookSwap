@@ -43,6 +43,7 @@ Route::prefix('books')->middleware(CheckAuth::class)->controller(BookController:
 Route::prefix('genres')->controller(GenreController::class)->name('genres.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::match(['post', 'get'], '/{genre}/books', 'books')->name('books');
     });
 
 Route::prefix('authors')->controller(AuthorController::class)->name('authors.')

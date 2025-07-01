@@ -14,8 +14,7 @@ class UserService extends Service
     public function books(int $userId, array $filters = []): array
     {
         $booksService = new BookService();
-        $books = $booksService->byUser($userId, $filters);
-        $params = $booksService->params($userId);
+        [$books, $params] = $booksService->byUser($userId, $filters);
         return [$books, $params];
     }
 }

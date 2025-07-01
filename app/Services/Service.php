@@ -97,4 +97,19 @@ abstract class Service
         }
         return $filters;
     }
+
+    public function params($books): array
+    {
+        $result['genres'] = $books->flatMap->genres->unique('name');
+        $result['authors'] = $books->flatMap->authors->unique(function ($author) {
+            return implode('|', [
+                $author->lastname,
+                $author->firstname,
+                $author->patronymic ?? ''
+            ]);
+        });
+        $result['years'] = $books->pluck('publication_year')->unique();
+        $result['types'] = $books->pluck('type')->filter()->unique();
+        return $result ?? [];
+    }
 }

@@ -19,33 +19,14 @@ class BookService extends Service
         ];
     }
 
-    public function params(int $userId = null): array
-    {
-        if (isset($userId)) {
-            $books = $this->byUser($userId);
-        }
-        if (!isset($books)) {
-            $books = $this->getAll();
-        }
-        $result['genres'] = $books->flatMap->genres->unique('name');
-        $result['authors'] = $books->flatMap->authors->unique(function ($author) {
-            return implode('|', [
-                $author->lastname,
-                $author->firstname,
-                $author->patronymic ?? ''
-            ]);
-        });
-        $result['years'] = $books->pluck('publication_year')->unique();
-        $result['types'] = $books->pluck('type')->filter()->unique();
-        return $result ?? [];
-    }
-
-    public function byUser(int $userId, array $filters = []): Collection|false
+    public function byUser(int $userId, array $filters = []): array
     {
         if (method_exists($this->repository, 'byUser')) {
-            return $this->repository->byUser($userId, $filters);
+            $books = $this->repository->byUser($userId, $filters);
+            $allBooks = $this->getAll();
+            $params = $this->params($allBooks);
         }
-        return false;
+        return [$books, $params] ?? [];
     }
 
     public function create(array $data): Model|false
