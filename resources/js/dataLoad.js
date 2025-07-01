@@ -38,7 +38,7 @@ function loadTypesToSelect(selectId = '#floatingTypeId') {
 
 async function authorsListRequest() {
     return await $.ajax({
-        url: '/authors/',
+        url: '/api/v1/authors/',
         type: 'get',
         async: true,
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -47,7 +47,7 @@ async function authorsListRequest() {
 
 async function typesListRequest() {
     return await $.ajax({
-        url: '/types/',
+        url: '/api/v1/types/',
         type: 'get',
         async: true,
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

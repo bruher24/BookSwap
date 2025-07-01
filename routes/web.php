@@ -49,9 +49,16 @@ Route::prefix('genres')->controller(GenreController::class)->name('genres.')
 Route::prefix('authors')->controller(AuthorController::class)->name('authors.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::match(['post', 'get'], '/{author}/books', 'books')->name('books');
     });
 
 Route::prefix('types')->controller(TypeController::class)->name('types.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
     });
+
+
+Route::prefix('api/v1')->group(function () {
+    Route::get('/types', [TypeController::class, 'getTypes'])->name('getTypes');
+    Route::get('/authors', [AuthorController::class, 'getAuthors'])->name('getAuthors');
+});

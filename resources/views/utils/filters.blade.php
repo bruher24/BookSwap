@@ -1,18 +1,23 @@
 <!--FILTERS-->
 <form class="d-inline" id="filtersForm" method="post"
-      action="
-      @if (request()->routeIs('users.books'))
+      action="@switch(true)
+      @case (request()->routeIs('users.books'))
       {{ route('users.books', ['user' => $user]) }}
-      @elseif(request()->routeIs('genres.books'))
+      @break
+      @case (request()->routeIs('genres.books'))
       {{ route('genres.books', ['genre' => $genre->id]) }}
-      @else
+      @break
+      @case (request()->routeIs('authors.books'))
+      {{ route('authors.books', ['author' => $author->id]) }}
+      @break
+      @default
       {{ route('books.index') }}
-      @endif
+      @endswitch
       ">
     @csrf
     <div class="btn-group mt-2" role="group" aria-label="Filters">
 
-        @if (isset($params['genre']))
+        @if (isset($params['genres']))
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-outline-dark dropdown-toggle"
                         data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
