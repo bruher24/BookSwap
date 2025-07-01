@@ -6,7 +6,7 @@ $('.book-card').on('contextmenu', function (e) {
     const menu = $(
         `<ul class="custom-context-menu dropdown-menu show position-fixed" 
                 style="display: block; z-index: 1000;">
-                <li><button class="dropdown-item" >Поделиться</button></li>
+                <li><button data-copy="localhost:3000/books/${bookId}" id="shareBookBtn" class="dropdown-item" >Поделиться</button></li>
                 <li><button id="editBookBtn" class="bookBtn link dropdown-item">Изменить книгу</button></li>
                 <li><button id="deleteBookBtn" class="link-danger dropdown-item">Удалить книгу</button></li>
             </ul>`
@@ -50,6 +50,40 @@ $('.book-card').on('contextmenu', function (e) {
                 }
             });
         }
+    });
+
+    $('#shareBookBtn').on('click', async function () {
+        await navigator.clipboard.writeText($(this).data('copy'));
+        menu.remove();
+        $(document).off('click.contextmenu');
+
+        const toastEl = $(`
+    <div class="toast align-items-center text-white bg-success border-0" 
+         role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle me-2"></i> Ссылка скопирована!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" 
+                    data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+`);
+
+        const toastContainer = $('<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 1100;"></div>')
+            .append(toastEl)
+            .appendTo('body');
+
+        const toast = new bootstrap.Toast(toastEl[0]);
+
+        toast.show();
+
+        setTimeout(() => {
+            toast.hide();
+            toastEl.on('hidden.bs.toast', function () {
+                toastContainer.remove();
+            });
+        }, 3000);
     });
 });
 
