@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Author;
+use App\Models\Book;
+
 return [
 
     /*
@@ -16,7 +19,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'elastic'),
+    'driver' => env('SCOUT_DRIVER', 'typesense'),
 
     /*
     |--------------------------------------------------------------------------
@@ -187,28 +190,72 @@ return [
         ],
         // 'max_total_results' => env('TYPESENSE_MAX_TOTAL_RESULTS', 1000),
         'model-settings' => [
-            // User::class => [
-            //     'collection-schema' => [
-            //         'fields' => [
-            //             [
-            //                 'name' => 'id',
-            //                 'type' => 'string',
-            //             ],
-            //             [
-            //                 'name' => 'name',
-            //                 'type' => 'string',
-            //             ],
-            //             [
-            //                 'name' => 'created_at',
-            //                 'type' => 'int64',
-            //             ],
-            //         ],
-            //         'default_sorting_field' => 'created_at',
-            //     ],
-            //     'search-parameters' => [
-            //         'query_by' => 'name'
-            //     ],
-            // ],
+            Book::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => 'string',
+                            'locale' => 'ru',
+                        ],
+                        [
+                            'name' => 'publishing_house',
+                            'type' => 'string',
+                            'locale' => 'ru',
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int32',
+                            'optional' => true,
+                        ],
+                    ],
+                    'default_sorting_field' => 'created_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'name, publishing_house'
+                ],
+            ],
+            Author::class => [
+                'collection-schema' => [
+                    'fields' => [
+                        [
+                            'name' => 'id',
+                            'type' => 'string',
+                        ],
+                        [
+                            'name' => 'lastname',
+                            'type' => 'string',
+                            'locale' => 'ru',
+                        ],
+                        [
+                            'name' => 'firstname',
+                            'type' => 'string',
+                            'locale' => 'ru',
+                        ],
+                        [
+                            'name' => 'created_at',
+                            'type' => 'int64',
+                        ],
+                        [
+                            'name' => '__soft_deleted',
+                            'type' => 'int32',
+                            'optional' => true,
+                        ],
+                    ],
+                    'default_sorting_field' => 'created_at',
+                ],
+                'search-parameters' => [
+                    'query_by' => 'lastname, firstname'
+                ],
+            ],
         ],
     ],
 ];

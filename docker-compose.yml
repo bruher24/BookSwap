@@ -51,7 +51,7 @@ services:
         volumes:
             - ./redis:/data
         ports:
-            - "6379:6379"
+            - "6379:${REDIS_PORT}"
         networks:
             - app-network
 
@@ -72,51 +72,33 @@ services:
         networks:
             - app-network
 
-
-    es01:
-        image: elasticsearch:8.18.0
-        container_name: es01
-        environment:
-            - node.name=es01
-            - cluster.name=es-docker-cluster
-            - discovery.type=single-node
-            - bootstrap.memory_lock=true
-            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-            - xpack.security.enabled=false
-        ulimits:
-            memlock:
-                soft: -1
-                hard: -1
-        volumes:
-            - data01:/usr/share/elasticsearch/data
+    typesense:
+        image: typesense/typesense:29.0
+        container_name: app-typesense
+        restart: always
         ports:
-            - "9200:9200"
+            - "8108:${TYPESENSE_PORT}"
+        volumes:
+            - ./typesense-data:/data
+        command: '--data-dir /data --api-key=xyz --enable-cors'
         networks:
-            - elastic
             - app-network
 
-    kib01:
-        image: kibana:8.18.0
-        container_name: kib01
+    dashboard:
+        image: ghcr.io/lewynation/typesense-admin-dashboard:latest
+        container_name: app-dashboard
+        restart: always
         ports:
-            - "5601:5601"
-        environment:
-#            ELASTICSEARCH_URL: http://localhost:9200
-            ELASTICSEARCH_HOSTS: http://es01:9200
-        depends_on:
-            - es01
+            - "3005:3000"
         networks:
-            - elastic
             - app-network
 
 networks:
     app-network:
         driver: bridge
-    elastic:
-        driver: bridge
 
 volumes:
     pgdata:
         driver: local
-    data01:
+    typesense-data:
         driver: local

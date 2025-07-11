@@ -59,7 +59,7 @@
                 </li>
             </ul>
 
-            <form method="get" action="{{ route('books.index') }}" id="searchForm"
+            <form method="get" action="{{ route('search') }}" id="searchForm"
                   class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                 <input id="searchInput" name="search" type="search" class="form-control form-control-dark text-bg-white"
                        placeholder="Поиск..."

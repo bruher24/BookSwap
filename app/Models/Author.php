@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use JeroenG\Explorer\Application\Explored;
 use Laravel\Scout\Searchable;
 
-class Author extends Model implements Explored
+class Author extends Model
 {
     use SoftDeletes, Searchable;
 
@@ -22,6 +22,21 @@ class Author extends Model implements Explored
         'formattedName',
         'fullName',
     ];
+
+    public function searchableAs()
+    {
+        return 'authors';
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => (string) $this->id,
+            'lastname' => $this->lastname,
+            'firstname' => $this->firstname,
+            'created_at' => $this->created_at->timestamp,
+        ];
+    }
 
     public function books()
     {
@@ -39,31 +54,4 @@ class Author extends Model implements Explored
     {
         return "$this->lastname $this->firstname" . ($this->patronymic ? " $this->patronymic" : '');
     }
-
-    public function searchableAs()
-    {
-        return 'authors';
-    }
-
-    public function mappableAs(): array
-    {
-        return [
-            'id' => 'keyword',
-            'lastname' => 'text',
-            'firstname' => 'text',
-            'patronymic' => 'text',
-            'fullName' => 'text'
-        ];
-    }
-
-//    public function toSearchableArray(): array
-//    {
-//        return [
-//            'id' => $this->id,
-//            'lastname' => $this->lastname,
-//            'firstname' => $this->firstname,
-//            'patronymic' => $this->patronymic,
-//            'fullName' => $this->fullName,
-//        ];
-//    }
 }

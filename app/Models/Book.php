@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use JeroenG\Explorer\Application\Explored;
 use Laravel\Scout\Searchable;
 
-class Book extends Model implements Explored
+class Book extends Model
 {
     use SoftDeletes, Searchable;
 
@@ -19,6 +19,16 @@ class Book extends Model implements Explored
         'isbn',
         'page_count',
         'type_id',
+    ];
+
+    protected $casts = [
+        'name' => 'string',
+        'user_id' => 'integer',
+        'publishing_house' => 'string',
+        'publication_year' => 'date',
+        'isbn' => 'string',
+        'page_count' => 'integer',
+        'type_id' => 'integer',
     ];
 
     public $appends = [
@@ -36,21 +46,13 @@ class Book extends Model implements Explored
         return 'books';
     }
 
-    public function mappableAs(): array
-    {
-        return [
-            'id' => 'keyword',
-            'name' => 'text',
-            'publishing_house' => 'text',
-        ];
-    }
-
     public function toSearchableArray(): array
     {
         return [
-            'id' => $this->id,
+            'id' => (string) $this->id,
             'name' => $this->name,
             'publishing_house' => $this->publishing_house,
+            'created_at' => $this->created_at->timestamp,
         ];
     }
 
