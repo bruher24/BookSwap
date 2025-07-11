@@ -84,7 +84,7 @@ class BookService extends Service
             $word = mb_ucfirst(mb_strtolower($word));
 
             $found = $this->find($word);
-            dd($found['field']);
+//            dd($found);
             return $found;
         }
         return false;
@@ -93,17 +93,17 @@ class BookService extends Service
     private function find($word) {
         $fields = [
             'name',
-            'publishing_house',
-            'firstname',
             'lastname',
+            'firstname',
             'patronymic',
+            'publishing_house',
         ];
         foreach ($fields as $field) {
             $found = $this->where([
                 $field => $word,
             ]);
             if ($found->count() > 0) {
-                $found['field'] = $field;
+//                $found['field'] = $field;
                 return $found;
             }
         }

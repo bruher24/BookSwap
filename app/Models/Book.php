@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use JeroenG\Explorer\Application\Explored;
+use Laravel\Scout\Searchable;
 
-class Book extends Model
+class Book extends Model implements Explored
 {
-    use SoftDeletes;
+    use SoftDeletes, Searchable;
 
     public $fillable = [
         'name',
@@ -28,6 +30,29 @@ class Book extends Model
         'type',
         'genres'
     ];
+
+    public function searchableAs()
+    {
+        return 'books';
+    }
+
+    public function mappableAs(): array
+    {
+        return [
+            'id' => 'keyword',
+            'name' => 'text',
+            'publishing_house' => 'text',
+        ];
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'publishing_house' => $this->publishing_house,
+        ];
+    }
 
     public function type()
     {

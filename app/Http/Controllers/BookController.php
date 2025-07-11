@@ -25,7 +25,7 @@ class BookController extends Controller
 
         if ($request->has('search')) {
             $books = $this->bookService->search($request->search);
-            dd($books);
+//            dd($books);
         }
 
         if ($request->isMethod('POST')) {

@@ -24,8 +24,6 @@ class BookRepository extends Repository
     public function where(array $conditions): Collection
     {
         // TODO: stopped here, test why it returns all the books
-        if (isset($conditions['publishing_house']))
-            dd($conditions);
         if (empty($conditions)) {
             return $this->getAll();
         }
@@ -36,20 +34,22 @@ class BookRepository extends Repository
             $books->where('name', 'like', '%' . $conditions['name'] . '%');
         }
 
-        if (isset($conditions['publishing_house'])) {
-            $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
-        }
-
         if (isset($conditions['lastname'])) {
-            dd($books->authors()->where('lastname', 'like', '%' . $conditions['lastname'] . '%'));
-            $books->authors()->where('lastname', 'like', '%' . $conditions['lastname'] . '%');
+            $authorId = Author::where('lastname', 'like', '%' . $conditions['lastname'] . '%')->get('id');
+            $conditions['author'] = $authorId;
+//            $books->authors()->where('lastname', 'like', '%' . $conditions['lastname'] . '%');
         }
 
         if (isset($conditions['firstname'])) {
-            $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
+            $authorId = Author::where('lastname', 'like', '%' . $conditions['lastname'] . '%')->get('id');
+            $conditions['author'] = $authorId;
         }
 
         if (isset($conditions['patronymic'])) {
+            $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
+        }
+
+        if (isset($conditions['publishing_house'])) {
             $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
         }
 
