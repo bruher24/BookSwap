@@ -18,6 +18,7 @@ class Book extends Model
         'isbn',
         'page_count',
         'type_id',
+        'cover_id',
     ];
     public $appends = [
         'mainAuthor'
@@ -30,6 +31,7 @@ class Book extends Model
         'isbn' => 'string',
         'page_count' => 'integer',
         'type_id' => 'integer',
+        'cover_id' => 'integer',
     ];
     protected $with = [
         'authors',
@@ -70,5 +72,10 @@ class Book extends Model
     public function authors()
     {
         return $this->belongsToMany(Author::class);
+    }
+
+    public function cover()
+    {
+        return $this->belongsTo(Cover::class);
     }
 }

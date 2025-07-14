@@ -26,6 +26,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'photo_id',
     ];
 
     /**
@@ -78,5 +79,10 @@ class User extends Authenticatable
     public function phone(): HasOne
     {
         return $this->hasOne(Phone::class);
+    }
+
+    public function photo()
+    {
+        return $this->belongsTo(Photo::class);
     }
 }

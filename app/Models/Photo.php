@@ -3,17 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Photo extends Model
 {
+    public static int $basePhotoId = 1;
     public $fillable = [
-        'user_id',
         'src',
     ];
+    private string $basePhotoPath = 'storage/app/public/avatar.png';
 
-    public function user(): BelongsTo
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
     }
 }

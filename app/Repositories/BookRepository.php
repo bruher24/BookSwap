@@ -6,7 +6,6 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Genre;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class BookRepository extends Repository
 {
@@ -23,7 +22,6 @@ class BookRepository extends Repository
 
     public function where(array $conditions): Collection
     {
-        // TODO: stopped here, test why it returns all the books
         if (empty($conditions)) {
             return $this->getAll();
         }
@@ -37,7 +35,6 @@ class BookRepository extends Repository
         if (isset($conditions['lastname'])) {
             $authorId = Author::where('lastname', 'like', '%' . $conditions['lastname'] . '%')->get('id');
             $conditions['author'] = $authorId;
-//            $books->authors()->where('lastname', 'like', '%' . $conditions['lastname'] . '%');
         }
 
         if (isset($conditions['firstname'])) {

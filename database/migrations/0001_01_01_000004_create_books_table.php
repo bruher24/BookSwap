@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('isbn', 20)->unique()->nullable();
             $table->integer('page_count', false, true);
             $table->foreignId('type_id')->constrained('book_types')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('cover_id')->constrained('covers')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
