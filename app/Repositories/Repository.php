@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 abstract class Repository implements RepositoryInterface
 {
@@ -15,14 +16,17 @@ abstract class Repository implements RepositoryInterface
     public function __construct(Model $model)
     {
         $this->model = $model;
+        DB::beginTransaction();
     }
 
     public function create(array $data): Model
     {
         $object = new $this->model($data);
         if (!$object->save()) {
+            DB::rollBack();
             throw new Exception("Ошибка при сохранении записи");
         }
+        DB::commit();
         $object->refresh();
         return $object;
     }
@@ -31,8 +35,10 @@ abstract class Repository implements RepositoryInterface
     {
         $object = $this->model::find($id);
         if (!$object->update($data)) {
+            DB::rollBack();
             throw new Exception('Ошибка при обновлении записи');
         }
+        DB::commit();
         $object->refresh();
         return $object;
     }
@@ -41,8 +47,10 @@ abstract class Repository implements RepositoryInterface
     {
         $object = $this->model::find($id);
         if (!$object->delete()) {
+            DB::rollBack();
             throw new Exception('Ошибка при удалении записи');
         }
+        DB::commit();
     }
 
     public function getAll(): Collection
@@ -54,8 +62,10 @@ abstract class Repository implements RepositoryInterface
     {
         $object = $this->model::find($id);
         if (!isset($object)) {
+            DB::rollBack();
             throw new ModelNotFoundException("Запись с данным ID не найден");
         }
+        DB::commit();
         return $object;
     }
 }

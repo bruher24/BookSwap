@@ -27,11 +27,12 @@ class StoreBookRequest extends FormRequest
         return [
             'user_id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:100|unique:books,name',
-            'author_id' => 'required_without_all:authorLastName,authorFirstname,authorPatronymic|integer|exists:authors,id',
+            'author_id' => 'required_without_all:authorLastName,authorFirstname|nullable|integer|exists:authors,id',
             'author_id1' => 'nullable|integer|exists:authors,id',
             'author_id2' => 'nullable|integer|exists:authors,id',
             'authorLastname' => [
                 'required_without:author_id',
+                'nullable',
                 'string',
                 'max:100',
                 function ($attribute, $value, $fail) {
@@ -40,22 +41,26 @@ class StoreBookRequest extends FormRequest
                         ->where('patronymic', request('authorPatronymic'))
                         ->exists();
                     if ($exists) {
-                        $fail('Автор с таким ФИО уже существует');
+                        $fail('Автор с таким ФИО уже существует!');
                     }
                 }
             ],
-            'authorFirstname' => 'required_without:author_id|string|max:100',
-            'authorPatronymic' => 'required_without:author_id|string|max:100',
+            'authorFirstname' => 'required_without:author_id|nullable|string|max:100',
+            'authorPatronymic' => 'nullable|string|max:100',
             'authorBirthdate' => [
-                'required_without:author_id',
+                'nullable',
                 'date',
-                Rule::date()->beforeOrEqual(today()->subYears(16))
+                Rule::date()->beforeOrEqual(today()->subYears(16)),
             ],
             'page_count' => 'required|integer|min:1',
             'photo' => 'nullable|string|unique:photos,src',
-            'publishing_house' => 'string',
-            'publication_year' => Rule::date()->format('Y'),
-            'type_id' => 'integer|exists:book_types,id',
+            'publishing_house' => 'nullable|string',
+            'publication_year' => [
+                'nullable',
+                Rule::date()->format('Y'),
+            ],
+            'type_id' => 'required|integer|exists:book_types,id',
+            'isbn' => 'nullable|string|size:13|unique:books,isbn',
         ];
     }
 }

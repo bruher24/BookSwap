@@ -9,7 +9,7 @@ services:
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
             - ./:/var/www/
         depends_on:
-            -   app
+            - app
         networks:
             - app-network
 
@@ -23,7 +23,7 @@ services:
         volumes:
             - ./:/var/www/
         depends_on:
-            -   postgres
+            - postgres
         networks:
             - app-network
 
@@ -38,6 +38,11 @@ services:
             PGDATA: /var/lib/postgresql/data/pgdata
         ports:
             - "5433:${DB_PORT}"
+        healthcheck:
+            test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}'" ]
+            interval: 10s
+            timeout: 3s
+            retries: 3
         volumes:
             - ./pgdata:/var/lib/postgresql/data/pgdata
         networks:
@@ -68,7 +73,7 @@ services:
             ADMINER_DESIGN: nette
             ADMINER_DEFAULT_SERVER: ${DB_HOST}:${DB_PORT}
         depends_on:
-            -   postgres
+            - postgres
         networks:
             - app-network
 
@@ -92,6 +97,33 @@ services:
             - "3005:3000"
         networks:
             - app-network
+
+#    sequin:
+#        image: sequin/sequin:latest
+#        container_name: app-sequin
+#        restart: always
+#        ports:
+#            - "7376:7376"
+#        environment:
+#            PG_HOSTNAME: ${DB_HOST}
+#            PG_DATABASE: ${DB_DATABASE}
+#            PG_PORT: ${DB_PORT}
+#            PG_USERNAME: ${DB_USERNAME}
+#            PG_PASSWORD: ${DB_PASSWORD}
+#            PG_POOL_SIZE: 20
+#            SECRET_KEY_BASE: wDPLYus0pvD6qJhKJICO4dauYPXfO/Yl782Zjtpew5qRBDp7CZvbWtQmY0eB13If
+#            VAULT_KEY: 2Sig69bIpuSm2kv0VQfDekET2qy8qUZGI8v3/h3ASiY=
+#            REDIS_URL: http://app-redis:6379
+#            CONFIG_FILE_PATH: /config/playground.yml
+#        volumes:
+#            - ./playground.yml:/config/playground.yml
+#        depends_on:
+#            redis:
+#                condition: service_started
+#            postgres:
+#                condition: service_healthy
+# TODO: доавбить нетворк сюда
+#
 
 networks:
     app-network:

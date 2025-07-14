@@ -76,7 +76,7 @@ class BookService extends Service
         return false;
     }
 
-    public function search(string $search): Collection | false
+    public function search(string $search): Collection|false
     {
         $words = explode(' ', $search);
         foreach ($words as &$word) {
@@ -90,7 +90,8 @@ class BookService extends Service
         return false;
     }
 
-    private function find($word) {
+    private function find($word)
+    {
         $fields = [
             'name',
             'lastname',

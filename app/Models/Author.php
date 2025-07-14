@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use JeroenG\Explorer\Application\Explored;
 use Laravel\Scout\Searchable;
 
 class Author extends Model
@@ -31,7 +30,7 @@ class Author extends Model
     public function toSearchableArray(): array
     {
         return [
-            'id' => (string) $this->id,
+            'id' => (string)$this->id,
             'lastname' => $this->lastname,
             'firstname' => $this->firstname,
             'created_at' => $this->created_at->timestamp,
