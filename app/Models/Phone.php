@@ -15,10 +15,6 @@ class Phone extends Model
         'user_id',
     ];
 
-    protected $with = [
-        'user',
-    ];
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

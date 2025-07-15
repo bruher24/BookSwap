@@ -16,10 +16,6 @@ class Deal extends Model
         'date',
     ];
 
-    protected $with = [
-        'dealItems',
-    ];
-
     public function dealItems(): HasMany
     {
         return $this->hasMany(DealItem::class);

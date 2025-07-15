@@ -18,10 +18,6 @@ class Role extends Model
         'name',
     ];
 
-    protected $with = [
-        'users',
-    ];
-
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);

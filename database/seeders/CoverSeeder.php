@@ -18,7 +18,7 @@ class CoverSeeder extends Seeder
 
         collect($covers)->each(function ($coverData) {
             $cover = new Cover($coverData);
-            $cover->book()->associate(Book::first()->id);
+            $cover->book()->associate(Book::all()->first());
             $cover->save();
         });
     }

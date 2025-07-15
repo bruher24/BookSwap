@@ -48,7 +48,7 @@ class BookSeeder extends Seeder
         foreach ($books as $bookData) {
             $book = new Book($bookData);
             $type = BookType::find($id);
-            $book->type()->associate($type);
+            $book->book_type()->associate($type);
             $book->save();
             $book->authors()->attach($id);
             $book->genres()->attach($id);

@@ -15,10 +15,6 @@ class BookType extends Model
         'name',
     ];
 
-    protected $with = [
-        'books',
-    ];
-
     public function searchableAs(): string
     {
         return 'book_types';

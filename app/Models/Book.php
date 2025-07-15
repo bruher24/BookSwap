@@ -20,18 +20,11 @@ class Book extends Model
         'publication_year',
         'isbn',
         'page_count',
-        'type_id',
+        'book_type_id',
         'cover_id',
     ];
     public $appends = [
         'mainAuthor'
-    ];
-
-    protected $with = [
-        'type',
-        'genres',
-        'authors',
-        'cover',
     ];
 
     public function searchableAs(): string
@@ -54,7 +47,7 @@ class Book extends Model
         return $this->authors()->first()->formattedName;
     }
 
-    public function type(): BelongsTo
+    public function book_type(): BelongsTo
     {
         return $this->belongsTo(BookType::class);
     }

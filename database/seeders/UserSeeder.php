@@ -30,10 +30,10 @@ class UserSeeder extends Seeder
         ];
         collect($users)->each(function ($userData) {
             $user = new User($userData);
-            $user->photo()->associate(Photo::first());
             $user->save();
             $user->refresh();
             $user->roles()->attach($user->id == 1 ? 1 : 2);
+            $user->photo()->associate(Photo::all()->first());
             $user->save();
         });
     }

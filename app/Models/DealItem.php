@@ -15,10 +15,6 @@ class DealItem extends Model
         'book_id',
     ];
 
-    protected $with = [
-        'deal',
-    ];
-
     public function deal(): BelongsTo
     {
         return $this->belongsTo(Deal::class);

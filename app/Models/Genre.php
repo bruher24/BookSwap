@@ -14,10 +14,6 @@ class Genre extends Model
         'name',
     ];
 
-    protected $with = [
-        'books',
-    ];
-
     public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class);

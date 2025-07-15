@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->year('publication_year');
             $table->string('isbn', 20)->unique()->nullable();
             $table->integer('page_count', false, true);
-            $table->foreignId('type_id')->constrained('book_types')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('book_type_id')->constrained('book_types')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
