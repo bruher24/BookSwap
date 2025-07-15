@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Interfaces\BookServiceInterface;
+use App\Interfaces\UserServiceInterface;
 use App\Models\User;
-use App\Services\BookService;
-use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -14,14 +14,14 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index(UserService $userService): View
+    public function index(UserServiceInterface $userService): View
     {
         $users = $userService->getAll();
         // TODO: return view
 //        return view('users.index', compact('users'));
     }
 
-    public function create(StoreUserRequest $request, UserService $userService): RedirectResponse
+    public function create(StoreUserRequest $request, UserServiceInterface $userService): RedirectResponse
     {
         $validated = $request->validated();
         $remember = $request->input('remember');
@@ -63,7 +63,7 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Вы успешно вышли из аккаунта.');
     }
 
-    public function update(UpdateUserRequest $request, UserService $userService, User $user): RedirectResponse
+    public function update(UpdateUserRequest $request, UserServiceInterface $userService, User $user): RedirectResponse
     {
         $validated = $request->validated();
         if ($userService->update($user, $validated)) {
@@ -72,7 +72,7 @@ class UserController extends Controller
         // TODO: return redirect
     }
 
-    public function books(Request $request, BookService $bookService, User $user): View|RedirectResponse
+    public function books(Request $request, BookServiceInterface $bookService, User $user): View|RedirectResponse
     {
         $filters = $bookService->getFilterFromRequest($request);
 

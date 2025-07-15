@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookRequest;
+use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
-use App\Services\BookService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class BookController extends Controller
 {
-    public function index(Request $request, BookService $bookService): View
+    public function index(Request $request, BookServiceInterface $bookService): View
     {
         $filters = $bookService->getFilterFromRequest($request);
 
@@ -21,7 +21,7 @@ class BookController extends Controller
         return view('books.index', compact('books', 'params', 'filters'));
     }
 
-    public function store(StoreBookRequest $request, BookService $bookService): JsonResponse
+    public function store(StoreBookRequest $request, BookServiceInterface $bookService): JsonResponse
     {
         $validated = $request->validated();
         $book = $bookService->create($validated);
@@ -48,13 +48,13 @@ class BookController extends Controller
         ]);
     }
 
-    public function update(UpdateBookRequest $request, BookService $bookService, Book $book)
+    public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book)
     {
         $validated = $request->validated();
         $bookService->update($book, $validated);
     }
 
-    public function delete(BookService $bookService, Book $book): JsonResponse
+    public function delete(BookServiceInterface $bookService, Book $book): JsonResponse
     {
         if ($bookService->delete($book)) {
             return response()->json([

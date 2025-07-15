@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Interfaces\AuthorServiceInterface;
 use App\Models\Author;
 use Illuminate\Database\Eloquent\Collection;
 
-class AuthorService extends Service
+class AuthorService extends Service implements AuthorServiceInterface
 {
     public function __construct()
     {
@@ -17,10 +18,8 @@ class AuthorService extends Service
         ];
     }
 
-    public function params(Collection $books = null): array
+    public function getAll(): Collection
     {
-        $params = parent::params($books);
-        unset($params['authors']);
-        return $params;
+        return Author::whereHas('books')->get();
     }
 }

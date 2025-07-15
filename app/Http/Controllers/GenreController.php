@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\BookServiceInterface;
+use App\Interfaces\GenreServiceInterface;
 use App\Models\Genre;
-use App\Services\BookService;
-use App\Services\GenreService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class GenreController extends Controller
 {
-    public function index(GenreService $genreService): View
+    public function index(GenreServiceInterface $genreService): View
     {
         $genres = $genreService->getAll();
         return view('genres.index', compact('genres'));
     }
 
-    public function books(Request $request, BookService $bookService, Genre $genre): View|RedirectResponse
+    public function books(Request $request, BookServiceInterface $bookService, Genre $genre): View|RedirectResponse
     {
         $filters = $bookService->getFilterFromRequest($request);
 

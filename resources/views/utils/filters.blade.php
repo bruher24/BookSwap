@@ -5,10 +5,10 @@
       {{ route('users.books', ['user' => $user]) }}
       @break
       @case (request()->routeIs('genres.books'))
-      {{ route('genres.books', ['genres' => $genre->id]) }}
+      {{ route('genres.books', ['genre' => $genre->id]) }}
       @break
       @case (request()->routeIs('authors.books'))
-      {{ route('authors.books', ['authors' => $author->id]) }}
+      {{ route('authors.books', ['author' => $author->id]) }}
       @break
       @default
       {{ route('books.index') }}

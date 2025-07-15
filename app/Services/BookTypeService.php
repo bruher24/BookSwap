@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use App\Interfaces\BookTypeServiceInterface;
 use App\Models\BookType;
 
-class BookTypeService extends Service
+class BookTypeService extends Service implements BookTypeServiceInterface
 {
     public function __construct()
     {

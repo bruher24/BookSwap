@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\BookTypeService;
+use App\Interfaces\BookTypeServiceInterface;
 
 class BookTypeController extends Controller
 {
-    public function getTypes(BookTypeService $bookTypeService): string
+    public function getTypes(BookTypeServiceInterface $bookTypeService): string
     {
         return $bookTypeService->getAll()->toJson(JSON_PRETTY_PRINT);
     }

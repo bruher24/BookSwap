@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\AuthorServiceInterface;
+use App\Interfaces\BookServiceInterface;
 use App\Models\Author;
-use App\Services\AuthorService;
-use App\Services\BookService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AuthorController extends Controller
 {
-    public function index(AuthorService $authorService): View
+    public function index(AuthorServiceInterface $authorService): View
     {
         $authors = $authorService->getAll();
         return view('authors.index', compact('authors'));
     }
 
-    public function getAuthors(AuthorService $authorService): string
+    public function getAuthors(AuthorServiceInterface $authorService): string
     {
         return $authorService->getAll()->toJson(JSON_PRETTY_PRINT);
     }
 
-    public function books(Request $request, BookService $bookService, Author $author): View|RedirectResponse
+    public function books(Request $request, BookServiceInterface $bookService, Author $author): View|RedirectResponse
     {
         $filters = $bookService->getFilterFromRequest($request);
 

@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Interfaces\GenreServiceInterface;
 use App\Models\Genre;
 use Illuminate\Database\Eloquent\Collection;
 
-class GenreService extends Service
+class GenreService extends Service implements GenreServiceInterface
 {
     public function __construct()
     {
@@ -15,10 +16,8 @@ class GenreService extends Service
         ];
     }
 
-    public function params(Collection $books = null): array
+    public function getAll(): Collection
     {
-        $params = parent::params($books);
-        unset($params['genres']);
-        return $params;
+        return Genre::whereHas('books')->get();
     }
 }

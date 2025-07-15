@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Interfaces\BookServiceInterface;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Genre;
@@ -9,7 +10,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
-class BookService extends Service
+class BookService extends Service implements BookServiceInterface
 {
     public function __construct(
         private readonly AuthorService $authorService,
