@@ -23,6 +23,10 @@ final class Author extends Model
         'fullName',
     ];
 
+    protected $with = [
+        'books',
+    ];
+
     public function searchableAs(): string
     {
         return 'authors';

@@ -16,6 +16,10 @@ final class Cover extends Model
         'src'
     ];
 
+    protected $with = [
+        'book',
+    ];
+
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);

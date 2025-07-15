@@ -10,12 +10,17 @@ final class Role extends Model
 {
     use SoftDeletes;
 
+    public const int ADMIN_ROLE_ID = 1;
+
+    public const int USER_ROLE_ID = 2;
+
     public $fillable = [
         'name',
     ];
 
-    public const int ADMIN_ROLE_ID = 1;
-    public const int USER_ROLE_ID = 2;
+    protected $with = [
+        'users',
+    ];
 
     public function users(): BelongsToMany
     {

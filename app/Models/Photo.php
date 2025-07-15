@@ -11,10 +11,16 @@ final class Photo extends Model
     use SoftDeletes;
 
     public static int $basePhotoId = 1;
+
+    private string $basePhotoPath = 'storage/app/public/avatar.png';
+
     public $fillable = [
         'src',
     ];
-    private string $basePhotoPath = 'storage/app/public/avatar.png';
+
+    protected $with = [
+        'users',
+    ];
 
     public function users(): HasMany
     {

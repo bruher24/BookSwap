@@ -28,9 +28,10 @@ final class Book extends Model
     ];
 
     protected $with = [
-        'authors',
         'type',
-        'genres'
+        'genres',
+        'authors',
+        'cover',
     ];
 
     public function searchableAs(): string

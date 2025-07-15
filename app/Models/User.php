@@ -44,6 +44,13 @@ class User extends Authenticatable
         'mainRole',
     ];
 
+    protected $with = [
+        'roles',
+        'books',
+        'phone',
+        'photo',
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
