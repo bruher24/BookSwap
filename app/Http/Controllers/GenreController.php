@@ -11,19 +11,15 @@ use Illuminate\View\View;
 
 class GenreController extends Controller
 {
-    public function __construct(private readonly GenreService $genreService)
+    public function index(GenreService $genreService): View
     {
-    }
-
-    public function index(): View
-    {
-        $genres = $this->genreService->getAll();
+        $genres = $genreService->getAll();
         return view('genres.index', compact('genres'));
     }
 
     public function books(Request $request, BookService $bookService, Genre $genre): View|RedirectResponse
     {
-        $filters = $this->genreService->getFilterFromRequest($request);
+        $filters = $bookService->getFilterFromRequest($request);
 
         [$books, $params] = $bookService->byGenre($genre, $filters);
 

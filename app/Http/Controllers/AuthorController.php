@@ -11,24 +11,20 @@ use Illuminate\View\View;
 
 class AuthorController extends Controller
 {
-    public function __construct(private readonly AuthorService $authorService)
+    public function index(AuthorService $authorService): View
     {
-    }
-
-    public function index(): View
-    {
-        $authors = $this->authorService->getAll();
+        $authors = $authorService->getAll();
         return view('authors.index', compact('authors'));
     }
 
-    public function getAuthors(): string
+    public function getAuthors(AuthorService $authorService): string
     {
-        return $this->authorService->getAll()->toJson(JSON_PRETTY_PRINT);
+        return $authorService->getAll()->toJson(JSON_PRETTY_PRINT);
     }
 
     public function books(Request $request, BookService $bookService, Author $author): View|RedirectResponse
     {
-        $filters = $this->authorService->getFilterFromRequest($request);
+        $filters = $bookService->getFilterFromRequest($request);
 
         [$books, $params] = $bookService->byAuthor($author, $filters);
 

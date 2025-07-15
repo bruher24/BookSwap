@@ -11,24 +11,20 @@ use Illuminate\View\View;
 
 class BookController extends Controller
 {
-    public function __construct(private readonly BookService $bookService)
+    public function index(Request $request, BookService $bookService): View
     {
-    }
+        $filters = $bookService->getFilterFromRequest($request);
 
-    public function index(Request $request): View
-    {
-        $filters = $this->bookService->getFilterFromRequest($request);
-
-        $books = $this->bookService->where($filters);
-        $params = $this->bookService->params();
+        $books = $bookService->where($filters);
+        $params = $bookService->params();
 
         return view('books.index', compact('books', 'params', 'filters'));
     }
 
-    public function store(StoreBookRequest $request): JsonResponse
+    public function store(StoreBookRequest $request, BookService $bookService): JsonResponse
     {
         $validated = $request->validated();
-        $book = $this->bookService->create($validated);
+        $book = $bookService->create($validated);
         if (!$book) {
             return response()->json([
                 'success' => false,
@@ -52,15 +48,15 @@ class BookController extends Controller
         ]);
     }
 
-    public function update(UpdateBookRequest $request, Book $book)
+    public function update(UpdateBookRequest $request, BookService $bookService, Book $book)
     {
         $validated = $request->validated();
-        $this->bookService->update($book, $validated);
+        $bookService->update($book, $validated);
     }
 
-    public function delete(Book $book): JsonResponse
+    public function delete(BookService $bookService, Book $book): JsonResponse
     {
-        if ($this->bookService->delete($book)) {
+        if ($bookService->delete($book)) {
             return response()->json([
                 'success' => true,
             ]);

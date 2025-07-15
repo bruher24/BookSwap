@@ -14,22 +14,18 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserService $userService)
+    public function index(UserService $userService): View
     {
-    }
-
-    public function index(): View
-    {
-        $users = $this->userService->getAll();
+        $users = $userService->getAll();
         // TODO: return view
 //        return view('users.index', compact('users'));
     }
 
-    public function create(StoreUserRequest $request): RedirectResponse
+    public function create(StoreUserRequest $request, UserService $userService): RedirectResponse
     {
         $validated = $request->validated();
         $remember = $request->input('remember');
-        if (!$this->userService->create($validated)) {
+        if (!$userService->create($validated)) {
             return back()->withErrors([
                 'error' => 'Ошибка при создании пользователя.'
             ]);
@@ -67,10 +63,10 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Вы успешно вышли из аккаунта.');
     }
 
-    public function update(UpdateUserRequest $request, User $user): RedirectResponse
+    public function update(UpdateUserRequest $request, UserService $userService, User $user): RedirectResponse
     {
         $validated = $request->validated();
-        if ($this->userService->update($user, $validated)) {
+        if ($userService->update($user, $validated)) {
             // TODO: return redirect
         }
         // TODO: return redirect
@@ -78,7 +74,7 @@ class UserController extends Controller
 
     public function books(Request $request, BookService $bookService, User $user): View|RedirectResponse
     {
-        $filters = $this->userService->getFilterFromRequest($request);
+        $filters = $bookService->getFilterFromRequest($request);
 
         [$books, $params] = $bookService->byUser($user, $filters);
 

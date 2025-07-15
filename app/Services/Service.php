@@ -32,7 +32,7 @@ abstract class Service
         return $object;
     }
 
-    protected function formatData(array $data): array
+    final protected function formatData(array $data): array
     {
         foreach ($data as $key => &$value) {
             if (in_array($key, $this->ucFirstFields)) {
@@ -70,7 +70,7 @@ abstract class Service
         return $collection;
     }
 
-    public function getAll(): Collection
+    final public function getAll(): Collection
     {
         return $this->modelClass::all();
     }
@@ -120,7 +120,7 @@ abstract class Service
         return $result ?? [];
     }
 
-    public function getFilterFromRequest(Request $request): array
+    final public function getFilterFromRequest(Request $request): array
     {
         if ($request->isMethod('POST')) {
             $inputFilters = $request->except('_token');
@@ -129,7 +129,7 @@ abstract class Service
         return $filters ?? [];
     }
 
-    protected function formatFilters(array $inputFilters): array
+    final protected function formatFilters(array $inputFilters): array
     {
         $filters = [];
         foreach ($inputFilters as $key => $value) {
