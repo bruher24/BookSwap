@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 abstract class Service
 {
@@ -82,7 +83,7 @@ abstract class Service
         try {
             $object = $this->modelClass::find($id);
             if (!isset($object)) {
-                throw new ModelNotFoundException("Запись с данным ID не найден");
+                throw new ModelNotFoundException("Запись с данным ID не найдена!");
             }
         } catch (ModelNotFoundException $e) {
             logger($e->getMessage());
@@ -91,13 +92,21 @@ abstract class Service
         return $object;
     }
 
-    public function where(array $conditions): Collection|false
+    public function getMany(array $ids): Collection
     {
-        return false;
+        $collection = $this->modelClass::whereIn('id', $ids)->get();
+        if (!$collection) {
+            logger("Записей с данными ID не найдено!");
+            return new Collection();
+        }
+        return $collection;
     }
 
-    public function params($books): array
+    public function params(Collection $books = null): array
     {
+        if ($books->isEmpty()) {
+            $books = $this->getAll();
+        }
         $result['genres'] = $books->flatMap->genres->unique('name');
         $result['authors'] = $books->flatMap->authors->unique(function ($author) {
             return implode('|', [
@@ -109,6 +118,15 @@ abstract class Service
         $result['years'] = $books->pluck('publication_year')->unique();
         $result['types'] = $books->pluck('type')->filter()->unique();
         return $result ?? [];
+    }
+
+    public function getFilterFromRequest(Request $request): array
+    {
+        if ($request->isMethod('POST')) {
+            $inputFilters = $request->except('_token');
+            $filters = $this->formatFilters($inputFilters);
+        }
+        return $filters ?? [];
     }
 
     public function formatFilters(array $inputFilters): array

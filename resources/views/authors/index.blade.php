@@ -8,7 +8,8 @@
         <div class="row mt-3">
             @foreach($authors as $author)
                 <div class="row w-50">
-                    <a class="nav-link" href="{{ route('authors.books', ['author' => $author->id]) }}">{{ $author->fullName }}</a>
+                    <a class="nav-link"
+                       href="{{ route('authors.books', ['author' => $author->id]) }}">{{ $author->fullName }}</a>
                 </div>
             @endforeach
         </div>

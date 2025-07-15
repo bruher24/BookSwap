@@ -18,22 +18,15 @@ final class BookController extends Controller
 
     public function index(Request $request): View
     {
-        $filters = [];
+        $filters = $this->bookService->getFilterFromRequest($request);
 
-        if ($request->isMethod('POST')) {
-            $inputFilters = $request->except('_token');
-            $filters = $this->bookService->formatFilters($inputFilters);
-        }
-
-        $books = $books ?? $this->bookService->where($filters);
-
-        $allBooks = $this->bookService->getAll();
-        $params = $this->bookService->params($allBooks);
+        $books = $this->bookService->where($filters);
+        $params = $this->bookService->params();
 
         return view('books.index', compact('books', 'params', 'filters'));
     }
 
-    public function store(StoreBookRequest $request): RedirectResponse|JsonResponse
+    public function store(StoreBookRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $book = $this->bookService->create($validated);
@@ -52,7 +45,7 @@ final class BookController extends Controller
         ]);
     }
 
-    public function show(int $bookId)
+    public function show(int $bookId): JsonResponse
     {
         $book = $this->bookService->get($bookId);
         return response()->json([

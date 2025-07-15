@@ -1,6 +1,6 @@
-$(function(){
-    $('#dropFiltersBtn').on('click', function() {
-        $('#filtersForm .btn-check').each(function() {
+$(function () {
+    $('#dropFiltersBtn').on('click', function () {
+        $('#filtersForm .btn-check').each(function () {
             const checkbox = $(this)[0];
 
             checkbox.checked = false;

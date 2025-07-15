@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class UserController extends Controller
+final class UserController extends Controller
 {
     public function __construct(private readonly UserService $userService)
     {
@@ -77,15 +77,12 @@ class UserController extends Controller
 
     public function books(Request $request, BookService $bookService, int $userId): View|RedirectResponse
     {
-        $filters = [];
-        if ($request->isMethod('POST')) {
-            $inputFilters = $request->except('_token');
-            $filters = $this->userService->formatFilters($inputFilters);
-        }
         $user = Auth::user() ?? $this->userService->get($userId);
         if (!$user) {
             return back()->withErrors(['error' => 'Пользователь не найден.']);
         }
+
+        $filters = $this->userService->getFilterFromRequest($request);
 
         [$books, $params] = $bookService->byUser($userId, $filters);
 

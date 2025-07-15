@@ -28,15 +28,12 @@ final class AuthorController extends Controller
 
     public function books(Request $request, BookService $bookService, int $authorId): View|RedirectResponse
     {
-        $filters = [];
-        if ($request->isMethod('POST')) {
-            $inputFilters = $request->except('_token');
-            $filters = $this->authorService->formatFilters($inputFilters);
-        }
         $author = $this->authorService->get($authorId);
         if (!$author) {
             return back()->withErrors(['error' => 'Автор не найден.']);
         }
+
+        $filters = $this->authorService->getFilterFromRequest($request);
 
         [$books, $params] = $bookService->byAuthor($authorId, $filters);
 
