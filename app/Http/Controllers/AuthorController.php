@@ -17,13 +17,13 @@ final class AuthorController extends Controller
 
     public function index(): View
     {
-        $authors = Author::all();
+        $authors = $this->authorService->getAll();
         return view('authors.index', compact('authors'));
     }
 
-    public function getAuthors(Request $request): string
+    public function getAuthors(): string
     {
-        return Author::all()->toJson(JSON_PRETTY_PRINT);
+        return $this->authorService->getAll()->toJson(JSON_PRETTY_PRINT);
     }
 
     public function books(Request $request, BookService $bookService, int $authorId): View|RedirectResponse

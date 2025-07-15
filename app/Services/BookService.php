@@ -93,10 +93,15 @@ final class BookService extends Service
     public function create(array $data): Book|false
     {
         $book = parent::create($data);
-        if ($book) {
-            $authors = $this->filterAuthorsData($data);
-            $this->attach($book, $authors);
-            return $book;
+        if (!$book) {
+            return false;
+        }
+        $authors = $this->filterAuthorsData($data);
+        // TODO: проверить логику attach
+        if (!empty($authors)) {
+            if ($this->attach($book, $authors)) {
+                return $book;
+            }
         }
         return false;
     }
@@ -124,13 +129,11 @@ final class BookService extends Service
     public function attach(Book $book, array $authors): bool
     {
         try {
-            if (!empty($authors)) {
-                if (isset($authors['ids'])) {
-                    $book->authors()->attach($authors['ids']);
-                }
-                if (isset($authors['new'])) {
-                    $book->authors()->create($authors['new']);
-                }
+            if (isset($authors['ids'])) {
+                $book->authors()->attach($authors['ids']);
+            }
+            if (isset($authors['new'])) {
+                $book->authors()->create($authors['new']);
             }
         } catch (Exception $e) {
             logger($e->getMessage());

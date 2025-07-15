@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
@@ -22,7 +23,7 @@ final class Author extends Model
         'fullName',
     ];
 
-    public function searchableAs()
+    public function searchableAs(): string
     {
         return 'authors';
     }
@@ -37,20 +38,20 @@ final class Author extends Model
         ];
     }
 
-    public function books()
-    {
-        return $this->belongsToMany(Book::class);
-    }
-
-    public function getFormattedNameAttribute()
+    public function getFormattedNameAttribute(): string
     {
         return "$this->lastname "
             . mb_substr($this->firstname, 0, 1) . "."
             . ($this->patronymic ? mb_substr($this->patronymic, 0, 1) : '');
     }
 
-    public function getFullNameAttribute()
+    public function getFullNameAttribute(): string
     {
         return "$this->lastname $this->firstname" . ($this->patronymic ? " $this->patronymic" : '');
+    }
+
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class);
     }
 }

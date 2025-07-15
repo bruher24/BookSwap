@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
@@ -23,23 +26,14 @@ final class Book extends Model
     public $appends = [
         'mainAuthor'
     ];
-    protected $casts = [
-        'name' => 'string',
-        'user_id' => 'integer',
-        'publishing_house' => 'string',
-        'publication_year' => 'integer',
-        'isbn' => 'string',
-        'page_count' => 'integer',
-        'type_id' => 'integer',
-        'cover_id' => 'integer',
-    ];
+
     protected $with = [
         'authors',
         'type',
         'genres'
     ];
 
-    public function searchableAs()
+    public function searchableAs(): string
     {
         return 'books';
     }
@@ -54,27 +48,27 @@ final class Book extends Model
         ];
     }
 
-    public function type()
-    {
-        return $this->belongsTo(BookType::class);
-    }
-
-    public function genres()
-    {
-        return $this->belongsToMany(Genre::class);
-    }
-
-    public function getMainAuthorAttribute()
+    public function getMainAuthorAttribute(): string
     {
         return $this->authors()->first()->formattedName;
     }
 
-    public function authors()
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(BookType::class);
+    }
+
+    public function genres(): BelongsToMany
+    {
+        return $this->belongsToMany(Genre::class);
+    }
+
+    public function authors(): BelongsToMany
     {
         return $this->belongsToMany(Author::class);
     }
 
-    public function cover()
+    public function cover(): HasOne
     {
         return $this->hasOne(Cover::class);
     }

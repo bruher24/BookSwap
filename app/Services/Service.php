@@ -20,17 +20,16 @@ abstract class Service
     {
         $formattedData = $this->formatData($data);
         try {
-            $book = new $this->modelClass($formattedData);
-            if (!$book->save()) {
+            $object = new $this->modelClass($formattedData);
+            if (!$object->save()) {
                 throw new Exception("Ошибка при сохранении записи");
             }
-
-            $book->refresh();
+            $object->refresh();
         } catch (Exception $e) {
             logger($e->getMessage());
             return false;
         }
-        return $book;
+        return $object;
     }
 
     protected function formatData(array $data): array
@@ -43,14 +42,46 @@ abstract class Service
         return $data;
     }
 
-    public function update(int $id, array $data): bool
+    public function get(int $id): Model|false
     {
         try {
             $object = $this->modelClass::find($id);
-            if (!$object->update($data)) {
-                throw new Exception('Ошибка при обновлении записи');
+            if (!$object) {
+                throw new ModelNotFoundException("Запись с ID: [$id] не найдена.");
             }
+        } catch (ModelNotFoundException $e) {
+            logger($e->getMessage());
+            return false;
+        }
+        return $object;
+    }
 
+    public function getMany(array $ids): Collection
+    {
+        try {
+            $collection = $this->modelClass::whereIn('id', $ids)->get();
+            if (!$collection) {
+                throw new ModelNotFoundException("Записей с ID: [" . implode(', ', $ids) . "] не найдено.");
+            }
+        } catch (ModelNotFoundException $e) {
+            logger($e->getMessage());
+            return new Collection();
+        }
+        return $collection;
+    }
+
+    public function getAll(): Collection
+    {
+        return $this->modelClass::all();
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        try {
+            $object = $this->get($id);
+            if (!$object || !$object->update($data)) {
+                throw new Exception("Ошибка при обновлении записи ID: [$id].");
+            }
             $object->refresh();
         } catch (Exception $e) {
             logger($e->getMessage());
@@ -62,44 +93,15 @@ abstract class Service
     public function delete(int $id): bool
     {
         try {
-            $object = $this->modelClass::find($id);
-            if (!$object->delete()) {
-                throw new Exception('Ошибка при удалении записи');
+            $object = $this->get($id);
+            if (!$object || !$object->delete()) {
+                throw new Exception("Ошибка при удалении записи ID: [$id].");
             }
         } catch (Exception $e) {
             logger($e->getMessage());
             return false;
         }
         return true;
-    }
-
-    public function getAll(): Collection
-    {
-        return $this->modelClass::all();
-    }
-
-    public function get(int $id): Model|false
-    {
-        try {
-            $object = $this->modelClass::find($id);
-            if (!isset($object)) {
-                throw new ModelNotFoundException("Запись с данным ID не найдена!");
-            }
-        } catch (ModelNotFoundException $e) {
-            logger($e->getMessage());
-            return false;
-        }
-        return $object;
-    }
-
-    public function getMany(array $ids): Collection
-    {
-        $collection = $this->modelClass::whereIn('id', $ids)->get();
-        if (!$collection) {
-            logger("Записей с данными ID не найдено!");
-            return new Collection();
-        }
-        return $collection;
     }
 
     public function params(Collection $books = null): array
@@ -129,7 +131,7 @@ abstract class Service
         return $filters ?? [];
     }
 
-    public function formatFilters(array $inputFilters): array
+    protected function formatFilters(array $inputFilters): array
     {
         $filters = [];
         foreach ($inputFilters as $key => $value) {

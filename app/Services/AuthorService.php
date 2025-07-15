@@ -17,7 +17,7 @@ final class AuthorService extends Service
         ];
     }
 
-    public function params($books): array
+    public function params(Collection $books = null): array
     {
         $params = parent::params($books);
         unset($params['authors']);

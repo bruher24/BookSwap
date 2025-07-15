@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -56,6 +57,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function getMainRoleAttribute(): int
+    {
+        return $this->roles()->min('id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->mainRole == Role::ADMIN_ROLE_ID;
+    }
+
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
@@ -66,22 +77,12 @@ class User extends Authenticatable
         return $this->hasMany(Book::class);
     }
 
-    public function isAdmin(): bool
-    {
-        return $this->mainRole == Role::ADMIN_ROLE_ID;
-    }
-
-    public function getMainRoleAttribute()
-    {
-        return $this->roles()->min('id');
-    }
-
     public function phone(): HasOne
     {
         return $this->hasOne(Phone::class);
     }
 
-    public function photo()
+    public function photo(): BelongsTo
     {
         return $this->belongsTo(Photo::class);
     }
