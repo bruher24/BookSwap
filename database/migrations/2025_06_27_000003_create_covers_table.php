@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('covers', function (Blueprint $table) {
             $table->id();
-            $table->string('src');
+            $table->string('src', 150)->unique()->nullable();
+            $table->foreignId('book_id')->constrained('books')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

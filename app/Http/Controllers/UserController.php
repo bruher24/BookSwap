@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Services\AuthorService;
+use App\Services\BookService;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +13,8 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    private UserService $userService;
-    private AuthorService $authorService;
-
-    public function __construct()
+    public function __construct(private readonly UserService $userService)
     {
-        $this->userService = new UserService();
-        $this->authorService = new AuthorService();
     }
 
     public function index()
@@ -80,7 +75,7 @@ class UserController extends Controller
         // TODO: return redirect
     }
 
-    public function books(Request $request, int $userId): View|RedirectResponse
+    public function books(Request $request, BookService $bookService, int $userId): View|RedirectResponse
     {
         $filters = [];
         if ($request->isMethod('POST')) {
@@ -92,7 +87,7 @@ class UserController extends Controller
             return back()->withErrors(['error' => 'Пользователь не найден.']);
         }
 
-        [$books, $params] = $this->userService->books($userId, $filters);
+        [$books, $params] = $bookService->byUser($userId, $filters);
 
         return view('users.books', compact('books', 'params', 'filters'));
     }

@@ -11,7 +11,7 @@ class PhotoSeeder extends Seeder
     {
         $photos = [
             [
-                'src' => 'storage/app/public/avatar.png',
+                'src' => 'avatars/avatar.png',
             ],
         ];
 

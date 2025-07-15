@@ -2,18 +2,24 @@
 
 namespace Database\Seeders;
 
+use App\Models\Book;
 use App\Models\Cover;
 use Illuminate\Database\Seeder;
 
 class CoverSeeder extends Seeder
 {
-    public function run(){
+    public function run()
+    {
         $covers = [
-            'src' => 'storage/app/public/',
+            [
+                'src' => 'covers/cover.png'
+            ],
         ];
 
-        collect($covers)->each(function($cover){
-            Cover::create($cover);
+        collect($covers)->each(function ($coverData) {
+            $cover = new Cover($coverData);
+            $cover->book()->associate(Book::first()->id);
+            $cover->save();
         });
     }
 }

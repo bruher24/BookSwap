@@ -10,22 +10,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class BookController extends Controller
+final class BookController extends Controller
 {
-    private BookService $bookService;
-
-    public function __construct()
+    public function __construct(private readonly BookService $bookService)
     {
-        $this->bookService = new BookService();
     }
 
     public function index(Request $request): View
     {
         $filters = [];
-
-        if ($request->has('search')) {
-            $books = $this->bookService->search($request->search);
-        }
 
         if ($request->isMethod('POST')) {
             $inputFilters = $request->except('_token');

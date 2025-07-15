@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Repositories\GenreRepository;
+use App\Models\Genre;
+use Illuminate\Database\Eloquent\Collection;
 
-class GenreService extends Service
+final class GenreService extends Service
 {
-    public function __construct()
-    {
-        parent::__construct(new GenreRepository());
+    public function __construct() {
+        parent::__construct(Genre::class);
         $this->ucFirstFields = [
             'name',
         ];
@@ -16,9 +16,8 @@ class GenreService extends Service
 
     public function books(array $filters = []): array
     {
-        $booksService = new BookService();
-        $books = $booksService->where($filters);
-        $allBooks = $booksService->where(['genre' => [$filters['genre']]]);
+        $books = $this->bookService->where($filters);
+        $allBooks = $this->bookService->where(['genre' => [$filters['genre']]]);
         $params = $this->params($allBooks);
         return [$books, $params];
     }
@@ -28,5 +27,10 @@ class GenreService extends Service
         $params = parent::params($books);
         unset($params['genres']);
         return $params;
+    }
+
+    public function where(array $conditions): Collection|false
+    {
+        return Genre::whereIn('id', $conditions['genre'])->get() ?? false;
     }
 }

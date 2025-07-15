@@ -7,10 +7,11 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class MainController extends Controller
+final class MainController extends Controller
 {
     public function index(): View
     {
+        // TODO: only for testing
         $books = Book::all();
         return view('home', compact('books'));
     }
@@ -22,6 +23,7 @@ class MainController extends Controller
 
     public function search(Request $request): View
     {
+        // TODO: only for testing
         $search = $request->search;
         $found = [
             Book::search($search)->get(),

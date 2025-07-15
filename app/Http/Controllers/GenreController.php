@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\BookService;
 use App\Services\GenreService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class GenreController extends Controller
+final class GenreController extends Controller
 {
-    private GenreService $genreService;
-
-    public function __construct()
+    public function __construct(private readonly GenreService $genreService)
     {
-        $this->genreService = new GenreService();
     }
 
     public function index()
@@ -23,7 +19,7 @@ class GenreController extends Controller
         return view('genres.index', compact('genres'));
     }
 
-    public function books(Request $request, int $genreId): View | RedirectResponse
+    public function books(Request $request, int $genreId): View|RedirectResponse
     {
         $filters = [];
         if ($request->isMethod('POST')) {

@@ -2,19 +2,11 @@
 
 namespace App\Services;
 
-use App\Repositories\UserRepository;
+use App\Models\User;
 
 class UserService extends Service
 {
-    public function __construct()
-    {
-        parent::__construct(new UserRepository());
-    }
-
-    public function books(int $userId, array $filters = []): array
-    {
-        $booksService = new BookService();
-        [$books, $params] = $booksService->byUser($userId, $filters);
-        return [$books, $params];
+    public function __construct() {
+        parent::__construct(User::class);
     }
 }

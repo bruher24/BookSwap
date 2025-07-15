@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Repositories\Repository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -10,20 +9,22 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class Service
 {
-    protected Repository $repository;
+    protected array $ucFirstFields = [];
 
-    protected array $ucFirstFields;
-
-    public function __construct(Repository $repository)
+    public function __construct(protected string $modelClass)
     {
-        $this->repository = $repository;
     }
 
     public function create(array $data): Model|false
     {
         $formattedData = $this->formatData($data);
         try {
-            $book = $this->repository->create($formattedData);
+            $book = new $this->modelClass($formattedData);
+            if (!$book->save()) {
+                throw new Exception("Ошибка при сохранении записи");
+            }
+
+            $book->refresh();
         } catch (Exception $e) {
             logger($e->getMessage());
             return false;
@@ -44,7 +45,12 @@ abstract class Service
     public function update(int $id, array $data): bool
     {
         try {
-            $this->repository->update($id, $data);
+            $object = $this->modelClass::find($id);
+            if (!$object->update($data)) {
+                throw new Exception('Ошибка при обновлении записи');
+            }
+
+            $object->refresh();
         } catch (Exception $e) {
             logger($e->getMessage());
             return false;
@@ -55,7 +61,10 @@ abstract class Service
     public function delete(int $id): bool
     {
         try {
-            $this->repository->delete($id);
+            $object = $this->modelClass::find($id);
+            if (!$object->delete()) {
+                throw new Exception('Ошибка при удалении записи');
+            }
         } catch (Exception $e) {
             logger($e->getMessage());
             return false;
@@ -65,37 +74,26 @@ abstract class Service
 
     public function getAll(): Collection
     {
-        return $this->repository->getAll();
+        return $this->modelClass::all();
     }
 
     public function get(int $id): Model|false
     {
         try {
-            $user = $this->repository->get($id);
+            $object = $this->modelClass::find($id);
+            if (!isset($object)) {
+                throw new ModelNotFoundException("Запись с данным ID не найден");
+            }
         } catch (ModelNotFoundException $e) {
             logger($e->getMessage());
             return false;
         }
-        return $user;
+        return $object;
     }
 
     public function where(array $conditions): Collection|false
     {
-        if (method_exists($this->repository, 'where')) {
-            return $this->repository->where($conditions);
-        }
         return false;
-    }
-
-    public function formatFilters(array $inputFilters): array
-    {
-        $filters = [];
-        foreach ($inputFilters as $key => $value) {
-            [$field, $id] = explode('-', $key);
-            $filters[$field] = $filters[$field] ?? [];
-            $filters[$field][] = $id;
-        }
-        return $filters;
     }
 
     public function params($books): array
@@ -111,5 +109,16 @@ abstract class Service
         $result['years'] = $books->pluck('publication_year')->unique();
         $result['types'] = $books->pluck('type')->filter()->unique();
         return $result ?? [];
+    }
+
+    public function formatFilters(array $inputFilters): array
+    {
+        $filters = [];
+        foreach ($inputFilters as $key => $value) {
+            [$field, $id] = explode('-', $key);
+            $filters[$field] = $filters[$field] ?? [];
+            $filters[$field][] = $id;
+        }
+        return $filters;
     }
 }

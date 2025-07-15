@@ -4,20 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Services\AuthorService;
+use App\Services\BookService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class AuthorController extends Controller
+final class AuthorController extends Controller
 {
-    private AuthorService $authorService;
-
-    public function __construct()
+    public function __construct(private readonly AuthorService $authorService)
     {
-        $this->authorService = new AuthorService();
     }
 
-    public function index():View
+    public function index(): View
     {
         $authors = Author::all();
         return view('authors.index', compact('authors'));
@@ -28,20 +26,19 @@ class AuthorController extends Controller
         return Author::all()->toJson(JSON_PRETTY_PRINT);
     }
 
-    public function books(Request $request, int $authorId): View | RedirectResponse
+    public function books(Request $request, BookService $bookService, int $authorId): View|RedirectResponse
     {
         $filters = [];
         if ($request->isMethod('POST')) {
             $inputFilters = $request->except('_token');
             $filters = $this->authorService->formatFilters($inputFilters);
         }
-        $filters['author'] = [$authorId];
         $author = $this->authorService->get($authorId);
         if (!$author) {
             return back()->withErrors(['error' => 'Автор не найден.']);
         }
 
-        [$books, $params] = $this->authorService->books($filters);
+        [$books, $params] = $bookService->byAuthor($authorId, $filters);
 
         return view('authors.books', compact('books', 'params', 'filters', 'author'));
     }

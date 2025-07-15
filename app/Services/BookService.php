@@ -3,16 +3,16 @@
 namespace App\Services;
 
 use App\Models\Book;
-use App\Repositories\BookRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
-class BookService extends Service
+final class BookService extends Service
 {
-    public function __construct()
-    {
-        parent::__construct(new BookRepository());
+    public function __construct(
+        private readonly AuthorService $authorService,
+        private readonly GenreService $genreService
+    ) {
+        parent::__construct(Book::class);
         $this->ucFirstFields = [
             'name',
             'publishing_house',
@@ -21,15 +21,64 @@ class BookService extends Service
 
     public function byUser(int $userId, array $filters = []): array
     {
-        if (method_exists($this->repository, 'byUser')) {
-            $books = $this->repository->byUser($userId, $filters);
-            $allBooks = $this->getAll();
-            $params = $this->params($allBooks);
-        }
+        $books = $this->where($filters)->where('user_id', $userId);
+//        $allBooks = $this->getAll();
+        $params = $this->params($books);
+
         return [$books, $params] ?? [];
     }
 
-    public function create(array $data): Model|false
+    public function byAuthor(int $authorId, array $filters = []): array
+    {
+        $books = $this->where($filters);
+        $allBooks = $this->where(['author' => [$authorId]]);
+        $params = $this->params($allBooks);
+        return [$books, $params];
+    }
+
+    public function where(array $conditions): Collection|false
+    {
+        if (empty($conditions)) {
+            return $this->getAll();
+        }
+
+        $books = Book::all();
+
+        if (isset($conditions['name'])) {
+            $books->where('name', 'like', '%' . $conditions['name'] . '%');
+        }
+
+        if (isset($conditions['publishing_house'])) {
+            $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
+        }
+
+        if (isset($conditions['genre'])) {
+            $genres = $this->genreService->where($conditions['genre']);
+            $books->whereHas('genres', function ($query) use ($genres) {
+                $query->whereIn('id', $genres->pluck('id'));
+            });
+        }
+
+        if (isset($conditions['lastname']) || isset($conditions['firstname']) || isset($conditions['patronymic'])) {
+            $authors = $this->authorService->where($conditions);
+            if ($authors) {
+                $books->whereHas('authors', function ($query) use ($authors) {
+                    $query->whereIn('id', $authors->pluck('id'));
+                });
+            }
+        }
+
+        if (isset($conditions['year'])) {
+            $books->whereIn('publication_year', $conditions['year']);
+        }
+
+        if (isset($conditions['type'])) {
+            $books->whereIn('type_id', $conditions['type']);
+        }
+        return $books;
+    }
+
+    public function create(array $data): Book|false
     {
         $book = parent::create($data);
         if ($book) {
@@ -51,8 +100,8 @@ class BookService extends Service
         }
         if (isset($data['authorFirstname'])) {
             $authors['new'] = [
-                'lastname' => $data['authorFirstname'],
-                'firstname' => $data['authorLastname'],
+                'lastname' => $data['authorLastname'],
+                'firstname' => $data['authorFirstname'],
                 'patronymic' => $data['authorPatronymic'],
                 'birthdate' => $data['authorBirthdate'],
             ];
@@ -62,52 +111,19 @@ class BookService extends Service
 
     public function attach(Book $book, array $authors): bool
     {
-        if (method_exists($this->repository, 'attach')) {
-            try {
-                if (!empty($authors)) {
-                    $this->repository->attach($book, $authors);
+        try {
+            if (!empty($authors)) {
+                if (isset($authors['ids'])) {
+                    $book->authors()->attach($authors['ids']);
                 }
-            } catch (Exception $e) {
-                logger($e->getMessage());
-                return false;
+                if (isset($authors['new'])) {
+                    $book->authors()->create($authors['new']);
+                }
             }
-            return true;
+        } catch (Exception $e) {
+            logger($e->getMessage());
+            return false;
         }
-        return false;
-    }
-
-    public function search(string $search): Collection|false
-    {
-        $words = explode(' ', $search);
-        foreach ($words as &$word) {
-            $word = trim($word);
-            $word = mb_ucfirst(mb_strtolower($word));
-
-            $found = $this->find($word);
-//            dd($found);
-            return $found;
-        }
-        return false;
-    }
-
-    private function find($word)
-    {
-        $fields = [
-            'name',
-            'lastname',
-            'firstname',
-            'patronymic',
-            'publishing_house',
-        ];
-        foreach ($fields as $field) {
-            $found = $this->where([
-                $field => $word,
-            ]);
-            if ($found->count() > 0) {
-//                $found['field'] = $field;
-                return $found;
-            }
-        }
-        return false;
+        return true;
     }
 }

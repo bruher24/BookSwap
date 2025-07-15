@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Repositories\AuthorRepository;
+use App\Models\Author;
+use Illuminate\Database\Eloquent\Collection;
 
-class AuthorService extends Service
+final class AuthorService extends Service
 {
-    public function __construct()
-    {
-        parent::__construct(new AuthorRepository());
+    public function __construct() {
+        parent::__construct(Author::class);
         $this->ucFirstFields = [
             'lastname',
             'firstname',
@@ -16,13 +16,23 @@ class AuthorService extends Service
         ];
     }
 
-    public function books(array $filters = []): array
+    public function where(array $conditions): Collection|false
     {
-        $booksService = new BookService();
-        $books = $booksService->where($filters);
-        $allBooks = $booksService->where(['author' => [$filters['author']]]);
-        $params = $this->params($allBooks);
-        return [$books, $params];
+        if (isset($conditions['lastname'])) {
+            $authorId = Author::where('lastname', 'like', '%' . $conditions['lastname'] . '%')->get('id');
+            $conditions['author'][] = $authorId;
+        }
+
+        if (isset($conditions['firstname'])) {
+            $authorId = Author::where('lastname', 'like', '%' . $conditions['lastname'] . '%')->get('id');
+            $conditions['author'][] = $authorId;
+        }
+
+        if (isset($conditions['patronymic'])) {
+            $authorId = Author::where('patronymic', 'like', '%' . $conditions['patronymic'] . '%')->get('id');
+            $conditions['author'][] = $authorId;
+        }
+        return Author::whereIn('id', $conditions['author'])->get() ?? false;
     }
 
     public function params($books): array

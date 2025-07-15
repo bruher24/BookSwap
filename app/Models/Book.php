@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-class Book extends Model
+final class Book extends Model
 {
     use SoftDeletes, Searchable;
 
@@ -76,6 +76,6 @@ class Book extends Model
 
     public function cover()
     {
-        return $this->belongsTo(Cover::class);
+        return $this->hasOne(Cover::class);
     }
 }

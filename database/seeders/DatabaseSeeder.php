@@ -15,13 +15,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RoleSeeder::class,
-            UserSeeder::class,
             PhotoSeeder::class,
-            CoverSeeder::class,
-            GenreSeeder::class,
+            UserSeeder::class,
             BookTypeSeeder::class,
+            GenreSeeder::class,
             AuthorSeeder::class,
             BookSeeder::class,
+            CoverSeeder::class,
         ]);
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-class Author extends Model
+final class Author extends Model
 {
     use SoftDeletes, Searchable;
 

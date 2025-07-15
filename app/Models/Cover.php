@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Cover extends Model
+final class Cover extends Model
 {
     public static int $baseCoverId = 1;
     private string $baseCoverPath = 'storage/app/public/cover.png';
@@ -12,8 +12,8 @@ class Cover extends Model
         'src'
     ];
 
-    public function books()
+    public function book()
     {
-        return $this->hasMany(Book::class);
+        return $this->belongsTo(Book::class);
     }
 }
