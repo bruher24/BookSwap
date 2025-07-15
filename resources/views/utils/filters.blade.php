@@ -5,10 +5,10 @@
       {{ route('users.books', ['user' => $user]) }}
       @break
       @case (request()->routeIs('genres.books'))
-      {{ route('genres.books', ['genre' => $genre->id]) }}
+      {{ route('genres.books', ['genres' => $genre->id]) }}
       @break
       @case (request()->routeIs('authors.books'))
-      {{ route('authors.books', ['author' => $author->id]) }}
+      {{ route('authors.books', ['authors' => $author->id]) }}
       @break
       @default
       {{ route('books.index') }}
@@ -27,8 +27,8 @@
                     @foreach($params['genres'] as $genre)
                         <li class="me-2">
                             <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
-                                   id="btn-check-genre-{{ $genre->id }}" name="genre-{{ $genre->id }}"
-                                    @checked(isset($filters['genre']) && in_array($genre->id, $filters['genre']))>
+                                   id="btn-check-genre-{{ $genre->id }}" name="genres-{{ $genre->id }}"
+                                    @checked(isset($filters['genres']) && in_array($genre->id, $filters['genres']))>
                             <label class="btn form-control text-start"
                                    for="btn-check-genre-{{ $genre->id }}">{{ $genre->name }}</label>
                         </li>
@@ -46,8 +46,8 @@
                     @foreach($params['authors'] as $author)
                         <li class="me-2">
                             <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
-                                   id="btn-check-author-{{ $author->id }}" name="author-{{ $author->id }}"
-                                    @checked(isset($filters['author']) && in_array($author->id, $filters['author']))>
+                                   id="btn-check-author-{{ $author->id }}" name="authors-{{ $author->id }}"
+                                    @checked(isset($filters['authors']) && in_array($author->id, $filters['authors']))>
                             <label class="btn form-control text-start"
                                    for="btn-check-author-{{ $author->id }}">{{ $author->formattedName }}</label>
                         </li>
@@ -66,8 +66,8 @@
                     @foreach($params['years'] as $year)
                         <li class="me-2">
                             <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
-                                   id="btn-check-year-{{ $year }}" name="year-{{ $year }}"
-                                    @checked(isset($filters['year']) && in_array($year, $filters['year']))>
+                                   id="btn-check-year-{{ $year }}" name="years-{{ $year }}"
+                                    @checked(isset($filters['years']) && in_array($year, $filters['years']))>
                             <label class="btn form-control text-start"
                                    for="btn-check-year-{{ $year }}">{{ $year }}</label>
                         </li>
@@ -76,18 +76,18 @@
             </div>
         @endif
 
-        @if(isset($params['types']))
+        @if(isset($params['book_types']))
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-outline-dark dropdown-toggle"
                         data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                     Тип
                 </button>
                 <ul class="pe-2 dropdown-menu p-0 overflow-scroll" style="height: 300%; min-width: 165px;">
-                    @foreach($params['types'] as $type)
+                    @foreach($params['book_types'] as $type)
                         <li>
                             <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
-                                   id="btn-check-type-{{ $type->id }}" name="type-{{ $type->id }}"
-                                    @checked(isset($filters['type']) && in_array($type->id, $filters['type']))>
+                                   id="btn-check-type-{{ $type->id }}" name="book_types-{{ $type->id }}"
+                                    @checked(isset($filters['book_types']) && in_array($type->id, $filters['book_types']))>
                             <label class="btn form-control text-start"
                                    for="btn-check-type-{{ $type->id }}">{{ $type->name }}</label>
                         </li>

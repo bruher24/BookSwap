@@ -104,9 +104,7 @@ abstract class Service
 
     public function params(Collection $books = null): array
     {
-        if ($books->isEmpty()) {
-            $books = $this->getAll();
-        }
+        $books = $books ?? $this->getAll();
         $result['genres'] = $books->flatMap->genres->unique('name');
         $result['authors'] = $books->flatMap->authors->unique(function ($author) {
             return implode('|', [
@@ -116,7 +114,7 @@ abstract class Service
             ]);
         });
         $result['years'] = $books->pluck('publication_year')->unique();
-        $result['types'] = $books->pluck('type')->filter()->unique();
+        $result['book_types'] = $books->pluck('book_type')->filter()->unique();
         return $result ?? [];
     }
 

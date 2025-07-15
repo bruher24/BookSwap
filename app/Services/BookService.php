@@ -33,18 +33,22 @@ class BookService extends Service
 
     public function byAuthor(Author $author, array $conditions = []): array
     {
+        $conditions['authors'] = [$author->id];
         $books = $this->where($conditions);
         $allBooks = $this->where(['author' => [$author->id]]);
         $params = $this->params($allBooks);
+        unset($params['authors']);
 
         return [$books, $params] ?? [];
     }
 
     public function byGenre(Genre $genre, array $conditions = []): array
     {
+        $conditions['genres'] = [$genre->id];
         $books = $this->where($conditions);
-        $allBooks = $this->where(['genre' => [$genre->id]]);
+        $allBooks = $this->where(['genres' => [$genre->id]]);
         $params = $this->params($allBooks);
+        unset($params['genres']);
 
         return [$books, $params] ?? [];
     }
@@ -57,16 +61,16 @@ class BookService extends Service
 
         $books = Book::where('deleted_at', null);
 
-        if (isset($conditions['name'])) {
-            $books->where('name', 'like', '%' . $conditions['name'] . '%');
+        if (isset($conditions['names'])) {
+            $books->where('name', 'like', '%' . $conditions['names'] . '%');
         }
 
-        if (isset($conditions['publishing_house'])) {
-            $books->where('publishing_house', 'like', '%' . $conditions['publishing_house'] . '%');
+        if (isset($conditions['publishing_houses'])) {
+            $books->where('publishing_house', 'like', '%' . $conditions['publishing_houses'] . '%');
         }
 
-        if (isset($conditions['genre'])) {
-            $genres = $this->genreService->getMany($conditions['genre']);
+        if (isset($conditions['genres'])) {
+            $genres = $this->genreService->getMany($conditions['genres']);
             if ($genres->isNotEmpty()) {
                 $books->whereHas('genres', function ($query) use ($genres) {
                     $query->whereIn('id', $genres->pluck('id'));
@@ -74,8 +78,8 @@ class BookService extends Service
             }
         }
 
-        if (isset($conditions['author'])) {
-            $authors = $this->authorService->getMany($conditions['author']);
+        if (isset($conditions['authors'])) {
+            $authors = $this->authorService->getMany($conditions['authors']);
             if ($authors->isNotEmpty()) {
                 $books->whereHas('authors', function ($query) use ($authors) {
                     $query->whereIn('id', $authors->pluck('id'));
@@ -83,12 +87,12 @@ class BookService extends Service
             }
         }
 
-        if (isset($conditions['year'])) {
-            $books->whereIn('publication_year', $conditions['year']);
+        if (isset($conditions['years'])) {
+            $books->whereIn('publication_year', $conditions['years']);
         }
 
-        if (isset($conditions['type'])) {
-            $books->whereIn('type_id', $conditions['type']);
+        if (isset($conditions['book_types'])) {
+            $books->whereIn('book_type_id', $conditions['book_types']);
         }
         return $books->get();
     }
