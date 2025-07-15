@@ -9,7 +9,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
-final class BookService extends Service
+class BookService extends Service
 {
     public function __construct(
         private readonly AuthorService $authorService,

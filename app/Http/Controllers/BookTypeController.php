@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\BookTypeService;
 
-final class BookTypeController extends Controller
+class BookTypeController extends Controller
 {
     public function __construct(private readonly BookTypeService $bookTypeService)
     {

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-final class UserController extends Controller
+class UserController extends Controller
 {
     public function __construct(private readonly UserService $userService)
     {

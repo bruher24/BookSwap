@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-final class Book extends Model
+class Book extends Model
 {
     use SoftDeletes, Searchable;
 

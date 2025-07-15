@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-final class GenreController extends Controller
+class GenreController extends Controller
 {
     public function __construct(private readonly GenreService $genreService)
     {

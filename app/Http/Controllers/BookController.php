@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-final class BookController extends Controller
+class BookController extends Controller
 {
     public function __construct(private readonly BookService $bookService)
     {

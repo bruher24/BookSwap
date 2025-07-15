@@ -7,7 +7,7 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-final class MainController extends Controller
+class MainController extends Controller
 {
     public function index(): View
     {

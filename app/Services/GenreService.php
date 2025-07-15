@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Genre;
 use Illuminate\Database\Eloquent\Collection;
 
-final class GenreService extends Service
+class GenreService extends Service
 {
     public function __construct()
     {

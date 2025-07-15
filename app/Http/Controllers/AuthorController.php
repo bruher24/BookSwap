@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-final class AuthorController extends Controller
+class AuthorController extends Controller
 {
     public function __construct(private readonly AuthorService $authorService)
     {

@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Author;
 use Illuminate\Database\Eloquent\Collection;
 
-final class AuthorService extends Service
+class AuthorService extends Service
 {
     public function __construct()
     {
