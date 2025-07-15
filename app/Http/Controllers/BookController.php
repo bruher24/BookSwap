@@ -6,7 +6,6 @@ use App\Http\Requests\StoreBookRequest;
 use App\Models\Book;
 use App\Services\BookService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -45,26 +44,23 @@ final class BookController extends Controller
         ]);
     }
 
-    public function show(int $bookId): JsonResponse
+    public function show(Book $book): JsonResponse
     {
-        $book = $this->bookService->get($bookId);
         return response()->json([
             'success' => true,
             'book' => $book,
         ]);
     }
 
-    public function edit(Book $book)
+    public function update(UpdateBookRequest $request, Book $book)
     {
+        $validated = $request->validated();
+        $this->bookService->update($book, $validated);
     }
 
-    public function update(Request $request, Book $book)
+    public function delete(Book $book): JsonResponse
     {
-    }
-
-    public function delete(int $bookId): JsonResponse
-    {
-        if ($this->bookService->delete($bookId)) {
+        if ($this->bookService->delete($book)) {
             return response()->json([
                 'success' => true,
             ]);

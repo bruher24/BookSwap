@@ -75,12 +75,11 @@ abstract class Service
         return $this->modelClass::all();
     }
 
-    public function update(int $id, array $data): bool
+    public function update(Model $object, array $data): bool
     {
         try {
-            $object = $this->get($id);
-            if (!$object || !$object->update($data)) {
-                throw new Exception("Ошибка при обновлении записи ID: [$id].");
+            if (!$object->update($data)) {
+                throw new Exception("Ошибка при обновлении записи ID: [$object->id].");
             }
             $object->refresh();
         } catch (Exception $e) {
@@ -90,12 +89,11 @@ abstract class Service
         return true;
     }
 
-    public function delete(int $id): bool
+    public function delete(Model $object): bool
     {
         try {
-            $object = $this->get($id);
-            if (!$object || !$object->delete()) {
-                throw new Exception("Ошибка при удалении записи ID: [$id].");
+            if (!$object->delete()) {
+                throw new Exception("Ошибка при удалении записи ID: [$object->id].");
             }
         } catch (Exception $e) {
             logger($e->getMessage());

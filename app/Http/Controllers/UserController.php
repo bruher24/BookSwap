@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use App\Services\BookService;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
@@ -17,7 +18,7 @@ final class UserController extends Controller
     {
     }
 
-    public function index()
+    public function index(): View
     {
         $users = $this->userService->getAll();
         // TODO: return view
@@ -66,25 +67,20 @@ final class UserController extends Controller
         return redirect('/')->with('success', 'Вы успешно вышли из аккаунта.');
     }
 
-    public function update(UpdateUserRequest $request, int $userId): RedirectResponse
+    public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
         $validated = $request->validated();
-        if ($this->userService->update($userId, $validated)) {
+        if ($this->userService->update($user, $validated)) {
             // TODO: return redirect
         }
         // TODO: return redirect
     }
 
-    public function books(Request $request, BookService $bookService, int $userId): View|RedirectResponse
+    public function books(Request $request, BookService $bookService, User $user): View|RedirectResponse
     {
-        $user = Auth::user() ?? $this->userService->get($userId);
-        if (!$user) {
-            return back()->withErrors(['error' => 'Пользователь не найден.']);
-        }
-
         $filters = $this->userService->getFilterFromRequest($request);
 
-        [$books, $params] = $bookService->byUser($userId, $filters);
+        [$books, $params] = $bookService->byUser($user, $filters);
 
         return view('users.books', compact('books', 'params', 'filters'));
     }

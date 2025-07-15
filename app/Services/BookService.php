@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Author;
 use App\Models\Book;
+use App\Models\Genre;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -19,28 +22,28 @@ final class BookService extends Service
         ];
     }
 
-    public function byUser(int $userId, array $conditions = []): array
+    public function byUser(User $user, array $conditions = []): array
     {
-        $books = $this->where($conditions)->where('user_id', $userId);
-        $allBooks = Book::where('user_id', $userId)->get();
+        $books = $this->where($conditions)->where('user_id', $user->id);
+        $allBooks = Book::where('user_id', $user->id)->get();
         $params = $this->params($allBooks);
 
         return [$books, $params] ?? [];
     }
 
-    public function byAuthor(int $authorId, array $conditions = []): array
+    public function byAuthor(Author $author, array $conditions = []): array
     {
         $books = $this->where($conditions);
-        $allBooks = $this->where(['author' => [$authorId]]);
+        $allBooks = $this->where(['author' => [$author->id]]);
         $params = $this->params($allBooks);
 
         return [$books, $params] ?? [];
     }
 
-    public function byGenre(int $genreId, array $conditions = []): array
+    public function byGenre(Genre $genre, array $conditions = []): array
     {
         $books = $this->where($conditions);
-        $allBooks = $this->where(['genre' => [$genreId]]);
+        $allBooks = $this->where(['genre' => [$genre->id]]);
         $params = $this->params($allBooks);
 
         return [$books, $params] ?? [];

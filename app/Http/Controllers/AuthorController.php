@@ -26,16 +26,11 @@ final class AuthorController extends Controller
         return $this->authorService->getAll()->toJson(JSON_PRETTY_PRINT);
     }
 
-    public function books(Request $request, BookService $bookService, int $authorId): View|RedirectResponse
+    public function books(Request $request, BookService $bookService, Author $author): View|RedirectResponse
     {
-        $author = $this->authorService->get($authorId);
-        if (!$author) {
-            return back()->withErrors(['error' => 'Автор не найден.']);
-        }
-
         $filters = $this->authorService->getFilterFromRequest($request);
 
-        [$books, $params] = $bookService->byAuthor($authorId, $filters);
+        [$books, $params] = $bookService->byAuthor($author, $filters);
 
         return view('authors.books', compact('books', 'params', 'filters', 'author'));
     }
