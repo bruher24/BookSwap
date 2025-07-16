@@ -9,6 +9,7 @@ $(function () {
     $(document).on('focus', '.authorDiv select', function () {
         $(this).data('old-value', $(this).val());
     }).on('change', '.authorDiv select', function () {
+        $(this).blur();
         const $select = $(this);
         const newValue = $select.val();
         const oldValue = $select.data('old-value');
@@ -22,6 +23,7 @@ $(function () {
         if (oldValue && oldValue !== '0') {
             selectedAuthors = selectedAuthors.filter(id => id !== oldValue);
         }
+        
         if (newValue && newValue !== '0') {
             selectedAuthors.push(newValue);
         }
