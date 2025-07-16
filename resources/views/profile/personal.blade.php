@@ -7,19 +7,40 @@
         <!-- Personal Information -->
         <div class="mb-4">
             <h5 class="mb-4">Личные данные</h5>
+
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label">Имя</label>
                     <input type="text" class="form-control" name="name" value="{{$user->name}}">
                 </div>
             </div>
+
             <div class="row g-3 mt-1">
                 <div class="col-md-6">
                     <label class="form-label">Email</label>
                     <input type="email" class="form-control" name="email" value="{{$user->email}}">
                 </div>
             </div>
+
+            <div class="row g-3 mt-1">
+                <div class="col-sm-3">
+                    <button type="button" id="changePasswordBtn" class="btn btn-secondary">Сменить пароль</button>
+                </div>
+            </div>
+            <div id="changePasswordDiv" class="row g-3 mt-1 d-none">
+                <div class="col-sm-3">
+                    <label class="form-label">Старый пароль</label>
+                    <input type="password" class="form-control" name="oldPassword">
+                    <label class="form-label">Новый пароль</label>
+                    <input type="password" class="form-control" name="newPassword">
+                    <label class="form-label">Подтверждение нового пароля</label>
+                    <input type="password" class="form-control" name="newPasswordCheck">
+                    <input type="submit" class="form-control mt-3 btn btn-success w-50" value="Сохранить"/>
+                </div>
+            </div>
+
             <h5 class="mt-4">Статистика книг</h5>
+
             <div class="row g-3 mt-1">
                 <div class="col-md-6">
                     {{--                    TODO: прикрутить стату--}}
@@ -42,9 +63,9 @@
                                    name="phone_number"
                                    value="{{$user->phone()->first()->number ?? ''}}"/>
                         </div>
+
                         <div class="col-sm-3">
-                            <input type="submit" class="form-control btn btn-success"
-                                   value="Сохранить"/>
+                            <input type="submit" class="form-control btn btn-success" value="Сохранить"/>
                         </div>
                     </div>
                 </div>
