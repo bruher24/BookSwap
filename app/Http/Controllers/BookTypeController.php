@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\BookTypeServiceInterface;
+use App\Enums\BookTypeEnum;
 
 class BookTypeController extends Controller
 {
-    public function getTypes(BookTypeServiceInterface $bookTypeService): string
+    public function getTypes(): string
     {
-        return $bookTypeService->getAll()->toJson(JSON_PRETTY_PRINT);
+        return json_encode(BookTypeEnum::cases(), JSON_PRETTY_PRINT);
     }
 }

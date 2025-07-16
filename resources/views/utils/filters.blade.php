@@ -86,10 +86,10 @@
                     @foreach($params['book_types'] as $type)
                         <li>
                             <input type="checkbox" class="btn-check dropdown-item" autocomplete="off"
-                                   id="btn-check-type-{{ $type->id }}" name="book_types-{{ $type->id }}"
-                                    @checked(isset($filters['book_types']) && in_array($type->id, $filters['book_types']))>
+                                   id="btn-check-type-{{ $type->value }}" name="book_types-{{ $type->value }}"
+                                    @checked(isset($filters['book_types']) && in_array($type->value, $filters['book_types']))>
                             <label class="btn form-control text-start"
-                                   for="btn-check-type-{{ $type->id }}">{{ $type->name }}</label>
+                                   for="btn-check-type-{{ $type->value }}">{{ $type->label() }}</label>
                         </li>
                     @endforeach
                 </ul>
