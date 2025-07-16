@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 
 class CoverSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $covers = [
             [

@@ -1,3 +1,4 @@
+@php use App\Models\Photo;use Illuminate\Support\Facades\Storage; @endphp
 <header class="p-3 text-bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -81,8 +82,7 @@
                     <a class="d-block link-light text-decoration-none dropdown-toggle" id="dropdownUser1"
                        data-bs-toggle="dropdown" aria-expanded="false"
                        style="cursor: pointer">
-                        {{--                        TODO: переместить дефолтный аватар в базу--}}
-                        <img src="{{ isset(auth()->user()->photo) ? auth()->user()->photo->src : '/storage/avatar.png'}}"
+                        <img src="{{ Storage::disk('public')->url(isset($user) ? $user->photo->src : Photo::$basePhotoName) }}"
                              alt="Avatar" width="40"
                              height="40"
                              class="rounded-circle">

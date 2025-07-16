@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $roles = [
             [

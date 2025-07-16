@@ -66,10 +66,14 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, UserServiceInterface $userService, User $user): RedirectResponse
     {
         $validated = $request->validated();
+        $phone = $validated['phone_number'];
+        unset($validated['phone_number']);
         if ($userService->update($user, $validated)) {
-            // TODO: return redirect
+            if ($userService->updatePhone($user, $phone)) {
+                return redirect()->back()->with('success', 'Данные успешно обновлены!');
+            }
         }
-        // TODO: return redirect
+        return back()->withErrors(['Ошибка обновления данных']);
     }
 
     public function books(Request $request, BookServiceInterface $bookService, User $user): View|RedirectResponse

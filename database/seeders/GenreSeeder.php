@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 
 class GenreSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $genres = [
             [
