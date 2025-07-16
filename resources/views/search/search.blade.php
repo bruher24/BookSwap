@@ -17,4 +17,5 @@
             @endforeach
         </div>
     </div>
+    @include('search.dropdown')
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\Book;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -21,14 +22,25 @@ class MainController extends Controller
         return view('about');
     }
 
-    public function search(Request $request): View
+    public function search(Request $request): JsonResponse
     {
         // TODO: only for testing
-        $search = $request->search;
+        $query = $request->get('query');
+
         $found = [
-            Book::search($search)->get(),
-            Author::search($search)->get(),
+            'books' => Book::search($query)->get(),
+            'authors' => Author::search($query)->get(),
         ];
-        return view('search', compact('found'));
+
+        foreach ($found as $key => $category) {
+            if ($category->isEmpty()) {
+                unset($found[$key]);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $found,
+        ], 200, [], JSON_PRETTY_PRINT);
     }
 }

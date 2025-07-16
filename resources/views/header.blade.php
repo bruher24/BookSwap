@@ -60,9 +60,9 @@
                 </li>
             </ul>
 
-            <form method="get" action="{{ route('search') }}" id="searchForm"
+            <form id="searchForm"
                   class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                <input id="searchInput" name="search" type="search" class="form-control form-control-dark text-bg-white"
+                <input id="searchInput" type="text" class="form-control form-control-dark text-bg-white"
                        placeholder="Поиск..."
                        aria-label="Search">
             </form>
