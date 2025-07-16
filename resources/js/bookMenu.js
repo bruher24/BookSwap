@@ -89,11 +89,12 @@ $('.book-card').on('contextmenu', function (e) {
 
 
 function fillBookData(bookId) {
-    getBookData(bookId).then(function (bookData) {
-        const book = bookData.data.book;
+    getBookData(bookId).then(function (response) {
+        const book = response.data;
+        console.log(response)
         console.log(book);
         $('#floatingBookName').val(book.name);
-        $('#floatingTypeId').val(book.type_id);
+        $('#floatingTypeId').val(book.book_type);
 
         const authors = book.authors;
         for (let i = 0; i < authors.length; i++) {
@@ -111,24 +112,11 @@ function fillBookData(bookId) {
 }
 
 async function getBookData(bookId) {
-    try {
-        const response = await $.ajax({
-            url: `/books/${bookId}`,
-            type: 'get',
-            async: true,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        });
-        return {
-            success: response.success,
-            data: response,
-        };
-    } catch (error) {
-        console.error('Ошибка:', error);
-        return {
-            success: false,
-            errors: error.responseJSON?.errors || {error: [error.responseJSON?.message || 'Произошла ошибка']}
-        };
-    }
+    return await $.ajax({
+        url: `/api/v1/books/${bookId}`,
+        type: 'get',
+        async: true,
+    });
 }
 
 async function deleteBook(bookId) {

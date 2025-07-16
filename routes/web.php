@@ -60,4 +60,5 @@ Route::prefix('types/')->controller(BookTypeController::class)->name('types.')
 Route::prefix('api/v1/')->group(function () {
     Route::get('types', [BookTypeController::class, 'getTypes'])->name('getTypes');
     Route::get('authors', [AuthorController::class, 'getAuthors'])->name('getAuthors');
+    Route::get('books/{book}', [BookController::class, 'getBookData'])->name('getBookData');
 });

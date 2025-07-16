@@ -40,12 +40,9 @@ class BookController extends Controller
         ]);
     }
 
-    public function show(Book $book): JsonResponse
+    public function show(Book $book): View
     {
-        return response()->json([
-            'success' => true,
-            'book' => $book,
-        ]);
+        return view('books.show', compact('book'));
     }
 
     public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book)
@@ -64,5 +61,13 @@ class BookController extends Controller
         return response()->json([
             'success' => false,
         ]);
+    }
+
+    public function getBookData(Book $book): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data' => $book->loadMissing('authors'),
+        ], 200, [], JSON_PRETTY_PRINT);
     }
 }
