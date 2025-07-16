@@ -53,7 +53,7 @@ $(function () {
 
 async function searchRequest(query) {
     return await $.ajax({
-        url: `search`,
+        url: `/search`,
         type: 'get',
         async: true,
         data: {

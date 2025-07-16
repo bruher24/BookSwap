@@ -36,7 +36,7 @@ class BookService extends Service implements BookServiceInterface
     {
         $conditions['authors'] = [$author->id];
         $books = $this->where($conditions);
-        $allBooks = $this->where(['author' => [$author->id]]);
+        $allBooks = $this->where(['authors' => [$author->id]]);
         $params = $this->params($allBooks);
         unset($params['authors']);
 
