@@ -93,7 +93,7 @@ class BookService extends Service implements BookServiceInterface
         }
 
         if (isset($conditions['book_types'])) {
-            $books->whereIn('book_type_id', $conditions['book_types']);
+            $books->whereIn('book_type', $conditions['book_types']);
         }
         return $books->get();
     }
