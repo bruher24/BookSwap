@@ -24,28 +24,14 @@
 
             <div class="row g-3 mt-1">
                 <div class="col-sm-3">
-                    <button type="button" id="changePasswordBtn" class="btn btn-secondary">Сменить пароль</button>
-                </div>
-            </div>
-            <div id="changePasswordDiv" class="row g-3 mt-1 d-none">
-                <div class="col-sm-3">
                     <label class="form-label">Старый пароль</label>
-                    <input type="password" class="form-control" name="oldPassword">
+                    <input type="password" class="form-control" name="old_password">
+
                     <label class="form-label">Новый пароль</label>
-                    <input type="password" class="form-control" name="newPassword">
+                    <input type="password" class="form-control" name="password">
+
                     <label class="form-label">Подтверждение нового пароля</label>
-                    <input type="password" class="form-control" name="newPasswordCheck">
-                    <input type="submit" class="form-control mt-3 btn btn-success w-50" value="Сохранить"/>
-                </div>
-            </div>
-
-            <h5 class="mt-4">Статистика книг</h5>
-
-            <div class="row g-3 mt-1">
-                <div class="col-md-6">
-                    {{--                    TODO: прикрутить стату--}}
-                    <p>Отдано: 65</p>
-                    <p>Взято: 73</p>
+                    <input type="password" class="form-control" name="password_confirmation">
                 </div>
             </div>
         </div>
@@ -63,12 +49,11 @@
                                    name="phone_number"
                                    value="{{$user->phone()->first()->number ?? ''}}"/>
                         </div>
-
-                        <div class="col-sm-3">
-                            <input type="submit" class="form-control btn btn-success" value="Сохранить"/>
-                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-sm-3 mt-4">
+                <input type="submit" class="form-control btn btn-success" value="Сохранить"/>
             </div>
         </div>
     </form>

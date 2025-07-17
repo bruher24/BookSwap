@@ -27,7 +27,9 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'nullable|string|max:50|unique:users,name,' . $this->user()->id,
             'email' => 'nullable|string|min:5|max:100|email|unique:users,email,' . $this->user()->id,
-            'password' => 'nullable|string',
+            'old_password' => 'required_with:password|nullable|string',
+            'password' => 'required_with:old_password|nullable|string|confirmed',
+            'password_confirmation' => 'required_with:old_password|nullable|string|same:password',
             'phone_number' => [
                 'nullable',
                 'string',

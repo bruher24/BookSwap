@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -66,12 +67,9 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, UserServiceInterface $userService, User $user): RedirectResponse
     {
         $validated = $request->validated();
-        $phone = $validated['phone_number'];
-        unset($validated['phone_number']);
+
         if ($userService->update($user, $validated)) {
-            if ($userService->updatePhone($user, $phone)) {
-                return redirect()->back()->with('success', 'Данные успешно обновлены!');
-            }
+            return redirect()->back()->with('success', 'Данные успешно обновлены!');
         }
         return back()->withErrors(['Ошибка обновления данных']);
     }
