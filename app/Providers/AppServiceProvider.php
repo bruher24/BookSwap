@@ -37,6 +37,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Guard $auth): void
     {
+        date_default_timezone_set('Europe/Samara');
+
         Gate::define('is-admin', function (User $user) {
             return $user->isAdmin();
         });

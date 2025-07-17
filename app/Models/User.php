@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,6 +43,7 @@ class User extends Authenticatable
 
     public $appends = [
         'mainRole',
+        'registeredDiff'
     ];
 
     protected $with = [
@@ -67,6 +69,20 @@ class User extends Authenticatable
     public function getMainRoleAttribute(): int
     {
         return $this->roles()->min('id');
+    }
+
+    public function getRegisteredDiffAttribute()
+    {
+        $diff = Carbon::now()->diff($this->created_at);
+
+        return match (true) {
+            $diff->y > 0 && $diff->y < 5 => $diff->y . ' г назад',
+            $diff->y >= 5 => $diff->y . ' л назад',
+            $diff->m > 0 => $diff->m . ' мес назад',
+            $diff->d > 0 => $diff->d . ' д назад',
+            $diff->h > 0 => $diff->h . ' ч назад',
+            default => 'менее часа назад'
+        };
     }
 
     public function isAdmin(): bool

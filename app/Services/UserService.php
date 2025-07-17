@@ -6,7 +6,6 @@ use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserService extends Service implements UserServiceInterface
