@@ -60,7 +60,7 @@ RUN echo "[program:laravel-worker]" > /etc/supervisor/conf.d/laravel-worker.conf
     echo "autostart=true" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "autorestart=true" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "user=root" >> /etc/supervisor/conf.d/laravel-worker.conf && \
-    echo "numprocs=1" >> /etc/supervisor/conf.d/laravel-worker.conf && \
+    echo "numprocs=3" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "redirect_stderr=true" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "stdout_logfile=/var/www/storage/logs/worker.log" >> /etc/supervisor/conf.d/laravel-worker.conf
 

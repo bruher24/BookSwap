@@ -12,6 +12,13 @@ class MainController extends Controller
 {
     public function index(): View
     {
+        // TODO: отправка сообщения
+//        $msg = (new MessageReceived('This is a test email', '#', Str::uuid()))
+//            ->onConnection('redis')
+//            ->onQueue('app');
+//        Mail::to('glushkovd2424@gmail.com')
+//            ->queue($msg);
+
         // TODO: only for testing
         $books = Book::all();
         return view('home', compact('books'));
@@ -24,7 +31,6 @@ class MainController extends Controller
 
     public function search(Request $request): JsonResponse
     {
-        // TODO: only for testing
         $query = $request->input('query');
 
         $found = [
