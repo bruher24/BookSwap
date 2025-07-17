@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Cover;
 use App\Models\Genre;
 use App\Models\User;
 use Exception;
@@ -106,12 +107,17 @@ class BookService extends Service implements BookServiceInterface
         }
         $authors = $this->filterAuthorsData($data);
         // TODO: проверить логику attach
-        if (!empty($authors)) {
-            if ($this->attach($book, $authors)) {
-                return $book;
+        if (!empty($authors) && !$this->attach($book, $authors)) {
+            return false;
+        }
+        // TODO: сделать нормально
+        if (isset($data['cover'])) {
+            $found = Cover::where('src', $data['cover'])->first()->id;
+            if ($found) {
+                $book->cover_id = $found;
             }
         }
-        return false;
+        return $book;
     }
 
     private function filterAuthorsData(array $data): array

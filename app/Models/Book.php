@@ -65,8 +65,8 @@ class Book extends Model
         return $this->belongsToMany(Author::class);
     }
 
-    public function cover(): HasOne
+    public function cover(): BelongsTo
     {
-        return $this->hasOne(Cover::class);
+        return $this->belongsTo(Cover::class);
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\BookTypeEnum;
 use App\Models\Book;
+use App\Models\Cover;
 use Illuminate\Database\Seeder;
 
 class BookSeeder extends Seeder
@@ -51,10 +52,12 @@ class BookSeeder extends Seeder
         $id = 1;
         foreach ($books as $bookData) {
             $book = new Book($bookData);
+            $book->cover_id = Cover::first()->id;
             $book->save();
             $book->authors()->attach($id);
             $book->genres()->attach($id);
             $book->genres()->attach(++$id);
+            $book->save();
         }
     }
 }
