@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateSettingRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Interfaces\BookServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -73,6 +76,18 @@ class UserController extends Controller
         return back()->withErrors(['Ошибка обновления данных']);
     }
 
+    public function updateSettings(
+        UpdateSettingRequest $request,
+        UserServiceInterface $userService,
+        User $user
+    ): RedirectResponse {
+        $validated = $request->validated();
+        if (!$userService->updateSettings($user, $validated)) {
+            return redirect()->back()->withErrors(['Ошибка сохранения настроек']);
+        }
+        return redirect()->back()->with('success', 'Настройки успешно сохранены!');
+    }
+
     public function books(Request $request, BookServiceInterface $bookService, User $user): View|RedirectResponse
     {
         $filters = $bookService->getFilterFromRequest($request);
@@ -84,6 +99,13 @@ class UserController extends Controller
 
     public function profile(string $section = 'personal'): View
     {
-        return view("profile.$section", compact('section'));
+        $userSettings = [];
+        if ($section == 'settings') {
+            $userSettings = Auth::user()->settings;
+        }
+
+        $settings = Setting::all();
+
+        return view("profile.$section", compact('section', 'userSettings', 'settings'));
     }
 }

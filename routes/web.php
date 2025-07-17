@@ -26,6 +26,7 @@ Route::prefix('users/')->middleware(CheckAuth::class)->controller(UserController
         Route::get('logout', 'logout')->name('logout');
         Route::match(['post', 'get'], '{user}/books', 'books')->name('books');
         Route::patch('{user}', 'update')->name('update');
+        Route::patch('{user}/settings', 'updateSettings')->name('updateSettings');
         Route::delete('{user}', 'delete')->name('delete');
     });
 

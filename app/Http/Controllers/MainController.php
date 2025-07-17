@@ -25,7 +25,7 @@ class MainController extends Controller
     public function search(Request $request): JsonResponse
     {
         // TODO: only for testing
-        $query = $request->get('query');
+        $query = $request->input('query');
 
         $found = [
             'books' => Book::search($query)->get(),

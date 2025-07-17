@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Photo;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
             $user->refresh();
             $user->roles()->attach($user->id == 1 ? 1 : 2);
             $user->photo()->associate(Photo::all()->first());
+            $user->settings()->attach(Setting::all()->first(), ['value' => 'on']);
             $user->save();
         });
     }

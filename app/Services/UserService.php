@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\UserServiceInterface;
+use App\Models\Setting;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,24 @@ class UserService extends Service implements UserServiceInterface
             return false;
         }
 
+        return true;
+    }
+
+    public function updateSettings(User $user, array $data): bool
+    {
+        try {
+            $setting = $user->settings()->where('name', $data['setting_name']);
+            if ($setting->first()) {
+                $id = $setting->first()->id;
+                $setting->updateExistingPivot($id, ['value' => $data['setting_value'] ?? 'off']);
+            } else {
+                $toAttach = Setting::where('name', $data['setting_name'])->first();
+                $user->settings()->attach($toAttach->id, ['value' => $data['setting_value'] ?? 'off']);
+            }
+        } catch (Exception $exception) {
+            logger($exception->getMessage());
+            return false;
+        }
         return true;
     }
 }

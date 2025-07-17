@@ -109,4 +109,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Photo::class);
     }
+
+    public function settings(): BelongsToMany
+    {
+        return $this->belongsToMany(Setting::class)->withPivot('value')->withTimestamps();
+    }
 }
