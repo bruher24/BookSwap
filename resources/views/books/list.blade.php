@@ -17,7 +17,6 @@
                         </h6>
                     </div>
                 </a>
-
             </div>
         @endforeach
     @else
