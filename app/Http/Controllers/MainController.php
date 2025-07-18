@@ -2,14 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageReceived;
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Message;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class MainController extends Controller
 {
+    public function test(Request $request)
+    {
+        $message = new Message([
+            'from_id' => 1,
+            'to_id' => 1,
+            'subject' => 'Test Subject',
+            'body' => 'Test Body',
+        ]);
+
+        $message->save();
+
+        $message->refresh();
+
+        Log::debug('Запуск события');
+        MessageReceived::dispatch($message);
+    }
+
     public function index(): View
     {
         // TODO: отправка сообщения

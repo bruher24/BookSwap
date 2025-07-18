@@ -3,6 +3,9 @@
 namespace Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Events\MessageReceived;
+use App\Models\Message;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -10,10 +13,17 @@ class ExampleTest extends TestCase
     /**
      * A basic test example.
      */
-    public function test_the_application_returns_a_successful_response(): void
+    public function test_orders_can_be_shipped(): void
     {
-        $response = $this->get('/');
+        Event::fake();
 
-        $response->assertStatus(200);
+        MessageReceived::dispatch(new Message());
+
+        // Assert that an event was dispatched...
+        Event::assertDispatched(MessageReceived::class);
+
+        // Assert an event was not dispatched...
+//        Event::assertNotDispatched(MessageReceived::class);
+        
     }
 }

@@ -14,6 +14,7 @@ Route::controller(MainController::class)
         Route::get('/', 'index')->name('home');
         Route::get('about', 'about')->name('about');
         Route::get('search', 'search')->name('search');
+        Route::get('test', 'test')->name('test');
     });
 
 

@@ -20,5 +20,15 @@ stop:
 bash:
 	docker compose exec -it app bash
 
+red:
+	docker compose exec -it redis redis-cli -h app-redis -a root
+
+logs:
+	docker compose exec -it app tail -f storage/logs/laravel.log
+
+
+
+
+
 roll:
 	curl ascii.live/rick

@@ -4,13 +4,11 @@ namespace App\Providers;
 
 use App\Interfaces\AuthorServiceInterface;
 use App\Interfaces\BookServiceInterface;
-use App\Interfaces\BookTypeServiceInterface;
 use App\Interfaces\GenreServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use App\Services\AuthorService;
 use App\Services\BookService;
-use App\Services\BookTypeService;
 use App\Services\GenreService;
 use App\Services\UserService;
 use Illuminate\Contracts\Auth\Guard;
@@ -27,7 +25,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(AuthorServiceInterface::class, AuthorService::class);
         $this->app->bind(BookServiceInterface::class, BookService::class);
-        $this->app->bind(BookTypeServiceInterface::class, BookTypeService::class);
         $this->app->bind(GenreServiceInterface::class, GenreService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
     }

@@ -18,7 +18,7 @@
                 <h4 class="mt-4">{{ $book->book_type->label() }}</h4>
                 <h4 class="mt-4">{{ $book->user()->first()->name }}</h4>
 
-                <div class="btn-toolbar" role="toolbar">
+                <div class="btn-toolbar mt-3" role="toolbar">
                     <div class="btn-group">
                         <button class="btn btn-outline-dark">Написать</button>
                         <button class="btn btn-outline-dark">Позвонить</button>

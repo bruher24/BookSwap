@@ -56,11 +56,11 @@ RUN echo "[program:php-fpm]" > /etc/supervisor/conf.d/php-fpm.conf && \
 
 # Конфигурация для воркера очереди
 RUN echo "[program:laravel-worker]" > /etc/supervisor/conf.d/laravel-worker.conf && \
-    echo "command=php /var/www/artisan queue:work redis --queue=job,app --sleep=3 --tries=3" >> /etc/supervisor/conf.d/laravel-worker.conf && \
+    echo "command=php /var/www/artisan queue:work redis --queue=job,app,listeners,cache --sleep=3 --tries=3" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "autostart=true" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "autorestart=true" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "user=root" >> /etc/supervisor/conf.d/laravel-worker.conf && \
-    echo "numprocs=3" >> /etc/supervisor/conf.d/laravel-worker.conf && \
+    echo "numprocs=5" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "redirect_stderr=true" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "stdout_logfile=/var/www/storage/logs/worker.log" >> /etc/supervisor/conf.d/laravel-worker.conf
 
