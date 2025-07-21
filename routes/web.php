@@ -29,13 +29,15 @@ Route::prefix('users/')->middleware(CheckAuth::class)->controller(UserController
         Route::patch('{user}', 'update')->name('update');
         Route::patch('{user}/settings', 'updateSettings')->name('updateSettings');
         Route::delete('{user}', 'delete')->name('delete');
+        Route::get('{user}/chat/{chatWith}', 'chat')->name('chat');
+        Route::put('{user}/add-to-favorites', 'addToFavorites')->name('addToFavorites');
     });
 
 Route::prefix('books/')->middleware(CheckAuth::class)->controller(BookController::class)->name('books.')
     ->group(function () {
         Route::match(['post', 'get'], '/', 'index')->name('index')->withoutMiddleware(CheckAuth::class);
         Route::post('store', 'store')->name('store');
-        Route::get('{book}', 'show')->name('show');
+        Route::get('{book}', 'show')->name('show')->withoutMiddleware(CheckAuth::class);
         Route::get('{book}/edit', 'edit')->name('edit');
         Route::patch('{book}', 'update')->name('update');
         Route::delete('{book}', 'delete')->name('delete');
@@ -59,6 +61,7 @@ Route::prefix('types/')->controller(BookTypeController::class)->name('types.')
     });
 
 
+// TODO: перенести в api.php (поставить laravel sanctum для этого)
 Route::prefix('api/v1/')->group(function () {
     Route::get('types', [BookTypeController::class, 'getTypes'])->name('getTypes');
     Route::get('authors', [AuthorController::class, 'getAuthors'])->name('getAuthors');

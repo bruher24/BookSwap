@@ -9,6 +9,7 @@ use App\Interfaces\BookServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\UsersFavoriteBooks;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -29,15 +30,11 @@ class UserController extends Controller
         $validated = $request->validated();
         $remember = $request->input('remember');
         if (!$userService->create($validated)) {
-            return back()->withErrors([
-                'error' => 'Ошибка при создании пользователя.'
-            ]);
+            return back()->with('error', 'Ошибка при создании пользователя.');
         }
 
         if (!Auth::attempt($validated, $remember)) {
-            return back()->withErrors([
-                'email' => 'Error.',
-            ])->onlyInput('email');
+            return back()->with('error', 'Error.')->onlyInput('email');
         }
         $request->session()->regenerate();
         return redirect()->intended()->with('success', 'Вы успешо зарегистрировались!');
@@ -49,9 +46,7 @@ class UserController extends Controller
             'email' => $request->input('email'),
             'password' => $request->input('password')
         ], $request->input('remember'))) {
-            return back()->withErrors([
-                'Введена неправильная комбинация email и пароля.'
-            ]);
+            return back()->with('error', 'Введена неправильная комбинация email и пароля.');
         }
         $request->session()->regenerate();
         return redirect()->intended()->with('success', 'Добро пожаловать!');
@@ -73,7 +68,7 @@ class UserController extends Controller
         if ($userService->update($user, $validated)) {
             return redirect()->back()->with('success', 'Данные успешно обновлены!');
         }
-        return back()->withErrors(['Ошибка обновления данных']);
+        return back()->with('error', 'Ошибка обновления данных');
     }
 
     public function updateSettings(
@@ -83,7 +78,7 @@ class UserController extends Controller
     ): RedirectResponse {
         $validated = $request->validated();
         if (!$userService->updateSettings($user, $validated)) {
-            return redirect()->back()->withErrors(['Ошибка сохранения настроек']);
+            return redirect()->back()->with('error', 'Ошибка сохранения настроек');
         }
         return redirect()->back()->with('success', 'Настройки успешно сохранены!');
     }
@@ -107,5 +102,22 @@ class UserController extends Controller
         $settings = Setting::all();
 
         return view("profile.$section", compact('section', 'userSettings', 'settings'));
+    }
+
+    public function addToFavorites(Request $request, User $user): JsonResponse
+    {
+        $book_id = $request->input('book_id');
+        $state = $request->input('state');
+        $record = UsersFavoriteBooks::where('user_id', $user->id)->where('book_id', $book_id)->first();
+
+        if (isset($record) && $state == 'false') {
+            $record->delete();
+        } else {
+            UsersFavoriteBooks::updateOrCreate([
+                'user_id' => $user->id,
+                'book_id' => $book_id
+            ]);
+        }
+        return response()->json(['success' => true], 200, [], JSON_PRETTY_PRINT);
     }
 }

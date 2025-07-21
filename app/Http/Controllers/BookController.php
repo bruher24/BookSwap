@@ -6,8 +6,10 @@ use App\Http\Requests\StoreBookRequest;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\Cover;
+use App\Models\UsersFavoriteBooks;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class BookController extends Controller
@@ -43,7 +45,10 @@ class BookController extends Controller
 
     public function show(Book $book): View
     {
-        return view('books.show', compact('book'));
+        $user = Auth::user();
+        $isBookLiked = UsersFavoriteBooks::where('user_id', $user->id)->where('book_id', $book->id)->exists();
+//        dd($isBookLiked);
+        return view('books.show', compact('book', 'isBookLiked'));
     }
 
     public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book)

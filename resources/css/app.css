@@ -28,13 +28,29 @@
 
 .like-btn:hover .heart-icon path {
     border: 1px solid black;
-    stroke: red;
+    stroke: black;
     stroke-width: 6px;
     transition: 0.3s;
 }
 
 .like-btn.liked .heart-icon path {
-    fill: red;
-    stroke: red;
+    fill: black;
+    stroke: black;
     transition: 0.4s;
+}
+
+body.modal-open .to-blur-node {
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+}
+
+.guest-blurred {
+    -webkit-filter: blur(2px);
+    -moz-filter: blur(2px);
+    -o-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
 }

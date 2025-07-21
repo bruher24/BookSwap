@@ -12,7 +12,10 @@ use App\Services\BookService;
 use App\Services\GenreService;
 use App\Services\UserService;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,6 +45,13 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) use ($auth) {
             $view->with('user', $auth->user());
+        });
+
+        Queue::failing(function (JobFailed $event) {
+            Log::error(
+                "Queue: " . $event->job->getQueue()
+                . "\n Error: " . $event->exception->getMessage()
+            );
         });
     }
 }

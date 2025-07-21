@@ -1,5 +1,5 @@
 @php use App\Models\Photo;use Illuminate\Support\Facades\Storage; @endphp
-<header class="p-3 text-bg-dark">
+<header class="p-3 text-bg-dark to-blur-node">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="{{ route('home') }}"

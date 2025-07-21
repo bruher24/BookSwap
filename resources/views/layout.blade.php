@@ -23,19 +23,10 @@
 @auth
     @include('modals.bookForm')
 @endauth
-@include('utils.alert')
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 @include('header')
-<div id="ajaxAlerts" style="position: fixed; top: 20px; right: 20px; z-index: 1100;"></div>
-<main>
+@include('utils.alert')
+<div id="ajaxAlerts" style="position: fixed; top: 20px; z-index: 1100;"></div>
+<main class="to-blur-node">
     @yield('main')
 </main>
 @include('footer')

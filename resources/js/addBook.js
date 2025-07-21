@@ -23,7 +23,7 @@ $(function () {
         if (oldValue && oldValue !== '0') {
             selectedAuthors = selectedAuthors.filter(id => id !== oldValue);
         }
-        
+
         if (newValue && newValue !== '0') {
             selectedAuthors.push(newValue);
         }
@@ -107,7 +107,7 @@ async function storeBookRequest(data) {
     });
 }
 
-function showAlert(type, message) {
+export function showAlert(type, message) {
     const alertHtml = `
         <div class="alert alert-${type} alert-dismissible fade show" role="alert">
             ${message}
