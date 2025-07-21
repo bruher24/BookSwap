@@ -27,7 +27,7 @@
                         </a>
                         <button class="btn btn-outline-dark" id="call_btn"
                                 data-user="{{ $user->id ?? null }}"
-                                data-book="{{ $book->id }}">
+                                data-seller="{{ $sellerPhone }}">
                             Позвонить
                         </button>
                     </div>

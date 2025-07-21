@@ -47,8 +47,8 @@ class BookController extends Controller
     {
         $user = Auth::user();
         $isBookLiked = UsersFavoriteBooks::where('user_id', $user->id)->where('book_id', $book->id)->exists();
-//        dd($isBookLiked);
-        return view('books.show', compact('book', 'isBookLiked'));
+        $sellerPhone = $book->user->phone ? $book->user->phone->number : null;
+        return view('books.show', compact('book', 'isBookLiked', 'sellerPhone'));
     }
 
     public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book)
