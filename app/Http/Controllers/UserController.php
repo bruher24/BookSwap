@@ -115,7 +115,8 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function chat(): RedirectResponse
+    public function chat(): View
     {
+        return view('chat.index');
     }
 }

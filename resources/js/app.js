@@ -7,3 +7,4 @@ import './searchDropdown.js';
 import './addToFavorites.js';
 import './chatBtn.js';
 import './callBtn.js';
+import './chat.js';
