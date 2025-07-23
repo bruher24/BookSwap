@@ -4,7 +4,6 @@ import './dataLoad.js';
 import './addBook.js';
 import './bookMenu.js';
 import './searchDropdown.js';
-import './changePassword.js';
 import './addToFavorites.js';
 import './chatBtn.js';
 import './callBtn.js';

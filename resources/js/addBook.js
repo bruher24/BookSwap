@@ -1,3 +1,5 @@
+import * as utils from "./utils.js";
+
 $(function () {
     let selectedAuthors = [];
 
@@ -59,12 +61,12 @@ $(function () {
         storeBookRequest(formData).then(function (result) {
             console.log(result);
             if (result.success === true) {
-                showAlert('success', 'Книга успешно сохранена!');
+                utils.showAlert('success', 'Книга успешно сохранена!');
                 $('#modalBookForm').modal('hide');
                 form[0].reset();
                 window.location.reload();
             } else {
-                showAlert('danger', 'Ошибка при сохранении книги!');
+                utils.showAlert('danger', 'Ошибка при сохранении книги!');
                 if (result.errors) {
                     showValidationErrors(result.errors);
                 }
@@ -107,21 +109,6 @@ async function storeBookRequest(data) {
     });
 }
 
-export function showAlert(type, message) {
-    const alertHtml = `
-        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    `;
-
-    $('#ajaxAlerts').append(alertHtml);
-
-    setTimeout(() => {
-        $('.alert').alert('close');
-    }, 5000);
-}
-
 function showValidationErrors(errors) {
     $('.is-invalid').removeClass('is-invalid');
     $('.invalid-feedback').remove();
@@ -132,7 +119,7 @@ function showValidationErrors(errors) {
             input.addClass('is-invalid');
             input.after(`<div class="invalid-feedback">${messages.join(', ')}</div>`);
         } else {
-            showAlert('danger', messages.join(', '));
+            utils.showAlert('danger', messages.join(', '));
         }
     }
 }
