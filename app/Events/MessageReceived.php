@@ -3,7 +3,9 @@
 namespace App\Events;
 
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithBroadcasting;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,16 +13,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageReceived
+class MessageReceived implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels, InteractsWithBroadcasting;
+
+    public string $connection = 'redis';
+    public string $queue = 'listeners';
+
+    public Message $message;
 
     /**
      * Create a new event instance.
      */
     public function __construct(
-        public Message $message
+        Message $message
     ) {
+        $this->broadcastVia('reverb');
+        $this->message = $message;
     }
 
     /**
@@ -31,7 +40,7 @@ class MessageReceived
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new PrivateChannel('user.' . $this->message->from_id),
         ];
     }
 }
