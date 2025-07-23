@@ -32,20 +32,20 @@
                     </div>
 
                     <div class="ms-1" role="group">
-                        <form id="add_to_favorites_form"
-                              action="{{ route('users.addToFavorites', ['user' => $user]) }}"
-                              method="post">
+                        <form id="favorites-form"
+                              method="post" action="{{ route('users.updateFavorites', ['user' => $user]) }}"
+                              data-user="{{ $user->id }}"
+                        >
                             @method('put')
                             @csrf
-                            <input id="favorites_user_id" type="hidden" name="user_id" value="{{ $user->id ?? null }}">
-                            <input id="favorites_book_id" type="hidden" name="book_id" value="{{ $book->id }}">
-                            <input id="favorites_state" type="hidden" name="state" value="{{ $isBookLiked }}">
+                            <input type="hidden" name="book_id" value="{{ $book->id }}">
+                            <input type="hidden" name="isLiked" value="{{ $isBookLiked }}">
                         </form>
                         <button class="btn p-1 dots-icon like-btn
                         @if($isBookLiked)
                             liked
                         @endif
-                        " id="like_btn">
+                        ">
                             <svg height="30px" width="30px" class="heart-icon" viewBox="0 0 122.88 109.57">
                                 <path fill="none"
                                       d="M65.46,19.57c-0.68,0.72-1.36,1.45-2.2,2.32l-2.31,2.41l-2.4-2.33c-0.71-0.69-1.43-1.4-2.13-2.09

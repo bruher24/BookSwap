@@ -30,7 +30,7 @@ Route::prefix('users/')->middleware(CheckAuth::class)->controller(UserController
         Route::patch('{user}/settings', 'updateSettings')->name('updateSettings');
         Route::delete('{user}', 'delete')->name('delete');
         Route::get('{user}/chat/{chatWith}', 'chat')->name('chat');
-        Route::put('{user}/add-to-favorites', 'addToFavorites')->name('addToFavorites');
+        Route::put('{user}/update-favorites', 'updateFavorites')->name('updateFavorites');
     });
 
 Route::prefix('books/')->middleware(CheckAuth::class)->controller(BookController::class)->name('books.')

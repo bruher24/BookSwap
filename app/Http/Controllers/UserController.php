@@ -94,30 +94,28 @@ class UserController extends Controller
 
     public function profile(string $section = 'personal'): View
     {
-        $userSettings = [];
-        if ($section == 'settings') {
-            $userSettings = Auth::user()->settings;
-        }
-
+        $user = Auth::user();
+        $userSettings = $user->settings ?? [];
         $settings = Setting::all();
 
         return view("profile.$section", compact('section', 'userSettings', 'settings'));
     }
 
-    public function addToFavorites(Request $request, User $user): JsonResponse
+    public function updateFavorites(UserServiceInterface $userService, Request $request, User $user): RedirectResponse
     {
         $book_id = $request->input('book_id');
-        $state = $request->input('state');
-        $record = UsersFavoriteBooks::where('user_id', $user->id)->where('book_id', $book_id)->first();
+        $isLiked = $request->input('isLiked');
 
-        if (isset($record) && $state == 'false') {
-            $record->delete();
+        if (!$isLiked) {
+            $userService->addToFavorites($user->id, $book_id);
         } else {
-            UsersFavoriteBooks::updateOrCreate([
-                'user_id' => $user->id,
-                'book_id' => $book_id
-            ]);
+            $userService->removeFromFavorites($user->id, $book_id);
         }
-        return response()->json(['success' => true], 200, [], JSON_PRETTY_PRINT);
+
+        return redirect()->back();
+    }
+
+    public function chat(): RedirectResponse
+    {
     }
 }

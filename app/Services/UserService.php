@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\UsersFavoriteBooks;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -67,5 +68,19 @@ class UserService extends Service implements UserServiceInterface
             return false;
         }
         return true;
+    }
+
+    public function addToFavorites($user_id, $book_id): void
+    {
+        UsersFavoriteBooks::withTrashed()->updateOrCreate([
+            'user_id' => $user_id,
+            'book_id' => $book_id,
+        ])->restore();
+    }
+
+    public function removeFromFavorites($user_id, $book_id): void
+    {
+        $record = UsersFavoriteBooks::where('user_id', $user_id)->where('book_id', $book_id)->first();
+        $record->delete();
     }
 }
