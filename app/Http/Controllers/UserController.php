@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateSettingRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Interfaces\BookServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use App\Models\Chat;
+use App\Models\Message;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\UsersFavoriteBooks;
@@ -115,8 +117,24 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function chat(): View
+    public function chat(UserServiceInterface $userService, User $user): View
     {
-        return view('chat.index');
+        Chat::updateOrCreate([
+            'first_user_id' => 1,
+            'second_user_id' => 2,
+        ]);
+        // TODO: проверять блэклист получателя
+        $chats = $userService->getChats($user);
+
+        return view('chat.index', compact('chats'));
+    }
+
+    public function getMessages(UserServiceInterface $userService, User $user, User $recipient): JsonResponse
+    {
+        $messages = $userService->getMessages($user, $recipient);
+        return response()->json([
+            'success' => true,
+            'messages' => $messages,
+        ]);
     }
 }

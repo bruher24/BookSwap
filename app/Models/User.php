@@ -114,4 +114,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Setting::class)->withPivot('value')->withTimestamps();
     }
+
+    public function chats(): HasMany
+    {
+        $chatsAsFirst = $this->hasMany(Chat::class, 'first_user_id');
+        $chatsAsSecond = $this->hasMany(Chat::class, 'second_user_id');
+        return $chatsAsFirst->union($chatsAsSecond);
+    }
 }

@@ -29,7 +29,7 @@ Route::prefix('users/')->middleware(CheckAuth::class)->controller(UserController
         Route::patch('{user}', 'update')->name('update');
         Route::patch('{user}/settings', 'updateSettings')->name('updateSettings');
         Route::delete('{user}', 'delete')->name('delete');
-        Route::get('{user}/chat/{chatWith}', 'chat')->name('chat');
+        Route::get('{user}/chat', 'chat')->name('chat');
         Route::put('{user}/update-favorites', 'updateFavorites')->name('updateFavorites');
     });
 
@@ -61,9 +61,10 @@ Route::prefix('types/')->controller(BookTypeController::class)->name('types.')
     });
 
 
-// TODO: перенести в api.php (поставить laravel sanctum для этого)
+// TODO: перенести в api.php (поставить sanctum для этого)
 Route::prefix('api/v1/')->group(function () {
     Route::get('types', [BookTypeController::class, 'getTypes'])->name('getTypes');
     Route::get('authors', [AuthorController::class, 'getAuthors'])->name('getAuthors');
     Route::get('books/{book}', [BookController::class, 'getBookData'])->name('getBookData');
+    Route::get('users/{user}/chat/{recipient}', [UserController::class, 'getMessages'])->name('getMessages');
 });

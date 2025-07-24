@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Interfaces\UserServiceInterface;
+use App\Models\Message;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\UsersFavoriteBooks;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
@@ -82,5 +84,24 @@ class UserService extends Service implements UserServiceInterface
     {
         $record = UsersFavoriteBooks::where('user_id', $user_id)->where('book_id', $book_id)->first();
         $record->delete();
+    }
+
+    public function getMessages(User $user, User $recipient): Collection
+    {
+        // TODO: если сам себе пишет, то не слать уведы
+        $messages = Message::where(function ($query) use ($user, $recipient) {
+            $query->where('from_id', $user->id)
+                ->where('to_id', $recipient->id);
+        })->orWhere(function ($query) use ($user, $recipient) {
+            $query->where('from_id', $recipient->id)
+                ->where('to_id', $user->id);
+        });
+        return $messages->get();
+    }
+
+    public function getChats(User $user): Collection
+    {
+        $chats = $user->chats;
+        return $chats;
     }
 }
