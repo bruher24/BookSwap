@@ -16,7 +16,7 @@ function selectChat($node) {
         messagesListRequest(user, recipient)
             .then(function (response) {
                 if (response.success) {
-                    displayChat($chatWindow, response.messages);
+                    displayChat($chatWindow, response);
                 }
             });
     }
@@ -39,14 +39,14 @@ async function messagesListRequest(user, recipient) {
     });
 }
 
-function displayChat($chatWindow, messages) {
+function displayChat($chatWindow, response) {
     let $messagesContainer = $('.messages-container');
 
     displayTypingArea();
 
-    displayChatHeader($chatWindow);
+    displayChatHeader(response.recipient);
 
-    displayMessages($messagesContainer, messages);
+    displayMessages($messagesContainer, response.messages, response.recipient);
 }
 
 function displayTypingArea() {
@@ -54,10 +54,51 @@ function displayTypingArea() {
     $('.typing-area').toggleClass('d-none');
 }
 
-function displayChatHeader($chatWindow) {
-
+function displayChatHeader(recipient) {
+    $('.chat-header p').text('Чат с ' + recipient.name);
 }
 
-function displayMessages($messagesContainer, messages) {
+function displayMessages($messagesContainer, messages, recipient) {
     console.log(messages);
+    for (const [date, content] of Object.entries(messages)) {
+        let dateObj = new Date(date);
+        let options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        };
+        let formattedDate = dateObj.toLocaleDateString('ru-RU', options);
+
+        appendDateSection($messagesContainer, formattedDate);
+        content.forEach(function (message) {
+            appendMessage($messagesContainer, message, recipient);
+        });
+    }
+}
+
+function appendDateSection($messagesContainer, date) {
+    $messagesContainer.append(`<p class="p-0 pb-3 m-auto text-secondary">${date}</p>`);
+}
+
+function appendMessage($messagesContainer, message, recipient) {
+    let created_at = new Date(message.created_at);
+    let time = created_at.getHours() + ':' + created_at.getMinutes();
+
+    let $messageDiv = $('<div>').addClass('message-div rounded-3 px-2 py-1 mx-2 my-1').css('max-width', '45%');
+    let $messageBody = $('<p>').addClass('message-body p-0 m-0').text(message.body);
+    let $messageTime = $('<p>').addClass('message-date p-0 m-0 small text-secondary').text(time);
+
+    let classes = ['bg-none', 'border', 'border-black', 'text-start', 'me-auto'];
+    if (message.to_id === recipient.id) {
+        classes = ['bg-dark-subtle', 'text-end', 'ms-auto'];
+    }
+
+    classes.forEach(function (className) {
+        $messageDiv.addClass(className);
+    })
+
+    $messageDiv.append($messageBody);
+    $messageDiv.append($messageTime);
+
+    $messagesContainer.append($messageDiv);
 }

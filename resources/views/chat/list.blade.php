@@ -1,5 +1,6 @@
 <div class="chat-list col-sm-3 p-0 m-0 border-end border-black">
     @if(!empty($chats))
+        <div class="border-bottom border-black" style="height: 8%"></div>
         @foreach($chats as $chat)
             <div class="chat-row border-bottom border-black d-flex align-items-center"
                  role="button"

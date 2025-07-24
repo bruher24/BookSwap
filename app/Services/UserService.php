@@ -95,8 +95,17 @@ class UserService extends Service implements UserServiceInterface
         })->orWhere(function ($query) use ($user, $recipient) {
             $query->where('from_id', $recipient->id)
                 ->where('to_id', $user->id);
-        });
+        })->orderBy('created_at');
+
         return $messages->get();
+    }
+
+    public function groupMessages(Collection $messages): \Illuminate\Support\Collection
+    {
+        $grouped = $messages->groupBy(function (Message $item, int $key) {
+            return mb_substr($item->created_at, 0, 10);
+        })->all();
+        return collect($grouped);
     }
 
     public function getChats(User $user): Collection

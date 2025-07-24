@@ -132,9 +132,12 @@ class UserController extends Controller
     public function getMessages(UserServiceInterface $userService, User $user, User $recipient): JsonResponse
     {
         $messages = $userService->getMessages($user, $recipient);
+        $grouped = $userService->groupMessages($messages);
+
         return response()->json([
             'success' => true,
-            'messages' => $messages,
+            'messages' => $grouped,
+            'recipient' => $recipient
         ]);
     }
 }
