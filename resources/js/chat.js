@@ -2,6 +2,14 @@ $(function () {
     $('.chat-row ').on('click', function () {
         selectChat($(this));
     });
+
+    // TODO: слушать реальный канал
+    Echo.private(`USER_CHANNEL`)
+        .listen('MessageReceived', (e) => {
+            console.log('Message received!', e);
+            // TODO: показать уведомление + отобразить новое сообщение в чате
+            //     отправлять два сообщения: в канал уведомлений и в канал чата ??
+        });
 });
 
 function selectChat($node) {
