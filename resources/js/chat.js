@@ -1,12 +1,16 @@
+import './echo.js';
+
 $(function () {
     $('.chat-row ').on('click', function () {
         selectChat($(this));
     });
 
     // TODO: слушать реальный канал
-    Echo.private(`USER_CHANNEL`)
+    Echo.private(`user.1.2`)
         .listen('MessageReceived', (e) => {
             console.log('Message received!', e);
+
+            appendMessage($('.messages-container'), e.message, e.message.to_id)
             // TODO: показать уведомление + отобразить новое сообщение в чате
             //     отправлять два сообщения: в канал уведомлений и в канал чата ??
         });

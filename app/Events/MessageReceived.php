@@ -39,8 +39,11 @@ class MessageReceived implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
+        $idPair = [$this->message->from_id, $this->message->to_id];
+        sort($idPair);
+
         return [
-            new PrivateChannel('user.' . $this->message->from_id),
+            new PrivateChannel('user.' . $idPair[0] . '.' . $idPair[1]),
         ];
     }
 }

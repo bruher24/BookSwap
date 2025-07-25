@@ -26,5 +26,6 @@ class SendMessageNotification implements ShouldQueue
     public function handle(MessageReceived $event): void
     {
         Log::debug('Запуск слушателя');
+        Log::debug('Трансляция на ' . $event->broadcastOn()[0]->name);
     }
 }
