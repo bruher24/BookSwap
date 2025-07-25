@@ -25,8 +25,20 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|max:50|unique:users,name,' . $this->user()->id,
-            'email' => 'nullable|string|min:5|max:100|email|unique:users,email,' . $this->user()->id,
+            'name' => [
+                'nullable',
+                'string',
+                'max:50',
+                Rule::unique('users', 'name')->whereNull('deleted_at')->ignore($this->user()->id),
+            ],
+            'email' => [
+                'nullable',
+                'string',
+                'min:5',
+                'max:100',
+                'email',
+                Rule::unique('users', 'email')->whereNull('deleted_at')->ignore($this->user()->id),
+            ],
             'old_password' => 'required_with:password|nullable|string',
             'password' => 'required_with:old_password|nullable|string|confirmed',
             'password_confirmation' => 'required_with:old_password|nullable|string|same:password',

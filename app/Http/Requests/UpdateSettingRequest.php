@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateSettingRequest extends FormRequest
 {
@@ -22,7 +23,11 @@ class UpdateSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'setting_name' => 'required|string|exists:settings,name',
+            'setting_name' => [
+                'required',
+                'string',
+                Rule::exists('settings', 'name')->whereNull('deleted_at'),
+            ],
             'setting_value' => 'nullable|string',
         ];
     }

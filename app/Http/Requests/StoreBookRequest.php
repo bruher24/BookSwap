@@ -25,11 +25,33 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|integer|exists:users,id',
-            'name' => 'required|string|max:100|unique:books,name',
-            'author_id' => 'required_without_all:authorLastName,authorFirstname|nullable|integer|exists:authors,id',
-            'author_id1' => 'nullable|integer|exists:authors,id',
-            'author_id2' => 'nullable|integer|exists:authors,id',
+            'user_id' => [
+                'required',
+                'integer',
+                Rule::exists('users', 'id')->whereNull('deleted_at'),
+            ],
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('books', 'name')->whereNull('deleted_at'),
+            ],
+            'author_id' => [
+                'required_without_all:authorLastName,authorFirstname',
+                'nullable',
+                'integer',
+                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+            ],
+            'author_id1' => [
+                'nullable',
+                'integer',
+                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+            ],
+            'author_id2' => [
+                'nullable',
+                'integer',
+                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+            ],
             'authorLastname' => [
                 'required_without:author_id',
                 'nullable',
@@ -53,14 +75,27 @@ class StoreBookRequest extends FormRequest
                 Rule::date()->beforeOrEqual(today()->subYears(16)),
             ],
             'page_count' => 'required|integer|min:1',
-            'photo' => 'nullable|string|unique:photos,src',
+            'photo' => [
+                'nullable',
+                'string',
+                Rule::unique('photos', 'src')->whereNull('deleted_at'),
+            ],
             'publishing_house' => 'nullable|string',
             'publication_year' => [
                 'nullable',
                 Rule::date()->format('Y'),
             ],
-            'type_id' => 'required|integer|exists:book_types,id',
-            'isbn' => 'nullable|string|size:13|unique:books,isbn',
+            'type_id' => [
+                'required',
+                'integer',
+                Rule::exists('book_types', 'id')->whereNull('deleted_at'),
+            ],
+            'isbn' => [
+                'nullable',
+                'string',
+                'size:13',
+                Rule::unique('books', 'isbn')->whereNull('deleted_at'),
+            ],
         ];
     }
 }
