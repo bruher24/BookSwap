@@ -119,10 +119,38 @@ class UserController extends Controller
 
     public function chat(UserServiceInterface $userService, User $user): View
     {
-        Chat::updateOrCreate([
+        $chat = Chat::updateOrCreate([
             'first_user_id' => 1,
             'second_user_id' => 2,
         ]);
+
+//        $chat->messages()->createMany([
+//            [
+//                'from_id' => 1,
+//                'to_id' => 2,
+//                'subject' => '123',
+//                'body' => 'fifth',
+//            ],
+//            [
+//                'from_id' => 2,
+//                'to_id' => 1,
+//                'subject' => '123',
+//                'body' => 'sixth',
+//            ],
+//            [
+//                'from_id' => 1,
+//                'to_id' => 2,
+//                'subject' => '123',
+//                'body' => 'seventh',
+//            ],
+//            [
+//                'from_id' => 2,
+//                'to_id' => 1,
+//                'subject' => '123',
+//                'body' => 'eighth',
+//            ],
+//        ]);
+
         // TODO: проверять блэклист получателя
         $chats = $userService->getChats($user);
 

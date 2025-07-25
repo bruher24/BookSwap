@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\MessageReceived;
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Chat;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -15,22 +16,29 @@ use Illuminate\View\View;
 
 class MainController extends Controller
 {
-    public function test(Request $request)
+    public function test()
     {
-        $message = new Message([
-            'from_id' => 1,
+//        $message = new Message([
+//            'from_id' => 2,
+//            'to_id' => 1,
+//            'subject' => '123',
+//            'body' => 'Test Body',
+//        ]);
+//
+//        $message->save();
+//
+//        $message->refresh();
+//
+//        Log::debug('Запуск события');
+//        MessageReceived::dispatch($message);
+//        return view('test');
+        $message = Chat::first()->messages()->create([
+            'from_id' => 2,
             'to_id' => 1,
-            'subject' => 'Test Subject',
-            'body' => 'Test Body',
+            'subject' => '123',
+            'body' => 'New Test Body',
         ]);
-
-        $message->save();
-
-        $message->refresh();
-
-        Log::debug('Запуск события');
         MessageReceived::dispatch($message);
-        return view('test');
     }
 
     public function index(): View

@@ -9,13 +9,3 @@ import './chatBtn.js';
 import './callBtn.js';
 import './chat.js';
 import './echo.js';
-
-
-$(function () {
-    Echo.private(`user.1`)
-        .listen('MessageReceived', (e) => {
-            console.log('Message received!', e);
-            console.log(e.message)
-            alert(JSON.stringify(e));
-        });
-})
