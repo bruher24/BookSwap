@@ -4,6 +4,7 @@ $(function () {
     $form[0].reset();
     $form.on('submit', function (e) {
         e.preventDefault();
+        $('#searchDropdown').remove();
         let $search = $('#searchInput');
         searchRequest($search.val()).then(function (response) {
             if (response.success) {
