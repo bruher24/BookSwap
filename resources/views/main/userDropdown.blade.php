@@ -9,20 +9,29 @@
     </a>
     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
         <li>
+            <p class="dropdown-item-text user-select-none mb-0">
+                {{ $user->name }}
+            </p>
+        </li>
+
+        <li>
+            <hr class="dropdown-divider my-1">
+        </li>
+
+        <li>
             <a class="dropdown-item"
                href="{{ route('users.profile') }}">
                 Личный кабинет
             </a>
         </li>
+
         <li>
             <a class="dropdown-item"
                href="{{ route('users.profile', ['section' => 'settings']) }}">
                 Настройки
             </a>
         </li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
+
         <li>
             <a class="dropdown-item"
                href="{{ route('users.logout') }}">
