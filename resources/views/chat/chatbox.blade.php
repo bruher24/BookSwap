@@ -1,4 +1,4 @@
-<div class="chat-window col p-0 m-0 d-flex align-items-center flex-column">
+<div class="chat-window col p-0 m-0 d-flex align-items-center flex-column h-100">
 
     <div class="chat-header border-bottom border-black w-100 d-flex" style="height: 8%">
 
@@ -12,7 +12,7 @@
         <p class="p-0 m-auto"></p>
     </div>
 
-    <div class="messages-container w-100 m-auto d-flex flex-column">
+    <div class="messages-container w-100 m-auto d-flex flex-column overflow-scroll" style="height: 84%;">
         <p class="no-messages-text text-center text-secondary m-auto">Выберите чат, чтобы начать общение</p>
     </div>
 

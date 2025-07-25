@@ -16,7 +16,7 @@ function selectChat($node) {
     if (!$node.hasClass('active')) {
         madeActive($node);
 
-        const user = $('.chats-container').data('user');
+        const user = $('.chat-container').data('user');
         let $chatWindow = $('.chat-window');
 
         let recipient = $node.data('recipient');
@@ -93,17 +93,18 @@ function appendMessage($messagesContainer, message, recipient) {
     let time = created_at.getHours() + ':' + created_at.getMinutes();
 
     let $messageDiv = $('<div>').addClass('message-div rounded-3 px-2 py-1 mx-2 my-1').css('max-width', '45%');
-    let $messageBody = $('<p>').addClass('message-body p-0 m-0').text(message.body);
-    let $messageTime = $('<p>').addClass('message-date p-0 m-0 small text-secondary').text(time);
+    let $messageBody = $('<p>').addClass('message-body p-0 m-0 pe-4').text(message.body);
+    let $messageTime = $('<p>').addClass('message-date p-0 m-0 small text-secondary text-end').text(time);
 
-    let classes = ['bg-none', 'border', 'border-black', 'text-start', 'me-auto'];
+    let divClasses = ['bg-none', 'border', 'border-black', 'text-start', 'me-auto'];
+
     if (message.to_id === recipient.id) {
-        classes = ['bg-dark-subtle', 'text-end', 'ms-auto'];
+        divClasses = ['bg-dark-subtle', 'text-end', 'ms-auto'];
     }
 
-    classes.forEach(function (className) {
+    divClasses.forEach(function (className) {
         $messageDiv.addClass(className);
-    })
+    });
 
     $messageDiv.append($messageBody);
     $messageDiv.append($messageTime);
