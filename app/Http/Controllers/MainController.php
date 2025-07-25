@@ -44,12 +44,12 @@ class MainController extends Controller
 
         // TODO: only for testing
         $books = Book::all();
-        return view('home', compact('books'));
+        return view('main.home', compact('books'));
     }
 
     public function about(): View
     {
-        return view('about');
+        return view('main.about');
     }
 
     public function search(Request $request): JsonResponse

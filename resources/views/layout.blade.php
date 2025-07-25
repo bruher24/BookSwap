@@ -23,13 +23,13 @@
 @auth
     @include('modals.bookForm')
 @endauth
-@include('header')
+@include('main.header')
 @include('utils.alert')
 <div id="ajaxAlerts" style="position: fixed; top: 20px; z-index: 1100;"></div>
 <main class="to-blur-node">
     @yield('main')
 </main>
-@include('footer')
+@include('main.footer')
 <script
         src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="

@@ -4,5 +4,5 @@
 @endsection
 @section('main')
     {{--        TODO: спросить у Крис--}}
-    @include('carousel')
+    @include('main.carousel')
 @endsection
