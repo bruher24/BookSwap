@@ -1,5 +1,9 @@
 import './echo.js';
 
+let userId = $('.chat-container').data('user');
+let $chatWindow = $('.chat-window');
+let $messagesContainer = $('.messages-container');
+
 $(function () {
     $('.chat-row ').on('click', function () {
         selectChat($(this));
@@ -10,10 +14,7 @@ $(function () {
         .listen('MessageReceived', (e) => {
             console.log('Message received!', e);
 
-            let myRecipient = {
-                id: e.message.to_id,
-            };
-            appendMessage($('.messages-container'), e.message, myRecipient)
+            appendMessage(e.message)
             // TODO: показать уведомление + отобразить новое сообщение в чате
             //     отправлять два сообщения: в канал уведомлений и в канал чата ??
         });
@@ -23,15 +24,12 @@ function selectChat($node) {
     if (!$node.hasClass('active')) {
         madeActive($node);
 
-        const user = $('.chat-container').data('user');
-        let $chatWindow = $('.chat-window');
+        let recipientId = $node.data('recipient');
 
-        let recipient = $node.data('recipient');
-
-        messagesListRequest(user, recipient)
+        messagesListRequest(userId, recipientId)
             .then(function (response) {
                 if (response.success) {
-                    displayChat($chatWindow, response);
+                    displayChat(response);
                 }
             });
     }
@@ -46,22 +44,21 @@ function madeActive($node) {
     }
 }
 
-async function messagesListRequest(user, recipient) {
+async function messagesListRequest(userId, recipientId) {
     return await $.ajax({
-        url: `/api/v1/users/${user}/chat/${recipient}`,
+        url: `/api/v1/users/${userId}/chat/${recipientId}`,
         type: 'get',
         async: true
     });
 }
 
-function displayChat($chatWindow, response) {
-    let $messagesContainer = $('.messages-container');
+function displayChat(response) {
 
     displayTypingArea();
 
     displayChatHeader(response.recipient);
 
-    displayMessages($messagesContainer, response.messages, response.recipient);
+    displayMessages(response.messages, response.recipient);
 }
 
 function displayTypingArea() {
@@ -73,8 +70,7 @@ function displayChatHeader(recipient) {
     $('.chat-header p').text('Чат с ' + recipient.name);
 }
 
-function displayMessages($messagesContainer, messages, recipient) {
-    console.log(messages);
+function displayMessages(messages) {
     for (const [date, content] of Object.entries(messages)) {
         let dateObj = new Date(date);
         let options = {
@@ -84,18 +80,18 @@ function displayMessages($messagesContainer, messages, recipient) {
         };
         let formattedDate = dateObj.toLocaleDateString('ru-RU', options);
 
-        appendDateSection($messagesContainer, formattedDate);
+        appendDateSection(formattedDate);
         content.forEach(function (message) {
-            appendMessage($messagesContainer, message, recipient);
+            appendMessage(message);
         });
     }
 }
 
-function appendDateSection($messagesContainer, date) {
+function appendDateSection(date) {
     $messagesContainer.append(`<p class="p-0 pb-3 m-auto text-secondary">${date}</p>`);
 }
 
-function appendMessage($messagesContainer, message, recipient) {
+function appendMessage(message) {
     let created_at = new Date(message.created_at);
     let time = created_at.getHours() + ':' + created_at.getMinutes();
 
@@ -105,7 +101,7 @@ function appendMessage($messagesContainer, message, recipient) {
 
     let divClasses = ['bg-none', 'border', 'border-black', 'text-start', 'me-auto'];
 
-    if (message.to_id === recipient.id) {
+    if (message.from_id === userId) {
         divClasses = ['bg-dark-subtle', 'text-end', 'ms-auto'];
     }
 
