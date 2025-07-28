@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\UserServiceInterface;
+use App\Models\Chat;
 use App\Models\Message;
 use App\Models\Setting;
 use App\Models\User;
@@ -10,7 +11,9 @@ use App\Models\UsersFavoriteBooks;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserService extends Service implements UserServiceInterface
 {
@@ -108,9 +111,44 @@ class UserService extends Service implements UserServiceInterface
         return collect($grouped);
     }
 
-    public function getChats(User $user): Collection
+    public function getUserChats(User $user): Collection
     {
         $chats = $user->chats;
         return $chats;
+    }
+
+    public function sendMessage(User $user, User $recipient, string $body): JsonResponse
+    {
+        try {
+            $chatQuery = Chat::where(function ($query) use ($user, $recipient) {
+                $query->where('first_user_id', $user->id)
+                    ->where('second_user_id', $recipient->id);
+            })->orWhere(function ($query) use ($user, $recipient) {
+                $query->where('first_user_id', $recipient->id)
+                    ->where('second_user_id', $user->id);
+            });
+            $chat = $chatQuery->first();
+
+            $message = new Message([
+                'chat_id' => $chat->id,
+                'from_id' => $user->id,
+                'to_id' => $recipient->id,
+                'body' => $body,
+            ]);
+
+            $chat->messages()->save($message);
+        } catch (Exception $exception) {
+            Log::error($exception->getMessage());
+            return response()->json([
+                'success' => false,
+            ]);
+        }
+
+        $message->refresh();
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+        ]);
     }
 }

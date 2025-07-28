@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\BookTypeController;
@@ -66,5 +67,6 @@ Route::prefix('api/v1/')->group(function () {
     Route::get('types', [BookTypeController::class, 'getTypes'])->name('getTypes');
     Route::get('authors', [AuthorController::class, 'getAuthors'])->name('getAuthors');
     Route::get('books/{book}', [BookController::class, 'getBookData'])->name('getBookData');
-    Route::get('users/{user}/chat/{recipient}', [UserController::class, 'getMessages'])->name('getMessages');
+    Route::get('users/{user}/chat/{recipient}', [ChatController::class, 'getMessages'])->name('getMessages');
+    Route::post('users/{user}/chat/{recipient}/message', [ChatController::class, 'sendMessage'])->name('sendMessage');
 });

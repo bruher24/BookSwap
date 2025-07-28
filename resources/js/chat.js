@@ -1,11 +1,15 @@
 import './echo.js';
 
 let userId = $('.chat-container').data('user');
+let recipientId;
+let csrf_token = $('input[name="_token"]').val();
 let $chatWindow = $('.chat-window');
 let $messagesContainer = $('.messages-container');
 
+
 $(function () {
     $('.chat-row ').on('click', function () {
+        recipientId = $(this).data('recipient');
         selectChat($(this));
     });
 
@@ -20,15 +24,25 @@ $(function () {
             // TODO: показать уведомление
             //  отправлять два сообщения: в канал уведомлений и в канал чата ??
         });
+
+    $('#sendMessageBtn').on('click', function () {
+        let textInput = $('#messageInput');
+        let text = textInput.val();
+        textInput.val('');
+        sendMessage(text).then(function (response) {
+            console.log(response);
+            if (response.success) {
+                appendMessage(response.message);
+            }
+        });
+    });
 });
 
 function selectChat($node) {
     if (!$node.hasClass('active')) {
         madeActive($node);
 
-        let recipientId = $node.data('recipient');
-
-        messagesListRequest(userId, recipientId)
+        messagesListRequest(userId)
             .then(function (response) {
                 if (response.success) {
                     displayChat(response);
@@ -46,7 +60,7 @@ function madeActive($node) {
     }
 }
 
-async function messagesListRequest(userId, recipientId) {
+async function messagesListRequest(userId) {
     return await $.ajax({
         url: `/api/v1/users/${userId}/chat/${recipientId}`,
         type: 'get',
@@ -115,4 +129,16 @@ function appendMessage(message) {
     $messageDiv.append($messageTime);
 
     $messagesContainer.append($messageDiv);
+}
+
+async function sendMessage(text) {
+    return await $.ajax({
+        url: `/api/v1/users/${userId}/chat/${recipientId}/message`,
+        type: 'post',
+        async: true,
+        data: {
+            body: text,
+            _token: csrf_token
+        }
+    });
 }

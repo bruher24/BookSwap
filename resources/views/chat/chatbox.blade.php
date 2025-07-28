@@ -16,6 +16,8 @@
         <p class="no-messages-text text-center text-secondary m-auto">Выберите чат, чтобы начать общение</p>
     </div>
 
+    @csrf
+
     <div class="typing-area input-group border-top border-black d-none" style="height: 8%; width: 100%">
         <input id="messageInput" class="border-0 form-control" type="text" name="message"
                placeholder="Введите сообщение...">

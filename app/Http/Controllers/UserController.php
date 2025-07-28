@@ -20,13 +20,6 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index(UserServiceInterface $userService): View
-    {
-        $users = $userService->getAll();
-        // TODO: return view
-//        return view('users.index', compact('users'));
-    }
-
     public function create(StoreUserRequest $request, UserServiceInterface $userService): RedirectResponse
     {
         $validated = $request->validated();
@@ -119,53 +112,8 @@ class UserController extends Controller
 
     public function chat(UserServiceInterface $userService, User $user): View
     {
-        $chat = Chat::updateOrCreate([
-            'first_user_id' => 1,
-            'second_user_id' => 2,
-        ]);
-
-//        $chat->messages()->createMany([
-//            [
-//                'from_id' => 1,
-//                'to_id' => 2,
-//                'subject' => '123',
-//                'body' => 'fifth',
-//            ],
-//            [
-//                'from_id' => 2,
-//                'to_id' => 1,
-//                'subject' => '123',
-//                'body' => 'sixth',
-//            ],
-//            [
-//                'from_id' => 1,
-//                'to_id' => 2,
-//                'subject' => '123',
-//                'body' => 'seventh',
-//            ],
-//            [
-//                'from_id' => 2,
-//                'to_id' => 1,
-//                'subject' => '123',
-//                'body' => 'eighth',
-//            ],
-//        ]);
-
-        // TODO: проверять блэклист получателя
-        $chats = $userService->getChats($user);
+        $chats = $userService->getUserChats($user);
 
         return view('chat.index', compact('chats'));
-    }
-
-    public function getMessages(UserServiceInterface $userService, User $user, User $recipient): JsonResponse
-    {
-        $messages = $userService->getMessages($user, $recipient);
-        $grouped = $userService->groupMessages($messages);
-
-        return response()->json([
-            'success' => true,
-            'messages' => $grouped,
-            'recipient' => $recipient
-        ]);
     }
 }
