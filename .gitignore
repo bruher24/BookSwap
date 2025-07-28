@@ -24,3 +24,7 @@ Homestead.yaml
 Thumbs.db
 /redis
 /typesense-data
+/pgdata
+/.bash_history
+/.composer
+/.npm/

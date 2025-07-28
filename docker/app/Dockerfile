@@ -64,7 +64,7 @@ RUN echo "[program:laravel-worker]" > /etc/supervisor/conf.d/laravel-worker.conf
     echo "redirect_stderr=true" >> /etc/supervisor/conf.d/laravel-worker.conf && \
     echo "stdout_logfile=/var/www/storage/logs/worker.log" >> /etc/supervisor/conf.d/laravel-worker.conf
 
-COPY ./docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
+COPY --chown=www-data:www-data ./docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
@@ -75,8 +75,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin
 
+RUN usermod -aG www-data www-data
+
+USER 33:33
+
 WORKDIR /var/www
 
-COPY ./docker/app/start.sh /usr/local/bin/start.sh
+COPY --chown=www-data:www-data ./docker/app/start.sh /usr/local/bin/start.sh
+
 RUN chmod +x /usr/local/bin/start.sh
 CMD ["/usr/local/bin/start.sh"]
