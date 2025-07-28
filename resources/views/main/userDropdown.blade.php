@@ -7,10 +7,9 @@
              height="40"
              class="rounded-circle">
     </a>
-
-    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="width: fit-content">
-        <li style="width: fit-content">
-            <a class="dropdown-item"
+    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+        <li>
+            <a class="dropdown-item  btn btn-dark btn btn-dark"
                href="{{ route('users.profile') }}">
                 {{ $user->name }}
             </a>
@@ -20,8 +19,8 @@
             <hr class="dropdown-divider my-1">
         </li>
 
-        <li style="width: fit-content">
-            <a class="dropdown-item position-relative"
+        <li>
+            <a class="dropdown-item  btn btn-dark position-relative"
                href="{{ route('users.notifications', ['user' => $user]) }}">
                 Уведомления
                 @if(isset($user->notifications) && !$user->notifications->isEmpty())
@@ -33,8 +32,8 @@
             </a>
         </li>
 
-        <li style="width: fit-content">
-            <a class="dropdown-item"
+        <li>
+            <a class="dropdown-item  btn btn-dark"
                href="{{ route('users.chat', ['user' => $user]) }}">
                 Сообщения
                 @if(isset($user->messages) && !$user->messages->isEmpty())
@@ -46,15 +45,8 @@
             </a>
         </li>
 
-        {{--        <li>--}}
-        {{--            <a class="dropdown-item"--}}
-        {{--               href="{{ route('users.profile', ['section' => 'settings']) }}">--}}
-        {{--                Настройки--}}
-        {{--            </a>--}}
-        {{--        </li>--}}
-
-        <li style="width: fit-content">
-            <a class="dropdown-item"
+        <li>
+            <a class="dropdown-item  btn btn-dark"
                href="{{ route('users.logout') }}">
                 Выйти
             </a>
