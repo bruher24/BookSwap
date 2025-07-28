@@ -24,4 +24,13 @@ enum BookTypeEnum: int
     {
         return array_column(self::cases(), 'value');
     }
+
+    public static function toPrettyArray(): array
+    {
+        $result = [];
+        foreach (self::cases() as $case) {
+            $result[$case->value] = $case->label();
+        }
+        return $result;
+    }
 }

@@ -29,7 +29,7 @@ class UserController extends Controller
         }
 
         if (!Auth::attempt($validated, $remember)) {
-            return back()->with('error', 'Error.')->onlyInput('email');
+            return back()->with('error', 'Ошибка при авторизации.')->onlyInput('email');
         }
         $request->session()->regenerate();
         return redirect()->intended()->with('success', 'Вы успешо зарегистрировались!');

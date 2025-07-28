@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Interfaces\AuthorServiceInterface;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Author;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -17,9 +18,12 @@ class AuthorController extends Controller
         return view('authors.index', compact('authors'));
     }
 
-    public function getAuthors(AuthorServiceInterface $authorService): string
+    public function getAuthors(AuthorServiceInterface $authorService): JsonResponse
     {
-        return $authorService->getAll()->toJson(JSON_PRETTY_PRINT);
+        return response()->json([
+            'success' => true,
+            'authors' => $authorService->getAll()
+        ], 200, [], JSON_PRETTY_PRINT);
     }
 
     public function books(Request $request, BookServiceInterface $bookService, Author $author): View|RedirectResponse
