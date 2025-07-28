@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageReceived;
+use App\Events\MessageSent;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Chat;
@@ -18,32 +19,18 @@ class MainController extends Controller
 {
     public function test()
     {
-//        $message = new Message([
-//            'from_id' => 2,
-//            'to_id' => 1,
-//            'subject' => '123',
-//            'body' => 'Test Body',
-//        ]);
-//
-//        $message->save();
-//
-//        $message->refresh();
-//
-//        Log::debug('Запуск события');
-//        MessageReceived::dispatch($message);
-//        return view('test');
         $message = Chat::first()->messages()->create([
-            'from_id' => 2,
-            'to_id' => 1,
+            'from_id' => 1,
+            'to_id' => 2,
             'subject' => '123',
             'body' => 'New Test Body',
         ]);
-        MessageReceived::dispatch($message);
+        MessageSent::dispatch($message);
     }
 
     public function index(): View
     {
-        // TODO: отправка сообщения
+        // TODO: отправка сообщения по email
 //        $msg = (new MessageReceived('This is a test email', '#', Str::uuid()))
 //            ->onConnection('redis')
 //            ->onQueue('app');

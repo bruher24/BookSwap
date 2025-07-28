@@ -14,13 +14,19 @@ $(function () {
     });
 
     // TODO: слушать реальный канал
+    console.log(`Listening to: user.${userId}`)
     Echo.private(`user.${userId}`)
-        .listen('MessageReceived', (e) => {
+        .listen('MessageSent', (e) => {
             console.log('Message received!', e);
 
             // TODO: если юзер в списке чатов, показать плюсик в строке чата
             //  иначе отрисовать сообщение в чате
             appendMessage(e.message);
+
+            $messagesContainer.animate({
+                scrollTop: $messagesContainer.prop('scrollHeight')
+            }, 550);
+
             // TODO: показать уведомление
             //  отправлять два сообщения: в канал уведомлений и в канал чата ??
         });
@@ -33,6 +39,10 @@ $(function () {
             console.log(response);
             if (response.success) {
                 appendMessage(response.message);
+
+                $messagesContainer.animate({
+                    scrollTop: $messagesContainer.prop('scrollHeight')
+                }, 550);
             }
         });
     });
@@ -46,6 +56,10 @@ function selectChat($node) {
             .then(function (response) {
                 if (response.success) {
                     displayChat(response);
+
+                    $messagesContainer.animate({
+                        scrollTop: 9999999
+                    }, 550);
                 }
             });
     }

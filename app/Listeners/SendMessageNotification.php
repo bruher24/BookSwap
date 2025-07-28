@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\MessageReceived;
+use App\Events\MessageSent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -23,7 +23,7 @@ class SendMessageNotification implements ShouldQueue
     /**
      * Handle the event.
      */
-    public function handle(MessageReceived $event): void
+    public function handle(MessageSent $event): void
     {
         Log::debug('Запуск слушателя');
         Log::debug('Трансляция на ' . $event->broadcastOn()[0]->name);

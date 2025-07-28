@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\MessageSent;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Chat;
 use App\Models\Message;
@@ -12,6 +13,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -145,6 +147,8 @@ class UserService extends Service implements UserServiceInterface
         }
 
         $message->refresh();
+
+        Event::dispatch(new MessageSent($message));
 
         return response()->json([
             'success' => true,

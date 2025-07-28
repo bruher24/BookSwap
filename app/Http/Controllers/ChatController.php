@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageReceived;
 use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Event;
+
 
 class ChatController extends Controller
 {
