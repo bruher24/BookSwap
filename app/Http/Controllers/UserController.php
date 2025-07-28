@@ -116,4 +116,10 @@ class UserController extends Controller
 
         return view('chat.index', compact('chats'));
     }
+
+    public function notifications(UserServiceInterface $userService, User $user): View
+    {
+        $notifications = $userService->getUserNotifications($user);
+        return view('notifications.index', compact('notifications'));
+    }
 }

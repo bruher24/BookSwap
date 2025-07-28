@@ -121,4 +121,9 @@ class User extends Authenticatable
         $chatsAsSecond = $this->hasMany(Chat::class, 'second_user_id');
         return $chatsAsFirst->union($chatsAsSecond);
     }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class)->where('seen', false);
+    }
 }

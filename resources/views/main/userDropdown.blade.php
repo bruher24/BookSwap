@@ -7,8 +7,9 @@
              height="40"
              class="rounded-circle">
     </a>
-    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-        <li>
+
+    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="width: fit-content">
+        <li style="width: fit-content">
             <a class="dropdown-item"
                href="{{ route('users.profile') }}">
                 {{ $user->name }}
@@ -19,17 +20,29 @@
             <hr class="dropdown-divider my-1">
         </li>
 
-        <li>
-            <a class="dropdown-item"
+        <li style="width: fit-content">
+            <a class="dropdown-item position-relative"
                href="{{ route('users.notifications', ['user' => $user]) }}">
                 Уведомления
+                @if(isset($user->notifications) && !$user->notifications->isEmpty())
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    +{{ $user->notifications->count() }}
+                    <span class="visually-hidden">unread notifications</span>
+                </span>
+                @endif
             </a>
         </li>
 
-        <li>
+        <li style="width: fit-content">
             <a class="dropdown-item"
                href="{{ route('users.chat', ['user' => $user]) }}">
                 Сообщения
+                @if(isset($user->messages) && !$user->messages->isEmpty())
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    +{{ $user->messages->count() }}
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+                @endif
             </a>
         </li>
 
@@ -40,7 +53,7 @@
         {{--            </a>--}}
         {{--        </li>--}}
 
-        <li>
+        <li style="width: fit-content">
             <a class="dropdown-item"
                href="{{ route('users.logout') }}">
                 Выйти
