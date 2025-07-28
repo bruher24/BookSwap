@@ -9,9 +9,10 @@
     </a>
     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
         <li>
-            <p class="dropdown-item-text user-select-none mb-0">
+            <a class="dropdown-item"
+               href="{{ route('users.profile') }}">
                 {{ $user->name }}
-            </p>
+            </a>
         </li>
 
         <li>
@@ -20,17 +21,24 @@
 
         <li>
             <a class="dropdown-item"
-               href="{{ route('users.profile') }}">
-                Личный кабинет
+               href="{{ route('users.notifications', ['user' => $user]) }}">
+                Уведомления
             </a>
         </li>
 
         <li>
             <a class="dropdown-item"
-               href="{{ route('users.profile', ['section' => 'settings']) }}">
-                Настройки
+               href="{{ route('users.chat', ['user' => $user]) }}">
+                Сообщения
             </a>
         </li>
+
+        {{--        <li>--}}
+        {{--            <a class="dropdown-item"--}}
+        {{--               href="{{ route('users.profile', ['section' => 'settings']) }}">--}}
+        {{--                Настройки--}}
+        {{--            </a>--}}
+        {{--        </li>--}}
 
         <li>
             <a class="dropdown-item"

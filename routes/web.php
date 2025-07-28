@@ -32,6 +32,7 @@ Route::prefix('users/')->middleware(CheckAuth::class)->controller(UserController
         Route::delete('{user}', 'delete')->name('delete');
         Route::get('{user}/chat', 'chat')->name('chat');
         Route::put('{user}/update-favorites', 'updateFavorites')->name('updateFavorites');
+        Route::get('{user}/notifications', 'notifications')->name('notifications');
     });
 
 Route::prefix('books/')->middleware(CheckAuth::class)->controller(BookController::class)->name('books.')
