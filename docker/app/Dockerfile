@@ -35,13 +35,6 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp \
 # Установка Redis
 RUN pecl install redis && docker-php-ext-enable redis
 
-# Создание директории для конфига Supervisor
-RUN mkdir -p /var/log/supervisor
-
-# Копирование конфигурации Supervisor
-COPY ./docker/app/supervisord.conf /etc/supervisor/supervisord.conf
-COPY ./docker/app/supervisor-programs.conf /etc/supervisor/conf.d/
-
 # Установка Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
@@ -53,14 +46,19 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     --filename=composer \
     --install-dir=/usr/local/bin
 
-# Копирование php.ini и основного скрипта
+# Копирование php.ini
 COPY ./docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
+
+# Создание директории для конфига Supervisor
+RUN mkdir -p /var/log/supervisor && \
+    chown -R www-data:www-data /var/log/supervisor
+
+# Копирование конфигурации Supervisor
+COPY ./docker/app/supervisord.conf /etc/supervisor/supervisord.conf
+COPY ./docker/app/supervisor-programs.conf /etc/supervisor/conf.d/
 
 # Настройка рабочей директории
 WORKDIR /var/www
 
-COPY ./docker/app/start.sh /usr/local/bin/start.sh
-
-# Запуск основого скрипта
-RUN chmod +x /usr/local/bin/start.sh
-CMD ["/usr/local/bin/start.sh"]
+# Запуск Supervisor
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

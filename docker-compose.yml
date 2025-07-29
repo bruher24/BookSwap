@@ -1,15 +1,16 @@
 services:
     nginx:
-        image: nginx:alpine
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
         container_name: app-nginx
+        user: "root"
         restart: always
         ports:
             - "3000:80"
         volumes:
-            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
             - ./:/var/www/
-            - ./nginx_cache:/var/cache/nginx
         depends_on:
             - app
         networks:
@@ -21,6 +22,7 @@ services:
             dockerfile: docker/app/Dockerfile
         container_name: app
         restart: always
+        user: 33:33
         ports:
             - "5173:5173"
             - "3030:3030"
@@ -35,6 +37,7 @@ services:
         image: postgres:latest
         container_name: app-postgres
         restart: always
+        user: "postgres"
         environment:
             POSTGRES_DB: ${DB_DATABASE}
             POSTGRES_USER: ${DB_USERNAME}
@@ -56,6 +59,7 @@ services:
         image: redis:latest
         container_name: app-redis
         restart: always
+        user: "redis"
         command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
         ports:
             - "6379:${REDIS_PORT}"
@@ -85,6 +89,7 @@ services:
         image: typesense/typesense:29.0
         container_name: app-typesense
         restart: always
+        #        user: 33:33
         command: '--data-dir /data --api-key=xyz --enable-cors'
         ports:
             - "8108:${TYPESENSE_PORT}"
@@ -139,6 +144,4 @@ volumes:
     redis_data:
         driver: local
     typesense_data:
-        driver: local
-    nginx_cache:
         driver: local
