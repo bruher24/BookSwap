@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             PhotoSeeder::class,
             SettingSeeder::class,
             UserSeeder::class,
+            NotificationSeeder::class,
             ChatSeeder::class,
             MessageSeeder::class,
             PhoneSeeder::class,

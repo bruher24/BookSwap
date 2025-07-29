@@ -6,6 +6,7 @@ use App\Events\MessageSent;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Chat;
 use App\Models\Message;
+use App\Models\Notification;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\UsersFavoriteBooks;
@@ -154,5 +155,10 @@ class UserService extends Service implements UserServiceInterface
             'success' => true,
             'message' => $message,
         ]);
+    }
+
+    public function getUserNotifications(User $user): Collection
+    {
+        return $user->notifications;
     }
 }

@@ -19,4 +19,6 @@ interface UserServiceInterface extends ServiceInterface
     public function getMessages(User $user, User $recipient): Collection;
 
     public function sendMessage(User $user, User $recipient, string $body): JsonResponse;
+
+    public function getUserNotifications(User $user): Collection;
 }
