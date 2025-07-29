@@ -22,9 +22,9 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
-/redis
+/redis_data
 /typesense-data
-/pgdata
+/postgres_data
 /.bash_history
 /.composer
 /.npm/

@@ -1,5 +1,5 @@
 build:
-	docker compose build
+	docker compose build --no-cache
 	docker compose up -d app
 	docker compose exec app composer install
 	docker compose exec app npm i
