@@ -20,7 +20,7 @@
                 <div class="btn-toolbar mt-3" role="toolbar" style="max-width: fit-content;">
                     <div class="btn-group">
                         <a class="btn btn-outline-dark" id="chat_btn"
-                           href="{{ route('users.chat', ['user' => $user, 'chatWith' => $book->user_id]) }}"
+                           href="{{ route('users.chat', ['user' => $user, 'recipient' => $book->user_id]) }}"
                            data-user="{{ $user->id ?? null }}"
                            data-book="{{ $book->id }}">
                             Написать

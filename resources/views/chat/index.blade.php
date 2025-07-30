@@ -8,6 +8,7 @@
         <div class="chat-container row mt-3 border border-black w-100 p-0 m-0"
              data-user="{{ $user->id }}"
              style="height: 83vh">
+            <input type="hidden" id="query-recipient" value="{{ $recipient ?? '' }}">
             @include('chat.list')
             @include('chat.chatbox')
         </div>

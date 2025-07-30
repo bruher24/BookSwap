@@ -3,21 +3,25 @@ import './echo.js';
 let userId = $('.chat-container').data('user');
 let recipientId;
 let csrf_token = $('input[name="_token"]').val();
-let $chatWindow = $('.chat-window');
 let $messagesContainer = $('.messages-container');
 
-
 $(function () {
+    let queryRecipient = $('#query-recipient').val();
+    if (queryRecipient !== '') {
+        let obj = $(`.chat-row[data-recipient="${queryRecipient}"]`);
+        if (obj.length > 0) {
+            recipientId = obj.data('recipient');
+            selectChat(obj);
+        }
+    }
+
     $('.chat-row ').on('click', function () {
         recipientId = $(this).data('recipient');
         selectChat($(this));
     });
 
-    // TODO: слушать реальный канал
-    console.log(`Listening to: user.${userId}`)
     Echo.private(`user.${userId}`)
         .listen('MessageSent', (e) => {
-            console.log('Message received!', e);
 
             // TODO: если юзер в списке чатов, показать плюсик в строке чата
             //  иначе отрисовать сообщение в чате
@@ -123,7 +127,7 @@ function appendDateSection(date) {
 
 function appendMessage(message) {
     let created_at = new Date(message.created_at);
-    let time = created_at.getHours() + ':' + created_at.getMinutes();
+    let time = created_at.getHours() + ':' + (created_at.getMinutes() < 10 ? '0' + created_at.getMinutes() : created_at.getMinutes());
 
     let $messageDiv = $('<div>').addClass('message-div rounded-3 px-2 py-1 mx-2 my-1').css('max-width', '45%');
     let $messageBody = $('<p>').addClass('message-body p-0 m-0 pe-4').text(message.body);

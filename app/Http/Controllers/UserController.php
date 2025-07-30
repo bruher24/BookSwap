@@ -111,11 +111,12 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function chat(UserServiceInterface $userService, User $user): View
+    public function chat(Request $request, UserServiceInterface $userService, User $user): View
     {
+        $recipient = $request->input('recipient');
         $chats = $userService->getUserChats($user);
 
-        return view('chat.index', compact('chats'));
+        return view('chat.index', compact('chats', 'recipient'));
     }
 
     public function notifications(UserServiceInterface $userService, User $user): View
