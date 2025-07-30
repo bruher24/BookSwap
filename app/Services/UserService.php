@@ -161,4 +161,28 @@ class UserService extends Service implements UserServiceInterface
     {
         return $user->notifications;
     }
+
+    public function checkOneNotifications(User $user, int $notificationId): JsonResponse
+    {
+        $user->notifications()->find($notificationId)->update(['seen' => true]);
+        return response()->json([
+            'success' => true,
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
+
+    public function checkAllNotifications(User $user): JsonResponse
+    {
+        $user->notifications()->update(['seen' => true]);
+        return response()->json([
+            'success' => true,
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
+
+    public function checkManyNotifications(User $user, array $notifications): JsonResponse
+    {
+        $user->notifications()->whereIn('id', $notifications)->update(['seen' => true]);
+        return response()->json([
+            'success' => true,
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
 }

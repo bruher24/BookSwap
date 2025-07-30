@@ -9,3 +9,4 @@ import './chatBtn.js';
 import './callBtn.js';
 import './chat.js';
 import './echo.js';
+import './notifications.js';

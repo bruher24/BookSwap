@@ -9,6 +9,7 @@ use App\Interfaces\BookServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Chat;
 use App\Models\Message;
+use App\Models\Notification;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\UsersFavoriteBooks;
@@ -121,5 +122,21 @@ class UserController extends Controller
     {
         $notifications = $userService->getUserNotifications($user);
         return view('notifications.index', compact('notifications'));
+    }
+
+    public function checkOne(UserServiceInterface $userService, User $user, Notification $notification): JsonResponse
+    {
+        return $userService->checkOneNotifications($user, $notification->id);
+    }
+
+    public function checkMany(Request $request, UserServiceInterface $userService, User $user): JsonResponse
+    {
+        $notifications = $request->input('notifications');
+        return $userService->checkManyNotifications($user, $notifications);
+    }
+
+    public function checkAll(UserServiceInterface $userService, User $user): JsonResponse
+    {
+        return $userService->checkAllNotifications($user);
     }
 }
