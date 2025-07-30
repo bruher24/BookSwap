@@ -20,8 +20,8 @@ class MainController extends Controller
     public function test()
     {
         $message = Chat::first()->messages()->create([
-            'from_id' => 1,
-            'to_id' => 2,
+            'from_id' => 2,
+            'to_id' => 1,
             'subject' => '123',
             'body' => 'New Test Body',
         ]);

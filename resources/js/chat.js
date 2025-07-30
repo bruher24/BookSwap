@@ -4,6 +4,8 @@ let userId = $('.chat-container').data('user');
 let recipientId;
 let csrf_token = $('input[name="_token"]').val();
 let $messagesContainer = $('.messages-container');
+let unreadMessage;
+let counter = 0;
 
 $(function () {
     let queryRecipient = $('#query-recipient').val();
@@ -21,19 +23,29 @@ $(function () {
     });
 
     Echo.private(`user.${userId}`)
-        .listen('MessageSent', (e) => {
-
-            // TODO: если юзер в списке чатов, показать плюсик в строке чата
-            //  иначе отрисовать сообщение в чате
-            appendMessage(e.message);
-
-            $messagesContainer.animate({
-                scrollTop: $messagesContainer.prop('scrollHeight')
-            }, 550);
-
+        .listen('MessageSent', (socketMessage) => {
+            console.log(socketMessage);
+            let obj = $(`.chat-row[data-recipient="${socketMessage.message.from_id}"]`);
+            if (obj.length > 0) {
+                if (obj.hasClass('active')) {
+                    appendMessage(socketMessage.message);
+                    // TODO: текст внизу "непрочитанных сообщений"
+                }
+                obj.children('.new-message-icon').show();
+                $($messagesContainer).trigger('scroll');
+            }
             // TODO: показать уведомление
             //  отправлять два сообщения: в канал уведомлений и в канал чата ??
         });
+
+    $($messagesContainer).on('scroll', function () {
+        console.log('scrolling');
+        if (unreadMessage.isInDiv()) {
+            console.log('inviewport');
+            $('.chat-row.active').children('.new-message-icon').hide();
+            counter = 0;
+        }
+    });
 
     $('#sendMessageBtn').on('click', function () {
         let textInput = $('#messageInput');
@@ -55,6 +67,7 @@ $(function () {
 function selectChat($node) {
     if (!$node.hasClass('active')) {
         madeActive($node);
+        $node.children('.new-message-icon').hide();
 
         messagesListRequest(userId)
             .then(function (response) {
@@ -147,6 +160,8 @@ function appendMessage(message) {
     $messageDiv.append($messageTime);
 
     $messagesContainer.append($messageDiv);
+    unreadMessage = $messageDiv;
+    counter++;
 }
 
 async function sendMessage(text) {
@@ -160,3 +175,20 @@ async function sendMessage(text) {
         }
     });
 }
+
+$.fn.isInDiv = function () {
+    if (this.length === 0) return false;
+
+    const element = $(this)[0];
+    const containerEl = $(this).parent()[0];
+
+    const containerRect = containerEl.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+
+    return (
+        elementRect.bottom > containerRect.top &&
+        elementRect.top < containerRect.bottom &&
+        elementRect.right > containerRect.left &&
+        elementRect.left < containerRect.right
+    );
+};
