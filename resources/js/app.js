@@ -10,3 +10,5 @@ import './callBtn.js';
 import './chat.js';
 import './echo.js';
 import './notifications.js';
+
+// TODO: пересадить потом это все на какой-нибудь фреймворк
