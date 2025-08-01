@@ -29,7 +29,7 @@ $(function () {
                     let categoryName = getCategoryName(category);
                     $output.append(`<li class="searchElement text-secondary"><small class="searchElement">${categoryName}</small></li>`);
                     content.forEach(function (element) {
-                        let link = category + '/' + element.id;
+                        let link = `/${category}/${element.id}`;
                         let name = element.name;
                         if (element.formattedName) {
                             link += '/books';
