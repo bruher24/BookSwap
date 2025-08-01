@@ -53,6 +53,10 @@ class UserService extends Service implements UserServiceInterface
             return false;
         }
 
+        if ($data['password'] == null) {
+            unset($data['password']);
+        }
+
         if (!parent::update($user, $data)) {
             return false;
         }
