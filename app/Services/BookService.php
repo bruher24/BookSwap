@@ -101,6 +101,18 @@ class BookService extends Service implements BookServiceInterface
 
     public function create(array $data): Book|false
     {
+        // TODO: сделать нормально
+        if (isset($data['cover'])) {
+            $found = Cover::where('src', $data['cover'])->first()->id;
+            if ($found) {
+                $data['cover_id'] = $found;
+            } else {
+                // TODO: сохранить новую обложку
+            }
+        } else {
+            $data['cover_id'] = Cover::$baseCoverId;
+        }
+
         $book = parent::create($data);
         if (!$book) {
             return false;
@@ -110,13 +122,7 @@ class BookService extends Service implements BookServiceInterface
         if (!empty($authors) && !$this->attach($book, $authors)) {
             return false;
         }
-        // TODO: сделать нормально
-        if (isset($data['cover'])) {
-            $found = Cover::where('src', $data['cover'])->first()->id;
-            if ($found) {
-                $book->cover_id = $found;
-            }
-        }
+
         return $book;
     }
 

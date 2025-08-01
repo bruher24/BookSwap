@@ -24,7 +24,6 @@ $(function () {
 
     Echo.private(`user.${userId}`)
         .listen('MessageSent', (socketMessage) => {
-            console.log(socketMessage);
             let obj = $(`.chat-row[data-recipient="${socketMessage.message.from_id}"]`);
             if (obj.length > 0) {
                 if (obj.hasClass('active')) {
@@ -39,9 +38,7 @@ $(function () {
         });
 
     $($messagesContainer).on('scroll', function () {
-        console.log('scrolling');
         if (unreadMessage.isInDiv()) {
-            console.log('inviewport');
             $('.chat-row.active').children('.new-message-icon').hide();
             counter = 0;
         }
@@ -52,7 +49,6 @@ $(function () {
         let text = textInput.val();
         textInput.val('');
         sendMessage(text).then(function (response) {
-            console.log(response);
             if (response.success) {
                 appendMessage(response.message);
 

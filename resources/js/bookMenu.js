@@ -120,8 +120,6 @@ async function deleteBook(bookId) {
             data: response
         };
     } catch (error) {
-        // TODO: debug only
-        console.error('Ошибка:', error);
         return {
             success: false,
             errors: error.responseJSON?.errors || {error: [error.responseJSON?.message || 'Произошла ошибка']}

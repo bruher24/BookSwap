@@ -31,7 +31,9 @@ class BookController extends Controller
         if (!$book) {
             return response()->json([
                 'success' => false,
-                'errors' => ['Ошибка при сохранении книги'],
+                'errors' => [
+                    'ERR' => ['Ошибка при сохранении книги'],
+                ],
             ]);
         }
 

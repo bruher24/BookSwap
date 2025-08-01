@@ -59,7 +59,6 @@ $(function () {
         const form = $('#bookForm');
         const formData = getFormData(form);
         storeBookRequest(formData).then(function (result) {
-            console.log(result);
             if (result.success === true) {
                 utils.showAlert('success', 'Книга успешно сохранена!');
                 $('#modalBookForm').modal('hide');
@@ -104,7 +103,6 @@ async function storeBookRequest(data) {
         url: '/books/store',
         type: 'post',
         async: true,
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
         data: data,
     });
 }

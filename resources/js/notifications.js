@@ -5,7 +5,6 @@ let userId;
 let marked = [];
 $(function () {
     userId = $('#notifications-container').data('user');
-    console.log(marked);
     $('.notification-div').on('click', function () {
         let notification = $(this).data('notification');
         let $this = $(this);
@@ -15,7 +14,6 @@ $(function () {
             hiddenDiv.slideUp('fast');
             checkOneRequest(notification).then(function (response) {
                 if (response.success) {
-                    console.log($this);
                     $this.slideUp('fast', function () {
                         $(this).remove();
                     });
@@ -29,7 +27,6 @@ $(function () {
     $('#check-all-div').on('click', function () {
         if ($(this).attr('role') === 'button') {
             checkAllRequest().then(function (response) {
-                console.log(response);
                 if (response.success) {
                     showAlert('success', 'Уведомления отмечены прочитанными')
                     $('#notifications-container').fadeOut(500, function () {

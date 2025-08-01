@@ -25,7 +25,7 @@ function loadAuthorsToSelect(selectId = '#floatingAuthorId') {
     });
 }
 
-function loadTypesToSelect(selectId = '#floatingTypeId') {
+function loadTypesToSelect(selectId = '#floatingBookType') {
     typesListRequest().then(function (response) {
         if (response.success) {
             types = response.booktypes;

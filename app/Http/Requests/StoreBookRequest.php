@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\BookTypeEnum;
 use App\Models\Author;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -75,20 +76,20 @@ class StoreBookRequest extends FormRequest
                 Rule::date()->beforeOrEqual(today()->subYears(16)),
             ],
             'page_count' => 'required|integer|min:1',
-            'photo' => [
+            'cover' => [
                 'nullable',
                 'string',
-                Rule::unique('photos', 'src')->whereNull('deleted_at'),
+//                Rule::unique('covers', 'src')->whereNull('deleted_at'),
             ],
             'publishing_house' => 'nullable|string',
             'publication_year' => [
                 'nullable',
                 Rule::date()->format('Y'),
             ],
-            'type_id' => [
+            'book_type' => [
                 'required',
                 'integer',
-                Rule::exists('book_types', 'id')->whereNull('deleted_at'),
+                Rule::enum(BookTypeEnum::class),
             ],
             'isbn' => [
                 'nullable',
