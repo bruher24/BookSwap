@@ -126,4 +126,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notification::class)->where('seen', false);
     }
+
+    public function unreadMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'to_id')->where('seen', false);
+    }
 }

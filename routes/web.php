@@ -73,4 +73,6 @@ Route::prefix('api/v1/')->group(function () {
     Route::patch('users/{user}/notifications/{notification}', [UserController::class, 'checkOne'])->name('checkOne');
     Route::patch('users/{user}/notifications/check-many', [UserController::class, 'checkMany'])->name('checkMany');
     Route::patch('users/{user}/notifications/check-all', [UserController::class, 'checkAll'])->name('checkAll');
+    Route::get('users/{user}/messages', [UserController::class, 'getUnreadMessages'])->name('getUnreadMessages');
+    Route::patch('users/{user}/messages/read', [UserController::class, 'readMessages'])->name('readMessages');
 });

@@ -189,4 +189,24 @@ class UserService extends Service implements UserServiceInterface
             'success' => true,
         ], 200, [], JSON_PRETTY_PRINT);
     }
+
+    public function getUnreadMessages(User $user): JsonResponse
+    {
+        $messages = $user->unreadMessages()->distinct()->get(['id', 'from_id']);
+        return response()->json([
+            'success' => true,
+            'messages' => $messages,
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
+
+    public function readMessages(User $user, array $messagesToRead): JsonResponse
+    {
+        $messages = $user->unreadMessages()->whereIn('id', $messagesToRead)->get(['id', 'from_id']);
+        $messages->each(function (Message $message) {
+            $message->update(['seen' => true]);
+        });
+        return response()->json([
+            'success' => true
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
 }

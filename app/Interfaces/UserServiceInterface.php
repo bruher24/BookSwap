@@ -28,4 +28,8 @@ interface UserServiceInterface extends ServiceInterface
     public function checkManyNotifications(User $user, array $notifications): JsonResponse;
 
     public function checkAllNotifications(User $user): JsonResponse;
+
+    public function getUnreadMessages(User $user): JsonResponse;
+
+    public function readMessages(User $user, array $messagesToRead): JsonResponse;
 }

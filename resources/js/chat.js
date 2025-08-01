@@ -4,10 +4,30 @@ let userId = $('.chat-container').data('user');
 let recipientId;
 let csrf_token = $('input[name="_token"]').val();
 let $messagesContainer = $('.messages-container');
-let unreadMessage;
+let unreadMessages = [];
+let readMessages = [];
 let counter = 0;
 
 $(function () {
+    // TODO: получить все непрочитанные сообщения юзера и поставить маркеры на соответствующих диалогах
+    unreadMessagesRequest(userId).then(function (response) {
+        if (response.success) {
+            if (response.messages.length > 0) {
+                response.messages.forEach(function (message) {
+                    unreadMessages.push(message.id);
+                });
+
+                response.messages.forEach(function (message) {
+                    let obj = $(`.chat-row[data-recipient="${message.from_id}"]`);
+                    if (obj.length > 0) {
+                        obj.children('.new-message-icon').show();
+                    }
+                    return;
+                });
+            }
+        }
+    });
+
     let queryRecipient = $('#query-recipient').val();
     if (queryRecipient !== '') {
         let obj = $(`.chat-row[data-recipient="${queryRecipient}"]`);
@@ -30,6 +50,9 @@ $(function () {
                         appendMessage(socketMessage.message);
                         // TODO: текст внизу "непрочитанных сообщений"
                     }
+
+                    unreadMessages.push(socketMessage.message.id);
+
                     obj.children('.new-message-icon').show();
                     $($messagesContainer).trigger('scroll');
                 }
@@ -39,9 +62,23 @@ $(function () {
     }
 
     $($messagesContainer).on('scroll', function () {
-        if (unreadMessage.isInDiv()) {
-            $('.chat-row.active').children('.new-message-icon').hide();
-            counter = 0;
+
+        unreadMessages.forEach(function (unreadMessageId, key) {
+            let $unreadMessageDiv = $(`div[id="message-${unreadMessageId}"]`);
+            if ($unreadMessageDiv.length > 0 && $unreadMessageDiv.isInDiv()) {
+                $('.chat-row.active').children('.new-message-icon').hide();
+                readMessages.push(unreadMessageId);
+                delete (unreadMessages[key]);
+            }
+        });
+
+        if (readMessages.length > 0) {
+            markAsReadRequest(readMessages).then(function (response) {
+                console.log(response);
+                if (response.success) {
+                    counter = 0;
+                }
+            });
         }
     });
 
@@ -64,16 +101,16 @@ $(function () {
 function selectChat($node) {
     if (!$node.hasClass('active')) {
         madeActive($node);
-        $node.children('.new-message-icon').hide();
+        // $node.children('.new-message-icon').hide();
 
         messagesListRequest(userId)
             .then(function (response) {
                 if (response.success) {
                     displayChat(response);
 
-                    $messagesContainer.animate({
-                        scrollTop: 9999999
-                    }, 550);
+                    // $messagesContainer.animate({
+                    //     scrollTop: 0
+                    // }, 550);
                 }
             });
     }
@@ -139,7 +176,7 @@ function appendMessage(message) {
     let created_at = new Date(message.created_at);
     let time = created_at.getHours() + ':' + (created_at.getMinutes() < 10 ? '0' + created_at.getMinutes() : created_at.getMinutes());
 
-    let $messageDiv = $('<div>').addClass('message-div rounded-3 px-2 py-1 mx-2 my-1').css('max-width', '45%');
+    let $messageDiv = $('<div>').attr('id', 'message-' + message.id).addClass('message-div rounded-3 px-2 py-1 mx-2 my-1').css('max-width', '45%');
     let $messageBody = $('<p>').addClass('message-body p-0 m-0 pe-4').text(message.body);
     let $messageTime = $('<p>').addClass('message-date p-0 m-0 small text-secondary text-end').text(time);
 
@@ -157,7 +194,6 @@ function appendMessage(message) {
     $messageDiv.append($messageTime);
 
     $messagesContainer.append($messageDiv);
-    unreadMessage = $messageDiv;
     counter++;
 }
 
@@ -189,3 +225,23 @@ $.fn.isInDiv = function () {
         elementRect.left < containerRect.right
     );
 };
+
+async function unreadMessagesRequest(userId) {
+    return await $.ajax({
+        url: `/api/v1/users/${userId}/messages`,
+        type: 'get',
+        async: true
+    });
+}
+
+async function markAsReadRequest(messages) {
+    return await $.ajax({
+        url: `/api/v1/users/${userId}/messages/read`,
+        type: 'patch',
+        async: true,
+        data: {
+            messages: messages,
+            _token: csrf_token
+        }
+    });
+}

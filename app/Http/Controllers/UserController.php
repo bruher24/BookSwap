@@ -140,4 +140,15 @@ class UserController extends Controller
     {
         return $userService->checkAllNotifications($user);
     }
+
+    public function getUnreadMessages(UserServiceInterface $userService, User $user): JsonResponse
+    {
+        return $userService->getUnreadMessages($user);
+    }
+
+    public function readMessages(Request $request, UserServiceInterface $userService, User $user): JsonResponse
+    {
+        $messagesToRead = $request->input('messages');
+        return $userService->readMessages($user, $messagesToRead);
+    }
 }

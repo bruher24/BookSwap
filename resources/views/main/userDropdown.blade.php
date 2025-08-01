@@ -24,7 +24,7 @@
                href="{{ route('users.notifications', ['user' => $user]) }}">
                 Уведомления
                 @if(isset($user->notifications) && !$user->notifications->isEmpty())
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <span class="badge rounded-pill bg-danger ms-1">
                     +{{ $user->notifications->count() }}
                     <span class="visually-hidden">unread notifications</span>
                 </span>
@@ -37,7 +37,7 @@
                href="{{ route('users.chat', ['user' => $user]) }}">
                 Сообщения
                 @if(isset($user->messages) && !$user->messages->isEmpty())
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <span class="badge rounded-pill bg-danger ms-1">
                     +{{ $user->messages->count() }}
                     <span class="visually-hidden">unread messages</span>
                 </span>
