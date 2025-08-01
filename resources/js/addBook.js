@@ -4,7 +4,7 @@ $(function () {
     let selectedAuthors = [];
 
     $('#addBookBtn').click(function () {
-        $('#modalTitle').html('Добавить книгу');
+        $('#modalBookTitle').html('Добавить книгу');
         $('#bookForm')[0].reset();
     });
 

@@ -21,21 +21,22 @@ $(function () {
         recipientId = $(this).data('recipient');
         selectChat($(this));
     });
-
-    Echo.private(`user.${userId}`)
-        .listen('MessageSent', (socketMessage) => {
-            let obj = $(`.chat-row[data-recipient="${socketMessage.message.from_id}"]`);
-            if (obj.length > 0) {
-                if (obj.hasClass('active')) {
-                    appendMessage(socketMessage.message);
-                    // TODO: текст внизу "непрочитанных сообщений"
+    if (userId) {
+        Echo.private(`user.${userId}`)
+            .listen('MessageSent', (socketMessage) => {
+                let obj = $(`.chat-row[data-recipient="${socketMessage.message.from_id}"]`);
+                if (obj.length > 0) {
+                    if (obj.hasClass('active')) {
+                        appendMessage(socketMessage.message);
+                        // TODO: текст внизу "непрочитанных сообщений"
+                    }
+                    obj.children('.new-message-icon').show();
+                    $($messagesContainer).trigger('scroll');
                 }
-                obj.children('.new-message-icon').show();
-                $($messagesContainer).trigger('scroll');
-            }
-            // TODO: показать уведомление
-            //  отправлять два сообщения: в канал уведомлений и в канал чата ??
-        });
+                // TODO: показать уведомление
+                //  отправлять два сообщения: в канал уведомлений и в канал чата ??
+            });
+    }
 
     $($messagesContainer).on('scroll', function () {
         if (unreadMessage.isInDiv()) {

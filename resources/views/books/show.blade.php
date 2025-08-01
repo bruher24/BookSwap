@@ -20,7 +20,7 @@
                 <div class="btn-toolbar mt-3" role="toolbar" style="max-width: fit-content;">
                     <div class="btn-group">
                         <a class="btn btn-outline-dark" id="chat_btn"
-                           href="{{ route('users.chat', ['user' => $user, 'recipient' => $book->user_id]) }}"
+                           href="{{ isset($user) ? route('users.chat', ['user' => $user, 'recipient' => $book->user_id]) : '' }}"
                            data-user="{{ $user->id ?? null }}"
                            data-book="{{ $book->id }}">
                             Написать
@@ -32,20 +32,15 @@
                     </div>
 
                     <div class="ms-1" role="group">
-                        <form id="favorites-form"
-                              method="post" action="{{ route('users.updateFavorites', ['user' => $user]) }}"
-                              data-user="{{ $user->id }}"
-                        >
+                        <form id="favorites-form" method="post"
+                              action="{{ isset($user) ? route('users.updateFavorites', ['user' => $user]) : '' }}">
                             @method('put')
                             @csrf
                             <input type="hidden" name="book_id" value="{{ $book->id }}">
                             <input type="hidden" name="isLiked" value="{{ $isBookLiked }}">
                         </form>
-                        <button class="btn p-1 dots-icon like-btn
-                        @if($isBookLiked)
-                            liked
-                        @endif
-                        ">
+                        <button class="btn p-1 dots-icon like-btn {{$isBookLiked ? 'liked' : ''}}"
+                                data-user="{{ $user->id ?? null }}">
                             <svg height="30px" width="30px" class="heart-icon" viewBox="0 0 122.88 109.57">
                                 <path fill="none"
                                       d="M65.46,19.57c-0.68,0.72-1.36,1.45-2.2,2.32l-2.31,2.41l-2.4-2.33c-0.71-0.69-1.43-1.4-2.13-2.09

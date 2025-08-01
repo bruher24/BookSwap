@@ -1,11 +1,11 @@
 $(function () {
     let form = $('#favorites-form');
-    $('.like_btn').on('click', function () {
-        if ($(form.data('user')) !== null) {
+    $('.like-btn').on('click', function () {
+        if ($(this).data('user')) {
             $(this).toggleClass('liked');
             form[0].submit();
         } else {
-            const modalLogin = new bootstrap.Modal('#modalLogin')
+            const modalLogin = new bootstrap.Modal('#modalLogin');
             modalLogin.show();
         }
     });

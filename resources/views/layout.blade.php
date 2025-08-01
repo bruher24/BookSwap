@@ -15,7 +15,6 @@
 
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
-    @stack('head')
 </head>
 <body class="font-sans antialiased">
 @include('modals.register')
@@ -37,5 +36,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
+<script>
+    window.Laravel = {!! json_encode([
+        'user' => Auth::check() ? Auth::user() : null
+    ]) !!};
+</script>
 </body>
 </html>

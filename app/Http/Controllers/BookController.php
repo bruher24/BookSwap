@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBookRequest;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
-use App\Models\Cover;
 use App\Models\UsersFavoriteBooks;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -46,7 +45,10 @@ class BookController extends Controller
     public function show(Book $book): View
     {
         $user = Auth::user();
-        $isBookLiked = UsersFavoriteBooks::where('user_id', $user->id)->where('book_id', $book->id)->exists();
+        $isBookLiked = false;
+        if ($user) {
+            $isBookLiked = UsersFavoriteBooks::where('user_id', $user->id)->where('book_id', $book->id)->exists();
+        }
         $sellerPhone = $book->user->phone ? $book->user->phone->number : null;
         return view('books.show', compact('book', 'isBookLiked', 'sellerPhone'));
     }
