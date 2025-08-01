@@ -105,8 +105,7 @@ class UserService extends Service implements UserServiceInterface
         })->orWhere(function ($query) use ($user, $recipient) {
             $query->where('from_id', $recipient->id)
                 ->where('to_id', $user->id);
-        })->orderBy('created_at');
-
+        })->orderBy('created_at', 'asc')->orderBy('id', 'asc');
         return $messages->get();
     }
 

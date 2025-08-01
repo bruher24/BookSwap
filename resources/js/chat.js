@@ -13,29 +13,26 @@ $(function () {
     unreadMessagesRequest(userId).then(function (response) {
         if (response.success) {
             if (response.messages.length > 0) {
-                response.messages.forEach(function (message) {
+                for (let message of response.messages) {
                     unreadMessages.push(message.id);
-                });
-
-                response.messages.forEach(function (message) {
                     let obj = $(`.chat-row[data-recipient="${message.from_id}"]`);
                     if (obj.length > 0) {
                         obj.children('.new-message-icon').show();
+                        break;
                     }
-                    return;
-                });
+                }
+            }
+        }
+
+        let queryRecipient = $('#query-recipient').val();
+        if (queryRecipient !== '') {
+            let obj = $(`.chat-row[data-recipient="${queryRecipient}"]`);
+            if (obj.length > 0) {
+                recipientId = obj.data('recipient');
+                selectChat(obj);
             }
         }
     });
-
-    let queryRecipient = $('#query-recipient').val();
-    if (queryRecipient !== '') {
-        let obj = $(`.chat-row[data-recipient="${queryRecipient}"]`);
-        if (obj.length > 0) {
-            recipientId = obj.data('recipient');
-            selectChat(obj);
-        }
-    }
 
     $('.chat-row ').on('click', function () {
         recipientId = $(this).data('recipient');
@@ -62,7 +59,6 @@ $(function () {
     }
 
     $($messagesContainer).on('scroll', function () {
-
         unreadMessages.forEach(function (unreadMessageId, key) {
             let $unreadMessageDiv = $(`div[id="message-${unreadMessageId}"]`);
             if ($unreadMessageDiv.length > 0 && $unreadMessageDiv.isInDiv()) {
@@ -74,7 +70,6 @@ $(function () {
 
         if (readMessages.length > 0) {
             markAsReadRequest(readMessages).then(function (response) {
-                console.log(response);
                 if (response.success) {
                     counter = 0;
                 }
@@ -101,17 +96,14 @@ $(function () {
 function selectChat($node) {
     if (!$node.hasClass('active')) {
         madeActive($node);
-        // $node.children('.new-message-icon').hide();
 
         messagesListRequest(userId)
             .then(function (response) {
+                console.log(response);
                 if (response.success) {
                     displayChat(response);
-
-                    // $messagesContainer.animate({
-                    //     scrollTop: 0
-                    // }, 550);
                 }
+                $($messagesContainer).trigger('scroll');
             });
     }
 }

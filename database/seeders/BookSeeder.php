@@ -22,7 +22,7 @@ class BookSeeder extends Seeder
                 'page_count' => 300,
             ],
             [
-                'user_id' => 1,
+                'user_id' => 2,
                 'name' => 'Онегин',
                 'publishing_house' => 'ЕЕЕ',
                 'publication_year' => '2021',

@@ -25,10 +25,12 @@
                            data-book="{{ $book->id }}">
                             Написать
                         </a>
-                        <button class="btn btn-outline-dark" id="call_btn"
-                                data-user="{{ $user->id ?? null }}">
-                            Позвонить
-                        </button>
+                        @if(isset($book->user->phone))
+                            <button class="btn btn-outline-dark" id="call_btn"
+                                    data-user="{{ $user->id ?? null }}">
+                                Позвонить
+                            </button>
+                        @endif
                     </div>
 
                     <div class="ms-1" role="group">
@@ -55,11 +57,13 @@
                         </button>
                     </div>
                 </div>
-                <div id="hidden-number" class="p-2 rounded-3 mx-0 border-0 shadow w-220px w-100 d-none">
-                    <p class="to-copy text-center m-0" role="button"
-                       data-copy="{{ $book->user->phone->number }}">{{ $book->user->phone->number }}</p>
-                    <p class="text-center m-0 text-secondary">{{ $book->user->name }}</p>
-                </div>
+                @if(isset($book->user->phone))
+                    <div id="hidden-number" class="p-2 rounded-3 mx-0 border-0 shadow w-220px w-100 d-none">
+                        <p class="to-copy text-center m-0" role="button"
+                           data-copy="{{ $book->user->phone->number }}">{{ $book->user->phone->number }}</p>
+                        <p class="text-center m-0 text-secondary">{{ $book->user->name }}</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
