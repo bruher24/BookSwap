@@ -38,12 +38,15 @@ $(function () {
     });
 });
 
-// TODO:  почему то срабатывает при заходе на страницу
+// TODO:  почему то срабатывает со старта
 $(window).on('beforeunload', function () {
     $('.hidden-div :visible').each(function () {
         let id = $(this).parent().data('notification');
         marked.push(id);
     });
+    console.log(marked);
+    marked = ['1', '2'];
+
     checkManyRequest(marked).then(function (response) {
         console.log(response);
     });
@@ -72,7 +75,7 @@ async function checkAllRequest() {
 }
 
 async function checkManyRequest(marked) {
-    return await $.ajax({
+    let response = $.ajax({
         url: `/api/v1/users/${userId}/notifications/check-many`,
         type: 'patch',
         async: true,
@@ -81,4 +84,7 @@ async function checkManyRequest(marked) {
             notifications: marked
         }
     });
+
+    console.log(response);
+    return await response;
 }

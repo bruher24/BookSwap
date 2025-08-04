@@ -12,4 +12,4 @@ import './chat.js';
 import './echo.js';
 
 // TODO: почему оно запускается само при заходе на страницу, а не при unload?
-// import './notifications.js';
+import './notifications.js';

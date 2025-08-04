@@ -9,30 +9,33 @@ let readMessages = [];
 let counter = 0;
 
 $(function () {
-    // TODO: получить все непрочитанные сообщения юзера и поставить маркеры на соответствующих диалогах
-    unreadMessagesRequest(userId).then(function (response) {
-        if (response.success) {
-            if (response.messages.length > 0) {
-                for (let message of response.messages) {
-                    unreadMessages.push(message.id);
-                    let obj = $(`.chat-row[data-recipient="${message.from_id}"]`);
-                    if (obj.length > 0) {
-                        obj.children('.new-message-icon').show();
-                        break;
+    userId = userId ?? window.Laravel.user.id;
+    if (userId) {
+        // TODO: получить все непрочитанные сообщения юзера и поставить маркеры на соответствующих диалогах
+        unreadMessagesRequest(userId).then(function (response) {
+            if (response.success) {
+                if (response.messages.length > 0) {
+                    for (let message of response.messages) {
+                        unreadMessages.push(message.id);
+                        let obj = $(`.chat-row[data-recipient="${message.from_id}"]`);
+                        if (obj.length > 0) {
+                            obj.children('.new-message-icon').show();
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        let queryRecipient = $('#query-recipient').val();
-        if (queryRecipient !== '') {
-            let obj = $(`.chat-row[data-recipient="${queryRecipient}"]`);
-            if (obj.length > 0) {
-                recipientId = obj.data('recipient');
-                selectChat(obj);
+            let queryRecipient = $('#query-recipient').val();
+            if (queryRecipient !== '') {
+                let obj = $(`.chat-row[data-recipient="${queryRecipient}"]`);
+                if (obj.length > 0) {
+                    recipientId = obj.data('recipient');
+                    selectChat(obj);
+                }
             }
-        }
-    });
+        });
+    }
 
     $('.chat-row ').on('click', function () {
         recipientId = $(this).data('recipient');
