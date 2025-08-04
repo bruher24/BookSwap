@@ -6,7 +6,7 @@ use App\Events\MessageSent;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Chat;
 use App\Models\Message;
-use App\Models\Notification;
+use App\Models\Photo;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\UsersFavoriteBooks;
@@ -23,6 +23,20 @@ class UserService extends Service implements UserServiceInterface
     public function __construct()
     {
         parent::__construct(User::class);
+    }
+
+    public function create(array $data): Model|false
+    {
+        $user = parent::create($data);
+        if ($user instanceof User) {
+            $user->refresh();
+            $user->roles()->attach(2);
+            $user->photo()->associate(Photo::all()->first());
+            $user->settings()->attach(Setting::all()->first(), ['value' => 'on']);
+            $user->save();
+            return $user;
+        }
+        return false;
     }
 
     public function update(Model $object, array $data): bool
