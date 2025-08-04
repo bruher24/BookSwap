@@ -112,7 +112,6 @@ class UserService extends Service implements UserServiceInterface
 
     public function getMessages(User $user, User $recipient): Collection
     {
-        // TODO: если сам себе пишет, то не слать уведы
         $messages = Message::where(function ($query) use ($user, $recipient) {
             $query->where('from_id', $user->id)
                 ->where('to_id', $recipient->id);
@@ -161,12 +160,15 @@ class UserService extends Service implements UserServiceInterface
             Log::error($exception->getMessage());
             return response()->json([
                 'success' => false,
+                'error' => 'Ошибка при отправке сообщения'
             ]);
         }
 
         $message->refresh();
 
-        Event::dispatch(new MessageSent($message));
+        if ($message->to_id != $message->from_id) {
+            Event::dispatch(new MessageSent($message));
+        }
 
         return response()->json([
             'success' => true,
