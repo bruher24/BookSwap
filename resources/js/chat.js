@@ -81,7 +81,7 @@ $(function () {
         let textInput = $('#messageInput');
         let text = textInput.val();
         textInput.val('');
-        sendMessage(text).then(function (response) {
+        sendMessageRequest(text).then(function (response) {
             if (response.success) {
                 appendMessage(response.message);
 
@@ -196,7 +196,7 @@ function appendMessage(message) {
     counter++;
 }
 
-async function sendMessage(text) {
+async function sendMessageRequest(text) {
     return await $.ajax({
         url: `/api/v1/users/${userId}/chat/${recipientId}/message`,
         type: 'post',
