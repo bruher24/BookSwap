@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('first_user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('second_user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->softDeletes();
 

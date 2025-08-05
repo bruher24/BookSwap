@@ -12,17 +12,16 @@ use Illuminate\Support\Facades\Event;
 
 class ChatController extends Controller
 {
-    // TODO: проверять блэклист получателя
-
     public function getMessages(UserServiceInterface $userService, User $user, User $recipient): JsonResponse
     {
-        $messages = $userService->getMessages($user, $recipient);
-        $grouped = $userService->groupMessages($messages);
+        $chat = $userService->getChat($user, $recipient);
+        $grouped = $userService->groupMessages($chat->messages()->orderBy('created_at')->orderBy('id')->get());
 
         return response()->json([
             'success' => true,
             'messages' => $grouped,
-            'recipient' => $recipient
+            'recipient' => $recipient,
+            'is_blocked' => $chat->is_blocked,
         ]);
     }
 

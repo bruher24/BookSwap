@@ -110,16 +110,12 @@ class UserService extends Service implements UserServiceInterface
         $record->delete();
     }
 
-    public function getMessages(User $user, User $recipient): Collection
+    public function getChat(User $user, User $recipient): Chat
     {
-        $messages = Message::where(function ($query) use ($user, $recipient) {
-            $query->where('from_id', $user->id)
-                ->where('to_id', $recipient->id);
-        })->orWhere(function ($query) use ($user, $recipient) {
-            $query->where('from_id', $recipient->id)
-                ->where('to_id', $user->id);
-        })->orderBy('created_at', 'asc')->orderBy('id', 'asc');
-        return $messages->get();
+        $arr = [$user->id, $recipient->id];
+        sort($arr);
+        $chat = Chat::where('first_user_id', $arr[0])->where('second_user_id', $arr[1])->first();
+        return $chat;
     }
 
     public function groupMessages(Collection $messages): \Illuminate\Support\Collection
@@ -139,14 +135,7 @@ class UserService extends Service implements UserServiceInterface
     public function sendMessage(User $user, User $recipient, string $body): JsonResponse
     {
         try {
-            $chatQuery = Chat::where(function ($query) use ($user, $recipient) {
-                $query->where('first_user_id', $user->id)
-                    ->where('second_user_id', $recipient->id);
-            })->orWhere(function ($query) use ($user, $recipient) {
-                $query->where('first_user_id', $recipient->id)
-                    ->where('second_user_id', $user->id);
-            });
-            $chat = $chatQuery->first();
+            $chat = $this->getChat($user, $recipient);
 
             $message = new Message([
                 'chat_id' => $chat->id,
