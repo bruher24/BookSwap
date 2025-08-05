@@ -45,6 +45,9 @@ class UserController extends Controller
             return back()->with('error', 'Введена неправильная комбинация email и пароля.');
         }
         $request->session()->regenerate();
+
+        Auth::user()->createToken('test')->plainTextToken;
+
         return redirect()->intended()->with('success', 'Добро пожаловать!');
     }
 
