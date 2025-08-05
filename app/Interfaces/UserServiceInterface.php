@@ -2,6 +2,7 @@
 
 namespace App\Interfaces;
 
+use App\Models\Chat;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,7 +18,7 @@ interface UserServiceInterface extends ServiceInterface
 
     public function getUserChats(User $user): Collection;
 
-    public function getMessages(User $user, User $recipient): Collection;
+    public function getChat(User $user, User $recipient): Chat;
 
     public function sendMessage(User $user, User $recipient, string $body): JsonResponse;
 

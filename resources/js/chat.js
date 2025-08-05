@@ -11,7 +11,6 @@ let counter = 0;
 $(function () {
     userId = userId ?? window.Laravel.user.id;
     if (userId) {
-        // TODO: получить все непрочитанные сообщения юзера и поставить маркеры на соответствующих диалогах
         unreadMessagesRequest(userId).then(function (response) {
             if (response.success) {
                 if (response.messages.length > 0) {
@@ -20,7 +19,6 @@ $(function () {
                         let obj = $(`.chat-row[data-recipient="${message.from_id}"]`);
                         if (obj.length > 0) {
                             obj.children('.new-message-icon').show();
-                            break;
                         }
                     }
                 }
@@ -35,13 +33,7 @@ $(function () {
                 }
             }
         });
-    }
 
-    $('.chat-row ').on('click', function () {
-        recipientId = $(this).data('recipient');
-        selectChat($(this));
-    });
-    if (userId) {
         Echo.private(`user.${userId}`)
             .listen('MessageSent', (socketMessage) => {
                 let obj = $(`.chat-row[data-recipient="${socketMessage.message.from_id}"]`);
@@ -60,6 +52,11 @@ $(function () {
                 //  отправлять два сообщения: в канал уведомлений и в канал чата ??
             });
     }
+
+    $('.chat-row ').on('click', function () {
+        recipientId = $(this).data('recipient');
+        selectChat($(this));
+    });
 
     $($messagesContainer).on('scroll', function () {
         unreadMessages.forEach(function (unreadMessageId, key) {
@@ -130,16 +127,21 @@ async function messagesListRequest(userId) {
 
 function displayChat(response) {
 
-    displayTypingArea();
+    displayTypingArea(response.is_blocked);
 
     displayChatHeader(response.recipient);
 
     displayMessages(response.messages, response.recipient);
 }
 
-function displayTypingArea() {
-    $('.no-messages-text').toggleClass('d-none');
-    $('.typing-area').toggleClass('d-none');
+function displayTypingArea(is_blocked) {
+
+    if (is_blocked) {
+        $('#chat-blocked-text').show();
+    } else {
+        $('.no-messages-text').hide();
+        $('.typing-area').show();
+    }
 }
 
 function displayChatHeader(recipient) {
@@ -147,6 +149,8 @@ function displayChatHeader(recipient) {
 }
 
 function displayMessages(messages) {
+    $messagesContainer.empty();
+
     for (const [date, content] of Object.entries(messages)) {
         let dateObj = new Date(date);
         let options = {

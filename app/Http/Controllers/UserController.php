@@ -116,6 +116,18 @@ class UserController extends Controller
         $recipient = $request->input('recipient');
         $chats = $userService->getUserChats($user);
 
+        if (isset($recipient) && $chats->where('first_user_id', $recipient)->isEmpty()
+            && $chats->where('second_user_id', $recipient)->isEmpty()) {
+            $arr = [$recipient, $user->id];
+            sort($arr);
+            $user->chats()->create([
+                'first_user_id' => $arr[0],
+                'second_user_id' => $arr[1],
+            ]);
+            $user->refresh();
+            $chats = $userService->getUserChats($user);
+        }
+
         return view('chat.index', compact('chats', 'recipient'));
     }
 

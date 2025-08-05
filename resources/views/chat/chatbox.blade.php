@@ -10,7 +10,10 @@
 
     @csrf
 
-    <div class="typing-area input-group border-top border-black d-none" style="height: 8%; width: 100%">
+    <p id="chat-blocked-text" class="m-auto text-secondary" style="display: none;">Этот пользователь ограничил круг лиц,
+        которые могут писать
+        ему соббщения</p>
+    <div class="typing-area input-group border-top border-black" style="height: 8%; width: 100%; display: none;">
         <input id="messageInput" class="border-0 form-control" type="text" name="message"
                placeholder="Введите сообщение...">
         <svg id="sendMessageBtn" class="m-auto me-1" role="button" version="1.1" xmlns="http://www.w3.org/2000/svg"
