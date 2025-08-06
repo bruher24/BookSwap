@@ -21,11 +21,12 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function APIlogin(Request $request)
+    public function APIlogin(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
         if (Auth::validate($credentials)) {
             $user = User::where('email', $request->email)->first();
+            $user->tokens()->delete();
             $token = $user->createToken('api-token')->plainTextToken;
 
             return response()->json([
@@ -65,14 +66,14 @@ class UserController extends Controller
         }
         $request->session()->regenerate();
 
-        Auth::user()->createToken('test')->plainTextToken;
-
         return redirect()->intended()->with('success', 'Добро пожаловать!');
     }
 
     public function logout(Request $request): RedirectResponse
     {
+        Auth::user()->tokens()->delete();
         Auth::logout();
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
