@@ -33,7 +33,7 @@ $search.on('input', e => {
             for (const [category, content] of Object.entries(filtered)) {
                 let categoryName = getCategoryName(category);
                 $output.append(`<li class="searchElement text-secondary"><small class="searchElement">${categoryName}</small></li>`);
-                content.forEach(function (element) {
+                content.forEach(element => {
                     let link = `/${category}/${element.id}`;
                     let name = element.name;
                     if (element.formattedName) {
@@ -56,7 +56,7 @@ $search.on('input', e => {
         });
 });
 
-$(document).on('click', function (e) {
+$(document).on('click', (e) => {
     if (!$(e.target).hasClass('searchElement')) {
         $('#searchDropdown').detach();
     }

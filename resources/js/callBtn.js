@@ -1,9 +1,9 @@
 import * as utils from "./utils.js";
 
-$('#call_btn').on('click', function () {
+$('#call_btn').on('click', () => {
     if ($(this).data('user')) {
         let $hiddenNumber = $('#hidden-number');
-        $hiddenNumber.fadeToggle(100, function () {
+        $hiddenNumber.fadeToggle(100, () => {
         });
         $hiddenNumber.toggleClass('d-none');
     } else {
@@ -12,7 +12,7 @@ $('#call_btn').on('click', function () {
     }
 });
 
-$('.to-copy').on('click', async function () {
+$('.to-copy').on('click', async () => {
     await utils.showFadeAlert($(this).data('copy'), 'Номер скопирован!');
 });
 

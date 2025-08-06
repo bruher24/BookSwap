@@ -7,7 +7,7 @@ let userId;
 let marked = [];
 
 userId = $('#notifications-container').data('user');
-$('.notification-div').on('click', function () {
+$('.notification-div').on('click', () => {
     let notification = $(this).data('notification');
     let $this = $(this);
 
@@ -16,7 +16,7 @@ $('.notification-div').on('click', function () {
         hiddenDiv.slideUp('fast');
         checkOneRequest(notification)
             .then(response => {
-                $this.slideUp('fast', function () {
+                $this.slideUp('fast', () => {
                     $(this).remove();
                 });
             })
@@ -28,12 +28,12 @@ $('.notification-div').on('click', function () {
     }
 });
 
-$('#check-all-div').on('click', function () {
+$('#check-all-div').on('click', () => {
     if ($(this).attr('role') === 'button') {
         checkAllRequest()
             .then(response => {
                 utils.showAlert('success', 'Уведомления отмечены прочитанными')
-                $('#notifications-container').fadeOut(500, function () {
+                $('#notifications-container').fadeOut(500, () => {
                     $(this).empty().show();
                 });
             })
@@ -44,8 +44,8 @@ $('#check-all-div').on('click', function () {
 });
 
 // TODO:  почему то срабатывает со старта
-$(window).on('beforeunload', function () {
-    $('.hidden-div :visible').each(function () {
+$(window).on('beforeunload', () => {
+    $('.hidden-div :visible').each(() => {
         let id = $(this).parent().data('notification');
         marked.push(id);
     });

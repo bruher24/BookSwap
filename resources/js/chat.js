@@ -57,13 +57,13 @@ if (userId) {
         });
 }
 
-$('.chat-row ').on('click', function () {
+$('.chat-row ').on('click', () => {
     recipientId = $(this).data('recipient');
     selectChat($(this));
 });
 
-$($messagesContainer).on('scroll', function () {
-    unreadMessages.forEach(function (unreadMessageId, key) {
+$($messagesContainer).on('scroll', () => {
+    unreadMessages.forEach((unreadMessageId, key) => {
         let $unreadMessageDiv = $(`div[id="message-${unreadMessageId}"]`);
         if ($unreadMessageDiv.length > 0 && $unreadMessageDiv.isInDiv()) {
             $('.chat-row.active').children('.new-message-icon').hide();
@@ -84,7 +84,7 @@ $($messagesContainer).on('scroll', function () {
 });
 
 // TODO: добавить проверку даты, чтобы динамически дорисовывать ее
-$('#sendMessageBtn').on('click', function () {
+$('#sendMessageBtn').on('click', () => {
     let textInput = $('#messageInput');
     let text = textInput.val();
     textInput.val('');
@@ -131,7 +131,7 @@ function selectChat($node) {
 }
 
 function madeActive($node) {
-    $('.chat-row').each(function () {
+    $('.chat-row').each(() => {
         $(this).removeClass('bg-dark-subtle active');
     });
     if (!$node.hasClass('bg-dark-subtle active')) {
@@ -179,7 +179,7 @@ function displayMessages(messages) {
         let formattedDate = dateObj.toLocaleDateString('ru-RU', options);
 
         appendDateSection(formattedDate);
-        content.forEach(function (message) {
+        content.forEach((message) => {
             appendMessage(message);
         });
     }
@@ -203,7 +203,7 @@ function appendMessage(message) {
         divClasses = ['bg-dark-subtle', 'text-end', 'ms-auto'];
     }
 
-    divClasses.forEach(function (className) {
+    divClasses.forEach((className) => {
         $messageDiv.addClass(className);
     });
 
@@ -220,7 +220,7 @@ async function sendMessageRequest(text) {
     });
 }
 
-$.fn.isInDiv = function () {
+$.fn.isInDiv = () => {
     if (this.length === 0) return false;
 
     const element = $(this)[0];

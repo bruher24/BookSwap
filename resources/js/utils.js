@@ -23,7 +23,7 @@ export async function showFadeAlert(toCopy, message) {
 
     setTimeout(() => {
         toast.hide();
-        toastEl.on('hidden.bs.toast', function () {
+        toastEl.on('hidden.bs.toast', () => {
             toastContainer.remove();
         });
     }, 3000);

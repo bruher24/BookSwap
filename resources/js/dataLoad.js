@@ -5,7 +5,7 @@ let types = [];
 
 loadAuthorsToSelect();
 loadTypesToSelect();
-$('.bookBtn').on('click', function () {
+$('.bookBtn').on('click', () => {
     loadAuthorsToSelect();
     loadTypesToSelect();
 });

@@ -4,14 +4,14 @@ window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.g
 
 let selectedAuthors = [];
 
-$('#addBookBtn').click(function () {
+$('#addBookBtn').click(() => {
     $('#modalBookTitle').html('Добавить книгу');
     $('#bookForm')[0].reset();
 });
 
-$(document).on('focus', '.authorDiv select', function () {
+$(document).on('focus', '.authorDiv select', () => {
     $(this).data('old-value', $(this).val());
-}).on('change', '.authorDiv select', function () {
+}).on('change', '.authorDiv select', () => {
     $(this).blur();
     const $select = $(this);
     const newValue = $select.val();
@@ -32,7 +32,7 @@ $(document).on('focus', '.authorDiv select', function () {
     }
 });
 
-$('#addAuthorBtn').click(function () {
+$('#addAuthorBtn').click(() => {
     const $authorDivs = $('.authorDiv');
     if ($authorDivs.length >= 3) {
         alert('Добавлен максимум авторов!');
@@ -56,7 +56,7 @@ $('#addAuthorBtn').click(function () {
     $lastAuthorDiv.after($newDiv);
 });
 
-$('#saveBookBtn').click(function () {
+$('#saveBookBtn').click(() => {
     const form = $('#bookForm');
     const formData = getFormData(form);
     storeBookRequest(formData)
@@ -76,7 +76,7 @@ $('#saveBookBtn').click(function () {
 });
 
 function getFormData(form) {
-    const formData = form.serializeArray().reduce(function (obj, item) {
+    const formData = form.serializeArray().reduce((obj, item) => {
         obj[item.name] = item.value;
         return obj;
     }, {});
@@ -121,7 +121,7 @@ function showValidationErrors(errors) {
 // Unused service function
 function inputsCallback(selector = '.mainInput', callback) {
     let inputs = $(selector);
-    inputs.each(function () {
+    inputs.each(() => {
         let property = this.name;
         let val = this.value;
         callback(property, val, $(this));

@@ -2,7 +2,7 @@ import * as utils from "./utils.js";
 
 window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
 
-$('.book-card').on('contextmenu', function (e) {
+$('.book-card').on('contextmenu', (e) => {
     e.preventDefault();
 
     $('.custom-context-menu').remove();
@@ -35,25 +35,25 @@ $('.book-card').on('contextmenu', function (e) {
 
     $('body').append(menu);
 
-    $(document).on('click.contextmenu', function (e) {
+    $(document).on('click.contextmenu', e => {
         if (!$(e.target).closest('.custom-context-menu').length) {
             menu.remove();
             $(document).off('click.contextmenu');
         }
     });
 
-    $('#editBookBtn').on('click', function () {
+    $('#editBookBtn').on('click', () => {
         $('#modalTitle').html('Изменить книгу');
         $('#modalBookForm').modal('show');
         fillBookData(bookId);
     });
 
-    $('#modalBookForm').on('show.bs.modal', function () {
+    $('#modalBookForm').on('show.bs.modal', () => {
         menu.remove();
         $(document).off('click.contextmenu');
     });
 
-    $('#deleteBookBtn').on('click', function () {
+    $('#deleteBookBtn').on('click', () => {
         menu.remove();
         $(document).off('click.contextmenu');
         if (confirm('Вы уверены, что хотите удалить эту книгу?')) {
@@ -68,7 +68,7 @@ $('.book-card').on('contextmenu', function (e) {
         }
     });
 
-    $('#shareBookBtn').on('click', async function () {
+    $('#shareBookBtn').on('click', async () => {
         await utils.showFadeAlert($(this).data('copy'), 'Ссылка скопирована!');
         menu.remove();
         $(document).off('click.contextmenu');
