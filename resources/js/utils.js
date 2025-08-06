@@ -29,6 +29,7 @@ export async function showFadeAlert(toCopy, message) {
     }, 3000);
 }
 
+// TODO: fade не работает, алерт не пропадает
 export function showAlert(type, message) {
     const alertHtml = `
         <div class="alert alert-${type} alert-dismissible fade show" role="alert">
