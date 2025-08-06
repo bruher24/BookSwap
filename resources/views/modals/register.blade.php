@@ -17,15 +17,16 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-3" name="email" id="floatingEmail"
+                        <input type="email" class="form-control rounded-3" name="email" id="floatingEmailRegister"
                                placeholder="name@example.com">
-                        <label for="floatingEmail">Email</label>
+                        <label for="floatingEmailRegister">Email</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control rounded-3" name="password" id="floatingPassword"
+                        <input type="password" class="form-control rounded-3" name="password"
+                               id="floatingPasswordRegister"
                                placeholder="Password">
-                        <label for="floatingPassword">Пароль</label>
+                        <label for="floatingPasswordRegister">Пароль</label>
                     </div>
 
                     <div class="form-check mb-3">

@@ -11,15 +11,15 @@
                     @csrf
 
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-3" name="email" id="floatingEmail"
+                        <input type="email" class="form-control rounded-3" name="email" id="floatingEmailLogin"
                                placeholder="name@example.com">
-                        <label for="floatingEmail">Email</label>
+                        <label for="floatingEmailLogin">Email</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control rounded-3" name="password" id="floatingPassword"
+                        <input type="password" class="form-control rounded-3" name="password" id="floatingPasswordLogin"
                                placeholder="Password">
-                        <label for="floatingPassword">Пароль</label>
+                        <label for="floatingPasswordLogin">Пароль</label>
                     </div>
 
                     <div class="form-check mb-3">

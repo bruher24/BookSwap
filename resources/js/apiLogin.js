@@ -4,13 +4,13 @@ $('.authorize-btn').on('click', e => {
     e.preventDefault();
     localStorage.removeItem('api_token');
 
-    let email = $('#floatingEmail').val();
-    let password = $('#floatingPassword').val();
+    let email = $('#floatingEmailLogin').val();
+    let password = $('#floatingPasswordLogin').val();
+
     getApiToken({
         email: email,
         password: password
     }).then(response => {
-        console.log(response)
         localStorage.setItem('api_token', response.data.token);
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
         $(e.target).parent().submit();
@@ -26,8 +26,6 @@ $('#logout-btn').on('click', e => {
 });
 
 async function getApiToken(credentials) {
-    console.log(credentials);
-    credentials.email = 'admin@admin.com';
     return await window.axios.post('/api/login', {
         email: credentials.email,
         password: credentials.password,
