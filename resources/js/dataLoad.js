@@ -1,14 +1,15 @@
+window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
+
 let authors = [];
 let types = [];
-window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
-$(function () {
+
+loadAuthorsToSelect();
+loadTypesToSelect();
+$('.bookBtn').on('click', function () {
     loadAuthorsToSelect();
     loadTypesToSelect();
-    $('.bookBtn').on('click', function () {
-        loadAuthorsToSelect();
-        loadTypesToSelect();
-    });
 });
+
 
 function loadAuthorsToSelect(selectId = '#floatingAuthorId') {
     authorsListRequest().then(response => {

@@ -1,13 +1,12 @@
-$(function () {
-    $('#dropFiltersBtn').on('click', function () {
-        $('#filtersForm .btn-check').each(function () {
-            const checkbox = $(this)[0];
+$('#dropFiltersBtn').on('click', function () {
+    $('#filtersForm .btn-check').each(function () {
+        const checkbox = $(this)[0];
 
-            checkbox.checked = false;
+        checkbox.checked = false;
 
-            $(checkbox).trigger('change');
-        });
-
-        $('#filtersForm').submit();
+        $(checkbox).trigger('change');
     });
+
+    $('#filtersForm').submit();
 });
+

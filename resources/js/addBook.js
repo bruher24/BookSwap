@@ -1,77 +1,78 @@
 import * as utils from "./utils.js";
 
-$(function () {
-    let selectedAuthors = [];
+window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
 
-    $('#addBookBtn').click(function () {
-        $('#modalBookTitle').html('Добавить книгу');
-        $('#bookForm')[0].reset();
-    });
+let selectedAuthors = [];
 
-    $(document).on('focus', '.authorDiv select', function () {
-        $(this).data('old-value', $(this).val());
-    }).on('change', '.authorDiv select', function () {
-        $(this).blur();
-        const $select = $(this);
-        const newValue = $select.val();
-        const oldValue = $select.data('old-value');
+$('#addBookBtn').click(function () {
+    $('#modalBookTitle').html('Добавить книгу');
+    $('#bookForm')[0].reset();
+});
 
-        if (newValue && newValue !== '0' && selectedAuthors.includes(newValue)) {
-            alert('Этот автор уже выбран в другом поле!');
-            $select.val(oldValue === null ? '0' : oldValue);
-            return;
-        }
+$(document).on('focus', '.authorDiv select', function () {
+    $(this).data('old-value', $(this).val());
+}).on('change', '.authorDiv select', function () {
+    $(this).blur();
+    const $select = $(this);
+    const newValue = $select.val();
+    const oldValue = $select.data('old-value');
 
-        if (oldValue && oldValue !== '0') {
-            selectedAuthors = selectedAuthors.filter(id => id !== oldValue);
-        }
+    if (newValue && newValue !== '0' && selectedAuthors.includes(newValue)) {
+        alert('Этот автор уже выбран в другом поле!');
+        $select.val(oldValue === null ? '0' : oldValue);
+        return;
+    }
 
-        if (newValue && newValue !== '0') {
-            selectedAuthors.push(newValue);
-        }
-    });
+    if (oldValue && oldValue !== '0') {
+        selectedAuthors = selectedAuthors.filter(id => id !== oldValue);
+    }
 
-    $('#addAuthorBtn').click(function () {
-        const $authorDivs = $('.authorDiv');
-        if ($authorDivs.length >= 3) {
-            alert('Добавлен максимум авторов!');
-            return;
-        }
+    if (newValue && newValue !== '0') {
+        selectedAuthors.push(newValue);
+    }
+});
 
-        const $lastAuthorDiv = $authorDivs.last();
-        const $newDiv = $lastAuthorDiv.clone();
+$('#addAuthorBtn').click(function () {
+    const $authorDivs = $('.authorDiv');
+    if ($authorDivs.length >= 3) {
+        alert('Добавлен максимум авторов!');
+        return;
+    }
 
-        const newId = 'floatingAuthorId_' + $authorDivs.length;
-        const newName = 'author_id' + +$authorDivs.length;
-        $newDiv.find('select')
-            .attr('id', newId)
-            .attr('name', newName)
-            .val('0');
+    const $lastAuthorDiv = $authorDivs.last();
+    const $newDiv = $lastAuthorDiv.clone();
 
-        $newDiv.find('label')
-            .attr('for', newId)
-            .text('Дополнительный автор');
+    const newId = 'floatingAuthorId_' + $authorDivs.length;
+    const newName = 'author_id' + +$authorDivs.length;
+    $newDiv.find('select')
+        .attr('id', newId)
+        .attr('name', newName)
+        .val('0');
 
-        $lastAuthorDiv.after($newDiv);
-    });
+    $newDiv.find('label')
+        .attr('for', newId)
+        .text('Дополнительный автор');
 
-    $('#saveBookBtn').click(function () {
-        const form = $('#bookForm');
-        const formData = getFormData(form);
-        storeBookRequest(formData).then(function (result) {
-            if (result.success === true) {
-                utils.showAlert('success', 'Книга успешно сохранена!');
-                $('#modalBookForm').modal('hide');
-                form[0].reset();
-                window.location.reload();
-            } else {
-                utils.showAlert('danger', 'Ошибка при сохранении книги!');
-                if (result.errors) {
-                    showValidationErrors(result.errors);
-                }
+    $lastAuthorDiv.after($newDiv);
+});
+
+$('#saveBookBtn').click(function () {
+    const form = $('#bookForm');
+    const formData = getFormData(form);
+    storeBookRequest(formData)
+        .then(response => {
+            console.log(response);
+            utils.showAlert('success', 'Книга успешно сохранена!');
+            $('#modalBookForm').modal('hide');
+            form[0].reset();
+            window.location.reload();
+        })
+        .catch(e => {
+            utils.showAlert('danger', 'Ошибка при сохранении книги!');
+            if (e.response.data.errors) {
+                showValidationErrors(e.response.data.errors);
             }
         });
-    });
 });
 
 function getFormData(form) {
@@ -99,12 +100,7 @@ function formatData(formData) {
 }
 
 async function storeBookRequest(data) {
-    return await $.ajax({
-        url: '/books/store',
-        type: 'post',
-        async: true,
-        data: data,
-    });
+    return await window.axios.post('/books/store', data);
 }
 
 function showValidationErrors(errors) {

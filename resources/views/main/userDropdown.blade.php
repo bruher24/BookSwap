@@ -46,7 +46,7 @@
         </li>
 
         <li>
-            <a class="dropdown-item  btn btn-dark"
+            <a id="logout-btn" class="dropdown-item  btn btn-dark"
                href="{{ route('users.logout') }}">
                 Выйти
             </a>

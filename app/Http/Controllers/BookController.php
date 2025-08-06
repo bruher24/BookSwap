@@ -75,7 +75,7 @@ class BookController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data' => $book->loadMissing('authors'),
+            'book' => $book->loadMissing('authors'),
         ], 200, [], JSON_PRETTY_PRINT);
     }
 }

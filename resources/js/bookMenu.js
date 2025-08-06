@@ -1,5 +1,7 @@
 import * as utils from "./utils.js";
 
+window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
+
 $('.book-card').on('contextmenu', function (e) {
     e.preventDefault();
 
@@ -55,14 +57,14 @@ $('.book-card').on('contextmenu', function (e) {
         menu.remove();
         $(document).off('click.contextmenu');
         if (confirm('Вы уверены, что хотите удалить эту книгу?')) {
-            deleteBook(bookId).then(function (response) {
-                if (response.data.success === true) {
+            deleteBook(bookId)
+                .then(response => {
                     window.location.reload();
                     utils.showAlert('success', 'Книга успешно удалена!');
-                } else {
+                })
+                .catch(e => {
                     utils.showAlert('danger', 'Ошибка при удалении книги!');
-                }
-            });
+                });
         }
     });
 
@@ -75,54 +77,35 @@ $('.book-card').on('contextmenu', function (e) {
 
 
 function fillBookData(bookId) {
-    getBookData(bookId).then(function (response) {
-        const book = response.data;
-        $('#floatingBookName').val(book.name);
-        $('#floatingTypeId').val(book.book_type);
+    getBookData(bookId)
+        .then(response => {
+            console.log(response);
+            const book = response.data.book;
+            $('#floatingBookName').val(book.name);
+            $('#floatingBookType').val(book.book_type);
 
-        const authors = book.authors;
-        for (let i = 0; i < authors.length; i++) {
-            let authorId = '#floatingAuthorId' + (i === 0 ? '' : `_${i}`);
-            $(authorId).val(authors[i].id);
-            if (authors.length - i > 1) {
-                $('#addAuthorBtn').click();
+            const authors = book.authors;
+            for (let i = 0; i < authors.length; i++) {
+                let authorId = '#floatingAuthorId' + (i === 0 ? '' : `_${i}`);
+                $(authorId).val(authors[i].id);
+                if (authors.length - i > 1) {
+                    $('#addAuthorBtn').click();
+                }
             }
-        }
-        $('#floatingPageCount').val(book.page_count);
-        $('#floatingPublishingHouse').val(book.publishing_house);
-        $('#floatingPublicationYear').val(book.publication_year);
-        $('#floatingIsbn').val(book.isbn);
-    });
+            $('#floatingPageCount').val(book.page_count);
+            $('#floatingPublishingHouse').val(book.publishing_house);
+            $('#floatingPublicationYear').val(book.publication_year);
+            $('#floatingIsbn').val(book.isbn);
+        })
+        .catch(e => {
+            utils.showAlert('Ошибка при загрузке данных книги');
+        });
 }
 
 async function getBookData(bookId) {
-    return await $.ajax({
-        url: `/api/v1/books/${bookId}`,
-        type: 'get',
-        async: true,
-    });
+    return await window.axios.get(`/api/v1/books/${bookId}`);
 }
 
 async function deleteBook(bookId) {
-    const token = $('input[name="_token"]').val();
-    try {
-        const response = await $.ajax({
-            url: `/books/${bookId}`,
-            type: 'delete',
-            async: true,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            data: {
-                _token: token,
-            },
-        });
-        return {
-            success: true,
-            data: response
-        };
-    } catch (error) {
-        return {
-            success: false,
-            errors: error.responseJSON?.errors || {error: [error.responseJSON?.message || 'Произошла ошибка']}
-        };
-    }
+    return await window.axios.delete(`/books/${bookId}`);
 }

@@ -1,25 +1,26 @@
 import './echo.js';
+import * as utils from "./utils.js";
+
+window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
 
 let userId = $('.chat-container').data('user');
 let recipientId;
-let csrf_token = $('input[name="_token"]').val();
 let $messagesContainer = $('.messages-container');
 let unreadMessages = [];
 let readMessages = [];
 let counter = 0;
 
-$(function () {
-    userId = userId ?? window.Laravel.user.id;
-    if (userId) {
-        unreadMessagesRequest(userId).then(function (response) {
-            if (response.success) {
-                if (response.messages.length > 0) {
-                    for (let message of response.messages) {
-                        unreadMessages.push(message.id);
-                        let obj = $(`.chat-row[data-recipient="${message.from_id}"]`);
-                        if (obj.length > 0) {
-                            obj.children('.new-message-icon').show();
-                        }
+
+userId = userId ?? (window.Laravel.user ? window.Laravel.user.id : null);
+if (userId) {
+    unreadMessagesRequest(userId)
+        .then(response => {
+            if (response.data.messages.length > 0) {
+                for (let message of response.data.messages) {
+                    unreadMessages.push(message.id);
+                    let obj = $(`.chat-row[data-recipient="${message.from_id}"]`);
+                    if (obj.length > 0) {
+                        obj.children('.new-message-icon').show();
                     }
                 }
             }
@@ -32,78 +33,99 @@ $(function () {
                     selectChat(obj);
                 }
             }
+        })
+        .catch(e => {
+            utils.showAlert('Ошибка при загрузке сообщений');
         });
 
-        Echo.private(`user.${userId}`)
-            .listen('MessageSent', (socketMessage) => {
-                let obj = $(`.chat-row[data-recipient="${socketMessage.message.from_id}"]`);
-                if (obj.length > 0) {
-                    if (obj.hasClass('active')) {
-                        appendMessage(socketMessage.message);
-                        // TODO: текст внизу "непрочитанных сообщений"
-                    }
-
-                    unreadMessages.push(socketMessage.message.id);
-
-                    obj.children('.new-message-icon').show();
-                    $($messagesContainer).trigger('scroll');
+    Echo.private(`user.${userId}`)
+        .listen('MessageSent', (socketMessage) => {
+            let obj = $(`.chat-row[data-recipient="${socketMessage.message.from_id}"]`);
+            if (obj.length > 0) {
+                if (obj.hasClass('active')) {
+                    appendMessage(socketMessage.message);
+                    // TODO: текст внизу "непрочитанных сообщений"
                 }
-                // TODO: показать уведомление
-                //  отправлять два сообщения: в канал уведомлений и в канал чата ??
-            });
-    }
 
-    $('.chat-row ').on('click', function () {
-        recipientId = $(this).data('recipient');
-        selectChat($(this));
-    });
+                unreadMessages.push(socketMessage.message.id);
 
-    $($messagesContainer).on('scroll', function () {
-        unreadMessages.forEach(function (unreadMessageId, key) {
-            let $unreadMessageDiv = $(`div[id="message-${unreadMessageId}"]`);
-            if ($unreadMessageDiv.length > 0 && $unreadMessageDiv.isInDiv()) {
-                $('.chat-row.active').children('.new-message-icon').hide();
-                readMessages.push(unreadMessageId);
-                delete (unreadMessages[key]);
+                obj.children('.new-message-icon').show();
+                $($messagesContainer).trigger('scroll');
             }
+            // TODO: показать уведомление
+            //  отправлять два сообщения: в канал уведомлений и в канал чата ??
         });
+}
 
-        if (readMessages.length > 0) {
-            markAsReadRequest(readMessages).then(function (response) {
-                if (response.success) {
-                    counter = 0;
-                }
-            });
+$('.chat-row ').on('click', function () {
+    recipientId = $(this).data('recipient');
+    selectChat($(this));
+});
+
+$($messagesContainer).on('scroll', function () {
+    unreadMessages.forEach(function (unreadMessageId, key) {
+        let $unreadMessageDiv = $(`div[id="message-${unreadMessageId}"]`);
+        if ($unreadMessageDiv.length > 0 && $unreadMessageDiv.isInDiv()) {
+            $('.chat-row.active').children('.new-message-icon').hide();
+            readMessages.push(unreadMessageId);
+            delete (unreadMessages[key]);
         }
     });
 
-    $('#sendMessageBtn').on('click', function () {
-        let textInput = $('#messageInput');
-        let text = textInput.val();
-        textInput.val('');
-        sendMessageRequest(text).then(function (response) {
-            if (response.success) {
-                appendMessage(response.message);
-
-                $messagesContainer.animate({
-                    scrollTop: $messagesContainer.prop('scrollHeight')
-                }, 550);
-            }
-        });
-    });
+    if (readMessages.length > 0) {
+        markAsReadRequest(readMessages)
+            .then(response => {
+                counter = 0;
+            })
+            .catch(e => {
+                utils.showAlert('Ошибка при обработке сообщения');
+            });
+    }
 });
+
+// TODO: добавить проверку даты, чтобы динамически дорисовывать ее
+$('#sendMessageBtn').on('click', function () {
+    let textInput = $('#messageInput');
+    let text = textInput.val();
+    textInput.val('');
+    sendMessageRequest(text)
+        .then(response => {
+            if ($messagesContainer.html() === '') {
+                let dateObj = new Date(response.data.message.created_at);
+                let options = {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                };
+                let formattedDate = dateObj.toLocaleDateString('ru-RU', options);
+
+                appendDateSection(formattedDate);
+            }
+
+            appendMessage(response.data.message);
+
+            $messagesContainer.animate({
+                scrollTop: $messagesContainer.prop('scrollHeight')
+            }, 550);
+        })
+        .catch(e => {
+            utils.showAlert('Ошибка при отправке сообщения');
+        });
+});
+
 
 function selectChat($node) {
     if (!$node.hasClass('active')) {
         madeActive($node);
 
         messagesListRequest(userId)
-            .then(function (response) {
-                console.log(response);
-                if (response.success) {
-                    displayChat(response);
-                }
+            .then(response => {
+                displayChat(response.data);
+
                 $($messagesContainer).trigger('scroll');
+            })
+            .catch(e => {
+                utils.showAlert('Ошибка при загрузке сообщений');
             });
     }
 }
@@ -118,20 +140,16 @@ function madeActive($node) {
 }
 
 async function messagesListRequest(userId) {
-    return await $.ajax({
-        url: `/api/v1/users/${userId}/chat/${recipientId}`,
-        type: 'get',
-        async: true
-    });
+    return await window.axios.get(`/api/v1/users/${userId}/chat/${recipientId}`);
 }
 
-function displayChat(response) {
+function displayChat(data) {
 
-    displayTypingArea(response.is_blocked);
+    displayTypingArea(data.is_blocked);
 
-    displayChatHeader(response.recipient);
+    displayChatHeader(data.recipient);
 
-    displayMessages(response.messages, response.recipient);
+    displayMessages(data.messages, data.recipient);
 }
 
 function displayTypingArea(is_blocked) {
@@ -197,14 +215,8 @@ function appendMessage(message) {
 }
 
 async function sendMessageRequest(text) {
-    return await $.ajax({
-        url: `/api/v1/users/${userId}/chat/${recipientId}/message`,
-        type: 'post',
-        async: true,
-        data: {
-            body: text,
-            _token: csrf_token
-        }
+    return await window.axios.post(`/api/v1/users/${userId}/chat/${recipientId}/message`, {
+        body: text
     });
 }
 
@@ -226,21 +238,11 @@ $.fn.isInDiv = function () {
 };
 
 async function unreadMessagesRequest(userId) {
-    return await $.ajax({
-        url: `/api/v1/users/${userId}/messages`,
-        type: 'get',
-        async: true
-    });
+    return await window.axios.get(`/api/v1/users/${userId}/messages`);
 }
 
 async function markAsReadRequest(messages) {
-    return await $.ajax({
-        url: `/api/v1/users/${userId}/messages/read`,
-        type: 'patch',
-        async: true,
-        data: {
-            messages: messages,
-            _token: csrf_token
-        }
+    return await window.axios.patch(`/api/v1/users/${userId}/messages/read`, {
+        messages: messages
     });
 }
