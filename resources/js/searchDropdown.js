@@ -17,14 +17,16 @@ $form.on('submit', function (e) {
             });
             $output.data('bs-theme', 'light');
 
-            if ($.isEmptyObject(response.data)) {
+            let found = response.data.found;
+
+            if ($.isEmptyObject(found)) {
                 $output.append('<a class="searchElement nav-link">Ничего не найдено</a>');
                 $form.append($output);
                 return;
             }
 
             let filtered = {};
-            for (let [key, item] of Object.entries(response.data)) {
+            for (let [key, item] of Object.entries(found)) {
                 filtered[key] = item.length > 3 ? item.slice(0, 3) : item;
             }
 
