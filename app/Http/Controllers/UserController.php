@@ -21,6 +21,25 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    public function APIlogin(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        if (Auth::validate($credentials)) {
+            $user = User::where('email', $request->email)->first();
+            $token = $user->createToken('api-token')->plainTextToken;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Login Successful',
+                'token' => $token,
+            ], 200, [], JSON_PRETTY_PRINT);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'Login Failed',
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
+
     public function create(StoreUserRequest $request, UserServiceInterface $userService): RedirectResponse
     {
         $validated = $request->validated();

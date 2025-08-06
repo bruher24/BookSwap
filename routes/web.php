@@ -61,18 +61,3 @@ Route::prefix('types/')->controller(BookTypeController::class)->name('types.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
     });
-
-
-// TODO: перенести в api.php (поставить sanctum для этого)
-Route::prefix('api/v1/')->group(function () {
-    Route::get('types', [BookTypeController::class, 'getTypes'])->name('getTypes');
-    Route::get('authors', [AuthorController::class, 'getAuthors'])->name('getAuthors');
-    Route::get('books/{book}', [BookController::class, 'getBookData'])->name('getBookData');
-    Route::get('users/{user}/chat/{recipient}', [ChatController::class, 'getMessages'])->name('getMessages');
-    Route::post('users/{user}/chat/{recipient}/message', [ChatController::class, 'sendMessage'])->name('sendMessage');
-    Route::patch('users/{user}/notifications/{notification}', [UserController::class, 'checkOne'])->name('checkOne');
-    Route::patch('users/{user}/notifications/check-many', [UserController::class, 'checkMany'])->name('checkMany');
-    Route::patch('users/{user}/notifications/check-all', [UserController::class, 'checkAll'])->name('checkAll');
-    Route::get('users/{user}/messages', [UserController::class, 'getUnreadMessages'])->name('getUnreadMessages');
-    Route::patch('users/{user}/messages/read', [UserController::class, 'readMessages'])->name('readMessages');
-});

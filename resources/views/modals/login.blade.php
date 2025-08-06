@@ -9,25 +9,36 @@
             <div class="modal-body p-5 pt-0">
                 <form class="" method="post" action="{{ route('users.login') }}">
                     @csrf
+
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-3" name="email" id="floatingInput"
+                        <input type="email" class="form-control rounded-3" name="email" id="floatingEmail"
                                placeholder="name@example.com">
-                        <label for="floatingInput">Email</label>
+                        <label for="floatingEmail">Email</label>
                     </div>
+
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control rounded-3" name="password" id="floatingPassword"
                                placeholder="Password">
                         <label for="floatingPassword">Пароль</label>
                     </div>
+
                     <div class="form-check mb-3">
                         <input class="form-check-input" type="checkbox" value="1" name="remember" id="flexCheckDefault">
                         <label class="form-check-label" for="flexCheckDefault">
                             Запомнить меня
                         </label>
                     </div>
-                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Войти</button>
+
+                    <button class="authorize-btn w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">
+                        Войти
+                    </button>
+
                     <hr class="my-4">
-                    <h2 class="fs-5 fw-bold mb-3">или войдите через соцсети:</h2>
+
+                    <h2 class="fs-5 fw-bold mb-3">
+                        или войдите через соцсети:
+                    </h2>
+
                     <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3" type="submit">
                         <svg class="bi me-1" width="16" height="16" aria-hidden="true">
                             <use xlink:href="#google"></use>

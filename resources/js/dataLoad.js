@@ -1,6 +1,6 @@
 let authors = [];
 let types = [];
-
+window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
 $(function () {
     loadAuthorsToSelect();
     loadTypesToSelect();
@@ -11,9 +11,9 @@ $(function () {
 });
 
 function loadAuthorsToSelect(selectId = '#floatingAuthorId') {
-    authorsListRequest().then(function (response) {
-        if (response.success) {
-            authors = response.authors;
+    authorsListRequest().then(response => {
+        if (response.data.success) {
+            authors = response.data.authors;
             const $select = $(selectId);
             $select.empty().append('<option selected value="0">Выберите автора...</option>');
 
@@ -26,9 +26,9 @@ function loadAuthorsToSelect(selectId = '#floatingAuthorId') {
 }
 
 function loadTypesToSelect(selectId = '#floatingBookType') {
-    typesListRequest().then(function (response) {
-        if (response.success) {
-            types = response.booktypes;
+    typesListRequest().then(response => {
+        if (response.data.success) {
+            types = response.data.booktypes;
             const $select = $(selectId);
             $select.empty().append('<option selected value="0">Выберите тип...</option>');
 
@@ -41,17 +41,9 @@ function loadTypesToSelect(selectId = '#floatingBookType') {
 }
 
 async function authorsListRequest() {
-    return await $.ajax({
-        url: '/api/v1/authors/',
-        type: 'get',
-        async: true,
-    });
+    return await window.axios.get('/api/v1/authors');
 }
 
 async function typesListRequest() {
-    return await $.ajax({
-        url: '/api/v1/types/',
-        type: 'get',
-        async: true,
-    });
+    return await window.axios.get('/api/v1/types');
 }
