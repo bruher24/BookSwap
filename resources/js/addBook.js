@@ -116,13 +116,3 @@ function showValidationErrors(errors) {
         }
     }
 }
-
-// Unused service function
-function inputsCallback(selector = '.mainInput', callback) {
-    let inputs = $(selector);
-    inputs.each(function () {
-        let property = this.name;
-        let val = this.value;
-        callback(property, val, $(this));
-    });
-}
