@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +10,7 @@ use Laravel\Scout\Searchable;
 
 class Author extends Model
 {
-    use SoftDeletes, Searchable;
+    use SoftDeletes, Searchable, CacheInvalidation;
 
     public $fillable = [
         'lastname',

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Chat extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, CacheInvalidation;
 
     public $fillable = [
         'first_user_id',

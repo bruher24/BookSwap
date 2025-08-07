@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Deal extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, CacheInvalidation;
 
     public $fillable = [
         'seller_id',

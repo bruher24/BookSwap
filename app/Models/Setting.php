@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Setting extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, CacheInvalidation;
 
     public $fillable = [
         'name',

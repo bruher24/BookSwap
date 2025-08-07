@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, CacheInvalidation;
 
     public const int ADMIN_ROLE_ID = 1;
 
