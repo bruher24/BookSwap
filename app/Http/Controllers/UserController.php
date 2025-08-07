@@ -7,12 +7,9 @@ use App\Http\Requests\UpdateSettingRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Interfaces\BookServiceInterface;
 use App\Interfaces\UserServiceInterface;
-use App\Models\Chat;
-use App\Models\Message;
 use App\Models\Notification;
 use App\Models\Setting;
 use App\Models\User;
-use App\Models\UsersFavoriteBooks;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +70,7 @@ class UserController extends Controller
     {
         Auth::user()->tokens()->delete();
         Auth::logout();
-        
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
