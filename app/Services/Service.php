@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 abstract class Service implements ServiceInterface
 {
@@ -73,7 +75,10 @@ abstract class Service implements ServiceInterface
 
     public function getAll(): Collection
     {
-        return $this->modelClass::all();
+        return Cache::remember($this->modelClass, 600, function () {
+            Log::debug('Stored in cache: ' . $this->modelClass);
+            return $this->modelClass::all();
+        });
     }
 
     public function update(Model $object, array $data): bool

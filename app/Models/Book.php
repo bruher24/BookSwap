@@ -6,8 +6,8 @@ use App\Enums\BookTypeEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
 
 class Book extends Model
@@ -73,5 +73,30 @@ class Book extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public static function boot(): void
+    {
+        parent::boot();
+
+        self::created(function ($model) {
+            Cache::forget('App\Models\Book');
+        });
+
+        self::updated(function ($model) {
+            Cache::forget('App\Models\Book');
+        });
+
+        self::saved(function ($model) {
+            Cache::forget('App\Models\Book');
+        });
+
+        self::deleted(function ($model) {
+            Cache::forget('App\Models\Book');
+        });
+
+        self::restored(function ($model) {
+            Cache::forget('App\Models\Book');
+        });
     }
 }

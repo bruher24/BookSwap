@@ -10,6 +10,8 @@ use App\Models\Genre;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BookService extends Service implements BookServiceInterface
 {
@@ -101,29 +103,37 @@ class BookService extends Service implements BookServiceInterface
 
     public function create(array $data): Book|false
     {
-        // TODO: сделать нормально
-        if (isset($data['cover'])) {
-            $found = Cover::where('src', $data['cover'])->first()->id;
-            if ($found) {
-                $data['cover_id'] = $found;
+        DB::beginTransaction();
+        try {
+            // TODO: сделать нормально
+            if (isset($data['cover'])) {
+                $found = Cover::where('src', $data['cover'])->first()->id;
+                if ($found) {
+                    $data['cover_id'] = $found;
+                } else {
+                    // TODO: сохранить новую обложку
+                }
             } else {
-                // TODO: сохранить новую обложку
+                $data['cover_id'] = Cover::$baseCoverId;
             }
-        } else {
-            $data['cover_id'] = Cover::$baseCoverId;
-        }
 
-        $book = parent::create($data);
-        if (!$book) {
+            $book = parent::create($data);
+            if (!$book) {
+                return false;
+            }
+            $authors = $this->filterAuthorsData($data);
+            // TODO: проверить логику attach
+            if (!empty($authors) && !$this->attach($book, $authors)) {
+                return false;
+            }
+
+            DB::commit();
+            return $book;
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
             return false;
         }
-        $authors = $this->filterAuthorsData($data);
-        // TODO: проверить логику attach
-        if (!empty($authors) && !$this->attach($book, $authors)) {
-            return false;
-        }
-
-        return $book;
     }
 
     private function filterAuthorsData(array $data): array
