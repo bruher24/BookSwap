@@ -4,10 +4,12 @@ window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.g
 
 $('.book-card').on('contextmenu', function (e) {
     e.preventDefault();
+    e.stopPropagation();
 
     $('.custom-context-menu').remove();
+
     const bookId = $(this).data('book');
-    let menu = `<ul class="custom-context-menu dropdown-menu show position-fixed" 
+    let menu = `<ul class="custom-context-menu dropdown-menu show position-absolute" 
                 style="display: block; z-index: 1000;">
                 <li>
                     <button data-copy="${window.location.origin}/books/${bookId}" id="shareBookBtn" class="dropdown-item" >
@@ -40,27 +42,41 @@ $('.book-card').on('contextmenu', function (e) {
 
     $('body').append($menu);
 
-    $(document).on('click.contextmenu', function () {
-        if (!$(this).closest('.custom-context-menu').length) {
-            $menu.remove();
-            $(document).off('click.contextmenu');
+    const closeMenu = () => {
+        $menu.remove();
+        $(document).off('click.contextmenu');
+        $(document).off('contextmenu.closeMenu');
+    };
+
+    $(document).on('click.contextmenu', e => {
+        if (!$menu.is(e.target) && $menu.has(e.target).length === 0) {
+            closeMenu();
         }
     });
 
+    $(document).on('contextmenu.closeMenu', e => {
+        if (!$menu.is(e.target) && $menu.has(e.target).length === 0) {
+            closeMenu();
+        }
+    });
+
+    $menu.on('contextmenu', e => {
+        e.preventDefault();
+    });
+
     $('#editBookBtn').on('click', () => {
+        closeMenu();
         $('#modalTitle').html('Изменить книгу');
         $('#modalBookForm').modal('show');
         fillBookData(bookId);
     });
 
     $('#modalBookForm').on('show.bs.modal', () => {
-        $menu.remove();
-        $(document).off('click.contextmenu');
+        closeMenu();
     });
 
     $('#deleteBookBtn').on('click', () => {
-        $menu.remove();
-        $(document).off('click.contextmenu');
+        closeMenu();
         if (confirm('Вы уверены, что хотите удалить эту книгу?')) {
             deleteBook(bookId)
                 .then(response => {
@@ -74,9 +90,8 @@ $('.book-card').on('contextmenu', function (e) {
     });
 
     $('#shareBookBtn').on('click', async function () {
+        closeMenu();
         await utils.showFadeAlert($(this).data('copy'), 'Ссылка скопирована!');
-        $menu.remove();
-        $(document).off('click.contextmenu');
     });
 });
 
