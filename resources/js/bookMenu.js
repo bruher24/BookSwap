@@ -2,13 +2,12 @@ import * as utils from "./utils.js";
 
 window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
 
-$('.book-card').on('contextmenu', (e) => {
+$('.book-card').on('contextmenu', function (e) {
     e.preventDefault();
 
     $('.custom-context-menu').remove();
     const bookId = $(this).data('book');
-    const menu = $(
-        `<ul class="custom-context-menu dropdown-menu show position-fixed" 
+    let menu = `<ul class="custom-context-menu dropdown-menu show position-fixed" 
                 style="display: block; z-index: 1000;">
                 <li>
                     <button data-copy="${window.location.origin}/books/${bookId}" id="shareBookBtn" class="dropdown-item" >
@@ -19,25 +18,31 @@ $('.book-card').on('contextmenu', (e) => {
                     <button id="editBookBtn" class="bookBtn link dropdown-item">
                         Изменить книгу
                     </button>
-                </li>
-                <li>
+                </li>`;
+
+    let regex = /\/users\/\d*\/books/;
+    let isUserLib = regex.test(window.location.pathname);
+    if (isUserLib) {
+        menu += `<li>
                     <button id="deleteBookBtn" class="link-danger dropdown-item">
                         Удалить книгу
                     </button>
-                </li>
-            </ul>`
-    );
+                </li>`;
+    }
+    menu += `</ul>`;
 
-    menu.css({
+    const $menu = $(menu);
+
+    $menu.css({
         'left': e.pageX + 'px',
         'top': e.pageY + 'px'
     });
 
-    $('body').append(menu);
+    $('body').append($menu);
 
-    $(document).on('click.contextmenu', e => {
-        if (!$(e.target).closest('.custom-context-menu').length) {
-            menu.remove();
+    $(document).on('click.contextmenu', function () {
+        if (!$(this).closest('.custom-context-menu').length) {
+            $menu.remove();
             $(document).off('click.contextmenu');
         }
     });
@@ -49,12 +54,12 @@ $('.book-card').on('contextmenu', (e) => {
     });
 
     $('#modalBookForm').on('show.bs.modal', () => {
-        menu.remove();
+        $menu.remove();
         $(document).off('click.contextmenu');
     });
 
     $('#deleteBookBtn').on('click', () => {
-        menu.remove();
+        $menu.remove();
         $(document).off('click.contextmenu');
         if (confirm('Вы уверены, что хотите удалить эту книгу?')) {
             deleteBook(bookId)
@@ -68,9 +73,9 @@ $('.book-card').on('contextmenu', (e) => {
         }
     });
 
-    $('#shareBookBtn').on('click', async () => {
+    $('#shareBookBtn').on('click', async function () {
         await utils.showFadeAlert($(this).data('copy'), 'Ссылка скопирована!');
-        menu.remove();
+        $menu.remove();
         $(document).off('click.contextmenu');
     });
 });
@@ -79,7 +84,6 @@ $('.book-card').on('contextmenu', (e) => {
 function fillBookData(bookId) {
     getBookData(bookId)
         .then(response => {
-            console.log(response);
             const book = response.data.book;
             $('#floatingBookName').val(book.name);
             $('#floatingBookType').val(book.book_type);

@@ -2,12 +2,11 @@ import * as utils from "./utils.js";
 
 window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
 
-let token = $('input[name="_token"]').val();
 let userId;
 let marked = [];
 
 userId = $('#notifications-container').data('user');
-$('.notification-div').on('click', () => {
+$('.notification-div').on('click', function () {
     let notification = $(this).data('notification');
     let $this = $(this);
 
@@ -16,7 +15,7 @@ $('.notification-div').on('click', () => {
         hiddenDiv.slideUp('fast');
         checkOneRequest(notification)
             .then(response => {
-                $this.slideUp('fast', () => {
+                $this.slideUp('fast', function () {
                     $(this).remove();
                 });
             })
@@ -28,12 +27,12 @@ $('.notification-div').on('click', () => {
     }
 });
 
-$('#check-all-div').on('click', () => {
+$('#check-all-div').on('click', function () {
     if ($(this).attr('role') === 'button') {
         checkAllRequest()
             .then(response => {
                 utils.showAlert('success', 'Уведомления отмечены прочитанными')
-                $('#notifications-container').fadeOut(500, () => {
+                $('#notifications-container').fadeOut(500, function () {
                     $(this).empty().show();
                 });
             })
@@ -45,7 +44,7 @@ $('#check-all-div').on('click', () => {
 
 // TODO:  почему то срабатывает со старта
 $(window).on('beforeunload', () => {
-    $('.hidden-div :visible').each(() => {
+    $('.hidden-div :visible').each(function () {
         let id = $(this).parent().data('notification');
         marked.push(id);
     });

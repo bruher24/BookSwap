@@ -6,10 +6,10 @@ let $form = $('#searchForm');
 $form[0].reset();
 let $search = $('#searchInput');
 
-$search.on('input', e => {
+$search.on('input', function (e) {
     e.preventDefault();
     $('#searchDropdown').remove();
-    searchRequest(e.target.value)
+    searchRequest($(this).val())
         .then(response => {
             let $output = $('<ul>', {
                 id: 'searchDropdown',
@@ -56,8 +56,8 @@ $search.on('input', e => {
         });
 });
 
-$(document).on('click', (e) => {
-    if (!$(e.target).hasClass('searchElement')) {
+$(document).on('click', function () {
+    if (!$(this).hasClass('searchElement')) {
         $('#searchDropdown').detach();
     }
 });

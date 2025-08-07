@@ -1,3 +1,5 @@
+import {showAlert} from "./utils.js";
+
 window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
 
 let authors = [];
@@ -12,8 +14,8 @@ $('.bookBtn').on('click', () => {
 
 
 function loadAuthorsToSelect(selectId = '#floatingAuthorId') {
-    authorsListRequest().then(response => {
-        if (response.data.success) {
+    authorsListRequest()
+        .then(response => {
             authors = response.data.authors;
             const $select = $(selectId);
             $select.empty().append('<option selected value="0">Выберите автора...</option>');
@@ -22,13 +24,15 @@ function loadAuthorsToSelect(selectId = '#floatingAuthorId') {
                 const option = `<option value="${author.id}">${author.fullName}</option>`;
                 $select.append(option);
             });
-        }
-    });
+        })
+        .catch(e => {
+            showAlert('Ошибка загрузки авторов');
+        });
 }
 
 function loadTypesToSelect(selectId = '#floatingBookType') {
-    typesListRequest().then(response => {
-        if (response.data.success) {
+    typesListRequest()
+        .then(response => {
             types = response.data.booktypes;
             const $select = $(selectId);
             $select.empty().append('<option selected value="0">Выберите тип...</option>');
@@ -37,8 +41,10 @@ function loadTypesToSelect(selectId = '#floatingBookType') {
                 const option = `<option value="${key}">${type}</option>`;
                 $select.append(option);
             }
-        }
-    });
+        })
+        .catch(e => {
+            showAlert('Ошибка загрузки типов');
+        });
 }
 
 async function authorsListRequest() {

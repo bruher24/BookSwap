@@ -57,7 +57,7 @@ if (userId) {
         });
 }
 
-$('.chat-row ').on('click', () => {
+$('.chat-row ').on('click', function () {
     recipientId = $(this).data('recipient');
     selectChat($(this));
 });
@@ -131,7 +131,7 @@ function selectChat($node) {
 }
 
 function madeActive($node) {
-    $('.chat-row').each(() => {
+    $('.chat-row').each(function () {
         $(this).removeClass('bg-dark-subtle active');
     });
     if (!$node.hasClass('bg-dark-subtle active')) {
@@ -220,7 +220,7 @@ async function sendMessageRequest(text) {
     });
 }
 
-$.fn.isInDiv = () => {
+$.fn.isInDiv = function () {
     if (this.length === 0) return false;
 
     const element = $(this)[0];

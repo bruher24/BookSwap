@@ -1,5 +1,5 @@
 $('#dropFiltersBtn').on('click', () => {
-    $('#filtersForm .btn-check').each(() => {
+    $('#filtersForm .btn-check').each(function () {
         const checkbox = $(this)[0];
 
         checkbox.checked = false;

@@ -9,9 +9,9 @@ $('#addBookBtn').click(() => {
     $('#bookForm')[0].reset();
 });
 
-$(document).on('focus', '.authorDiv select', () => {
+$(document).on('focus', '.authorDiv select', function () {
     $(this).data('old-value', $(this).val());
-}).on('change', '.authorDiv select', () => {
+}).on('change', '.authorDiv select', function () {
     $(this).blur();
     const $select = $(this);
     const newValue = $select.val();
@@ -61,14 +61,13 @@ $('#saveBookBtn').click(() => {
     const formData = getFormData(form);
     storeBookRequest(formData)
         .then(response => {
-            console.log(response);
             utils.showAlert('success', 'Книга успешно сохранена!');
             $('#modalBookForm').modal('hide');
             form[0].reset();
             window.location.reload();
         })
         .catch(e => {
-            utils.showAlert('danger', 'Ошибка при сохранении книги!');
+            utils.showAlert('danger', 'Ошибка при сохранении книги');
             if (e.response.data.errors) {
                 showValidationErrors(e.response.data.errors);
             }
@@ -121,7 +120,7 @@ function showValidationErrors(errors) {
 // Unused service function
 function inputsCallback(selector = '.mainInput', callback) {
     let inputs = $(selector);
-    inputs.each(() => {
+    inputs.each(function () {
         let property = this.name;
         let val = this.value;
         callback(property, val, $(this));

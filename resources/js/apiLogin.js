@@ -1,6 +1,6 @@
 import * as utils from "./utils.js";
 
-$('.authorize-btn').on('click', e => {
+$('.authorize-btn').on('click', function (e) {
     e.preventDefault();
     localStorage.removeItem('api_token');
 
@@ -13,7 +13,7 @@ $('.authorize-btn').on('click', e => {
     }).then(response => {
         localStorage.setItem('api_token', response.data.token);
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
-        $(e.target).parent().submit();
+        $(this).parent().submit();
     }).catch(e => {
         utils.showAlert('Ошибка получения токена');
     });
