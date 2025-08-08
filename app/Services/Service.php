@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 abstract class Service implements ServiceInterface
 {
@@ -22,17 +24,21 @@ abstract class Service implements ServiceInterface
     public function create(array $data): Model|false
     {
         $formattedData = $this->formatData($data);
+        DB::beginTransaction();
         try {
             $object = new $this->modelClass($formattedData);
             if (!$object->save()) {
                 throw new Exception("Ошибка при сохранении записи");
             }
+
+            DB::commit();
             $object->refresh();
-        } catch (Exception $e) {
-            logger($e->getMessage());
+            return $object;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
             return false;
         }
-        return $object;
     }
 
     final protected function formatData(array $data): array
@@ -42,86 +48,66 @@ abstract class Service implements ServiceInterface
                 $value = ucfirst($value);
             }
         }
+
         return $data;
     }
 
     public function get(int $id): Model|false
     {
         try {
-            $object = $this->modelClass::find($id);
-            if (!$object) {
-                throw new ModelNotFoundException("Запись с ID: [$id] не найдена.");
-            }
-        } catch (ModelNotFoundException $e) {
-            logger($e->getMessage());
+            return $this->modelClass::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
             return false;
         }
-        return $object;
     }
 
     public function getMany(array $ids): Collection
     {
-        try {
-            $collection = $this->modelClass::whereIn('id', $ids)->get();
-            if (!$collection) {
-                throw new ModelNotFoundException("Записей с ID: [" . implode(', ', $ids) . "] не найдено.");
-            }
-        } catch (ModelNotFoundException $e) {
-            logger($e->getMessage());
-            return new Collection();
-        }
-        return $collection;
+        return $this->modelClass::whereIn('id', $ids)->get();
     }
 
     public function getAll(): Collection
     {
-        return Cache::remember($this->modelClass, 600, function () {
-            Log::debug('Stored in cache: ' . $this->modelClass);
-            return $this->modelClass::all();
-        });
+        try {
+            return Cache::remember($this->modelClass, 600, function () {
+                Log::debug('Stored in cache: ' . $this->modelClass);
+                return $this->modelClass::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
     }
 
     public function update(Model $object, array $data): bool
     {
+        DB::beginTransaction();
         try {
-            if (!$object->update($data)) {
-                throw new Exception("Ошибка при обновлении записи ID: [$object->id].");
-            }
-            $object->refresh();
-        } catch (Exception $e) {
-            logger($e->getMessage());
+            $object->updateOrFail($data);
+
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
             return false;
         }
-        return true;
     }
 
     public function delete(Model $object): bool
     {
+        DB::beginTransaction();
         try {
-            if (!$object->delete()) {
-                throw new Exception("Ошибка при удалении записи ID: [$object->id].");
-            }
-        } catch (Exception $e) {
-            logger($e->getMessage());
+            $object->deleteOrFail();
+
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
             return false;
         }
-        return true;
-    }
-
-    public function params(Collection $books = null): array
-    {
-        $books = $books ?? $this->getAll();
-        $result['genres'] = $books->flatMap->genres->unique('name');
-        $result['authors'] = $books->flatMap->authors->unique(function ($author) {
-            return implode('|', [
-                $author->lastname,
-                $author->firstname,
-                $author->patronymic ?? ''
-            ]);
-        });
-        $result['years'] = $books->pluck('publication_year')->unique();
-        $result['book_types'] = $books->pluck('book_type')->filter()->unique();
-        return $result ?? [];
     }
 
     final public function getFilterFromRequest(Request $request): array
@@ -144,3 +130,4 @@ abstract class Service implements ServiceInterface
         return $filters;
     }
 }
+

@@ -12,13 +12,13 @@ interface UserServiceInterface extends ServiceInterface
 {
     public function updateSettings(User $user, array $data): bool;
 
-    public function addToFavorites($user_id, $book_id): void;
+    public function addToFavorites($user_id, $book_id): bool;
 
-    public function removeFromFavorites($user_id, $book_id): void;
+    public function removeFromFavorites($user_id, $book_id): bool;
 
     public function getUserChats(User $user): Collection;
 
-    public function getChat(User $user, User $recipient): Chat;
+    public function getChat(User $user, User $recipient): Chat|false;
 
     public function sendMessage(User $user, User $recipient, string $body): JsonResponse;
 
@@ -26,7 +26,7 @@ interface UserServiceInterface extends ServiceInterface
 
     public function checkOneNotifications(User $user, int $notificationId): JsonResponse;
 
-    public function checkManyNotifications(User $user, array $notifications): JsonResponse;
+    public function checkManyNotifications(User $user, array $notificationIds): JsonResponse;
 
     public function checkAllNotifications(User $user): JsonResponse;
 

@@ -9,6 +9,7 @@ use App\Models\Cover;
 use App\Models\Genre;
 use App\Models\User;
 use Exception;
+use Throwable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -30,77 +31,97 @@ class BookService extends Service implements BookServiceInterface
 
     public function byUser(User $user, array $conditions = []): array
     {
-        $books = $this->where($conditions)->where('user_id', $user->id);
-        $allBooks = Book::where('user_id', $user->id)->get();
-        $params = $this->params($allBooks);
+        try {
+            $books = $this->where($conditions)->where('user_id', $user->id);
+            $allBooks = Book::where('user_id', $user->id)->get();
+            $params = $this->params($allBooks);
 
-        return [$books, $params] ?? [];
+            return [$books, $params] ?? [];
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return [];
+        }
     }
 
     public function byAuthor(Author $author, array $conditions = []): array
     {
-        $conditions['authors'] = [$author->id];
-        $books = $this->where($conditions);
-        $allBooks = $this->where(['authors' => [$author->id]]);
-        $params = $this->params($allBooks);
-        unset($params['authors']);
+        try {
+            $conditions['authors'] = [$author->id];
+            $books = $this->where($conditions);
+            $allBooks = $this->where(['authors' => [$author->id]]);
+            $params = $this->params($allBooks);
+            unset($params['authors']);
 
-        return [$books, $params] ?? [];
+            return [$books, $params] ?? [];
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return [];
+        }
     }
 
     public function byGenre(Genre $genre, array $conditions = []): array
     {
-        $conditions['genres'] = [$genre->id];
-        $books = $this->where($conditions);
-        $allBooks = $this->where(['genres' => [$genre->id]]);
-        $params = $this->params($allBooks);
-        unset($params['genres']);
+        try {
+            $conditions['genres'] = [$genre->id];
+            $books = $this->where($conditions);
+            $allBooks = $this->where(['genres' => [$genre->id]]);
+            $params = $this->params($allBooks);
+            unset($params['genres']);
 
-        return [$books, $params] ?? [];
+            return [$books, $params] ?? [];
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return [];
+        }
     }
 
     public function where(array $conditions = []): Collection
     {
-        if (empty($conditions)) {
-            return $this->getAll();
-        }
-
-        $books = Book::where('deleted_at', null);
-
-        if (isset($conditions['names'])) {
-            $books->where('name', 'like', '%' . $conditions['names'] . '%');
-        }
-
-        if (isset($conditions['publishing_houses'])) {
-            $books->where('publishing_house', 'like', '%' . $conditions['publishing_houses'] . '%');
-        }
-
-        if (isset($conditions['genres'])) {
-            $genres = $this->genreService->getMany($conditions['genres']);
-            if ($genres->isNotEmpty()) {
-                $books->whereHas('genres', function ($query) use ($genres) {
-                    $query->whereIn('id', $genres->pluck('id'));
-                });
+        try {
+            if (empty($conditions)) {
+                return $this->getAll();
             }
-        }
 
-        if (isset($conditions['authors'])) {
-            $authors = $this->authorService->getMany($conditions['authors']);
-            if ($authors->isNotEmpty()) {
-                $books->whereHas('authors', function ($query) use ($authors) {
-                    $query->whereIn('id', $authors->pluck('id'));
-                });
+            $books = Book::where('deleted_at', null);
+
+            if (isset($conditions['names'])) {
+                $books->where('name', 'like', '%' . $conditions['names'] . '%');
             }
-        }
 
-        if (isset($conditions['years'])) {
-            $books->whereIn('publication_year', $conditions['years']);
-        }
+            if (isset($conditions['publishing_houses'])) {
+                $books->where('publishing_house', 'like', '%' . $conditions['publishing_houses'] . '%');
+            }
 
-        if (isset($conditions['book_types'])) {
-            $books->whereIn('book_type', $conditions['book_types']);
+            if (isset($conditions['genres'])) {
+                $genres = $this->genreService->getMany($conditions['genres']);
+                if ($genres->isNotEmpty()) {
+                    $books->whereHas('genres', function ($query) use ($genres) {
+                        $query->whereIn('id', $genres->pluck('id'));
+                    });
+                }
+            }
+
+            if (isset($conditions['authors'])) {
+                $authors = $this->authorService->getMany($conditions['authors']);
+                if ($authors->isNotEmpty()) {
+                    $books->whereHas('authors', function ($query) use ($authors) {
+                        $query->whereIn('id', $authors->pluck('id'));
+                    });
+                }
+            }
+
+            if (isset($conditions['years'])) {
+                $books->whereIn('publication_year', $conditions['years']);
+            }
+
+            if (isset($conditions['book_types'])) {
+                $books->whereIn('book_type', $conditions['book_types']);
+            }
+            return $books->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
         }
-        return $books->get();
     }
 
     public function create(array $data): Book|false
@@ -137,11 +158,9 @@ class BookService extends Service implements BookServiceInterface
 
             DB::commit();
             return $book;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage(), [
-                'data' => $data,
-            ]);
+            Log::error($e->getMessage());
             return false;
         }
     }
@@ -172,13 +191,31 @@ class BookService extends Service implements BookServiceInterface
             if (isset($authors['ids'])) {
                 $book->authors()->attach($authors['ids']);
             }
+
             if (isset($authors['new'])) {
                 $book->authors()->create($authors['new']);
             }
-        } catch (Exception $e) {
-            logger($e->getMessage());
+
+            return true;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
             return false;
         }
-        return true;
+    }
+
+    public function params(Collection $books = null): array
+    {
+        $books = $books ?? $this->getAll();
+        $result['genres'] = $books->flatMap->genres->unique('name');
+        $result['authors'] = $books->flatMap->authors->unique(function ($author) {
+            return implode('|', [
+                $author->lastname,
+                $author->firstname,
+                $author->patronymic ?? ''
+            ]);
+        });
+        $result['years'] = $books->pluck('publication_year')->unique();
+        $result['book_types'] = $books->pluck('book_type')->filter()->unique();
+        return $result ?? [];
     }
 }

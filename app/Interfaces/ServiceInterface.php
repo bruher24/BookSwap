@@ -20,8 +20,6 @@ interface ServiceInterface
 
     public function delete(Model $object): bool;
 
-    public function params(Collection $books = null): array;
-
     public function getFilterFromRequest(Request $request): array;
 
 }
