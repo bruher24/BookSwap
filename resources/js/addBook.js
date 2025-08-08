@@ -58,7 +58,9 @@ $('#addAuthorBtn').click(() => {
 
 $('#saveBookBtn').click(() => {
     const form = $('#bookForm');
-    const formData = getFormData(form);
+    let formData = new FormData(form[0]);
+    formData = formatData(formData);
+
     storeBookRequest(formData)
         .then(response => {
             utils.showAlert('success', 'Книга успешно сохранена!');
@@ -74,25 +76,17 @@ $('#saveBookBtn').click(() => {
         });
 });
 
-function getFormData(form) {
-    const formData = form.serializeArray().reduce((obj, item) => {
-        obj[item.name] = item.value;
-        return obj;
-    }, {});
-
-    return formatData(formData);
-}
-
 function formatData(formData) {
-    for (const [key, value] of Object.entries(formData)) {
-        if (value === '0' || value === null) {
-            delete formData[key];
+    for (const [key, value] of formData.entries()) {
+        console.log(key + ' ' + value);
+        if (value === '0' || value === null || value === '') {
+            formData.delete(key);
         }
         if (!$('#authorFieldsCollapse').hasClass('show')) {
-            delete formData.authorFirstname;
-            delete formData.authorLastname;
-            delete formData.authorPatronymic;
-            delete formData.authorBirthdate;
+            formData.delete('authorFirstname');
+            formData.delete('authorLastname');
+            formData.delete('authorPatronymic');
+            formData.delete('authorBirthdate');
         }
     }
     return formData;

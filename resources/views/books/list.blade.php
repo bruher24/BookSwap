@@ -7,7 +7,7 @@
                  data-book="{{ $book->id }}">
                 <a href="{{ route('books.show', ['book' => $book->id]) }}" class="nav-link">
                     <img alt="Упс! Произошла ошибка."
-                         src="{{ Storage::disk('local')->url($book->cover->src) }}"
+                         src="{{ Storage::disk('public')->url($book->cover->src) }}"
                          class="img-fluid rounded-top"
                          style="width: 100%; height: 250px; object-fit: cover; text-align: center; line-height: 250px; color: grey">
                     <div class="p-2 flex-grow-1 d-flex flex-column">

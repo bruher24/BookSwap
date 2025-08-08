@@ -105,8 +105,8 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="file" class="mainInput form-control rounded-3" name="photo" id="floatingPhoto">
-                        <label for="floatingPhoto">Фотография</label>
+                        <input type="file" class="mainInput form-control rounded-3" name="cover" id="floatingCover">
+                        <label for="floatingCover">Фотография</label>
                     </div>
 
                     <button id="saveBookBtn" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="button">

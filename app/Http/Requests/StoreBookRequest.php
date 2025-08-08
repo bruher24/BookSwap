@@ -78,8 +78,9 @@ class StoreBookRequest extends FormRequest
             'page_count' => 'required|integer|min:1',
             'cover' => [
                 'nullable',
-                'string',
-//                Rule::unique('covers', 'src')->whereNull('deleted_at'),
+                'file',
+                'mimes:jpeg,png,pd',
+                'max:2048'
             ],
             'publishing_house' => 'nullable|string',
             'publication_year' => [

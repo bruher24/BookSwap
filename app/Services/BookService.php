@@ -12,6 +12,8 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BookService extends Service implements BookServiceInterface
 {
@@ -105,33 +107,41 @@ class BookService extends Service implements BookServiceInterface
     {
         DB::beginTransaction();
         try {
-            // TODO: сделать нормально
+            $data['cover_id'] = Cover::$baseCoverId;
             if (isset($data['cover'])) {
-                $found = Cover::where('src', $data['cover'])->first()->id;
-                if ($found) {
-                    $data['cover_id'] = $found;
+                $uuid = Str::uuid()->toString();
+                $fileType = $data['cover']->getClientOriginalExtension();
+                $path = Storage::disk('public')->putFileAs('covers', $data['cover'], $uuid . "." . $fileType);
+                if ($path) {
+                    $cover = new Cover([
+                        'src' => $path,
+                    ]);
+                    $cover->save();
+                    $data['cover_id'] = $cover->id;
                 } else {
-                    // TODO: сохранить новую обложку
+                    Log::error('Ошибка сохранения нового файла', [
+                        'file' => $data['cover']
+                    ]);
                 }
-            } else {
-                $data['cover_id'] = Cover::$baseCoverId;
             }
 
             $book = parent::create($data);
             if (!$book) {
-                return false;
+                throw new Exception('Ошибка при создании книги');
             }
+
             $authors = $this->filterAuthorsData($data);
-            // TODO: проверить логику attach
             if (!empty($authors) && !$this->attach($book, $authors)) {
-                return false;
+                throw new Exception('Ошибка при добавлении авторов');
             }
 
             DB::commit();
             return $book;
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), [
+                'data' => $data,
+            ]);
             return false;
         }
     }
