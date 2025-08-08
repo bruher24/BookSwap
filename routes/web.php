@@ -41,7 +41,7 @@ Route::prefix('books/')->middleware(CheckAuth::class)->controller(BookController
         Route::post('store', 'store')->name('store');
         Route::get('{book}', 'show')->name('show')->withoutMiddleware(CheckAuth::class);
         Route::get('{book}/edit', 'edit')->name('edit');
-        Route::patch('{book}', 'update')->name('update');
+        Route::put('{book}', 'update')->name('update');
         Route::delete('{book}', 'delete')->name('delete');
     });
 

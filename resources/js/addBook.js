@@ -5,8 +5,11 @@ window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.g
 let selectedAuthors = [];
 
 $('#addBookBtn').click(() => {
+    $('.is-invalid').removeClass('is-invalid');
+    $('.invalid-feedback').remove();
     $('#modalBookTitle').html('Добавить книгу');
     $('#bookForm')[0].reset();
+    $('input[name="book_id"]').val('');
 });
 
 $(document).on('focus', '.authorDiv select', function () {
@@ -78,21 +81,34 @@ $('#saveBookBtn').click(() => {
 
 function formatData(formData) {
     for (const [key, value] of formData.entries()) {
-        console.log(key + ' ' + value);
         if (value === '0' || value === null || value === '') {
             formData.delete(key);
         }
+
         if (!$('#authorFieldsCollapse').hasClass('show')) {
             formData.delete('authorFirstname');
             formData.delete('authorLastname');
             formData.delete('authorPatronymic');
             formData.delete('authorBirthdate');
         }
+
+        if (formData.get('cover') && formData.get('cover').size === 0) {
+            formData.delete('cover');
+        }
     }
     return formData;
 }
 
 async function storeBookRequest(data) {
+    if (data.has('book_id')) {
+        data.append('_method', 'PUT');
+        return await window.axios.post(`/books/${data.get('book_id')}`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    }
+
     return await window.axios.post('/books/store', data);
 }
 

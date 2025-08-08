@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\UsersFavoriteBooks;
@@ -53,10 +54,18 @@ class BookController extends Controller
         return view('books.show', compact('book', 'isBookLiked', 'sellerPhone'));
     }
 
-    public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book)
+    public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book): JsonResponse
     {
         $validated = $request->validated();
-        $bookService->update($book, $validated);
+        $updated = $bookService->update($book, $validated);
+        if ($updated) {
+            return response()->json([
+                'success' => true,
+            ], 200, [], JSON_PRETTY_PRINT);
+        }
+        return response()->json([
+            'success' => false,
+        ], 400, [], JSON_PRETTY_PRINT);
     }
 
     public function delete(BookServiceInterface $bookService, Book $book): JsonResponse

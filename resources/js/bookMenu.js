@@ -66,7 +66,7 @@ $('.book-card').on('contextmenu', function (e) {
 
     $('#editBookBtn').on('click', () => {
         closeMenu();
-        $('#modalTitle').html('Изменить книгу');
+        $('#modalBookTitle').html('Изменить книгу');
         $('#modalBookForm').modal('show');
         fillBookData(bookId);
     });
@@ -100,6 +100,12 @@ function fillBookData(bookId) {
     getBookData(bookId)
         .then(response => {
             const book = response.data.book;
+            let $bookIdIinput = $('<input>', {
+                type: 'hidden',
+                name: 'book_id',
+                value: `${bookId}`
+            });
+            $('#bookForm').append($bookIdIinput);
             $('#floatingBookName').val(book.name);
             $('#floatingBookType').val(book.book_type);
 

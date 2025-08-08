@@ -9,6 +9,7 @@ use App\Models\Cover;
 use App\Models\Genre;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Throwable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -201,6 +202,15 @@ class BookService extends Service implements BookServiceInterface
             Log::error($e->getMessage());
             return false;
         }
+    }
+
+    public function update(Model $object, array $data): bool
+    {
+        $exists = Book::onlyTrashed()->where('name', $data['name'])->first();
+        if ($exists) {
+            $exists->forceDelete();
+        }
+        return parent::update($object, $data);
     }
 
     public function params(Collection $books = null): array

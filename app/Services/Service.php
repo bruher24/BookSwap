@@ -84,6 +84,8 @@ abstract class Service implements ServiceInterface
     {
         DB::beginTransaction();
         try {
+            $author = $data['author_id'];
+            unset($data['author_id']);
             $object->updateOrFail($data);
 
             DB::commit();
