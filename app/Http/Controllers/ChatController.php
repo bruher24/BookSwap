@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -15,8 +16,7 @@ class ChatController extends Controller
         $chat = $userService->getChat($user, $recipient);
         $grouped = $userService->groupMessages($chat->messages()->orderBy('created_at')->orderBy('id')->get());
 
-        return response()->json([
-            'success' => true,
+        return ResponseHelper::successResponse('Success', [
             'messages' => $grouped,
             'recipient' => $recipient,
             'is_blocked' => $chat->is_blocked,
@@ -30,6 +30,14 @@ class ChatController extends Controller
         User $recipient
     ): JsonResponse {
         $body = $request->input('body');
-        return $userService->sendMessage($user, $recipient, $body);
+        $message = $userService->sendMessage($user, $recipient, $body);
+        if (!$message) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при отправке сообщения',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'message' => $message,
+        ]);
     }
 }

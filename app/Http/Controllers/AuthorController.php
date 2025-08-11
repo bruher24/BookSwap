@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Interfaces\AuthorServiceInterface;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Author;
@@ -20,13 +21,12 @@ class AuthorController extends Controller
 
     public function getAuthors(AuthorServiceInterface $authorService): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'authors' => $authorService->getAll()
-        ], 200, [], JSON_PRETTY_PRINT);
+        return ResponseHelper::successResponse('Success', [
+            'authors' => $authorService->getAll(),
+        ]);
     }
 
-    public function books(Request $request, BookServiceInterface $bookService, Author $author): View|RedirectResponse
+    public function books(Request $request, BookServiceInterface $bookService, Author $author): View
     {
         $filters = $bookService->getFilterFromRequest($request);
 

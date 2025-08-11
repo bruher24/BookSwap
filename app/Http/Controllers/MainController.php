@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
+use App\Helpers\ResponseHelper;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Author;
 use App\Models\Book;
@@ -13,7 +14,7 @@ use Illuminate\View\View;
 
 class MainController extends Controller
 {
-    public function test()
+    public function test(): void
     {
         $message = Chat::first()->messages()->create([
             'from_id' => 2,
@@ -58,9 +59,8 @@ class MainController extends Controller
             }
         }
 
-        return response()->json([
-            'success' => true,
+        return ResponseHelper::successResponse('Success', [
             'found' => $found,
-        ], 200, [], JSON_PRETTY_PRINT);
+        ]);
     }
 }

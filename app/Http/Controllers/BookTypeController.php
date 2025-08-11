@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BookTypeEnum;
+use App\Helpers\ResponseHelper;
 use Illuminate\Http\JsonResponse;
 
 class BookTypeController extends Controller
 {
     public function getTypes(): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'booktypes' => BookTypeEnum::toPrettyArray()
-        ], 200, [], JSON_PRETTY_PRINT);
+        return ResponseHelper::successResponse('Success', [
+            'booktypes' => BookTypeEnum::toPrettyArray(),
+        ]);
     }
 }

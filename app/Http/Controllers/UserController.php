@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateSettingRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -21,21 +22,20 @@ class UserController extends Controller
     public function APIlogin(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
-        if (Auth::validate($credentials)) {
-            $user = User::where('email', $request->email)->first();
-            $user->tokens()->delete();
-            $token = $user->createToken('api-token')->plainTextToken;
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Login Successful',
-                'token' => $token,
-            ], 200, [], JSON_PRETTY_PRINT);
+        if (!Auth::validate($credentials)) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка авторизации',
+            ]);
         }
-        return response()->json([
-            'success' => false,
-            'message' => 'Login Failed',
-        ], 200, [], JSON_PRETTY_PRINT);
+
+        $user = User::where('email', $request->email)->first();
+        $user->tokens()->delete();
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        return ResponseHelper::successResponse('Успешный вход', [
+            'token' => $token,
+        ]);
     }
 
     public function create(StoreUserRequest $request, UserServiceInterface $userService): RedirectResponse
@@ -99,7 +99,7 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Настройки успешно сохранены!');
     }
 
-    public function books(Request $request, BookServiceInterface $bookService, User $user): View|RedirectResponse
+    public function books(Request $request, BookServiceInterface $bookService, User $user): View
     {
         $filters = $bookService->getFilterFromRequest($request);
 
@@ -159,28 +159,48 @@ class UserController extends Controller
 
     public function checkOne(UserServiceInterface $userService, User $user, Notification $notification): JsonResponse
     {
-        return $userService->checkOneNotifications($user, $notification->id);
+        $checked = $userService->checkOneNotification($user, $notification->id);
+        if (!$checked) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении уведомлений',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 
     public function checkMany(Request $request, UserServiceInterface $userService, User $user): JsonResponse
     {
         $notifications = $request->input('notifications');
-        return $userService->checkManyNotifications($user, $notifications);
-    }
-
-    public function checkAll(UserServiceInterface $userService, User $user): JsonResponse
-    {
-        return $userService->checkAllNotifications($user);
+        if (isset($notifications)) {
+            $checked = $userService->checkManyNotifications($user, $notifications);
+        } else {
+            $checked = $userService->checkAllNotifications($user);
+        }
+        if (!$checked) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении уведомлений',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 
     public function getUnreadMessages(UserServiceInterface $userService, User $user): JsonResponse
     {
-        return $userService->getUnreadMessages($user);
+        $messages = $userService->getUnreadMessages($user);
+        return ResponseHelper::successResponse('Success', [
+            'messages' => $messages,
+        ]);
     }
 
     public function readMessages(Request $request, UserServiceInterface $userService, User $user): JsonResponse
     {
         $messagesToRead = $request->input('messages');
-        return $userService->readMessages($user, $messagesToRead);
+        $checked = $userService->readMessages($user, $messagesToRead);
+        if (!$checked) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении сообщений',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 }

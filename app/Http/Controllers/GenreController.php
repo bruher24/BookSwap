@@ -17,7 +17,7 @@ class GenreController extends Controller
         return view('genres.index', compact('genres'));
     }
 
-    public function books(Request $request, BookServiceInterface $bookService, Genre $genre): View|RedirectResponse
+    public function books(Request $request, BookServiceInterface $bookService, Genre $genre): View
     {
         $filters = $bookService->getFilterFromRequest($request);
 

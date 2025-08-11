@@ -3,10 +3,9 @@
 namespace App\Interfaces;
 
 use App\Models\Chat;
-use App\Models\Notification;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
 
 interface UserServiceInterface extends ServiceInterface
 {
@@ -20,17 +19,18 @@ interface UserServiceInterface extends ServiceInterface
 
     public function getChat(User $user, User $recipient): Chat|false;
 
-    public function sendMessage(User $user, User $recipient, string $body): JsonResponse;
+    public function sendMessage(User $user, User $recipient, string $body): Message|false;
 
     public function getUserNotifications(User $user): Collection;
 
-    public function checkOneNotifications(User $user, int $notificationId): JsonResponse;
+    public function checkOneNotification(User $user, int $notificationId): bool;
 
-    public function checkManyNotifications(User $user, array $notificationIds): JsonResponse;
+    public function checkManyNotifications(User $user, array $notificationIds): bool;
 
-    public function checkAllNotifications(User $user): JsonResponse;
+    public function getUnreadMessages(User $user): Collection;
 
-    public function getUnreadMessages(User $user): JsonResponse;
+    public function readMessages(User $user, array $messagesToRead): bool;
 
-    public function readMessages(User $user, array $messagesToRead): JsonResponse;
+    public function updateNotifications(Collection $notifications): bool;
+
 }

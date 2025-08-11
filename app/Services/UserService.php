@@ -14,7 +14,6 @@ use App\Models\UsersFavoriteBooks;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -183,7 +182,7 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function sendMessage(User $user, User $recipient, string $body): JsonResponse
+    public function sendMessage(User $user, User $recipient, string $body): Message|false
     {
         DB::beginTransaction();
         try {
@@ -210,17 +209,11 @@ class UserService extends Service implements UserServiceInterface
                 Event::dispatch(new MessageSent($message));
             }
 
-            return response()->json([
-                'success' => true,
-                'message' => $message,
-            ]);
+            return $message;
         } catch (Throwable $exception) {
             DB::rollBack();
             Log::error($exception->getMessage());
-            return response()->json([
-                'success' => false,
-                'error' => 'Ошибка при отправке сообщения'
-            ]);
+            return false;
         }
     }
 
@@ -229,7 +222,7 @@ class UserService extends Service implements UserServiceInterface
         return $user->notifications()->get();
     }
 
-    public function checkOneNotifications(User $user, int $notificationId): JsonResponse
+    public function checkOneNotification(User $user, int $notificationId): bool
     {
         DB::beginTransaction();
         try {
@@ -238,31 +231,27 @@ class UserService extends Service implements UserServiceInterface
             $notification->updateOrFail(['seen' => true]);
 
             DB::commit();
-            return response()->json([
-                'success' => true,
-            ], 200, [], JSON_PRETTY_PRINT);
+            return true;
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-            ], 200, [], JSON_PRETTY_PRINT);
+            return false;
         }
     }
 
-    public function checkAllNotifications(User $user): JsonResponse
+    public function checkAllNotifications(User $user): bool
     {
         $notifications = $user->notifications()->get();
         return $this->updateNotifications($notifications);
     }
 
-    public function checkManyNotifications(User $user, array $notificationIds): JsonResponse
+    public function checkManyNotifications(User $user, array $notificationIds): bool
     {
         $notifications = $user->notifications()->whereIn('id', $notificationIds)->get();
         return $this->updateNotifications($notifications);
     }
 
-    private function updateNotifications(Collection $notifications): JsonResponse
+    public function updateNotifications(Collection $notifications): bool
     {
         DB::beginTransaction();
         try {
@@ -271,29 +260,20 @@ class UserService extends Service implements UserServiceInterface
             });
 
             DB::commit();
-            return response()->json([
-                'success' => true,
-            ], 200, [], JSON_PRETTY_PRINT);
+            return true;
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-            ], 200, [], JSON_PRETTY_PRINT);
+            return false;
         }
     }
 
-    public function getUnreadMessages(User $user): JsonResponse
+    public function getUnreadMessages(User $user): Collection
     {
-        $messages = $user->unreadMessages()->distinct()->get(['id', 'from_id']);
-
-        return response()->json([
-            'success' => true,
-            'messages' => $messages,
-        ], 200, [], JSON_PRETTY_PRINT);
+        return $user->unreadMessages()->distinct()->get(['id', 'from_id']);
     }
 
-    public function readMessages(User $user, array $messagesToRead): JsonResponse
+    public function readMessages(User $user, array $messagesToRead): bool
     {
         DB::beginTransaction();
         try {
@@ -304,15 +284,11 @@ class UserService extends Service implements UserServiceInterface
             });
 
             DB::commit();
-            return response()->json([
-                'success' => true
-            ], 200, [], JSON_PRETTY_PRINT);
+            return true;
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-            ], 200, [], JSON_PRETTY_PRINT);
+            return false;
         }
     }
 }

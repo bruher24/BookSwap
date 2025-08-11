@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Interfaces\BookServiceInterface;
@@ -29,18 +30,11 @@ class BookController extends Controller
         $validated = $request->validated();
         $book = $bookService->create($validated);
         if (!$book) {
-            return response()->json([
-                'success' => false,
-                'errors' => [
-                    'ERR' => ['Ошибка при сохранении книги'],
-                ],
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при сохранении книги',
             ]);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Книга успешно сохранена',
-        ]);
+        return ResponseHelper::successResponse('Книга успешно сохранена');
     }
 
     public function show(Book $book): View
@@ -58,33 +52,28 @@ class BookController extends Controller
     {
         $validated = $request->validated();
         $updated = $bookService->update($book, $validated);
-        if ($updated) {
-            return response()->json([
-                'success' => true,
-            ], 200, [], JSON_PRETTY_PRINT);
+        if (!$updated) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении книги'
+            ]);
         }
-        return response()->json([
-            'success' => false,
-        ], 400, [], JSON_PRETTY_PRINT);
+        return ResponseHelper::successResponse('Книга успешно обновлена');
     }
 
     public function delete(BookServiceInterface $bookService, Book $book): JsonResponse
     {
-        if ($bookService->delete($book)) {
-            return response()->json([
-                'success' => true,
+        if (!$bookService->delete($book)) {
+            return ResponseHelper::errorResponse([
+                'err' => 'Ошибка при удалении книги'
             ]);
         }
-        return response()->json([
-            'success' => false,
-        ]);
+        return ResponseHelper::successResponse('Книга успешно удалена');
     }
 
     public function getBookData(Book $book): JsonResponse
     {
-        return response()->json([
-            'success' => true,
+        return ResponseHelper::successResponse('Success', [
             'book' => $book->loadMissing('authors'),
-        ], 200, [], JSON_PRETTY_PRINT);
+        ]);
     }
 }
