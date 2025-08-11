@@ -1,10 +1,10 @@
-FROM nginx:alpine
+FROM nginx:stable
 
 #ENV USERNAME=nginx
 #ENV GROUPNAME=www-data
 #
-RUN apk add shadow && \
-    apk add bash
+#RUN apk add shadow && \
+#    apk add bash
 #
 #RUN usermod -aG ${GROUPNAME} ${USERNAME}
 #
