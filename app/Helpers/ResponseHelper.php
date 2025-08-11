@@ -13,9 +13,7 @@ class ResponseHelper
             'message' => $message,
         ];
         $response = array_merge($response, $data);
-        return response()->json([
-            $response,
-        ], 200, [], JSON_PRETTY_PRINT);
+        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
 
     public static function errorResponse($errors): JsonResponse

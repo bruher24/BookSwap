@@ -11,11 +11,14 @@ use App\Services\AuthorService;
 use App\Services\BookService;
 use App\Services\GenreService;
 use App\Services\UserService;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,6 +40,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Guard $auth): void
     {
+        RateLimiter::for('global', function (Request $request) {
+            return Limit::perSecond(3)->by($request->user()?->id ?: $request->ip());
+        });
+
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perSecond(3)->by($request->user()?->id ?: $request->ip());
+        });
+
         date_default_timezone_set('Europe/Samara');
 
         Gate::define('is-admin', function (User $user) {

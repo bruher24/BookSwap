@@ -84,7 +84,9 @@ $('.book-card').on('contextmenu', function (e) {
                     utils.showAlert('success', 'Книга успешно удалена!');
                 })
                 .catch(e => {
-                    utils.showAlert('danger', 'Ошибка при удалении книги!');
+                    if (e.response.data.message) {
+                        utils.showAlert('danger', e.response.data.message);
+                    }
                 });
         }
     });
@@ -123,7 +125,9 @@ function fillBookData(bookId) {
             $('#floatingIsbn').val(book.isbn);
         })
         .catch(e => {
-            utils.showAlert('Ошибка при загрузке данных книги');
+            if (e.response.data.message) {
+                utils.showAlert('danger', e.response.data.message);
+            }
         });
 }
 

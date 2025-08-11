@@ -20,7 +20,9 @@ $('.notification-div').on('click', function () {
                 });
             })
             .catch(e => {
-                utils.showAlert('Ошибка при обработке уведомления');
+                if (e.response.data.message) {
+                    utils.showAlert('danger', e.response.data.message);
+                }
             });
     } else {
         hiddenDiv.slideDown('fast')
@@ -37,7 +39,9 @@ $('#check-all-div').on('click', function () {
                 });
             })
             .catch(e => {
-                utils.showAlert('Ошибка при обработке уведомления');
+                if (e.response.data.message) {
+                    utils.showAlert('danger', e.response.data.message);
+                }
             });
     }
 });

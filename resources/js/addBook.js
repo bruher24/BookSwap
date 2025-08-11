@@ -72,7 +72,9 @@ $('#saveBookBtn').click(() => {
             window.location.reload();
         })
         .catch(e => {
-            utils.showAlert('danger', 'Ошибка при сохранении книги');
+            if (e.response.data.message) {
+                utils.showAlert('danger', e.response.data.message);
+            }
             if (e.response.data.errors) {
                 showValidationErrors(e.response.data.errors);
             }

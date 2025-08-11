@@ -35,7 +35,9 @@ if (userId) {
             }
         })
         .catch(e => {
-            utils.showAlert('Ошибка при загрузке сообщений');
+            if (e.response.data.message) {
+                utils.showAlert('danger', e.response.data.message);
+            }
         });
 
     Echo.private(`user.${userId}`)
@@ -78,7 +80,9 @@ $($messagesContainer).on('scroll', () => {
                 counter = 0;
             })
             .catch(e => {
-                utils.showAlert('Ошибка при обработке сообщения');
+                if (e.response.data.message) {
+                    utils.showAlert('danger', e.response.data.message);
+                }
             });
     }
 });
@@ -109,7 +113,9 @@ $('#sendMessageBtn').on('click', () => {
             }, 550);
         })
         .catch(e => {
-            utils.showAlert('Ошибка при отправке сообщения');
+            if (e.response.data.message) {
+                utils.showAlert('danger', e.response.data.message);
+            }
         });
 });
 
@@ -125,7 +131,9 @@ function selectChat($node) {
                 $($messagesContainer).trigger('scroll');
             })
             .catch(e => {
-                utils.showAlert('Ошибка при загрузке сообщений');
+                if (e.response.data.message) {
+                    utils.showAlert('danger', e.response.data.message);
+                }
             });
     }
 }

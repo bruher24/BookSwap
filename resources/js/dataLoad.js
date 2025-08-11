@@ -1,4 +1,4 @@
-import {showAlert} from "./utils.js";
+import * as utils from "./utils.js";
 
 window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
 
@@ -26,7 +26,9 @@ function loadAuthorsToSelect(selectId = '#floatingAuthorId') {
             });
         })
         .catch(e => {
-            showAlert('Ошибка загрузки авторов');
+            if (e.response.data.message) {
+                utils.showAlert('danger', e.response.data.message);
+            }
         });
 }
 
@@ -43,7 +45,9 @@ function loadTypesToSelect(selectId = '#floatingBookType') {
             }
         })
         .catch(e => {
-            showAlert('Ошибка загрузки типов');
+            if (e.response.data.message) {
+                utils.showAlert('danger', e.response.data.message);
+            }
         });
 }
 

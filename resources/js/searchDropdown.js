@@ -52,7 +52,9 @@ $search.on('input', function (e) {
             $form.append($output);
         })
         .catch(e => {
-            utils.showAlert('Ошибка при поиске');
+            if (e.response.data.message) {
+                utils.showAlert('danger', e.response.data.message);
+            }
         });
 });
 

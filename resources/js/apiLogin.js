@@ -15,7 +15,9 @@ $('.authorize-btn').on('click', function (e) {
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('api_token')}`;
         $(this).parent().submit();
     }).catch(e => {
-        utils.showAlert('Ошибка получения токена');
+        if (e.response.data.message) {
+            utils.showAlert('danger', e.response.data.message);
+        }
     });
 });
 
