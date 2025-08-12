@@ -24,7 +24,7 @@ $('.authorize-btn').on('click', function (e) {
 $('#logout-btn').on('click', e => {
     e.preventDefault();
     localStorage.removeItem('api-token');
-    window.location.replace('http://localhost:3000/users/logout');
+    window.location.replace('http://localhost/users/logout');
 });
 
 async function getApiToken(credentials) {
