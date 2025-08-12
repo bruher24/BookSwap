@@ -12,6 +12,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->name('api.')->middleware('auth:sanctum')->middleware('throttle:api')->group(function () {
@@ -21,8 +22,10 @@ Route::prefix('/v1')->name('api.')->middleware('auth:sanctum')->middleware('thro
 
     Route::post('login', [UserController::class, 'APIlogin'])->name('login')->withoutMiddleware('auth:sanctum');
 
+    Route::resource('authors', AuthorController::class)->except(['index', 'show'])->middleware(CheckAuth::class);
+
+
     Route::resources([
-        'authors' => AuthorController::class,
         'chats' => ChatController::class,
         'covers' => CoverController::class,
         'deals' => DealController::class,
