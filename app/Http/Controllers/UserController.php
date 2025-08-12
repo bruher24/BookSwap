@@ -19,6 +19,31 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    public function store(StoreUserRequest $request, UserServiceInterface $userService): RedirectResponse
+    {
+        $validated = $request->validated();
+        $remember = $request->input('remember');
+        if (!$userService->create($validated)) {
+            return back()->with('error', 'Ошибка при создании пользователя.');
+        }
+
+        if (!Auth::attempt($validated, $remember)) {
+            return back()->with('error', 'Ошибка при авторизации.')->onlyInput('email');
+        }
+        $request->session()->regenerate();
+        return redirect()->intended()->with('success', 'Вы успешо зарегистрировались!');
+    }
+
+    public function update(UpdateUserRequest $request, UserServiceInterface $userService, User $user): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        if ($userService->update($user, $validated)) {
+            return redirect()->back()->with('success', 'Данные успешно обновлены!');
+        }
+        return back()->with('error', 'Ошибка обновления данных');
+    }
+
     public function APIlogin(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
@@ -36,21 +61,6 @@ class UserController extends Controller
         return ResponseHelper::successResponse('Успешный вход', [
             'token' => $token,
         ]);
-    }
-
-    public function create(StoreUserRequest $request, UserServiceInterface $userService): RedirectResponse
-    {
-        $validated = $request->validated();
-        $remember = $request->input('remember');
-        if (!$userService->create($validated)) {
-            return back()->with('error', 'Ошибка при создании пользователя.');
-        }
-
-        if (!Auth::attempt($validated, $remember)) {
-            return back()->with('error', 'Ошибка при авторизации.')->onlyInput('email');
-        }
-        $request->session()->regenerate();
-        return redirect()->intended()->with('success', 'Вы успешо зарегистрировались!');
     }
 
     public function login(Request $request): RedirectResponse
@@ -75,16 +85,6 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')->with('success', 'Вы успешно вышли из аккаунта.');
-    }
-
-    public function update(UpdateUserRequest $request, UserServiceInterface $userService, User $user): RedirectResponse
-    {
-        $validated = $request->validated();
-
-        if ($userService->update($user, $validated)) {
-            return redirect()->back()->with('success', 'Данные успешно обновлены!');
-        }
-        return back()->with('error', 'Ошибка обновления данных');
     }
 
     public function updateSettings(
