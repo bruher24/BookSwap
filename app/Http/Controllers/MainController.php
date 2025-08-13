@@ -10,7 +10,6 @@ use App\Models\Book;
 use App\Models\Chat;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class MainController extends Controller
 {
@@ -25,7 +24,7 @@ class MainController extends Controller
         MessageSent::dispatch($message);
     }
 
-    public function index(BookServiceInterface $bookService): View
+    public function index(BookServiceInterface $bookService): JsonResponse
     {
         // TODO: отправка сообщения по email
 //        $msg = (new MessageReceived('This is a test email', '#', Str::uuid()))
@@ -39,7 +38,7 @@ class MainController extends Controller
         return view('main.home', compact('books'));
     }
 
-    public function about(): View
+    public function about(): JsonResponse
     {
         return view('main.about');
     }

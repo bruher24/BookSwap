@@ -108,7 +108,12 @@ Route::prefix('/v1')
             ->names('types')
             ->only(['index', 'show']);
 
-        Route::get('/users/{user}/messages/unread', [UserController::class, 'unread']);
+        Route::get('/users/{user}/settings', [SettingController::class, 'userSettings']);
+        Route::patch('/users/{user}/settings/{setting}', [SettingController::class, 'updateUserSettings']);
+
+        Route::get('/users/{user}/chats', [ChatController::class, 'userChats'])->name('users.chats');
+
+        Route::get('/users/{user}/messages', [MessageController::class, 'userMessages'])->name('users.messages');
 
         Route::resource('users', UserController::class)
             ->names('users');

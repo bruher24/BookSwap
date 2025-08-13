@@ -5,19 +5,18 @@ namespace App\Http\Controllers;
 use App\Interfaces\BookServiceInterface;
 use App\Interfaces\GenreServiceInterface;
 use App\Models\Genre;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class GenreController extends Controller
 {
-    public function index(GenreServiceInterface $genreService): View
+    public function index(GenreServiceInterface $genreService): JsonResponse
     {
         $genres = $genreService->getAll();
         return view('genres.index', compact('genres'));
     }
 
-    public function books(Request $request, BookServiceInterface $bookService, Genre $genre): View
+    public function books(Request $request, BookServiceInterface $bookService, Genre $genre): JsonResponse
     {
         $filters = $bookService->getFilterFromRequest($request);
 

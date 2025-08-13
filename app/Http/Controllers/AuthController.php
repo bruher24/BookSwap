@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Helpers\ResponseHelper;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +29,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request): RedirectResponse
+    public function login(Request $request): JsonResponse
     {
         if (!Auth::attempt([
             'email' => $request->input('email'),
@@ -43,7 +42,7 @@ class AuthController extends Controller
         return redirect()->intended()->with('success', 'Добро пожаловать!');
     }
 
-    public function logout(Request $request): RedirectResponse
+    public function logout(Request $request): JsonResponse
     {
         Auth::user()->tokens()->delete();
         Auth::logout();

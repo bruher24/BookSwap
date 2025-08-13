@@ -20,7 +20,7 @@ class ChatController extends Controller
         ]);
     }
 
-    public function getMessages(UserServiceInterface $userService, User $user, User $recipient): JsonResponse
+    public function messages(UserServiceInterface $userService, User $user, User $recipient): JsonResponse
     {
         $chat = $userService->getChat($user, $recipient);
         $grouped = $userService->groupMessages($chat->messages()->orderBy('created_at')->orderBy('id')->get());

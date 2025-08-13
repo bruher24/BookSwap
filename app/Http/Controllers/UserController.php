@@ -12,14 +12,13 @@ use App\Models\Notification;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
-    public function store(StoreUserRequest $request, UserServiceInterface $userService): RedirectResponse
+    public function store(StoreUserRequest $request, UserServiceInterface $userService): JsonResponse
     {
         $validated = $request->validated();
         $remember = $request->input('remember');
@@ -34,21 +33,33 @@ class UserController extends Controller
         return redirect()->intended()->with('success', 'Вы успешо зарегистрировались!');
     }
 
-    public function update(UpdateUserRequest $request, UserServiceInterface $userService, User $user): RedirectResponse
+    public function update(UpdateUserRequest $request, UserServiceInterface $userService, User $user): JsonResponse
     {
+        if (!Gate::allows('crud-itself', $user)) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка доступа'
+            ]);
+        }
+
         $validated = $request->validated();
 
-        if ($userService->update($user, $validated)) {
-            return redirect()->back()->with('success', 'Данные успешно обновлены!');
+        if (!$userService->update($user, $validated)) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении'
+            ]);
         }
-        return back()->with('error', 'Ошибка обновления данных');
+        $user->refresh();
+
+        return ResponseHelper::successResponse('Success', [
+            'user' => $user
+        ]);
     }
 
     public function updateSettings(
         UpdateSettingRequest $request,
         UserServiceInterface $userService,
         User $user
-    ): RedirectResponse {
+    ): JsonResponse {
         $validated = $request->validated();
         if (!$userService->updateSettings($user, $validated)) {
             return redirect()->back()->with('error', 'Ошибка сохранения настроек');
@@ -56,7 +67,7 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Настройки успешно сохранены!');
     }
 
-    public function books(Request $request, BookServiceInterface $bookService, User $user): View
+    public function books(Request $request, BookServiceInterface $bookService, User $user): JsonResponse
     {
         $filters = $bookService->getFilterFromRequest($request);
 
@@ -65,7 +76,7 @@ class UserController extends Controller
         return view('users.books', compact('books', 'params', 'filters'));
     }
 
-    public function profile(string $section = 'personal'): View
+    public function profile(string $section = 'personal'): JsonResponse
     {
         $user = Auth::user();
         $userSettings = $user->settings ?? [];
@@ -74,7 +85,7 @@ class UserController extends Controller
         return view("profile.$section", compact('section', 'userSettings', 'settings'));
     }
 
-    public function updateFavorites(UserServiceInterface $userService, Request $request, User $user): RedirectResponse
+    public function updateFavorites(UserServiceInterface $userService, Request $request, User $user): JsonResponse
     {
         $book_id = $request->input('book_id');
         $isLiked = $request->input('isLiked');
@@ -88,7 +99,7 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function chat(Request $request, UserServiceInterface $userService, User $user): View
+    public function chat(Request $request, UserServiceInterface $userService, User $user): JsonResponse
     {
         $recipient = $request->input('recipient');
         $chats = $userService->getUserChats($user);
@@ -108,7 +119,7 @@ class UserController extends Controller
         return view('chat.index', compact('chats', 'recipient'));
     }
 
-    public function notifications(UserServiceInterface $userService, User $user): View
+    public function notifications(UserServiceInterface $userService, User $user): JsonResponse
     {
         $notifications = $userService->getUserNotifications($user);
         return view('notifications.index', compact('notifications'));

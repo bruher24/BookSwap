@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\SettingServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -9,7 +11,7 @@ class SettingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(SettingServiceInterface $settingService): JsonResponse
     {
         //
     }
@@ -17,7 +19,7 @@ class SettingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(SettingServiceInterface $settingService): JsonResponse
     {
         //
     }
@@ -25,7 +27,7 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SettingServiceInterface $settingService, Request $request): JsonResponse
     {
         //
     }
@@ -33,7 +35,7 @@ class SettingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(SettingServiceInterface $settingService, string $id): JsonResponse
     {
         //
     }
@@ -41,7 +43,7 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(SettingServiceInterface $settingService, string $id): JsonResponse
     {
         //
     }
@@ -49,7 +51,7 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SettingServiceInterface $settingService, Request $request, string $id): JsonResponse
     {
         //
     }
@@ -57,7 +59,7 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SettingServiceInterface $settingService, string $id): JsonResponse
     {
         //
     }
