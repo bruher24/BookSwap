@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Interfaces\AuthorServiceInterface;
 use App\Interfaces\BookServiceInterface;
+use App\Interfaces\ChatServiceInterface;
 use App\Interfaces\GenreServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use App\Services\AuthorService;
 use App\Services\BookService;
+use App\Services\ChatService;
 use App\Services\GenreService;
 use App\Services\UserService;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -33,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(BookServiceInterface::class, BookService::class);
         $this->app->bind(GenreServiceInterface::class, GenreService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(ChatServiceInterface::class, ChatService::class);
     }
 
     /**

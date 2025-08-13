@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookTypeController;
@@ -12,57 +13,109 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('/v1')->name('api.')->middleware('auth:sanctum')->middleware('throttle:api')->group(function () {
-    Route::missing(function () {
-        abort(404);
+Route::prefix('/v1')
+    ->name('api.')
+//    ->middleware('auth:sanctum')
+    ->middleware('throttle:api')
+    ->group(function () {
+        Route::missing(function () {
+            abort(404);
+        });
+
+        Route::prefix('auth')
+            ->name('auth.')
+            ->controller(AuthController::class)
+            ->group(function () {
+                Route::post('/auth', [AuthController::class, 'auth'])
+                    ->name('auth')
+                    ->withoutMiddleware('auth:sanctum');
+
+                Route::post('/register', [AuthController::class, 'register'])
+                    ->name('register');
+
+                Route::post('/login', [AuthController::class, 'login'])
+                    ->name('login');
+
+                Route::post('/logout', [AuthController::class, 'logout'])
+                    ->name('logout');
+//                    ->middleware(CheckAuth::class);
+            });
+
+        Route::resource('authors', AuthorController::class)
+            ->names('authors')
+            ->except(['index', 'show']);
+//            ->middleware(CheckAuth::class);
+        Route::resource('authors', AuthorController::class)
+            ->names('authors')
+            ->only(['index', 'show']);
+
+        Route::resource('books', BookController::class)
+            ->names('books')
+            ->except(['index', 'show']);
+//            ->middleware(CheckAuth::class);
+        Route::resource('books', BookController::class)
+            ->names('books')
+            ->only(['index', 'show']);
+
+        Route::resource('chats', ChatController::class)
+            ->names('chats');
+//            ->middleware(CheckAuth::class);
+
+        Route::resource('chats.messages', MessageController::class)
+            ->shallow()
+            ->names('messages');
+//            ->middleware(CheckAuth::class);
+
+        Route::resource('covers', CoverController::class)
+            ->names('covers')
+            ->except(['show']);
+//            ->middleware(CheckAuth::class);
+        Route::resource('covers', CoverController::class)
+            ->names('covers')
+            ->only(['show']);
+
+        Route::resource('deals', DealController::class)
+            ->names('deals');
+//            ->middleware(CheckAuth::class);
+
+        Route::resource('genres', GenreController::class)
+            ->names('genres')
+            ->except(['index', 'show']);
+//            ->middleware(CheckAuth::class);
+        Route::resource('genres', GenreController::class)
+            ->names('genres')
+            ->only(['index', 'show']);
+
+        Route::resource('photos', PhotoController::class)
+            ->names('photos')
+            ->except(['show']);
+//            ->middleware(CheckAuth::class);
+        Route::resource('photos', PhotoController::class)
+            ->names('photos')
+            ->only(['show']);
+
+        Route::resource('settings', SettingController::class)
+            ->names('settings');
+//            ->middleware(CheckAuth::class);
+
+        Route::resource('types', BookTypeController::class)
+            ->names('types')
+            ->except(['index', 'show']);
+//            ->middleware(CheckAuth::class);
+        Route::resource('types', BookTypeController::class)
+            ->names('types')
+            ->only(['index', 'show']);
+
+        Route::get('/users/{user}/messages/unread', [UserController::class, 'unread']);
+
+        Route::resource('users', UserController::class)
+            ->names('users');
+//            ->middleware(CheckAuth::class);
+
+        Route::resource('users.notifications', NotificationController::class)
+            ->names('notifications');
+//            ->middleware(CheckAuth::class);
     });
-
-    Route::post('login', [UserController::class, 'APIlogin'])->name('login')->withoutMiddleware('auth:sanctum');
-
-    Route::resource('authors', AuthorController::class)->except(['index', 'show'])->middleware(CheckAuth::class);
-
-
-    Route::resources([
-        'chats' => ChatController::class,
-        'covers' => CoverController::class,
-        'deals' => DealController::class,
-        'genres' => GenreController::class,
-        'photos' => PhotoController::class,
-        'types' => BookTypeController::class,
-        'users' => UserController::class,
-    ]);
-
-    Route::resource('chats.messages', MessageController::class)->shallow();
-    Route::resource('users.settings', SettingController::class);
-    Route::resource('users.notifications', NotificationController::class);
-    Route::resource('authors.books', BookController::class)->shallow();
-
-    // TODO: GET chats/{chat_id}/messages - list of all messages (paginated?)
-    Route::get('users/{user}/chat/{recipient}', [ChatController::class, 'getMessages'])->name('getMessages');
-
-    // TODO: POST chats/{chat_id}/messages
-    Route::post('users/{user}/chat/{recipient}/message', [ChatController::class, 'sendMessage'])->name(
-        'sendMessage'
-    );
-
-    // TODO: PATCH users/{user_id}/notifications/{notification_id}
-    Route::patch('users/{user}/notifications/{notification}', [UserController::class, 'checkOne'])->name(
-        'checkOne'
-    );
-
-    // TODO: PATCH users/{user_id}/notifications ????
-    Route::patch('users/{user}/notifications/check-many', [UserController::class, 'checkMany'])->name('checkMany');
-
-    // TODO: PATCH users/{user_id}/notifications ????
-    Route::patch('users/{user}/notifications/check-all', [UserController::class, 'checkAll'])->name('checkAll');
-
-    // TODO: GET users/{user_id}/messages
-    Route::get('users/{user}/messages', [UserController::class, 'getUnreadMessages'])->name('getUnreadMessages');
-
-    // TODO: PATCH users/{user_id}/messages ????
-    Route::patch('users/{user}/messages/read', [UserController::class, 'readMessages'])->name('readMessages');
-});
 

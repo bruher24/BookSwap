@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Interfaces\ChatServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +12,14 @@ use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
+    public function index(ChatServiceInterface $chatService): JsonResponse
+    {
+        $chats = $chatService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'chats' => $chats
+        ]);
+    }
+
     public function getMessages(UserServiceInterface $userService, User $user, User $recipient): JsonResponse
     {
         $chat = $userService->getChat($user, $recipient);
