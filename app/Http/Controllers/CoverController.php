@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class CoverController extends Controller
 {
+    public function index(CoverServiceInterface $coverService): JsonResponse
+    {
+        $covers = $coverService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'covers' => $covers,
+        ]);
+    }
+
     public function store(CoverServiceInterface $coverService, Request $request): JsonResponse
     {
         $cover = $coverService->create($request->all());
@@ -33,6 +41,17 @@ class CoverController extends Controller
         return ResponseHelper::successResponse('Success', [
             'cover' => $cover,
         ]);
+    }
+
+    public function update(CoverServiceInterface $coverService, Request $request, string $id): JsonResponse
+    {
+        $updated = $coverService->update($id, $request->all());
+        if (!$updated) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Обложка успешно обновлена');
     }
 
     public function destroy(CoverServiceInterface $coverService, string $id): JsonResponse

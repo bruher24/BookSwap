@@ -12,6 +12,14 @@ use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
+    public function index(ChatServiceInterface $chatService): JsonResponse
+    {
+        $chats = $chatService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'chats' => $chats,
+        ]);
+    }
+
     public function store(ChatServiceInterface $chatService, Request $request): JsonResponse
     {
         $chat = $chatService->create($request->all());

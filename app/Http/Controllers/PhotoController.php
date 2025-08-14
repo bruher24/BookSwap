@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class PhotoController extends Controller
 {
+    public function index(PhotoServiceInterface $photoService): JsonResponse
+    {
+        $photos = $photoService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'photos' => $photos,
+        ]);
+    }
+
     public function store(PhotoServiceInterface $photoService, Request $request): JsonResponse
     {
         $photo = $photoService->create($request->all());
@@ -33,6 +41,17 @@ class PhotoController extends Controller
         return ResponseHelper::successResponse('Success', [
             'photo' => $photo,
         ]);
+    }
+
+    public function update(PhotoServiceInterface $photoService, Request $request, string $id): JsonResponse
+    {
+        $updated = $photoService->update($id, $request->all());
+        if (!$updated) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении фото',
+            ]);
+        }
+        return ResponseHelper::successResponse('Фото успешно обновлено');
     }
 
     public function destroy(PhotoServiceInterface $photoService, string $id): JsonResponse

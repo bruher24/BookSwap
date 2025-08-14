@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class DealController extends Controller
 {
+    public function index(DealServiceInterface $dealService): JsonResponse
+    {
+        $deals = $dealService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'deals' => $deals,
+        ]);
+    }
+
     public function store(DealServiceInterface $dealService, Request $request): JsonResponse
     {
         $deal = $dealService->create($request->all());
@@ -34,4 +42,27 @@ class DealController extends Controller
             'deal' => $deal,
         ]);
     }
+
+    public function update(DealServiceInterface $dealService, Request $request, string $id): JsonResponse
+    {
+        $updated = $dealService->update($id, $request->all());
+        if (!$updated) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении сделки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Сделка успешно обновлена');
+    }
+
+    public function destroy(DealServiceInterface $dealService, string $id): JsonResponse
+    {
+        $deleted = $dealService->delete($id);
+        if (!$deleted) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при удалении сделки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Сделка успешно удалена');
+    }
+
 }

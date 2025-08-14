@@ -7,16 +7,21 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Interfaces\BookServiceInterface;
 use App\Interfaces\UserServiceInterface;
-use App\Models\Notification;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
+    public function index(UserServiceInterface $userService): JsonResponse
+    {
+        $users = $userService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'users' => $users,
+        ]);
+    }
+
     public function store(UserServiceInterface $userService, StoreUserRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -121,7 +126,7 @@ class UserController extends Controller
     }
 
 
-    // TODO: убрать отсюда
+    // TODO: убрать отсюда или добавить роут
     public function books(BookServiceInterface $bookService, Request $request, User $user): JsonResponse
     {
         // TODO: сделать нормально
@@ -134,20 +139,5 @@ class UserController extends Controller
             'params' => $params,
             'filters' => $filters,
         ]);
-    }
-
-    public function updateFavorites(UserServiceInterface $userService, Request $request, User $user): JsonResponse
-    {
-        // TODO: разбить на два метода add и remove
-        $book_id = $request->input('book_id');
-        $isLiked = $request->input('isLiked');
-
-        if (!$isLiked) {
-            $userService->addToFavorites($user->id, $book_id);
-        } else {
-            $userService->removeFromFavorites($user->id, $book_id);
-        }
-
-        return ResponseHelper::successResponse('Добавлено в избранное');
     }
 }

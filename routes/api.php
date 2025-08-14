@@ -74,8 +74,6 @@ Route::prefix('v1')->name('api.')
                 Route::get('{chat}', 'show')->name('show');
                 Route::match(['put', 'patch'], '{chat}', 'update')->name('update');
                 Route::delete('{chat}', 'destroy')->name('destroy');
-
-                Route::get('{chat}/messages', 'messages')->name('messages')->middleware(IsAdmin::class);
             });
 
         Route::prefix('covers')->name('covers.')->controller(CoverController::class)

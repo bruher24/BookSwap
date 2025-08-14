@@ -71,7 +71,7 @@ class GenreController extends Controller
         return ResponseHelper::successResponse('Жанр успешно удален');
     }
 
-    // TODO: убрать отсюда
+    // TODO: убрать отсюда или добавить роут
     public function books(Request $request, BookServiceInterface $bookService, Genre $genre): JsonResponse
     {
         $filters = $bookService->getFilterFromRequest($request);

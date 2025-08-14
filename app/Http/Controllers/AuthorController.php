@@ -69,6 +69,7 @@ class AuthorController extends Controller
         return ResponseHelper::successResponse('Автор успешно удален');
     }
 
+    // TODO: убрать отсюда или добавить роут
     public function books(Request $request, BookServiceInterface $bookService, Author $author): JsonResponse
     {
         // TODO: исправить
