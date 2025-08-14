@@ -28,6 +28,11 @@ class BookController extends Controller
         ]);
     }
 
+    public function create(BookServiceInterface $bookService): JsonResponse
+    {
+        // TODO: вернуть набор полей формы
+    }
+
     public function store(StoreBookRequest $request, BookServiceInterface $bookService): JsonResponse
     {
         $validated = $request->validated();
@@ -37,7 +42,9 @@ class BookController extends Controller
                 'ERR' => 'Ошибка при сохранении книги',
             ]);
         }
-        return ResponseHelper::successResponse('Книга успешно сохранена');
+        return ResponseHelper::successResponse('Книга успешно сохранена', [
+            'book' => $book,
+        ]);
     }
 
     public function show(Book $book): JsonResponse
@@ -53,6 +60,11 @@ class BookController extends Controller
             'isBookLiked' => $isBookLiked,
             'sellerPhone' => $sellerPhone
         ]);
+    }
+
+    public function edit(BookServiceInterface $bookService, string $id): JsonResponse
+    {
+        // TODO: вернуть набор полей формы
     }
 
     public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book): JsonResponse

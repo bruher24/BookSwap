@@ -15,27 +15,29 @@ class NotificationController extends Controller
      */
     public function index(NotificationServiceInterface $notificationService): JsonResponse
     {
-        $notifications = $notificationService->getAll() ?? Notification::all();
-
+        $covers = $notificationService->getAll();
         return ResponseHelper::successResponse('Success', [
-            'notifications' => $notifications
+            'covers' => $covers,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(NotificationServiceInterface $notificationService): JsonResponse
     {
-        //
+        // TODO: вернуть набор полей формы
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(NotificationServiceInterface $notificationService, Request $request): JsonResponse
+    public function store(NotificationServiceInterface $notificationService): JsonResponse
     {
-        //
+        $validated = $request->validated();
+        $cover = $notificationService->create($validated);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при создании обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'cover' => $cover,
+        ]);
     }
 
     /**
@@ -43,10 +45,14 @@ class NotificationController extends Controller
      */
     public function show(NotificationServiceInterface $notificationService, string $id): JsonResponse
     {
-        $notification = $notificationService->get($id);
-
+        $cover = $notificationService->get($id);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при получении обложки',
+            ]);
+        }
         return ResponseHelper::successResponse('Success', [
-            'notification' => $notification
+            'cover' => $cover,
         ]);
     }
 
@@ -55,18 +61,22 @@ class NotificationController extends Controller
      */
     public function edit(NotificationServiceInterface $notificationService, string $id): JsonResponse
     {
-        //
+        // TODO: вернуть набор полей формы
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(
-        NotificationServiceInterface $notificationService,
-        Request $request,
-        string $id
-    ): JsonResponse {
-        //
+    public function update(NotificationServiceInterface $notificationService, string $id): JsonResponse
+    {
+        $validated = $request->validated();
+        $updated = $notificationService->update($id, $validated);
+        if (!$updated) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 
     /**
@@ -74,6 +84,12 @@ class NotificationController extends Controller
      */
     public function destroy(NotificationServiceInterface $notificationService, string $id): JsonResponse
     {
-        //
+        $deleted = $notificationService->delete($id);
+        if (!$deleted) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при удалении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 }

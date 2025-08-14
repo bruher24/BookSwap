@@ -3,53 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
-use App\Models\User;
+use App\Interfaces\AuthServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function auth(Request $request): JsonResponse
+    public function auth(AuthServiceInterface $authService, Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
 
-        if (!Auth::validate($credentials)) {
+        $token = $authService->auth($credentials);
+
+        if (empty($token)) {
             return ResponseHelper::errorResponse([
                 'ERR' => 'Ошибка авторизации',
             ]);
         }
-
-        $user = User::where('email', $request->email)->first();
-        $user->tokens()->delete();
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        return ResponseHelper::successResponse('Успешный вход', [
+        return ResponseHelper::successResponse('Success', [
             'token' => $token,
         ]);
     }
 
-    public function login(Request $request): JsonResponse
+    public function login(AuthServiceInterface $authService, Request $request): JsonResponse
     {
-        if (!Auth::attempt([
-            'email' => $request->input('email'),
-            'password' => $request->input('password')
-        ], $request->input('remember'))) {
-            return back()->with('error', 'Введена неправильная комбинация email и пароля.');
+        $credentials = $request->only('email', 'password', 'remember');
+        if (!$authService->login($credentials)) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка авторизации',
+            ]);
         }
         $request->session()->regenerate();
-
-        return redirect()->intended()->with('success', 'Добро пожаловать!');
+        $user = $authService->currentUser();
+        return ResponseHelper::successResponse('Успешная авторизация!', [
+            'user' => $user,
+        ]);
     }
 
-    public function logout(Request $request): JsonResponse
+    public function logout(AuthServiceInterface $authService, Request $request): JsonResponse
     {
-        Auth::user()->tokens()->delete();
-        Auth::logout();
-
+        $authService->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect('/')->with('success', 'Вы успешно вышли из аккаунта.');
+        return ResponseHelper::successResponse('До свидания!');
     }
 }

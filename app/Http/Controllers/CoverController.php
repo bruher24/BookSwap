@@ -2,34 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreCoverRequest;
+use App\Http\Requests\UpdateCoverRequest;
 use App\Interfaces\CoverServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CoverController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(CoverServiceInterface $coverService): JsonResponse
     {
-        //
+        $covers = $coverService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'covers' => $covers,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(CoverServiceInterface $coverService): JsonResponse
     {
-        //
+        // TODO: вернуть набор полей формы
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(CoverServiceInterface $coverService, Request $request): JsonResponse
+    public function store(CoverServiceInterface $coverService, StoreCoverRequest $request): JsonResponse
     {
-        //
+        $validated = $request->validated();
+        $cover = $coverService->create($validated);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при создании обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'cover' => $cover,
+        ]);
     }
 
     /**
@@ -37,7 +42,15 @@ class CoverController extends Controller
      */
     public function show(CoverServiceInterface $coverService, string $id): JsonResponse
     {
-        //
+        $cover = $coverService->get($id);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при получении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'cover' => $cover,
+        ]);
     }
 
     /**
@@ -45,15 +58,22 @@ class CoverController extends Controller
      */
     public function edit(CoverServiceInterface $coverService, string $id): JsonResponse
     {
-        //
+        // TODO: вернуть набор полей формы
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(CoverServiceInterface $coverService, Request $request, string $id): JsonResponse
+    public function update(CoverServiceInterface $coverService, UpdateCoverRequest $request, string $id): JsonResponse
     {
-        //
+        $validated = $request->validated();
+        $updated = $coverService->update($id, $validated);
+        if (!$updated) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 
     /**
@@ -61,6 +81,12 @@ class CoverController extends Controller
      */
     public function destroy(CoverServiceInterface $coverService, string $id): JsonResponse
     {
-        //
+        $deleted = $coverService->delete($id);
+        if (!$deleted) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при удалении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 }

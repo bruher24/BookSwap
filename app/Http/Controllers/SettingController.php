@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreSettingRequest;
+use App\Http\Requests\UpdateSettingRequest;
 use App\Interfaces\SettingServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,23 +16,29 @@ class SettingController extends Controller
      */
     public function index(SettingServiceInterface $settingService): JsonResponse
     {
-        //
+        $covers = $settingService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'covers' => $covers,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(SettingServiceInterface $settingService): JsonResponse
     {
-        //
+        // TODO: вернуть набор полей формы
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(SettingServiceInterface $settingService, Request $request): JsonResponse
+    public function store(SettingServiceInterface $settingService, StoreSettingRequest $request): JsonResponse
     {
-        //
+        $validated = $request->validated();
+        $cover = $settingService->create($validated);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при создании обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'cover' => $cover,
+        ]);
     }
 
     /**
@@ -37,7 +46,15 @@ class SettingController extends Controller
      */
     public function show(SettingServiceInterface $settingService, string $id): JsonResponse
     {
-        //
+        $cover = $settingService->get($id);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при получении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'cover' => $cover,
+        ]);
     }
 
     /**
@@ -45,15 +62,25 @@ class SettingController extends Controller
      */
     public function edit(SettingServiceInterface $settingService, string $id): JsonResponse
     {
-        //
+        // TODO: вернуть набор полей формы
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(SettingServiceInterface $settingService, Request $request, string $id): JsonResponse
-    {
-        //
+    public function update(
+        SettingServiceInterface $settingService,
+        UpdateSettingRequest $request,
+        string $id
+    ): JsonResponse {
+        $validated = $request->validated();
+        $updated = $settingService->update($id, $validated);
+        if (!$updated) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 
     /**
@@ -61,6 +88,12 @@ class SettingController extends Controller
      */
     public function destroy(SettingServiceInterface $settingService, string $id): JsonResponse
     {
-        //
+        $deleted = $settingService->delete($id);
+        if (!$deleted) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при удалении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 }

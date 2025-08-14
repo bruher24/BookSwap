@@ -171,4 +171,55 @@ class UserController extends Controller
         }
         return ResponseHelper::successResponse('Success');
     }
+
+    public function index(UserServiceInterface $userService): JsonResponse
+    {
+        $covers = $userService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'covers' => $covers,
+        ]);
+    }
+
+    public function create(UserServiceInterface $userService): JsonResponse
+    {
+        // TODO: вернуть набор полей формы
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(UserServiceInterface $userService, string $id): JsonResponse
+    {
+        $cover = $userService->get($id);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при получении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'cover' => $cover,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(UserServiceInterface $userService, string $id): JsonResponse
+    {
+        // TODO: вернуть набор полей формы
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(UserServiceInterface $userService, string $id): JsonResponse
+    {
+        $deleted = $userService->delete($id);
+        if (!$deleted) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при удалении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
+    }
 }

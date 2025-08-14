@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Interfaces\MessageServiceInterface;
+use App\Interfaces\UserServiceInterface;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -13,23 +16,29 @@ class MessageController extends Controller
      */
     public function index(MessageServiceInterface $messageService): JsonResponse
     {
-        //
+        $covers = $messageService->getAll();
+        return ResponseHelper::successResponse('Success', [
+            'covers' => $covers,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(MessageServiceInterface $messageService): JsonResponse
     {
-        //
+        // TODO: вернуть набор полей формы
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(MessageServiceInterface $messageService, Request $request): JsonResponse
+    public function store(MessageServiceInterface $messageService): JsonResponse
     {
-        //
+        $validated = $request->validated();
+        $cover = $messageService->create($validated);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при создании обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'cover' => $cover,
+        ]);
     }
 
     /**
@@ -37,7 +46,15 @@ class MessageController extends Controller
      */
     public function show(MessageServiceInterface $messageService, string $id): JsonResponse
     {
-        //
+        $cover = $messageService->get($id);
+        if (!$cover) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при получении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'cover' => $cover,
+        ]);
     }
 
     /**
@@ -45,15 +62,22 @@ class MessageController extends Controller
      */
     public function edit(MessageServiceInterface $messageService, string $id): JsonResponse
     {
-        //
+        // TODO: вернуть набор полей формы
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(MessageServiceInterface $messageService, Request $request, string $id): JsonResponse
+    public function update(MessageServiceInterface $messageService, string $id): JsonResponse
     {
-        //
+        $validated = $request->validated();
+        $updated = $messageService->update($id, $validated);
+        if (!$updated) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при обновлении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
     }
 
     /**
@@ -61,6 +85,30 @@ class MessageController extends Controller
      */
     public function destroy(MessageServiceInterface $messageService, string $id): JsonResponse
     {
-        //
+        $deleted = $messageService->delete($id);
+        if (!$deleted) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при удалении обложки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success');
+    }
+
+    public function sendMessage(
+        Request $request,
+        UserServiceInterface $userService,
+        User $user,
+        User $recipient
+    ): JsonResponse {
+        $body = $request->input('body');
+        $message = $userService->sendMessage($user, $recipient, $body);
+        if (!$message) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при отправке сообщения',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'message' => $message,
+        ]);
     }
 }
