@@ -8,119 +8,152 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CoverController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\GenreController;
-use App\Http\Controllers\MessageController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('/v1')
-    ->name('api.')
-//    ->middleware('auth:sanctum')
-    ->middleware('throttle:api')
+Route::prefix('v1')->name('api.')
+    ->middleware(['auth:sanctum', 'throttle:api'])
     ->group(function () {
         Route::missing(function () {
             abort(404);
         });
 
-        Route::prefix('auth')
-            ->name('auth.')
-            ->controller(AuthController::class)
+        Route::prefix('auth')->name('auth.')->controller(AuthController::class)
             ->group(function () {
-                Route::post('/auth', [AuthController::class, 'auth'])
-                    ->name('auth')
+                Route::post('/', 'auth')->name('auth')
                     ->withoutMiddleware('auth:sanctum');
-
-                Route::post('/register', [AuthController::class, 'register'])
-                    ->name('register');
-
-                Route::post('/login', [AuthController::class, 'login'])
-                    ->name('login');
-
-                Route::post('/logout', [AuthController::class, 'logout'])
-                    ->name('logout');
-//                    ->middleware(CheckAuth::class);
+                Route::post('register', 'register')->name('register');
+                Route::post('login', 'login')->name('login');
+                Route::post('logout', 'logout')->name('logout')
+                    ->middleware(CheckAuth::class);
             });
 
-        Route::resource('authors', AuthorController::class)
-            ->names('authors')
-            ->except(['index', 'show']);
-//            ->middleware(CheckAuth::class);
-        Route::resource('authors', AuthorController::class)
-            ->names('authors')
-            ->only(['index', 'show']);
+        Route::prefix('authors')->name('authors.')->controller(AuthorController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::get('{author}', 'show')->name('show')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::post('{author}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{author}', 'update')->name('update');
+                Route::delete('{author}', 'destroy')->name('destroy');
+            });
 
-        Route::resource('books', BookController::class)
-            ->names('books')
-            ->except(['index', 'show']);
-//            ->middleware(CheckAuth::class);
-        Route::resource('books', BookController::class)
-            ->names('books')
-            ->only(['index', 'show']);
+        Route::prefix('books')->name('books.')->controller(BookController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::get('{book}', 'show')->name('show')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::post('{book}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{book}', 'update')->name('update');
+                Route::delete('{book}', 'destroy')->name('destroy');
+            });
 
-        Route::resource('chats', ChatController::class)
-            ->names('chats');
-//            ->middleware(CheckAuth::class);
+        Route::prefix('booktypes')->name('booktypes.')->controller(BookTypeController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::get('{booktype}', 'show')->name('show')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::post('{booktype}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{booktype}', 'update')->name('update');
+                Route::delete('{booktype}', 'destroy')->name('destroy');
+            });
 
-        Route::resource('chats.messages', MessageController::class)
-            ->shallow()
-            ->names('messages');
-//            ->middleware(CheckAuth::class);
+        Route::prefix('chats')->name('chats.')->controller(ChatController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('{chat}', 'show')->name('show');
+                Route::post('{chat}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{chat}', 'update')->name('update');
+                Route::delete('{chat}', 'destroy')->name('destroy');
+                Route::get('{chat}/messages', 'messages')->name('messages');
+                Route::post('{chat}/messages', 'sendMessage')->name('sendMessage');
+            });
 
-        Route::resource('covers', CoverController::class)
-            ->names('covers')
-            ->except(['show']);
-//            ->middleware(CheckAuth::class);
-        Route::resource('covers', CoverController::class)
-            ->names('covers')
-            ->only(['show']);
+        Route::prefix('covers')->name('covers.')->controller(CoverController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('{cover}', 'show')->name('show')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::post('{cover}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{cover}', 'update')->name('update');
+                Route::delete('{cover}', 'destroy')->name('destroy');
+            });
 
-        Route::resource('deals', DealController::class)
-            ->names('deals');
-//            ->middleware(CheckAuth::class);
+        Route::prefix('deals')->name('deals.')->controller(DealController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('{deal}', 'show')->name('show');
+                Route::post('{deal}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{deal}', 'update')->name('update');
+                Route::delete('{deal}', 'destroy')->name('destroy');
+            });
 
-        Route::resource('genres', GenreController::class)
-            ->names('genres')
-            ->except(['index', 'show']);
-//            ->middleware(CheckAuth::class);
-        Route::resource('genres', GenreController::class)
-            ->names('genres')
-            ->only(['index', 'show']);
+        Route::prefix('genres')->name('genres.')->controller(GenreController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::get('{genre}', 'show')->name('show')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::post('{genre}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{genre}', 'update')->name('update');
+                Route::delete('{genre}', 'destroy')->name('destroy');
+            });
 
-        Route::resource('photos', PhotoController::class)
-            ->names('photos')
-            ->except(['show']);
-//            ->middleware(CheckAuth::class);
-        Route::resource('photos', PhotoController::class)
-            ->names('photos')
-            ->only(['show']);
+        Route::prefix('photos')->name('photos.')->controller(PhotoController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('{photo}', 'show')->name('show')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::post('{photo}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{photo}', 'update')->name('update');
+                Route::delete('{photo}', 'destroy')->name('destroy');
+            });
 
-        Route::resource('settings', SettingController::class)
-            ->names('settings');
-//            ->middleware(CheckAuth::class);
+        Route::prefix('settings')->name('settings.')->controller(SettingController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::get('{setting}', 'show')->name('show')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::post('{setting}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{setting}', 'update')->name('update');
+                Route::delete('{setting}', 'destroy')->name('destroy');
+            });
 
-        Route::resource('types', BookTypeController::class)
-            ->names('types')
-            ->except(['index', 'show']);
-//            ->middleware(CheckAuth::class);
-        Route::resource('types', BookTypeController::class)
-            ->names('types')
-            ->only(['index', 'show']);
+        Route::prefix('users')->name('users.')->controller(UserController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('{user}', 'show')->name('show')
+                    ->withoutMiddleware(CheckAuth::class);
+                Route::post('{user}', 'store')->name('store');
+                Route::match(['put', 'patch'], '{user}', 'update')->name('update');
+                Route::delete('{user}', 'destroy')->name('destroy');
 
-        Route::get('/users/{user}/settings', [SettingController::class, 'userSettings']);
-        Route::patch('/users/{user}/settings/{setting}', [SettingController::class, 'updateUserSettings']);
+                Route::get('{user}/settings', 'settings')->name('settings');
+                Route::patch('{user}/settings/{setting}', 'updateSetting')->name('updateSetting');
 
-        Route::get('/users/{user}/chats', [ChatController::class, 'userChats'])->name('users.chats');
+                Route::get('{user}/chats', 'chats')->name('chats');
 
-        Route::get('/users/{user}/messages', [MessageController::class, 'userMessages'])->name('users.messages');
+                Route::get('{user}/messages', 'messages')->name('messages');
 
-        Route::resource('users', UserController::class)
-            ->names('users');
-//            ->middleware(CheckAuth::class);
-
-        Route::resource('users.notifications', NotificationController::class)
-            ->names('notifications');
-//            ->middleware(CheckAuth::class);
+                Route::get('{user}/notifications', 'notifications')->name('notifications');
+                Route::patch('{user}/notifications/{notification}', 'updateNotification')->name('updateNotification');
+            });
     });
 
