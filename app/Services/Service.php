@@ -79,12 +79,11 @@ abstract class Service implements ServiceInterface
         }
     }
 
-    public function update(Model $object, array $data): bool
+    public function update(string $id, array $data): bool
     {
         DB::beginTransaction();
         try {
-            $author = $data['author_id'];
-            unset($data['author_id']);
+            $object = $this->get($id);
             $object->updateOrFail($data);
 
             DB::commit();
@@ -96,10 +95,11 @@ abstract class Service implements ServiceInterface
         }
     }
 
-    public function delete(Model $object): bool
+    public function delete(string $id): bool
     {
         DB::beginTransaction();
         try {
+            $object = $this->get($id);
             $object->deleteOrFail();
 
             DB::commit();

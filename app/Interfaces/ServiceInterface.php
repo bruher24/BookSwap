@@ -16,9 +16,9 @@ interface ServiceInterface
 
     public function getAll(): Collection;
 
-    public function update(Model $object, array $data): bool;
+    public function update(string $id, array $data): bool;
 
-    public function delete(Model $object): bool;
+    public function delete(string $id): bool;
 
     public function getFilterFromRequest(Request $request): array;
 
