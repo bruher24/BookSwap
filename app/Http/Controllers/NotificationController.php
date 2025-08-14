@@ -4,20 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Interfaces\NotificationServiceInterface;
-use App\Models\Notification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(NotificationServiceInterface $notificationService): JsonResponse
     {
-        $covers = $notificationService->getAll();
+        $notifications = $notificationService->getAll();
         return ResponseHelper::successResponse('Success', [
-            'covers' => $covers,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -26,70 +22,59 @@ class NotificationController extends Controller
         // TODO: вернуть набор полей формы
     }
 
-    public function store(NotificationServiceInterface $notificationService): JsonResponse
+    public function store(NotificationServiceInterface $notificationService, Request $request): JsonResponse
     {
-        $validated = $request->validated();
-        $cover = $notificationService->create($validated);
-        if (!$cover) {
+        $notification = $notificationService->create($request->all());
+        if (!$notification) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при создании обложки',
+                'ERR' => 'Ошибка при создании уведомления',
             ]);
         }
-        return ResponseHelper::successResponse('Success', [
-            'cover' => $cover,
+        return ResponseHelper::successResponse('Уведомление успешно создано', [
+            'notification' => $notification,
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(NotificationServiceInterface $notificationService, string $id): JsonResponse
     {
-        $cover = $notificationService->get($id);
-        if (!$cover) {
+        $notification = $notificationService->get($id);
+        if (!$notification) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при получении обложки',
+                'ERR' => 'Ошибка при получении уведомления',
             ]);
         }
         return ResponseHelper::successResponse('Success', [
-            'cover' => $cover,
+            'notification' => $notification,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(NotificationServiceInterface $notificationService, string $id): JsonResponse
     {
         // TODO: вернуть набор полей формы
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(NotificationServiceInterface $notificationService, string $id): JsonResponse
-    {
-        $validated = $request->validated();
-        $updated = $notificationService->update($id, $validated);
+    public function update(
+        NotificationServiceInterface $notificationService,
+        Request $request,
+        string $id
+    ): JsonResponse {
+        $updated = $notificationService->update($id, $request->all());
         if (!$updated) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении обложки',
+                'ERR' => 'Ошибка при обновлении уведомления',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Уведомление успешно обновлено');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(NotificationServiceInterface $notificationService, string $id): JsonResponse
     {
         $deleted = $notificationService->delete($id);
         if (!$deleted) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при удалении обложки',
+                'ERR' => 'Ошибка при удалении уведомления',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Уведомление успешно удалено');
     }
 }

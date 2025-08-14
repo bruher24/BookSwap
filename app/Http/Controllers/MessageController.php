@@ -11,14 +11,11 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(MessageServiceInterface $messageService): JsonResponse
     {
-        $covers = $messageService->getAll();
+        $messages = $messageService->getAll();
         return ResponseHelper::successResponse('Success', [
-            'covers' => $covers,
+            'messages' => $messages,
         ]);
     }
 
@@ -27,71 +24,57 @@ class MessageController extends Controller
         // TODO: вернуть набор полей формы
     }
 
-    public function store(MessageServiceInterface $messageService): JsonResponse
+    public function store(MessageServiceInterface $messageService, Request $request): JsonResponse
     {
-        $validated = $request->validated();
-        $cover = $messageService->create($validated);
-        if (!$cover) {
+        $message = $messageService->create($request->all());
+        if (!$message) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при создании обложки',
+                'ERR' => 'Ошибка при создании сообщения',
             ]);
         }
-        return ResponseHelper::successResponse('Success', [
-            'cover' => $cover,
+        return ResponseHelper::successResponse('Сообщение успешно создано', [
+            'message' => $message,
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(MessageServiceInterface $messageService, string $id): JsonResponse
     {
-        $cover = $messageService->get($id);
-        if (!$cover) {
+        $message = $messageService->get($id);
+        if (!$message) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при получении обложки',
+                'ERR' => 'Ошибка при получении сообщения',
             ]);
         }
-        return ResponseHelper::successResponse('Success', [
-            'cover' => $cover,
+        return ResponseHelper::successResponse('Сообщение успешно получено', [
+            'message' => $message,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(MessageServiceInterface $messageService, string $id): JsonResponse
     {
         // TODO: вернуть набор полей формы
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(MessageServiceInterface $messageService, string $id): JsonResponse
+    public function update(MessageServiceInterface $messageService, Request $request, string $id): JsonResponse
     {
-        $validated = $request->validated();
-        $updated = $messageService->update($id, $validated);
+        $updated = $messageService->update($id, $request->all());
         if (!$updated) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении обложки',
+                'ERR' => 'Ошибка при обновлении сообщения',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Сообщение успешно обновлено');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(MessageServiceInterface $messageService, string $id): JsonResponse
     {
         $deleted = $messageService->delete($id);
         if (!$deleted) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при удалении обложки',
+                'ERR' => 'Ошибка при удалении сообщения',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Сообщение успешно удалено');
     }
 
     public function sendMessage(
@@ -107,7 +90,7 @@ class MessageController extends Controller
                 'ERR' => 'Ошибка при отправке сообщения',
             ]);
         }
-        return ResponseHelper::successResponse('Success', [
+        return ResponseHelper::successResponse('Сообщение успешно отправлено', [
             'message' => $message,
         ]);
     }

@@ -12,36 +12,19 @@ use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-    public function index(ChatServiceInterface $chatService): JsonResponse
+    public function store(ChatServiceInterface $chatService, Request $request): JsonResponse
     {
-        $chats = $chatService->getAll();
-        return ResponseHelper::successResponse('Success', [
-            'chats' => $chats,
-        ]);
-    }
-
-    public function create(ChatServiceInterface $chatService): JsonResponse
-    {
-        // TODO: вернуть набор полей формы
-    }
-
-    public function store(ChatServiceInterface $chatService): JsonResponse
-    {
-        $validated = $request->validated();
-        $chat = $chatService->create($validated);
+        $chat = $chatService->create($request->all());
         if (!$chat) {
             return ResponseHelper::errorResponse([
                 'ERR' => 'Ошибка при создании чата',
             ]);
         }
-        return ResponseHelper::successResponse('Success', [
+        return ResponseHelper::successResponse('Чат успешно создан', [
             'chat' => $chat,
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(ChatServiceInterface $chatService, string $id): JsonResponse
     {
         $chat = $chatService->get($id);
@@ -55,32 +38,17 @@ class ChatController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ChatServiceInterface $chatService, string $id): JsonResponse
+    public function update(ChatServiceInterface $chatService, Request $request, string $id): JsonResponse
     {
-        // TODO: вернуть набор полей формы
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(ChatServiceInterface $chatService, string $id): JsonResponse
-    {
-        $validated = $request->validated();
-        $updated = $chatService->update($id, $validated);
+        $updated = $chatService->update($id, $request->all());
         if (!$updated) {
             return ResponseHelper::errorResponse([
                 'ERR' => 'Ошибка при обновлении чата',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Чат успешно обновлен');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(ChatServiceInterface $chatService, string $id): JsonResponse
     {
         $deleted = $chatService->delete($id);
@@ -89,11 +57,12 @@ class ChatController extends Controller
                 'ERR' => 'Ошибка при удалении чата',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Чат успешно удален');
     }
 
     public function messages(UserServiceInterface $userService, User $user, User $recipient): JsonResponse
     {
+        // TODO: вынести в сервис
         $chat = $userService->getChat($user, $recipient);
         $grouped = $userService->groupMessages($chat->messages()->orderBy('created_at')->orderBy('id')->get());
 
@@ -102,5 +71,9 @@ class ChatController extends Controller
             'recipient' => $recipient,
             'is_blocked' => $chat->is_blocked,
         ]);
+    }
+
+    public function sendMessage()
+    {
     }
 }

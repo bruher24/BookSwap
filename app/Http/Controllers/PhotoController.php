@@ -3,94 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
-use App\Http\Requests\StorePhotoRequest;
-use App\Http\Requests\UpdatePhotoRequest;
 use App\Interfaces\PhotoServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PhotoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(PhotoServiceInterface $photoService): JsonResponse
+    public function store(PhotoServiceInterface $photoService, Request $request): JsonResponse
     {
-        $covers = $photoService->getAll();
-        return ResponseHelper::successResponse('Success', [
-            'covers' => $covers,
-        ]);
-    }
-
-    public function create(PhotoServiceInterface $photoService): JsonResponse
-    {
-        // TODO: вернуть набор полей формы
-    }
-
-    public function store(PhotoServiceInterface $photoService, StorePhotoRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
-        $cover = $photoService->create($validated);
-        if (!$cover) {
+        $photo = $photoService->create($request->all());
+        if (!$photo) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при создании обложки',
+                'ERR' => 'Ошибка при создании фото',
             ]);
         }
-        return ResponseHelper::successResponse('Success', [
-            'cover' => $cover,
+        return ResponseHelper::successResponse('Фото успешно создано', [
+            'photo' => $photo,
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(PhotoServiceInterface $photoService, string $id): JsonResponse
     {
-        $cover = $photoService->get($id);
-        if (!$cover) {
+        $photo = $photoService->get($id);
+        if (!$photo) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при получении обложки',
+                'ERR' => 'Ошибка при получении фото',
             ]);
         }
         return ResponseHelper::successResponse('Success', [
-            'cover' => $cover,
+            'photo' => $photo,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PhotoServiceInterface $photoService, string $id): JsonResponse
-    {
-        // TODO: вернуть набор полей формы
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(PhotoServiceInterface $photoService, UpdatePhotoRequest $request, string $id): JsonResponse
-    {
-        $validated = $request->validated();
-        $updated = $photoService->update($id, $validated);
-        if (!$updated) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении обложки',
-            ]);
-        }
-        return ResponseHelper::successResponse('Success');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(PhotoServiceInterface $photoService, string $id): JsonResponse
     {
         $deleted = $photoService->delete($id);
         if (!$deleted) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при удалении обложки',
+                'ERR' => 'Ошибка при удалении фото',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Фото успешно удалено');
     }
 }

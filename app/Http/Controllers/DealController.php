@@ -2,64 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
+use App\Interfaces\DealServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DealController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): JsonResponse
+    public function store(DealServiceInterface $dealService, Request $request): JsonResponse
     {
-        //
+        $deal = $dealService->create($request->all());
+        if (!$deal) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при создании сделки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Сделка успешно создана', [
+            'deal' => $deal,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): JsonResponse
+    public function show(DealServiceInterface $dealService, string $id): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): JsonResponse
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id): JsonResponse
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id): JsonResponse
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id): JsonResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id): JsonResponse
-    {
-        //
+        $deal = $dealService->get($id);
+        if (!$deal) {
+            return ResponseHelper::errorResponse([
+                'ERR' => 'Ошибка при получении сделки',
+            ]);
+        }
+        return ResponseHelper::successResponse('Success', [
+            'deal' => $deal,
+        ]);
     }
 }

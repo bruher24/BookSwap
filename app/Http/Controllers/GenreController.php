@@ -15,90 +15,74 @@ class GenreController extends Controller
 {
     public function index(GenreServiceInterface $genreService): JsonResponse
     {
-        $covers = $genreService->getAll();
+        $genres = $genreService->getAll();
         return ResponseHelper::successResponse('Success', [
-            'covers' => $covers,
+            'genres' => $genres,
         ]);
-    }
-
-    public function create(GenreServiceInterface $genreService): JsonResponse
-    {
-        // TODO: вернуть набор полей формы
     }
 
     public function store(GenreServiceInterface $genreService, StoreGenreRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $cover = $genreService->create($validated);
-        if (!$cover) {
+        $genre = $genreService->create($validated);
+        if (!$genre) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при создании обложки',
+                'ERR' => 'Ошибка при создании жанра',
             ]);
         }
-        return ResponseHelper::successResponse('Success', [
-            'cover' => $cover,
+        return ResponseHelper::successResponse('Жанр успешно создан', [
+            'genre' => $genre,
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(GenreServiceInterface $genreService, string $id): JsonResponse
     {
-        $cover = $genreService->get($id);
-        if (!$cover) {
+        $genre = $genreService->get($id);
+        if (!$genre) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при получении обложки',
+                'ERR' => 'Ошибка при получении жанра',
             ]);
         }
         return ResponseHelper::successResponse('Success', [
-            'cover' => $cover,
+            'genre' => $genre,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(GenreServiceInterface $genreService, string $id): JsonResponse
-    {
-        // TODO: вернуть набор полей формы
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(GenreServiceInterface $genreService, UpdateGenreRequest $request, string $id): JsonResponse
     {
         $validated = $request->validated();
         $updated = $genreService->update($id, $validated);
         if (!$updated) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении обложки',
+                'ERR' => 'Ошибка при обновлении жанра',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Жанр успешно обновлен');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(GenreServiceInterface $genreService, string $id): JsonResponse
     {
         $deleted = $genreService->delete($id);
         if (!$deleted) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при удалении обложки',
+                'ERR' => 'Ошибка при удалении жанра',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Жанр успешно удален');
     }
 
+    // TODO: убрать отсюда
     public function books(Request $request, BookServiceInterface $bookService, Genre $genre): JsonResponse
     {
         $filters = $bookService->getFilterFromRequest($request);
 
         [$books, $params] = $bookService->byGenre($genre, $filters);
 
-        return view('genres.books', compact('books', 'params', 'filters', 'genre'));
+        return ResponseHelper::successResponse('Success', [
+            'books' => $books,
+            'params' => $params,
+            'filters' => $filters,
+            'genre' => $genre,
+        ]);
     }
 }

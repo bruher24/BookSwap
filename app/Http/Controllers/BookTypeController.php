@@ -14,13 +14,8 @@ class BookTypeController extends Controller
     public function index(): JsonResponse
     {
         return ResponseHelper::successResponse('Success', [
-            'booktypes' => BookTypeEnum::toPrettyArray(),
+            'bookTypes' => BookTypeEnum::toPrettyArray(),
         ]);
-    }
-
-    public function create(BookTypeServiceInterface $bookTypeService): JsonResponse
-    {
-        // TODO: вернуть набор полей формы
     }
 
     public function store(BookTypeServiceInterface $bookTypeService, StoreBookTypeRequest $request): JsonResponse
@@ -29,41 +24,27 @@ class BookTypeController extends Controller
         $bookType = $bookTypeService->create($validated);
         if (!$bookType) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при создании обложки',
+                'ERR' => 'Ошибка при создании типа',
             ]);
         }
-        return ResponseHelper::successResponse('Success', [
-            'cover' => $bookType,
+        return ResponseHelper::successResponse('Тип успешно создан', [
+            'bookType' => $bookType,
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
     {
         $bookType = $bookTypeService->get($id);
         if (!$bookType) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при получении обложки',
+                'ERR' => 'Ошибка при получении типа',
             ]);
         }
         return ResponseHelper::successResponse('Success', [
-            'cover' => $bookType,
+            'bookType' => $bookType,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
-    {
-        // TODO: вернуть набор полей формы
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(
         BookTypeServiceInterface $bookTypeService,
         UpdateBookTypeRequest $request,
@@ -73,23 +54,20 @@ class BookTypeController extends Controller
         $updated = $bookTypeService->update($id, $validated);
         if (!$updated) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении обложки',
+                'ERR' => 'Ошибка при обновлении типа',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Тип успешно обновлен');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
     {
         $deleted = $bookTypeService->delete($id);
         if (!$deleted) {
             return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при удалении обложки',
+                'ERR' => 'Ошибка при удалении типа',
             ]);
         }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse('Тип успешно удален');
     }
 }
