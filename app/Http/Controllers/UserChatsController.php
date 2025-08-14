@@ -14,6 +14,10 @@ class UserChatsController extends Controller
     {
     }
 
+    public function send()
+    {
+    }
+
     public function read()
     {
     }

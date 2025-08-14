@@ -13,10 +13,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserChatsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFavoritesController;
-use App\Http\Controllers\UserMessagesController;
-use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\UserNotificationsController;
-use App\Http\Controllers\UserSettingController;
 use App\Http\Controllers\UserSettingsController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
@@ -71,28 +68,33 @@ Route::prefix('v1')->name('api.')
         Route::prefix('chats')->name('chats.')->controller(ChatController::class)
             ->middleware(CheckAuth::class)
             ->group(function () {
+                Route::get('/', 'index')->name('index'); // TODO: админ онли
                 Route::post('/', 'store')->name('store');
                 Route::get('{chat}', 'show')->name('show');
                 Route::match(['put', 'patch'], '{chat}', 'update')->name('update');
                 Route::delete('{chat}', 'destroy')->name('destroy');
 
-                Route::get('{chat}/messages', 'messages')->name('messages');
-                Route::post('{chat}/messages', 'sendMessage')->name('sendMessage');
+                Route::get('{chat}/messages', 'messages')->name('messages'); // TODO: админ онли
             });
 
         Route::prefix('covers')->name('covers.')->controller(CoverController::class)
             ->middleware(CheckAuth::class)
             ->group(function () {
+                Route::get('/', 'index')->name('index'); // TODO: админ онли
                 Route::post('/', 'store')->name('store');
                 Route::get('{cover}', 'show')->name('show')->withoutMiddleware(CheckAuth::class);
+                Route::match(['put', 'patch'], '{cover}', 'update')->name('update'); // TODO: админ онли
                 Route::delete('{cover}', 'destroy')->name('destroy');
             });
 
         Route::prefix('deals')->name('deals.')->controller(DealController::class)
             ->middleware(CheckAuth::class)
             ->group(function () {
+                Route::get('/', 'index')->name('index'); // TODO: админ онли
                 Route::post('/', 'store')->name('store');
                 Route::get('{deal}', 'show')->name('show');
+                Route::match(['put', 'patch'], '{deal}', 'update')->name('update'); // TODO: админ онли
+                Route::delete('{deal}', 'destroy')->name('destroy'); // TODO: админ онли
             });
 
         Route::prefix('genres')->name('genres.')->controller(GenreController::class)
@@ -108,21 +110,27 @@ Route::prefix('v1')->name('api.')
         Route::prefix('photos')->name('photos.')->controller(PhotoController::class)
             ->middleware(CheckAuth::class)
             ->group(function () {
+                Route::get('/', 'index')->name('index'); // TODO: админ онли
                 Route::post('/', 'store')->name('store');
                 Route::get('{photo}', 'show')->name('show')->withoutMiddleware(CheckAuth::class);
+                Route::match(['put', 'patch'], '{photo}', 'update')->name('update'); // TODO: админ онли
                 Route::delete('{photo}', 'destroy')->name('destroy');
             });
 
         Route::prefix('settings')->name('settings.')->controller(SettingController::class)
             ->middleware(CheckAuth::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->withoutMiddleware(CheckAuth::class);
-                Route::get('{setting}', 'show')->name('show')->withoutMiddleware(CheckAuth::class);
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store'); // TODO: админ онли
+                Route::get('{setting}', 'show')->name('show');
+                Route::match(['put', 'patch'], '{setting}', 'update')->name('update'); // TODO: админ онли
+                Route::delete('{setting}', 'destroy')->name('destroy'); // TODO: админ онли
             });
 
         Route::prefix('users')->name('users.')->controller(UserController::class)
             ->middleware(CheckAuth::class)
             ->group(function () {
+                Route::get('/', 'index')->name('index'); // TODO: админ онли
                 Route::post('/', 'store')->name('store');
                 Route::get('{user}', 'show')->name('show')->withoutMiddleware(CheckAuth::class);
                 Route::match(['put', 'patch'], '{user}', 'update')->name('update');
@@ -133,6 +141,7 @@ Route::prefix('v1')->name('api.')
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
                         Route::get('{chat}/messages', 'messages')->name('messages');
+                        Route::post('{chat}/messages', 'send')->name('send');
                         Route::patch('{chat}/messages/{message}', 'read')->name('read');
                         Route::patch('{chat}/messages/', 'readAll')->name('readAll');
                     });
@@ -141,7 +150,7 @@ Route::prefix('v1')->name('api.')
                     ->controller(UserFavoritesController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
-                        Route::post('/', 'like')->name('like');
+                        Route::post('{book}', 'like')->name('like');
                         Route::delete('{book}', 'dislike')->name('dislike');
                     });
 
@@ -149,7 +158,7 @@ Route::prefix('v1')->name('api.')
                     ->controller(UserSettingsController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
-                        Route::post('/', 'add')->name('add');
+                        Route::post('{setting}', 'add')->name('add');
                         Route::patch('{setting}', 'update')->name('update');
                     });
 
@@ -162,4 +171,3 @@ Route::prefix('v1')->name('api.')
                     });
             });
     });
-
