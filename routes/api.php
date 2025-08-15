@@ -17,6 +17,7 @@ use App\Http\Controllers\UserNotificationsController;
 use App\Http\Controllers\UserSettingsController;
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\IsAdmin;
+use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.')
@@ -28,7 +29,7 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('auth')->name('auth.')->controller(AuthController::class)
             ->group(function () {
-                Route::post('/', 'auth')->name('auth')
+                Route::post('/', 'authenticate')->name('auth')
                     ->withoutMiddleware('auth:sanctum');
                 Route::post('register', 'register')->name('register');
                 Route::post('login', 'login')->name('login');
@@ -170,3 +171,7 @@ Route::prefix('v1')->name('api.')
                     });
             });
     });
+
+
+Scramble::registerUiRoute('docs');
+Scramble::registerJsonSpecificationRoute('docs.json');

@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function auth(AuthServiceInterface $authService, Request $request): JsonResponse
+    /**
+     * @unauthenticated
+     */
+    public function authenticate(AuthServiceInterface $authService, Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
 

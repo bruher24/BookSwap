@@ -25,6 +25,9 @@ use App\Services\NotificationService;
 use App\Services\PhotoService;
 use App\Services\SettingService;
 use App\Services\UserService;
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -54,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PhotoServiceInterface::class, PhotoService::class);
         $this->app->bind(SettingServiceInterface::class, SettingService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
+
+        Scramble::ignoreDefaultRoutes();
     }
 
     /**
@@ -70,6 +75,17 @@ class AppServiceProvider extends ServiceProvider
         });
 
         date_default_timezone_set('Europe/Samara');
+
+        Gate::define('viewApiDocs', function (User $user) {
+            return false;
+        });
+
+        Scramble::configure()
+            ->withDocumentTransformers(function (OpenApi $openApi) {
+                $openApi->secure(
+                    SecurityScheme::http('bearer')
+                );
+            });
 
         Gate::define('is-admin', function (User $user) {
             return $user->isAdmin();
