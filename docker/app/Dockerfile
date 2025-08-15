@@ -35,11 +35,6 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp \
 # Установка Redis
 RUN pecl install redis && docker-php-ext-enable redis
 
-# Установка Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm@latest
-
 # Установка Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN curl -sS https://getcomposer.org/installer | php -- \
