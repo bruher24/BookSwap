@@ -22,10 +22,10 @@ class CoverController extends Controller
     public function store(CoverServiceInterface $coverService, Request $request): JsonResponse
     {
         $cover = $coverService->create($request->all());
-        $coverResource = new CoverResource($cover);
         if (!$cover) {
             return ResponseHelper::errorResponse(['Ошибка при создании обложки']);
         }
+        $coverResource = new CoverResource($cover);
         return ResponseHelper::successResponse([
             'cover' => $coverResource,
         ], 'Обложка успешно создана');
@@ -34,10 +34,10 @@ class CoverController extends Controller
     public function show(CoverServiceInterface $coverService, string $id): JsonResponse
     {
         $cover = $coverService->get($id);
-        $coverResource = new CoverResource($cover);
         if (!$cover) {
             return ResponseHelper::errorResponse(['Ошибка при получении обложки']);
         }
+        $coverResource = new CoverResource($cover);
         return ResponseHelper::successResponse([
             'cover' => $coverResource,
         ]);
@@ -45,8 +45,7 @@ class CoverController extends Controller
 
     public function update(CoverServiceInterface $coverService, Request $request, string $id): JsonResponse
     {
-        $updated = $coverService->update($id, $request->all());
-        if (!$updated) {
+        if (!$coverService->update($id, $request->all())) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении обложки']);
         }
         return ResponseHelper::successResponse([], 'Обложка успешно обновлена');
@@ -54,8 +53,7 @@ class CoverController extends Controller
 
     public function destroy(CoverServiceInterface $coverService, string $id): JsonResponse
     {
-        $deleted = $coverService->delete($id);
-        if (!$deleted) {
+        if (!$coverService->delete($id)) {
             return ResponseHelper::errorResponse(['Ошибка при удалении обложки']);
         }
         return ResponseHelper::successResponse([], 'Обложка успешно удалена');

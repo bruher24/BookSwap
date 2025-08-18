@@ -21,22 +21,14 @@ class BookController extends Controller
         $books = $bookService->where($filters);
         $params = $bookService->params();
 
-
-        return ResponseHelper::successResponse([
-            'books' => $books,
-            'params' => $params,
-            'filters' => $filters,
-        ]);
-
-
         $filtersResource = FiltersResource::collection($books);
         $bookResourceCollection = BookResource::collection($books);
         $paramsResource = ParamsResource::collection($params);
 
         return ResponseHelper::successResponse([
+            'filters' => $filters,
             'books' => $bookResourceCollection,
-            'params' => $paramsResource,
-            'filters' => $filtersResource,
+            'params' => $params,
         ]);
     }
 
@@ -44,10 +36,10 @@ class BookController extends Controller
     {
         $validated = $request->validated();
         $book = $bookService->create($validated);
-        $bookResource = new BookResource($book);
         if (!$book) {
             return ResponseHelper::errorResponse(['Ошибка при создании книги']);
         }
+        $bookResource = new BookResource($book);
         return ResponseHelper::successResponse([
             'book' => $bookResource,
         ], 'Книга успешно создана');
@@ -56,10 +48,10 @@ class BookController extends Controller
     public function show(BookServiceInterface $bookService, string $id): JsonResponse
     {
         $book = $bookService->get($id);
-        $bookResource = new BookResource($book);
         if (!$book) {
             return ResponseHelper::errorResponse(['Ошибка при получении книги']);
         }
+        $bookResource = new BookResource($book);
 
         // TODO: в отдельный запрос
         $user = Auth::user();
@@ -67,11 +59,9 @@ class BookController extends Controller
         if ($user) {
             $isBookLiked = UsersFavoriteBooks::where('user_id', $user->id)->where('book_id', $book->id)->exists();
         }
-        /////////
 
         // TODO: в отдельный запрос
         $sellerPhone = $book->user->phone ? $book->user->phone->number : null;
-        /////////
 
         return ResponseHelper::successResponse([
             'book' => $bookResource,
@@ -83,8 +73,7 @@ class BookController extends Controller
     public function update(UpdateBookRequest $request, BookServiceInterface $bookService, string $id): JsonResponse
     {
         $validated = $request->validated();
-        $updated = $bookService->update($book, $validated);
-        if (!$updated) {
+        if (!$bookService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении книги']);
         }
         return ResponseHelper::successResponse([], 'Книга успешно обновлена');
@@ -92,7 +81,7 @@ class BookController extends Controller
 
     public function destroy(BookServiceInterface $bookService, string $id): JsonResponse
     {
-        if (!$bookService->delete($book)) {
+        if (!$bookService->delete($id)) {
             return ResponseHelper::errorResponse(['Ошибка при удалении книги']);
         }
         return ResponseHelper::successResponse([], 'Книга успешно удалена');

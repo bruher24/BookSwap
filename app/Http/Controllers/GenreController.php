@@ -26,10 +26,10 @@ class GenreController extends Controller
     {
         $validated = $request->validated();
         $genre = $genreService->create($validated);
-        $genreResource = new GenreResource($genre);
         if (!$genre) {
             return ResponseHelper::errorResponse(['Ошибка при создании жанра']);
         }
+        $genreResource = new GenreResource($genre);
         return ResponseHelper::successResponse([
             'genre' => $genreResource,
         ], 'Жанр успешно создан');
@@ -38,10 +38,10 @@ class GenreController extends Controller
     public function show(GenreServiceInterface $genreService, string $id): JsonResponse
     {
         $genre = $genreService->get($id);
-        $genreResource = new GenreResource($genre);
         if (!$genre) {
             return ResponseHelper::errorResponse(['Ошибка при получении жанра']);
         }
+        $genreResource = new GenreResource($genre);
         return ResponseHelper::successResponse([
             'genre' => $genreResource,
         ]);
@@ -50,8 +50,7 @@ class GenreController extends Controller
     public function update(GenreServiceInterface $genreService, UpdateGenreRequest $request, string $id): JsonResponse
     {
         $validated = $request->validated();
-        $updated = $genreService->update($id, $validated);
-        if (!$updated) {
+        if (!$genreService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении жанра']);
         }
         return ResponseHelper::successResponse([], 'Жанр успешно обновлен');
@@ -59,8 +58,7 @@ class GenreController extends Controller
 
     public function destroy(GenreServiceInterface $genreService, string $id): JsonResponse
     {
-        $deleted = $genreService->delete($id);
-        if (!$deleted) {
+        if (!$genreService->delete($id)) {
             return ResponseHelper::errorResponse(['Ошибка при удалении жанра']);
         }
         return ResponseHelper::successResponse([], 'Жанр успешно удален');

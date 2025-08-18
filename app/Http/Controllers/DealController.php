@@ -22,10 +22,10 @@ class DealController extends Controller
     public function store(DealServiceInterface $dealService, Request $request): JsonResponse
     {
         $deal = $dealService->create($request->all());
-        $dealResource = new DealResource($deal);
         if (!$deal) {
             return ResponseHelper::errorResponse(['Ошибка при создании сделки']);
         }
+        $dealResource = new DealResource($deal);
         return ResponseHelper::successResponse([
             'deal' => $dealResource,
         ], 'Сделка успешно создана');
@@ -34,10 +34,10 @@ class DealController extends Controller
     public function show(DealServiceInterface $dealService, string $id): JsonResponse
     {
         $deal = $dealService->get($id);
-        $dealResource = new DealResource($deal);
         if (!$deal) {
             return ResponseHelper::errorResponse(['Ошибка при получении сделки']);
         }
+        $dealResource = new DealResource($deal);
         return ResponseHelper::successResponse([
             'deal' => $dealResource,
         ]);
@@ -45,8 +45,7 @@ class DealController extends Controller
 
     public function update(DealServiceInterface $dealService, Request $request, string $id): JsonResponse
     {
-        $updated = $dealService->update($id, $request->all());
-        if (!$updated) {
+        if (!$dealService->update($id, $request->all())) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении сделки']);
         }
         return ResponseHelper::successResponse([], 'Сделка успешно обновлена');
@@ -54,8 +53,7 @@ class DealController extends Controller
 
     public function destroy(DealServiceInterface $dealService, string $id): JsonResponse
     {
-        $deleted = $dealService->delete($id);
-        if (!$deleted) {
+        if (!$dealService->delete($id)) {
             return ResponseHelper::errorResponse(['Ошибка при удалении сделки']);
         }
         return ResponseHelper::successResponse([], 'Сделка успешно удалена');

@@ -23,10 +23,10 @@ class MessageController extends Controller
     public function store(MessageServiceInterface $messageService, Request $request): JsonResponse
     {
         $message = $messageService->create($request->all());
-        $messageResource = new MessageResource($message);
         if (!$message) {
             return ResponseHelper::errorResponse(['Ошибка при создании сообщения']);
         }
+        $messageResource = new MessageResource($message);
         return ResponseHelper::successResponse([
             'message' => $messageResource,
         ], 'Сообщение успешно создано');
@@ -35,10 +35,10 @@ class MessageController extends Controller
     public function show(MessageServiceInterface $messageService, string $id): JsonResponse
     {
         $message = $messageService->get($id);
-        $messageResource = new MessageResource($message);
         if (!$message) {
             return ResponseHelper::errorResponse(['Ошибка при получении сообщения']);
         }
+        $messageResource = new MessageResource($message);
         return ResponseHelper::successResponse([
             'message' => $messageResource,
         ], 'Сообщение успешно получено');
@@ -46,8 +46,7 @@ class MessageController extends Controller
 
     public function update(MessageServiceInterface $messageService, Request $request, string $id): JsonResponse
     {
-        $updated = $messageService->update($id, $request->all());
-        if (!$updated) {
+        if (!$messageService->update($id, $request->all())) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении сообщения']);
         }
         return ResponseHelper::successResponse([], 'Сообщение успешно обновлено');
@@ -55,8 +54,7 @@ class MessageController extends Controller
 
     public function destroy(MessageServiceInterface $messageService, string $id): JsonResponse
     {
-        $deleted = $messageService->delete($id);
-        if (!$deleted) {
+        if (!$messageService->delete($id)) {
             return ResponseHelper::errorResponse(['Ошибка при удалении сообщения']);
         }
         return ResponseHelper::successResponse([], 'Сообщение успешно удалено');

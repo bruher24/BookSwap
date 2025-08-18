@@ -3,51 +3,73 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
 use App\Interfaces\AuthServiceInterface;
+use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    /**
-     * @unauthenticated
-     */
-    public function authenticate(AuthServiceInterface $authService, Request $request): JsonResponse
-    {
-        $credentials = $request->only('email', 'password');
-
-        $token = $authService->auth($credentials);
-
-        if (empty($token)) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка авторизации',
-            ]);
+    public function register(
+        UserServiceInterface $userService,
+        AuthServiceInterface $authService,
+        StoreUserRequest $request
+    ): JsonResponse {
+        $validated = $request->validated();
+        $user = $userService->create($validated);
+        if (!$user) {
+            return ResponseHelper::errorResponse(['Ошибка при регистрации']);
         }
-        return ResponseHelper::successResponse('Success', [
+        $token = $authService->refreshToken($user);
+        $userResource = new UserResource($user);
+        return ResponseHelper::successResponse([
+            'user' => $userResource,
             'token' => $token,
-        ]);
+        ], 'Успешная регистрация');
     }
 
     public function login(AuthServiceInterface $authService, Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password', 'remember');
         if (!$authService->login($credentials)) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка авторизации',
-            ]);
+            return ResponseHelper::errorResponse(['Ошибка аутентификации']);
         }
-        $request->session()->regenerate();
         $user = $authService->currentUser();
-        return ResponseHelper::successResponse('Успешная авторизация!', [
-            'user' => $user,
-        ]);
+        $token = $authService->refreshToken($user);
+        if (empty($token)) {
+            return ResponseHelper::errorResponse(['Ошибка получения токена']);
+        }
+        session()->regenerate();
+        $user = $authService->currentUser();
+        $userResource = new UserResource($user);
+        return ResponseHelper::successResponse([
+            'user' => $userResource,
+            'token' => $token,
+        ], 'Успешная аутентификация');
     }
 
-    public function logout(AuthServiceInterface $authService, Request $request): JsonResponse
+    public function logout(AuthServiceInterface $authService): JsonResponse
     {
-        $authService->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return ResponseHelper::successResponse('До свидания!');
+        if (!$authService->logout()) {
+            return ResponseHelper::errorResponse(['Ошибка при выходе из аккаунта']);
+        }
+        session()->invalidate();
+        session()->regenerateToken();
+        return ResponseHelper::successResponse([], 'До свидания');
+    }
+
+    public function refresh(AuthServiceInterface $authService): JsonResponse
+    {
+        $user = $authService->currentUser();
+        $token = $authService->refreshToken($user);
+
+        if (empty($token)) {
+            return ResponseHelper::errorResponse(['Ошибка обновления токена']);
+        }
+        return ResponseHelper::successResponse([
+            'token' => $token,
+        ]);
     }
 }

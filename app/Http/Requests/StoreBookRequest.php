@@ -35,7 +35,6 @@ class StoreBookRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                Rule::unique('books', 'name')->whereNull('deleted_at'),
             ],
             'author_id' => [
                 'required_without_all:authorLastName,authorFirstname',

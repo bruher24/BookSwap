@@ -24,10 +24,10 @@ class ChatController extends Controller
     public function store(ChatServiceInterface $chatService, Request $request): JsonResponse
     {
         $chat = $chatService->create($request->all());
-        $chatResource = new ChatResource($chat);
         if (!$chat) {
             return ResponseHelper::errorResponse(['Ошибка при создании чата']);
         }
+        $chatResource = new ChatResource($chat);
         return ResponseHelper::successResponse([
             'chat' => $chatResource,
         ], 'Чат успешно создан');
@@ -36,10 +36,10 @@ class ChatController extends Controller
     public function show(ChatServiceInterface $chatService, string $id): JsonResponse
     {
         $chat = $chatService->get($id);
-        $chatResource = new ChatResource($chat);
         if (!$chat) {
             return ResponseHelper::errorResponse(['Ошибка при получении чата']);
         }
+        $chatResource = new ChatResource($chat);
         return ResponseHelper::successResponse([
             'chat' => $chatResource,
         ]);
@@ -47,8 +47,7 @@ class ChatController extends Controller
 
     public function update(ChatServiceInterface $chatService, Request $request, string $id): JsonResponse
     {
-        $updated = $chatService->update($id, $request->all());
-        if (!$updated) {
+        if (!$chatService->update($id, $request->all())) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении чата']);
         }
         return ResponseHelper::successResponse([], 'Чат успешно обновлен');
@@ -56,13 +55,13 @@ class ChatController extends Controller
 
     public function destroy(ChatServiceInterface $chatService, string $id): JsonResponse
     {
-        $deleted = $chatService->delete($id);
-        if (!$deleted) {
+        if (!$chatService->delete($id)) {
             return ResponseHelper::errorResponse(['Ошибка при удалении чата']);
         }
         return ResponseHelper::successResponse([], 'Чат успешно удален');
     }
 
+    // TODO: исправить
     public function messages(UserServiceInterface $userService, string $user_id, string $recipient_id): JsonResponse
     {
         // TODO: добавить JsonResource

@@ -27,10 +27,10 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $user = $userService->create($validated);
-        $userResource = new UserResource($user);
         if (!$user) {
             return ResponseHelper::errorResponse(['Ошибка при создании пользователя']);
         }
+        $userResource = new UserResource($user);
         return ResponseHelper::successResponse([
             'user' => $userResource,
         ], 'Пользователь успешно создан');
@@ -39,10 +39,10 @@ class UserController extends Controller
     public function show(UserServiceInterface $userService, string $id): JsonResponse
     {
         $user = $userService->get($id);
-        $userResource = new UserResource($user);
         if (!$user) {
             return ResponseHelper::errorResponse(['Ошибка при получении пользователя']);
         }
+        $userResource = new UserResource($user);
         return ResponseHelper::successResponse([
             'user' => $userResource,
         ]);
@@ -56,23 +56,21 @@ class UserController extends Controller
         }
 
         $validated = $request->validated();
-        $updated = $userService->update($id, $validated);
-        if (!$updated) {
+        if (!$userService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении пользователя']);
         }
-
         return ResponseHelper::successResponse([], 'Пользователь успешно обновлен');
     }
 
     public function destroy(UserServiceInterface $userService, string $id): JsonResponse
     {
-        $deleted = $userService->delete($id);
-        if (!$deleted) {
+        if (!$userService->delete($id)) {
             return ResponseHelper::errorResponse(['Ошибка при удалении пользователя']);
         }
         return ResponseHelper::successResponse([], 'Пользователь успешно удален');
     }
 
+    // TODO: ??
     public function chats(UserServiceInterface $userService, Request $request, string $id): JsonResponse
     {
         // TODO: сделать нормально

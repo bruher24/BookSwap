@@ -22,10 +22,10 @@ class SettingController extends Controller
     public function store(SettingServiceInterface $settingService, Request $request): JsonResponse
     {
         $setting = $settingService->create($request->all());
-        $settingResource = new SettingResource($setting);
         if (!$setting) {
             return ResponseHelper::errorResponse(['Ошибка при создании настройки']);
         }
+        $settingResource = new SettingResource($setting);
         return ResponseHelper::successResponse([
             'setting' => $settingResource,
         ], 'Настройка успешно создана');
@@ -34,10 +34,10 @@ class SettingController extends Controller
     public function show(SettingServiceInterface $settingService, string $id): JsonResponse
     {
         $setting = $settingService->get($id);
-        $settingResource = new SettingResource($setting);
         if (!$setting) {
             return ResponseHelper::errorResponse(['Ошибка при получении настройки']);
         }
+        $settingResource = new SettingResource($setting);
         return ResponseHelper::successResponse([
             'setting' => $settingResource,
         ]);
@@ -45,8 +45,7 @@ class SettingController extends Controller
 
     public function update(SettingServiceInterface $settingService, Request $request, string $id): JsonResponse
     {
-        $updated = $settingService->update($id, $request->all());
-        if (!$updated) {
+        if (!$settingService->update($id, $request->all())) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении настройки']);
         }
         return ResponseHelper::successResponse([], 'Настройка успешно обновлена');
@@ -54,8 +53,7 @@ class SettingController extends Controller
 
     public function destroy(SettingServiceInterface $settingService, string $id): JsonResponse
     {
-        $deleted = $settingService->delete($id);
-        if (!$deleted) {
+        if (!$settingService->delete($id)) {
             return ResponseHelper::errorResponse(['Ошибка при удалении настройки']);
         }
         return ResponseHelper::successResponse([], 'Настройка успешно удалена');

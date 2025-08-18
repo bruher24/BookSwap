@@ -39,7 +39,6 @@ class UpdateBookRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:100',
-                Rule::unique('books', 'name')->ignore($this->request->get('book_id'))->whereNull('deleted_at'),
             ],
             'author_id' => [
                 'required_without_all:authorLastName,authorFirstname',

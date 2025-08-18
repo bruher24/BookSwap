@@ -24,10 +24,10 @@ class BookTypeController extends Controller
     {
         $validated = $request->validated();
         $bookType = $bookTypeService->create($validated);
-        $bookTypeResource = new BookTypeResource($bookType);
         if (!$bookType) {
             return ResponseHelper::errorResponse(['Ошибка при создании типа']);
         }
+        $bookTypeResource = new BookTypeResource($bookType);
         return ResponseHelper::successResponse([
             'bookType' => $bookTypeResource,
         ], 'Тип успешно создан');
@@ -36,10 +36,10 @@ class BookTypeController extends Controller
     public function show(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
     {
         $bookType = $bookTypeService->get($id);
-        $bookTypeResource = new BookTypeResource($bookType);
         if (!$bookType) {
             return ResponseHelper::errorResponse(['Ошибка при получении типа']);
         }
+        $bookTypeResource = new BookTypeResource($bookType);
         return ResponseHelper::successResponse([
             'bookType' => $bookTypeResource,
         ]);
@@ -51,8 +51,7 @@ class BookTypeController extends Controller
         string $id
     ): JsonResponse {
         $validated = $request->validated();
-        $updated = $bookTypeService->update($id, $validated);
-        if (!$updated) {
+        if (!$bookTypeService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении типа']);
         }
         return ResponseHelper::successResponse([], 'Тип успешно обновлен');
@@ -60,9 +59,8 @@ class BookTypeController extends Controller
 
     public function destroy(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
     {
-        $deleted = $bookTypeService->delete($id);
-        if (!$deleted) {
-            return ResponseHelper::errorResponse('Ошибка при удалении типа');
+        if (!$bookTypeService->delete($id)) {
+            return ResponseHelper::errorResponse(['Ошибка при удалении типа']);
         }
         return ResponseHelper::successResponse([], 'Тип успешно удален');
     }

@@ -29,11 +29,13 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('auth')->name('auth.')->controller(AuthController::class)
             ->group(function () {
-                Route::post('/', 'authenticate')->name('auth')
+                Route::post('register', 'register')->name('register')
                     ->withoutMiddleware('auth:sanctum');
-                Route::post('register', 'register')->name('register');
-                Route::post('login', 'login')->name('login');
+                Route::post('login', 'login')->name('login')
+                    ->withoutMiddleware('auth:sanctum');
                 Route::post('logout', 'logout')->name('logout')
+                    ->middleware(CheckAuth::class);
+                Route::post('refresh', 'refresh')->name('refresh')
                     ->middleware(CheckAuth::class);
             });
 
