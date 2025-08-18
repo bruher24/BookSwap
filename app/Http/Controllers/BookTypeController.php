@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\BookTypeEnum;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreBookTypeRequest;
 use App\Http\Requests\UpdateBookTypeRequest;
+use App\Http\Resources\BookTypeResource;
 use App\Interfaces\BookTypeServiceInterface;
 use Illuminate\Http\JsonResponse;
 
 class BookTypeController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(BookTypeServiceInterface $bookTypeService): JsonResponse
     {
-        return ResponseHelper::successResponse('Success', [
-            'bookTypes' => BookTypeEnum::toPrettyArray(),
+        $bookTypes = $bookTypeService->getAll();
+        $bookTypeResourceCollection = BookTypeResource::collection($bookTypes);
+        return ResponseHelper::successResponse([
+            'bookTypes' => $bookTypeResourceCollection,
         ]);
     }
 
@@ -22,26 +24,24 @@ class BookTypeController extends Controller
     {
         $validated = $request->validated();
         $bookType = $bookTypeService->create($validated);
+        $bookTypeResource = new BookTypeResource($bookType);
         if (!$bookType) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при создании типа',
-            ]);
+            return ResponseHelper::errorResponse(['Ошибка при создании типа']);
         }
-        return ResponseHelper::successResponse('Тип успешно создан', [
-            'bookType' => $bookType,
-        ]);
+        return ResponseHelper::successResponse([
+            'bookType' => $bookTypeResource,
+        ], 'Тип успешно создан');
     }
 
     public function show(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
     {
         $bookType = $bookTypeService->get($id);
+        $bookTypeResource = new BookTypeResource($bookType);
         if (!$bookType) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при получении типа',
-            ]);
+            return ResponseHelper::errorResponse(['Ошибка при получении типа']);
         }
-        return ResponseHelper::successResponse('Success', [
-            'bookType' => $bookType,
+        return ResponseHelper::successResponse([
+            'bookType' => $bookTypeResource,
         ]);
     }
 
@@ -53,21 +53,17 @@ class BookTypeController extends Controller
         $validated = $request->validated();
         $updated = $bookTypeService->update($id, $validated);
         if (!$updated) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении типа',
-            ]);
+            return ResponseHelper::errorResponse(['Ошибка при обновлении типа']);
         }
-        return ResponseHelper::successResponse('Тип успешно обновлен');
+        return ResponseHelper::successResponse([], 'Тип успешно обновлен');
     }
 
     public function destroy(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
     {
         $deleted = $bookTypeService->delete($id);
         if (!$deleted) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при удалении типа',
-            ]);
+            return ResponseHelper::errorResponse('Ошибка при удалении типа');
         }
-        return ResponseHelper::successResponse('Тип успешно удален');
+        return ResponseHelper::successResponse([], 'Тип успешно удален');
     }
 }

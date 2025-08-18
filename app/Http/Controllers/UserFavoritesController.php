@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserFavoritesController extends Controller
@@ -19,8 +21,11 @@ class UserFavoritesController extends Controller
     }
 
     // TODO: разбить на методы выше
-    public function updateFavorites(UserServiceInterface $userService, Request $request, User $user): JsonResponse
-    {
+    public function updateFavorites(
+        UserFavoritesServiceInterface $userService,
+        Request $request,
+        string $id
+    ): JsonResponse {
         // TODO: разбить на два метода add и remove
         $book_id = $request->input('book_id');
         $isLiked = $request->input('isLiked');
@@ -31,6 +36,6 @@ class UserFavoritesController extends Controller
             $userService->removeFromFavorites($user->id, $book_id);
         }
 
-        return ResponseHelper::successResponse('Добавлено в избранное');
+        return ResponseHelper::successResponse([], 'Добавлено в избранное');
     }
 }

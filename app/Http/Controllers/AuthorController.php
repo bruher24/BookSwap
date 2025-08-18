@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
+use App\Http\Resources\AuthorResource;
+use App\Http\Resources\BookResource;
 use App\Interfaces\AuthorServiceInterface;
 use App\Interfaces\BookServiceInterface;
-use App\Models\Author;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,9 @@ class AuthorController extends Controller
     public function index(AuthorServiceInterface $authorService): JsonResponse
     {
         $authors = $authorService->getAll();
-        return ResponseHelper::successResponse('Success', [
-            'authors' => $authors
+        $authorResourceCollection = AuthorResource::collection($authors);
+        return ResponseHelper::successResponse([
+            'authors' => $authorResourceCollection,
         ]);
     }
 
@@ -25,21 +27,24 @@ class AuthorController extends Controller
     {
         $validated = $request->validated();
         $author = $authorService->create($validated);
+        $authorResource = new AuthorResource($author);
         if (!$author) {
-            return ResponseHelper::errorResponse([
-                'Ошибка при создании автора',
-            ]);
+            return ResponseHelper::errorResponse(['Ошибка при создании автора']);
         }
-        return ResponseHelper::successResponse('Автор успешно создан', [
-            'author' => $author
-        ]);
+        return ResponseHelper::successResponse([
+            'author' => $authorResource,
+        ], 'Автор успешно создан');
     }
 
     public function show(AuthorServiceInterface $authorService, string $id): JsonResponse
     {
         $author = $authorService->get($id);
-        return ResponseHelper::successResponse('Success', [
-            'author' => $author
+        $authorResource = new AuthorResource($author);
+        if (!$author) {
+            return ResponseHelper::errorResponse(['Ошибка при получении автора']);
+        }
+        return ResponseHelper::successResponse([
+            'author' => $authorResource,
         ]);
     }
 
@@ -51,32 +56,39 @@ class AuthorController extends Controller
         $validated = $request->validated();
         $updated = $authorService->update($id, $validated);
         if (!$updated) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении автора',
-            ]);
+            return ResponseHelper::errorResponse(['Ошибка при обновлении автора']);
         }
-        return ResponseHelper::successResponse('Автор успешно обновлен');
+        return ResponseHelper::successResponse([], 'Автор успешно обновлен');
     }
 
     public function destroy(AuthorServiceInterface $authorService, string $id): JsonResponse
     {
         $deleted = $authorService->delete($id);
         if (!$deleted) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при удалении автора'
-            ]);
+            return ResponseHelper::errorResponse(['Ошибка при удалении автора']);
         }
-        return ResponseHelper::successResponse('Автор успешно удален');
+        return ResponseHelper::successResponse([], 'Автор успешно удален');
     }
 
     // TODO: убрать отсюда или добавить роут
-    public function books(Request $request, BookServiceInterface $bookService, Author $author): JsonResponse
-    {
+    public function books(
+        Request $request,
+        AuthorServiceInterface $authorService,
+        BookServiceInterface $bookService,
+        string $id
+    ): JsonResponse {
         // TODO: исправить
+
+        $author = $authorService->get($id);
+
         $filters = $bookService->getFilterFromRequest($request);
 
         [$books, $params] = $bookService->byAuthor($author, $filters);
 
-        return response()->json($books);
+        $bookResourceCollection = BookResource::collection($books);
+
+        return ResponseHelper::successResponse([
+            'books' => $bookResourceCollection,
+        ]);
     }
 }

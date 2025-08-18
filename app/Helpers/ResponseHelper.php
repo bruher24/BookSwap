@@ -6,21 +6,21 @@ use Illuminate\Http\JsonResponse;
 
 class ResponseHelper
 {
-    public static function successResponse($message, $data = []): JsonResponse
+    public static function successResponse(array $data = [], string $message = null): JsonResponse
     {
-        $response = [
-            'success' => true,
-            'message' => $message,
-        ];
-        $response = array_merge($response, $data);
-        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+        $data['success'] = true;
+        if (isset($message)) {
+            $data['systemMessage'] = $message;
+        }
+
+        return response()->json($data, 200, [], JSON_PRETTY_PRINT);
     }
 
-    public static function errorResponse($errors): JsonResponse
+    public static function errorResponse(array $errors): JsonResponse
     {
         return response()->json([
             'success' => false,
             'errors' => $errors
-        ], 200, [], JSON_PRETTY_PRINT);
+        ], 404, [], JSON_PRETTY_PRINT);
     }
 }
