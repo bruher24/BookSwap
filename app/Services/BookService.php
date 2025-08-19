@@ -165,6 +165,11 @@ class BookService extends Service implements BookServiceInterface
         }
     }
 
+    public function get(int $id): Book|false
+    {
+        return parent::get($id);
+    }
+
     private function filterAuthorsData(array $data): array
     {
         $authors = [];

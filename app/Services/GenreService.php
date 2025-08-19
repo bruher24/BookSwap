@@ -3,9 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\GenreServiceInterface;
-use App\Models\Author;
 use App\Models\Genre;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -19,6 +17,16 @@ class GenreService extends Service implements GenreServiceInterface
         $this->ucFirstFields = [
             'name',
         ];
+    }
+
+    public function create(array $data): Genre|false
+    {
+        return parent::create($data);
+    }
+
+    public function get(int $id): Genre|false
+    {
+        return parent::get($id);
     }
 
     public function getAll(): Collection

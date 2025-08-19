@@ -11,4 +11,14 @@ class PhotoService extends Service implements PhotoServiceInterface
     {
         parent::__construct(Photo::class);
     }
+
+    public function create(array $data): Photo|false
+    {
+        return parent::create($data);
+    }
+
+    public function get(int $id): Photo|false
+    {
+        return parent::get($id);
+    }
 }

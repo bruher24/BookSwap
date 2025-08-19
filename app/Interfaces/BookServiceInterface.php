@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface BookServiceInterface extends ServiceInterface
 {
+    public function create(array $data): Book|false;
+
+    public function get(int $id): Book|false;
+
     public function byUser(User $user, array $conditions = []): array;
 
     public function byAuthor(Author $author, array $conditions = []): array;

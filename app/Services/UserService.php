@@ -36,6 +36,7 @@ class UserService extends Service implements UserServiceInterface
                 $user->refresh();
                 $user->roles()->attach(2);
                 $user->photo()->associate(Photo::all()->first());
+                // TODO: изменить
                 $user->settings()->attach(Setting::all()->first(), ['value' => 'on']);
                 $user->save();
                 DB::commit();

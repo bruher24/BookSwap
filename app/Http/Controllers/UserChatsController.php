@@ -17,7 +17,6 @@ class UserChatsController extends Controller
         Request $request,
         string $user_id
     ): JsonResponse {
-        // TODO: сделать нормально
         $recipient_id = $request->input('recipient');
         $user = $userService->get($user_id);
         if (!$user) {

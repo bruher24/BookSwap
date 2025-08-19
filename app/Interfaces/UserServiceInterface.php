@@ -9,10 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface UserServiceInterface extends ServiceInterface
 {
-    public function create(array $data): User|false;
-
-    public function get(int $id): User|false;
-
     public function updateSettings(User $user, array $data): bool;
 
     public function addToFavorites($user_id, $book_id): bool;

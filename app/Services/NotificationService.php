@@ -11,4 +11,14 @@ class NotificationService extends Service implements NotificationServiceInterfac
     {
         parent::__construct(Notification::class);
     }
+
+    public function create(array $data): Notification|false
+    {
+        return parent::create($data);
+    }
+
+    public function get(int $id): Notification|false
+    {
+        return parent::get($id);
+    }
 }

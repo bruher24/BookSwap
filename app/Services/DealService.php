@@ -11,4 +11,14 @@ class DealService extends Service implements DealServiceInterface
     {
         parent::__construct(Deal::class);
     }
+
+    public function create(array $data): Deal|false
+    {
+        return parent::create($data);
+    }
+
+    public function get(int $id): Deal|false
+    {
+        return parent::get($id);
+    }
 }

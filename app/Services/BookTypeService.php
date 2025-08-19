@@ -11,4 +11,14 @@ class BookTypeService extends Service implements BookTypeServiceInterface
     {
         parent::__construct(BookType::class);
     }
+
+    public function create(array $data): BookType|false
+    {
+        return parent::create($data);
+    }
+
+    public function get(int $id): BookType|false
+    {
+        return parent::get($id);
+    }
 }
