@@ -7,8 +7,10 @@ use App\Http\Controllers\BookTypeController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CoverController;
 use App\Http\Controllers\DealController;
+use App\Http\Controllers\FilterController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserChatsController;
 use App\Http\Controllers\UserController;
@@ -99,6 +101,16 @@ Route::prefix('v1')->name('api.')
                 Route::delete('{deal}', 'destroy')->name('destroy')->middleware(IsAdmin::class);
             });
 
+        Route::prefix('filters')->name('filters.')->controller(FilterController::class)
+            ->middleware(CheckAuth::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index')->withoutMiddleware(CheckAuth::class);
+                Route::post('/', 'store')->name('store')->middleware(IsAdmin::class);
+                Route::get('{filter}', 'show')->name('show')->withoutMiddleware(CheckAuth::class);
+                Route::match(['put', 'patch'], '{filter}', 'update')->name('update')->middleware(IsAdmin::class);
+                Route::delete('{filter}', 'destroy')->name('destroy')->middleware(IsAdmin::class);
+            });
+
         Route::prefix('genres')->name('genres.')->controller(GenreController::class)
             ->middleware(CheckAuth::class)
             ->group(function () {
@@ -172,6 +184,7 @@ Route::prefix('v1')->name('api.')
                         Route::patch('{notification}', 'check')->name('check');
                     });
             });
+        Route::get('search', SearchController::class)->name('search');
     });
 
 
