@@ -202,20 +202,4 @@ class BookService extends Service implements BookServiceInterface
             return false;
         }
     }
-
-    public function params(Collection $books = null): array
-    {
-        $books = $books ?? $this->getAll();
-        $result['genres'] = $books->flatMap->genres->unique('name');
-        $result['authors'] = $books->flatMap->authors->unique(function ($author) {
-            return implode('|', [
-                $author->lastname,
-                $author->firstname,
-                $author->patronymic ?? ''
-            ]);
-        });
-        $result['years'] = $books->pluck('publication_year')->unique();
-        $result['book_types'] = $books->pluck('book_type')->filter()->unique();
-        return $result ?? [];
-    }
 }

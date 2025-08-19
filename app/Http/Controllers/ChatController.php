@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreChatRequest;
+use App\Http\Requests\UpdateChatRequest;
 use App\Http\Resources\ChatResource;
 use App\Interfaces\ChatServiceInterface;
-use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 
 class ChatController extends Controller
@@ -21,9 +21,10 @@ class ChatController extends Controller
         ]);
     }
 
-    public function store(ChatServiceInterface $chatService, Request $request): JsonResponse
+    public function store(ChatServiceInterface $chatService, StoreChatRequest $request): JsonResponse
     {
-        $chat = $chatService->create($request->all());
+        $validated = $request->validated();
+        $chat = $chatService->create($validated);
         if (!$chat) {
             return ResponseHelper::errorResponse(['Ошибка при создании чата']);
         }
@@ -45,9 +46,10 @@ class ChatController extends Controller
         ]);
     }
 
-    public function update(ChatServiceInterface $chatService, Request $request, string $id): JsonResponse
+    public function update(ChatServiceInterface $chatService, UpdateChatRequest $request, string $id): JsonResponse
     {
-        if (!$chatService->update($id, $request->all())) {
+        $validated = $request->validated();
+        if (!$chatService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении чата']);
         }
         return ResponseHelper::successResponse([], 'Чат успешно обновлен');
@@ -59,24 +61,5 @@ class ChatController extends Controller
             return ResponseHelper::errorResponse(['Ошибка при удалении чата']);
         }
         return ResponseHelper::successResponse([], 'Чат успешно удален');
-    }
-
-    // TODO: исправить
-    public function messages(UserServiceInterface $userService, string $user_id, string $recipient_id): JsonResponse
-    {
-        // TODO: добавить JsonResource
-        // TODO: вынести в сервис
-        $chat = $userService->getChat($user, $recipient);
-        $grouped = $userService->groupMessages($chat->messages()->orderBy('created_at')->orderBy('id')->get());
-
-        return ResponseHelper::successResponse([
-            'messages' => $grouped,
-            'recipient' => $recipient,
-            'is_blocked' => $chat->is_blocked,
-        ]);
-    }
-
-    public function sendMessage()
-    {
     }
 }

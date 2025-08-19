@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreNotificationRequest;
+use App\Http\Requests\UpdateNotificationRequest;
 use App\Http\Resources\NotificationResource;
 use App\Interfaces\NotificationServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
@@ -19,9 +20,12 @@ class NotificationController extends Controller
         ]);
     }
 
-    public function store(NotificationServiceInterface $notificationService, Request $request): JsonResponse
-    {
-        $notification = $notificationService->create($request->all());
+    public function store(
+        NotificationServiceInterface $notificationService,
+        StoreNotificationRequest $request
+    ): JsonResponse {
+        $validated = $request->validated();
+        $notification = $notificationService->create($validated);
         if (!$notification) {
             return ResponseHelper::errorResponse(['Ошибка при создании уведомления']);
         }
@@ -45,10 +49,11 @@ class NotificationController extends Controller
 
     public function update(
         NotificationServiceInterface $notificationService,
-        Request $request,
+        UpdateNotificationRequest $request,
         string $id
     ): JsonResponse {
-        if (!$notificationService->update($id, $request->all())) {
+        $validated = $request->validated();
+        if (!$notificationService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении уведомления']);
         }
         return ResponseHelper::successResponse([], 'Уведомление успешно обновлено');

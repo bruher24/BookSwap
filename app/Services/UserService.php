@@ -13,7 +13,6 @@ use App\Models\User;
 use App\Models\UsersFavoriteBooks;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -28,7 +27,7 @@ class UserService extends Service implements UserServiceInterface
         parent::__construct(User::class);
     }
 
-    public function create(array $data): Model|false
+    public function create(array $data): User|false
     {
         DB::beginTransaction();
         try {
@@ -50,10 +49,16 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function update(Model $object, array $data): bool
+    public function get(int $id): User|false
+    {
+        return parent::get($id);
+    }
+
+    public function update(string $id, array $data): bool
     {
         DB::beginTransaction();
         try {
+            $object = $this->get($id);
             if (!$object instanceof User) {
                 return false;
             }
@@ -170,10 +175,12 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function getUserChats(User $user): Collection
+    public function chats(User $user): Collection
     {
         try {
+            Log::debug('Cache check');
             return Cache::remember($user->id . '_chats', 60, function () use ($user) {
+                Log::debug('Stored in cache: ' . $user->id . '_chats');
                 return $user->chats()->get();
             });
         } catch (Throwable $e) {

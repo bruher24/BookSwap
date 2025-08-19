@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreDealRequest;
+use App\Http\Requests\UpdateDealRequest;
 use App\Http\Resources\DealResource;
 use App\Interfaces\DealServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class DealController extends Controller
 {
@@ -19,9 +20,10 @@ class DealController extends Controller
         ]);
     }
 
-    public function store(DealServiceInterface $dealService, Request $request): JsonResponse
+    public function store(DealServiceInterface $dealService, StoreDealRequest $request): JsonResponse
     {
-        $deal = $dealService->create($request->all());
+        $validated = $request->validated();
+        $deal = $dealService->create($validated);
         if (!$deal) {
             return ResponseHelper::errorResponse(['Ошибка при создании сделки']);
         }
@@ -43,9 +45,10 @@ class DealController extends Controller
         ]);
     }
 
-    public function update(DealServiceInterface $dealService, Request $request, string $id): JsonResponse
+    public function update(DealServiceInterface $dealService, UpdateDealRequest $request, string $id): JsonResponse
     {
-        if (!$dealService->update($id, $request->all())) {
+        $validated = $request->validated();
+        if (!$dealService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении сделки']);
         }
         return ResponseHelper::successResponse([], 'Сделка успешно обновлена');
@@ -58,5 +61,4 @@ class DealController extends Controller
         }
         return ResponseHelper::successResponse([], 'Сделка успешно удалена');
     }
-
 }

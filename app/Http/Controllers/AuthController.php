@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\AuthRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -30,10 +30,10 @@ class AuthController extends Controller
         ], 'Успешная регистрация');
     }
 
-    public function login(AuthServiceInterface $authService, Request $request): JsonResponse
+    public function login(AuthServiceInterface $authService, AuthRequest $request): JsonResponse
     {
-        $credentials = $request->only('email', 'password', 'remember');
-        if (!$authService->login($credentials)) {
+        $validated = $request->validated();
+        if (!$authService->login($validated)) {
             return ResponseHelper::errorResponse(['Ошибка аутентификации']);
         }
         $user = $authService->currentUser();

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\BookTypeEnum;
 use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,19 +20,12 @@ class Book extends Model
         'publication_year',
         'isbn',
         'page_count',
-        'book_type',
+        'book_type_id',
         'cover_id',
     ];
     public $appends = [
         'mainAuthor'
     ];
-
-    public function casts(): array
-    {
-        return [
-            'book_type' => BookTypeEnum::class,
-        ];
-    }
 
     public function searchableAs(): string
     {
@@ -73,5 +65,10 @@ class Book extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function book_type(): BelongsTo
+    {
+        return $this->belongsTo(BookType::class);
     }
 }

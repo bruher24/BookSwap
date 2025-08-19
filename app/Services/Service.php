@@ -6,7 +6,6 @@ use App\Interfaces\ServiceInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -109,26 +108,6 @@ abstract class Service implements ServiceInterface
             Log::error($e->getMessage());
             return false;
         }
-    }
-
-    final public function getFilterFromRequest(Request $request): array
-    {
-        if ($request->isMethod('POST')) {
-            $inputFilters = $request->except('_token');
-            $filters = $this->formatFilters($inputFilters);
-        }
-        return $filters ?? [];
-    }
-
-    final protected function formatFilters(array $inputFilters): array
-    {
-        $filters = [];
-        foreach ($inputFilters as $key => $value) {
-            [$field, $id] = explode('-', $key);
-            $filters[$field] = $filters[$field] ?? [];
-            $filters[$field][] = $id;
-        }
-        return $filters;
     }
 }
 

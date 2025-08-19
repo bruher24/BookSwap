@@ -20,6 +20,4 @@ interface ServiceInterface
 
     public function delete(string $id): bool;
 
-    public function getFilterFromRequest(Request $request): array;
-
 }

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreSettingRequest;
+use App\Http\Requests\UpdateSettingRequest;
 use App\Http\Resources\SettingResource;
 use App\Interfaces\SettingServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
@@ -19,9 +20,10 @@ class SettingController extends Controller
         ]);
     }
 
-    public function store(SettingServiceInterface $settingService, Request $request): JsonResponse
+    public function store(SettingServiceInterface $settingService, StoreSettingRequest $request): JsonResponse
     {
-        $setting = $settingService->create($request->all());
+        $validated = $request->validated();
+        $setting = $settingService->create($validated);
         if (!$setting) {
             return ResponseHelper::errorResponse(['Ошибка при создании настройки']);
         }
@@ -43,9 +45,13 @@ class SettingController extends Controller
         ]);
     }
 
-    public function update(SettingServiceInterface $settingService, Request $request, string $id): JsonResponse
-    {
-        if (!$settingService->update($id, $request->all())) {
+    public function update(
+        SettingServiceInterface $settingService,
+        UpdateSettingRequest $request,
+        string $id
+    ): JsonResponse {
+        $validated = $request->validated();
+        if (!$settingService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении настройки']);
         }
         return ResponseHelper::successResponse([], 'Настройка успешно обновлена');

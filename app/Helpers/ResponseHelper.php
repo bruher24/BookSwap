@@ -13,14 +13,18 @@ class ResponseHelper
             $data['systemMessage'] = $message;
         }
 
-        return response()->json($data, 200, [], JSON_PRETTY_PRINT);
+        return response()->json($data, 200, [
+            'Content-type' => 'application/json'
+        ], JSON_PRETTY_PRINT);
     }
 
-    public static function errorResponse(array $errors): JsonResponse
+    public static function errorResponse(array $errors = []): JsonResponse
     {
         return response()->json([
             'success' => false,
             'errors' => $errors
-        ], 404, [], JSON_PRETTY_PRINT);
+        ], 404, [
+            'Content-type' => 'application/json'
+        ], JSON_PRETTY_PRINT);
     }
 }

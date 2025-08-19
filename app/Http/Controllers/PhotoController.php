@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StorePhotoRequest;
+use App\Http\Requests\UpdatePhotoRequest;
 use App\Http\Resources\PhotoResource;
 use App\Interfaces\PhotoServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class PhotoController extends Controller
 {
@@ -19,9 +20,10 @@ class PhotoController extends Controller
         ]);
     }
 
-    public function store(PhotoServiceInterface $photoService, Request $request): JsonResponse
+    public function store(PhotoServiceInterface $photoService, StorePhotoRequest $request): JsonResponse
     {
-        $photo = $photoService->create($request->all());
+        $validated = $request->validated();
+        $photo = $photoService->create($validated);
         if (!$photo) {
             return ResponseHelper::errorResponse(['Ошибка при создании фото']);
         }
@@ -43,9 +45,10 @@ class PhotoController extends Controller
         ]);
     }
 
-    public function update(PhotoServiceInterface $photoService, Request $request, string $id): JsonResponse
+    public function update(PhotoServiceInterface $photoService, UpdatePhotoRequest $request, string $id): JsonResponse
     {
-        if (!$photoService->update($id, $request->all())) {
+        $validated = $request->validated();
+        if (!$photoService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении фото']);
         }
         return ResponseHelper::successResponse([], 'Фото успешно обновлено');

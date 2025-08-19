@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Interfaces\AuthServiceInterface;
-use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;

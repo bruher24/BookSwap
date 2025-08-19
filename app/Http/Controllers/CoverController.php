@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreCoverRequest;
+use App\Http\Requests\UpdateCoverRequest;
 use App\Http\Resources\CoverResource;
 use App\Interfaces\CoverServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CoverController extends Controller
 {
@@ -19,9 +20,10 @@ class CoverController extends Controller
         ]);
     }
 
-    public function store(CoverServiceInterface $coverService, Request $request): JsonResponse
+    public function store(CoverServiceInterface $coverService, StoreCoverRequest $request): JsonResponse
     {
-        $cover = $coverService->create($request->all());
+        $validated = $request->validated();
+        $cover = $coverService->create($validated);
         if (!$cover) {
             return ResponseHelper::errorResponse(['Ошибка при создании обложки']);
         }
@@ -43,9 +45,10 @@ class CoverController extends Controller
         ]);
     }
 
-    public function update(CoverServiceInterface $coverService, Request $request, string $id): JsonResponse
+    public function update(CoverServiceInterface $coverService, UpdateCoverRequest $request, string $id): JsonResponse
     {
-        if (!$coverService->update($id, $request->all())) {
+        $validated = $request->validated();
+        if (!$coverService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении обложки']);
         }
         return ResponseHelper::successResponse([], 'Обложка успешно обновлена');

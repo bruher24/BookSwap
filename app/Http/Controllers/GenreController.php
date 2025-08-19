@@ -6,10 +6,8 @@ use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreGenreRequest;
 use App\Http\Requests\UpdateGenreRequest;
 use App\Http\Resources\GenreResource;
-use App\Interfaces\BookServiceInterface;
 use App\Interfaces\GenreServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
@@ -62,20 +60,5 @@ class GenreController extends Controller
             return ResponseHelper::errorResponse(['Ошибка при удалении жанра']);
         }
         return ResponseHelper::successResponse([], 'Жанр успешно удален');
-    }
-
-    // TODO: убрать отсюда или добавить роут
-    public function books(Request $request, BookServiceInterface $bookService, string $id): JsonResponse
-    {
-        $filters = $bookService->getFilterFromRequest($request);
-
-        [$books, $params] = $bookService->byGenre($genre, $filters);
-
-        return ResponseHelper::successResponse([
-            'books' => $books,
-            'params' => $params,
-            'filters' => $filters,
-            'genre' => $genre,
-        ]);
     }
 }

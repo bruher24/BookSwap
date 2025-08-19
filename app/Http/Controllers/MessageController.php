@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreMessageRequest;
+use App\Http\Requests\UpdateMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Interfaces\MessageServiceInterface;
-use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
@@ -20,9 +20,10 @@ class MessageController extends Controller
         ]);
     }
 
-    public function store(MessageServiceInterface $messageService, Request $request): JsonResponse
+    public function store(MessageServiceInterface $messageService, StoreMessageRequest $request): JsonResponse
     {
-        $message = $messageService->create($request->all());
+        $validated = $request->validated();
+        $message = $messageService->create($validated);
         if (!$message) {
             return ResponseHelper::errorResponse(['Ошибка при создании сообщения']);
         }
@@ -44,9 +45,13 @@ class MessageController extends Controller
         ], 'Сообщение успешно получено');
     }
 
-    public function update(MessageServiceInterface $messageService, Request $request, string $id): JsonResponse
-    {
-        if (!$messageService->update($id, $request->all())) {
+    public function update(
+        MessageServiceInterface $messageService,
+        UpdateMessageRequest $request,
+        string $id
+    ): JsonResponse {
+        $validated = $request->validated();
+        if (!$messageService->update($id, $validated)) {
             return ResponseHelper::errorResponse(['Ошибка при обновлении сообщения']);
         }
         return ResponseHelper::successResponse([], 'Сообщение успешно обновлено');
@@ -58,23 +63,5 @@ class MessageController extends Controller
             return ResponseHelper::errorResponse(['Ошибка при удалении сообщения']);
         }
         return ResponseHelper::successResponse([], 'Сообщение успешно удалено');
-    }
-
-    // TODO: такой же метод есть в ChatController
-    public function sendMessage(
-        Request $request,
-        UserServiceInterface $userService,
-        string $user_id,
-        string $recipient_id
-    ): JsonResponse {
-        $body = $request->input('body');
-        $message = $userService->sendMessage($user, $recipient, $body);
-        $messageResource = new MessageResource($message);
-        if (!$message) {
-            return ResponseHelper::errorResponse(['Ошибка при отправке сообщения']);
-        }
-        return ResponseHelper::successResponse([
-            'message' => $messageResource,
-        ], 'Сообщение успешно отправлено');
     }
 }
