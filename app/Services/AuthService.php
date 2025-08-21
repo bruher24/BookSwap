@@ -43,7 +43,7 @@ class AuthService implements AuthServiceInterface
         // TODO: userservice ?
         try {
             $user->tokens()->delete();
-            return $user->createToken('api-token')->plainTextToken;
+            return $user->createToken('api-token', ['*'], now()->addHour())->plainTextToken;
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return '';
