@@ -18,7 +18,10 @@ class AuthService implements AuthServiceInterface
 
     public function login(array $credentials): bool
     {
-        if (!Auth::attempt($credentials, $credentials['remember'] ?? 0)) {
+        if (!Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+        ], $credentials['remember'] ?? 0)) {
             return false;
         }
         return true;
@@ -32,7 +35,11 @@ class AuthService implements AuthServiceInterface
                 throw new Exception('Пользователь с указанным email не найден');
             }
             $user->tokens()->delete();
-            return $user->createToken('api-token', ['*'], now()->addHour())->plainTextToken;
+            $abilities = [$email];
+            if ($user->isAdmin()) {
+                $abilities[] = 'admin';
+            }
+            return $user->createToken('api-token', $abilities, now()->addHours(2))->plainTextToken;
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return '';

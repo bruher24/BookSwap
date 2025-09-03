@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsAdmin
+class BearerAuthorization
 {
     /**
      * Handle an incoming request.
@@ -20,7 +20,7 @@ class IsAdmin
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $abilities = $token->abilities;
 
-        if (!in_array('admin', $abilities)) {
+        if (!in_array($request->email, $abilities) || !in_array('admin', $abilities)) {
             return ResponseHelper::errorResponse(['Недостаточно прав']);
         }
         return $next($request);

@@ -8,8 +8,10 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\NewAccessToken;
 
 class AuthController extends Controller
 {
@@ -59,10 +61,13 @@ class AuthController extends Controller
         ], 'Успешная аутентификация');
     }
 
-    public function refresh(AuthServiceInterface $authService, Request $request): JsonResponse
-    {
+    public function refresh(
+        UserServiceInterface $userService,
+        AuthServiceInterface $authService,
+        Request $request
+    ): JsonResponse {
         $email = $request->input('email');
-
+        
         $token = $authService->refreshToken($email);
         if (empty($token)) {
             return ResponseHelper::errorResponse(['Ошибка обновления токена']);
