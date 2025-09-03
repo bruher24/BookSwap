@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface UserServiceInterface extends ServiceInterface
 {
+    public function create(array $data): User|false;
+
+    public function get(int $id): User|false;
+
+    public function where(string $field, string $value): Collection;
+
     public function updateSettings(User $user, array $data): bool;
 
     public function addToFavorites($user_id, $book_id): bool;
@@ -32,5 +38,4 @@ interface UserServiceInterface extends ServiceInterface
     public function readMessages(User $user, array $messagesToRead): bool;
 
     public function updateNotifications(Collection $notifications): bool;
-
 }

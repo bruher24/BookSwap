@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class AuthRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class AuthRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -26,12 +26,10 @@ class AuthRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::exists('users', 'email'),
             ],
             'password' => [
                 'required',
                 'string',
-                'min:4',
             ],
             'remember' => [
                 'boolean',

@@ -35,9 +35,9 @@ Route::prefix('v1')->name('api.')
                     ->withoutMiddleware('auth:sanctum');
                 Route::post('login', 'login')->name('login')
                     ->withoutMiddleware('auth:sanctum');
-                Route::post('logout', 'logout')->name('logout')
-                    ->middleware(CheckAuth::class);
                 Route::post('refresh', 'refresh')->name('refresh')
+                    ->middleware(CheckAuth::class);
+                Route::post('logout', 'logout')->name('logout')
                     ->middleware(CheckAuth::class);
             });
 
