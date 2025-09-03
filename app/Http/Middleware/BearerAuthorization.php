@@ -20,7 +20,7 @@ class BearerAuthorization
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $abilities = $token->abilities;
 
-        if (!in_array($request->email, $abilities) || !in_array('admin', $abilities)) {
+        if (!in_array($request->email, $abilities) && !in_array('admin', $abilities)) {
             return ResponseHelper::errorResponse(['Недостаточно прав']);
         }
         return $next($request);
