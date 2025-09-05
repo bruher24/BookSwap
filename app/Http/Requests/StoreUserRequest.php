@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
@@ -20,7 +19,7 @@ class StoreUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -29,14 +28,35 @@ class StoreUserRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('users', 'name')->whereNull('deleted_at'),
+                Rule::unique('users', 'name')
+                    ->whereNull('deleted_at'),
             ],
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')->whereNull('deleted_at'),
+                'max:70',
+                Rule::unique('users', 'email')
+                    ->whereNull('deleted_at'),
             ],
-            'password' => 'required|string',
+            'email_verified_at' => [
+                'nullable',
+                Rule::date()->beforeOrEqual(now()),
+            ],
+            'password' => [
+                'required',
+                'string',
+            ],
+            'photo_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('photos', 'id')
+                    ->whereNull('deleted_at'),
+            ],
+            'remember_token' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
         ];
     }
 }

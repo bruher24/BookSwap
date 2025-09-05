@@ -78,6 +78,16 @@ abstract class Service implements ServiceInterface
         }
     }
 
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return $this->modelClass::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
     public function update(string $id, array $data): bool
     {
         DB::beginTransaction();

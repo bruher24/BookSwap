@@ -15,6 +15,8 @@ interface ServiceInterface
 
     public function getAll(): Collection;
 
+    public function where(string $field, string $value): Collection;
+
     public function update(string $id, array $data): bool;
 
     public function delete(string $id): bool;

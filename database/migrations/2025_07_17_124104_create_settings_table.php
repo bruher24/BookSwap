@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('label');
+            $table->string('name')->unique();
+            $table->string('label')->unique();
             $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

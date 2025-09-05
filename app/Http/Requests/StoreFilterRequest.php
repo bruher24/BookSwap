@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreFilterRequest extends FormRequest
 {
@@ -17,12 +19,29 @@ class StoreFilterRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:30',
+                Rule::unique('filters', 'name')
+                    ->whereNull('deleted_at'),
+            ],
+            'by_fields' => [
+                'required',
+                'string',
+                Rule::unique('filters', 'by_fields')
+                    ->whereNull('deleted_at'),
+            ],
+            'is_active' => [
+                'nullable',
+                'boolean',
+            ],
         ];
     }
 }

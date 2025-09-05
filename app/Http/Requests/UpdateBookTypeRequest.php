@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateBookTypeRequest extends FormRequest
 {
@@ -17,12 +19,25 @@ class UpdateBookTypeRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'book_type_id' => [
+                'required',
+                'integer',
+                Rule::exists('book_types', 'id')
+                    ->whereNull('deleted_at'),
+            ],
+            'name' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('book_types', 'name')
+                    ->whereNull('deleted_at')
+                    ->ignore(request('book_type_id')),
+            ],
         ];
     }
 }

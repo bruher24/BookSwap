@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\BookTypeEnum;
 use App\Models\Author;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -21,7 +20,7 @@ class StoreBookRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -29,7 +28,8 @@ class StoreBookRequest extends FormRequest
             'user_id' => [
                 'required',
                 'integer',
-                Rule::exists('users', 'id')->whereNull('deleted_at'),
+                Rule::exists('users', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'name' => [
                 'required',
@@ -40,17 +40,20 @@ class StoreBookRequest extends FormRequest
                 'required_without_all:authorLastName,authorFirstname',
                 'nullable',
                 'integer',
-                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+                Rule::exists('authors', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'author_id1' => [
                 'nullable',
                 'integer',
-                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+                Rule::exists('authors', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'author_id2' => [
                 'nullable',
                 'integer',
-                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+                Rule::exists('authors', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'authorLastname' => [
                 'required_without:author_id',
@@ -72,7 +75,7 @@ class StoreBookRequest extends FormRequest
             'authorBirthdate' => [
                 'nullable',
                 'date',
-                Rule::date()->beforeOrEqual(today()->subYears(16)),
+                Rule::date()->beforeOrEqual(today()->subYears(14)),
             ],
             'page_count' => 'required|integer|min:1',
             'cover' => [
@@ -89,13 +92,15 @@ class StoreBookRequest extends FormRequest
             'book_type' => [
                 'required',
                 'integer',
-                Rule::enum(BookTypeEnum::class),
+                Rule::exists('book_types', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'isbn' => [
                 'nullable',
                 'string',
                 'size:13',
-                Rule::unique('books', 'isbn')->whereNull('deleted_at'),
+                Rule::unique('books', 'isbn')
+                    ->whereNull('deleted_at'),
             ],
         ];
     }

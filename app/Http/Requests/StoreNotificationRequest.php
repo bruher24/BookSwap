@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreNotificationRequest extends FormRequest
 {
@@ -17,12 +19,29 @@ class StoreNotificationRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'subject' => [
+                'required',
+                'string',
+            ],
+            'body' => [
+                'required',
+                'string',
+            ],
+            'user_id' => [
+                'required',
+                'integer',
+                Rule::exists('users', 'id')
+                    ->whereNull('deleted_at'),
+            ],
+            'seen' => [
+                'nullable',
+                'boolean',
+            ],
         ];
     }
 }

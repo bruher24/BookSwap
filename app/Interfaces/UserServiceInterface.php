@@ -13,8 +13,6 @@ interface UserServiceInterface extends ServiceInterface
 
     public function get(int $id): User|false;
 
-    public function where(string $field, string $value): Collection;
-
     public function updateSettings(User $user, array $data): bool;
 
     public function addToFavorites($user_id, $book_id): bool;

@@ -12,11 +12,11 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
-use App\Http\Controllers\UserChatsController;
+use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFavoritesController;
-use App\Http\Controllers\UserNotificationsController;
-use App\Http\Controllers\UserSettingsController;
+use App\Http\Controllers\UserNotificationController;
+use App\Http\Controllers\UserSettingController;
 use App\Http\Middleware\BearerAuthorization;
 use App\Http\Middleware\IsAdmin;
 use Dedoc\Scramble\Scramble;
@@ -42,7 +42,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{author}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::match(['put', 'patch'], '{author}', 'update')->name('update');
+                Route::put('{author}', 'update')->name('update');
                 Route::delete('{author}', 'destroy')->name('destroy');
             });
 
@@ -51,7 +51,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{book}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::match(['put', 'patch'], '{book}', 'update')->name('update');
+                Route::put('{book}', 'update')->name('update');
                 Route::delete('{book}', 'destroy')->name('destroy');
             });
 
@@ -60,7 +60,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{booktype}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::match(['put', 'patch'], '{booktype}', 'update')->name('update');
+                Route::put('{booktype}', 'update')->name('update');
                 Route::delete('{booktype}', 'destroy')->name('destroy');
             });
 
@@ -69,7 +69,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store');
                 Route::get('{chat}', 'show')->name('show');
-                Route::match(['put', 'patch'], '{chat}', 'update')->name('update');
+                Route::put('{chat}', 'update')->name('update');
                 Route::delete('{chat}', 'destroy')->name('destroy');
             });
 
@@ -78,7 +78,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store');
                 Route::get('{cover}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::match(['put', 'patch'], '{cover}', 'update')->name('update')->middleware(IsAdmin::class);
+                Route::put('{cover}', 'update')->name('update')->middleware(IsAdmin::class);
                 Route::delete('{cover}', 'destroy')->name('destroy');
             });
 
@@ -87,7 +87,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store');
                 Route::get('{deal}', 'show')->name('show');
-                Route::match(['put', 'patch'], '{deal}', 'update')->name('update')->middleware(IsAdmin::class);
+                Route::put('{deal}', 'update')->name('update')->middleware(IsAdmin::class);
                 Route::delete('{deal}', 'destroy')->name('destroy');
             });
 
@@ -96,7 +96,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store')->middleware(IsAdmin::class);
                 Route::get('{filter}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::match(['put', 'patch'], '{filter}', 'update')->name('update')->middleware(IsAdmin::class);
+                Route::put('{filter}', 'update')->name('update')->middleware(IsAdmin::class);
                 Route::delete('{filter}', 'destroy')->name('destroy')->middleware(IsAdmin::class);
             });
 
@@ -105,7 +105,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{genre}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::match(['put', 'patch'], '{genre}', 'update')->name('update');
+                Route::put('{genre}', 'update')->name('update');
                 Route::delete('{genre}', 'destroy')->name('destroy');
             });
 
@@ -114,7 +114,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store');
                 Route::get('{photo}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::match(['put', 'patch'], '{photo}', 'update')->name('update')->middleware(IsAdmin::class);
+                Route::put('{photo}', 'update')->name('update')->middleware(IsAdmin::class);
                 Route::delete('{photo}', 'destroy')->name('destroy');
             });
 
@@ -123,7 +123,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store')->middleware(IsAdmin::class);
                 Route::get('{setting}', 'show')->name('show');
-                Route::match(['put', 'patch'], '{setting}', 'update')->name('update')->middleware(IsAdmin::class);
+                Route::put('{setting}', 'update')->name('update')->middleware(IsAdmin::class);
                 Route::delete('{setting}', 'destroy')->name('destroy')->middleware(IsAdmin::class);
             });
 
@@ -132,17 +132,17 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store');
                 Route::get('{user}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::match(['put', 'patch'], '{user}', 'update')->name('update');
+                Route::put('{user}', 'update')->name('update');
                 Route::delete('{user}', 'destroy')->name('destroy');
 
                 Route::prefix('{user}/chats')->name('chats.')
-                    ->controller(UserChatsController::class)
+                    ->controller(UserChatController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
                         Route::get('{chat}/messages', 'messages')->name('messages');
                         Route::post('{chat}/messages', 'send')->name('send');
-                        Route::patch('{chat}/messages/{message}', 'read')->name('read');
-                        Route::patch('{chat}/messages/', 'readAll')->name('readAll');
+                        Route::put('{chat}/messages/{message}', 'read')->name('read');
+                        Route::put('{chat}/messages', 'readMany')->name('readMany');
                     });
 
                 Route::prefix('{user}/favorites')->name('favorites.')
@@ -154,19 +154,18 @@ Route::prefix('v1')->name('api.')
                     });
 
                 Route::prefix('{user}/settings')->name('settings.')
-                    ->controller(UserSettingsController::class)
+                    ->controller(UserSettingController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
-                        Route::post('{setting}', 'add')->name('add');
-                        Route::patch('{setting}', 'update')->name('update');
+                        Route::put('{setting}', 'update')->name('update');
                     });
 
                 Route::prefix('{user}/notifications')->name('notifications.')
-                    ->controller(UserNotificationsController::class)
+                    ->controller(UserNotificationController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
-                        Route::patch('/', 'checkAll')->name('checkAll');
-                        Route::patch('{notification}', 'check')->name('check');
+                        Route::post('/', 'readAll')->name('readAll');
+                        Route::delete('{notification}', 'read')->name('read');
                     });
             });
         Route::get('search', SearchController::class)->name('search');

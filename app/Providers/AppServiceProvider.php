@@ -75,15 +75,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Guard $auth): void
     {
-        RateLimiter::for('global', function (Request $request) {
-            return Limit::perSecond(3)->by($request->user()?->id ?: $request->ip());
-        });
+        date_default_timezone_set('Europe/Samara');
 
         RateLimiter::for('api', function (Request $request) {
             return Limit::perSecond(3)->by($request->user()?->id ?: $request->ip());
         });
-
-        date_default_timezone_set('Europe/Samara');
 
         Gate::define('viewApiDocs', function (User $user) {
             return false;

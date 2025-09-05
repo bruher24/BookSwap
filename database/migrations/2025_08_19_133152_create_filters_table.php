@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->unique();
             $table->string('by_fields');
-            $table->boolean('disabled')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

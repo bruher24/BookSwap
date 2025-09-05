@@ -13,7 +13,8 @@ class SearchController extends Controller
 {
     public function __invoke(SearchRequest $request): JsonResponse
     {
-        $query = $request->input('query');
+        $validated = $request->validated();
+        $query = $validated['query'];
 
         $found = collect([
             'books' => Book::search($query)->get(),

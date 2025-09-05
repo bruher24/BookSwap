@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateGenreRequest extends FormRequest
 {
@@ -17,12 +19,26 @@ class UpdateGenreRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'genre_id' => [
+                'required',
+                'integer',
+                Rule::exists('genres', 'id')
+                    ->whereNull('deleted_at'),
+            ],
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:50',
+                Rule::unique('genres', 'name')
+                    ->whereNull('deleted_at')
+                    ->ignore(request('genre_id')),
+            ],
         ];
     }
 }

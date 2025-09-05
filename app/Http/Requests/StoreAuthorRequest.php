@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Author;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreAuthorRequest extends FormRequest
 {
@@ -18,12 +20,39 @@ class StoreAuthorRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'lastname' => [
+                'required',
+                'string',
+                'max:100',
+                function ($attribute, $value, $fail) {
+                    $exists = Author::where('lastname', request('lastname'))
+                        ->where('firstname', request('firstname'))
+                        ->where('patronymic', request('patronymic'))
+                        ->exists();
+                    if ($exists) {
+                        $fail('Автор с таким ФИО уже существует!');
+                    }
+                }
+            ],
+            'firstname' => [
+                'required',
+                'string',
+                'max:100',
+            ],
+            'patronymic' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
+            'birthdate' => [
+                'nullable',
+                Rule::date()->beforeOrEqual(today()->subYears(14)),
+            ],
         ];
     }
 }

@@ -55,16 +55,6 @@ class UserService extends Service implements UserServiceInterface
         return parent::get($id);
     }
 
-    public function where(string $field, string $value): Collection
-    {
-        try {
-            return User::where($field, $value)->get();
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return new Collection();
-        }
-    }
-
     public function update(string $id, array $data): bool
     {
         DB::beginTransaction();

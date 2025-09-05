@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\BookTypeEnum;
 use App\Models\Author;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -20,7 +20,7 @@ class UpdateBookRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -28,12 +28,14 @@ class UpdateBookRequest extends FormRequest
             'book_id' => [
                 'required',
                 'integer',
-                Rule::exists('books', 'id')->whereNull('deleted_at'),
+                Rule::exists('books', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'user_id' => [
                 'required',
                 'integer',
-                Rule::exists('users', 'id')->whereNull('deleted_at'),
+                Rule::exists('users', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'name' => [
                 'nullable',
@@ -44,17 +46,20 @@ class UpdateBookRequest extends FormRequest
                 'required_without_all:authorLastName,authorFirstname',
                 'nullable',
                 'integer',
-                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+                Rule::exists('authors', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'author_id1' => [
                 'nullable',
                 'integer',
-                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+                Rule::exists('authors', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'author_id2' => [
                 'nullable',
                 'integer',
-                Rule::exists('authors', 'id')->whereNull('deleted_at'),
+                Rule::exists('authors', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'authorLastname' => [
                 'required_without:author_id',
@@ -93,13 +98,16 @@ class UpdateBookRequest extends FormRequest
             'book_type' => [
                 'required',
                 'integer',
-                Rule::enum(BookTypeEnum::class),
+                Rule::exists('book_types', 'id')
+                    ->whereNull('deleted_at'),
             ],
             'isbn' => [
                 'nullable',
                 'string',
                 'size:13',
-                Rule::unique('books', 'isbn')->ignore($this->request->get('book_id'))->whereNull('deleted_at'),
+                Rule::unique('books', 'isbn')
+                    ->whereNull('deleted_at')
+                    ->ignore(request('book_id')),
             ],
         ];
     }

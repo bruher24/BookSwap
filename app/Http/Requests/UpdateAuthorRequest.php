@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Author;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateAuthorRequest extends FormRequest
 {
@@ -17,12 +20,46 @@ class UpdateAuthorRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'author_id' => [
+                'required',
+                'integer',
+                Rule::exists('authors', 'id')
+                    ->whereNull('deleted_at'),
+            ],
+            'lastname' => [
+                'required',
+                'string',
+                'max:100',
+                function ($attribute, $value, $fail) {
+                    $exists = Author::where('lastname', request('lastname'))
+                        ->where('firstname', request('firstname'))
+                        ->where('patronymic', request('patronymic'))
+                        ->whereNot('id', request('author_id'))
+                        ->exists();
+                    if ($exists) {
+                        $fail('Автор с таким ФИО уже существует!');
+                    }
+                }
+            ],
+            'firstname' => [
+                'required',
+                'string',
+                'max:100',
+            ],
+            'patronymic' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
+            'birthdate' => [
+                'nullable',
+                Rule::date()->beforeOrEqual(today()->subYears(14)),
+            ],
         ];
     }
 }

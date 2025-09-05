@@ -13,22 +13,18 @@ class FilterSeeder extends Seeder
             [
                 'name' => 'Автор',
                 'by_fields' => 'author_id',
-                'disabled' => false,
             ],
             [
                 'name' => 'Жанр',
                 'by_fields' => 'genre_id',
-                'disabled' => false,
             ],
             [
                 'name' => 'Год издания',
                 'by_fields' => 'publication_year',
-                'disabled' => false,
             ],
             [
                 'name' => 'Тип',
                 'by_fields' => 'book_type_id',
-                'disabled' => false,
             ],
         ];
 

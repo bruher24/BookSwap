@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UserSettingsController extends Controller
+class UserSettingController extends Controller
 {
     public function index()
     {

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateSettingRequest extends FormRequest
 {
@@ -17,12 +19,35 @@ class UpdateSettingRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            //
+            'setting_id' => [
+                'required',
+                'integer',
+                Rule::exists('settings', 'id')
+                    ->whereNull('deleted_at'),
+            ],
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('settings', 'name')
+                    ->whereNull('deleted_at')
+                    ->ignore(request('setting_id')),
+            ],
+            'label' => [
+                'required',
+                'string',
+                Rule::unique('settings', 'label')
+                    ->whereNull('deleted_at')
+                    ->ignore(request('setting_id')),
+            ],
+            'description' => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 }
