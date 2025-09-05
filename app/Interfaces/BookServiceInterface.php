@@ -14,5 +14,5 @@ interface BookServiceInterface extends ServiceInterface
 
     public function get(int $id): Book|false;
 
-    public function attach(Book $book, array $authors): bool;
+    public function attach(string $book_id, array $authors): bool;
 }

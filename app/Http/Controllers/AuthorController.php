@@ -25,7 +25,7 @@ class AuthorController extends Controller
         $validated = $request->validated();
         $author = $authorService->create($validated);
         if (!$author) {
-            return ResponseHelper::errorResponse(['Ошибка при создании автора']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании автора']);
         }
         $authorResource = new AuthorResource($author);
         return ResponseHelper::successResponse([
@@ -37,7 +37,7 @@ class AuthorController extends Controller
     {
         $author = $authorService->get($id);
         if (!$author) {
-            return ResponseHelper::errorResponse(['Ошибка при получении автора']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении автора']);
         }
         $authorResource = new AuthorResource($author);
         return ResponseHelper::successResponse([
@@ -52,7 +52,7 @@ class AuthorController extends Controller
     ): JsonResponse {
         $validated = $request->validated();
         if (!$authorService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении автора']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении автора']);
         }
         return ResponseHelper::successResponse([], 'Автор успешно обновлен');
     }
@@ -60,7 +60,7 @@ class AuthorController extends Controller
     public function destroy(AuthorServiceInterface $authorService, string $id): JsonResponse
     {
         if (!$authorService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении автора']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении автора']);
         }
         return ResponseHelper::successResponse([], 'Автор успешно удален');
     }

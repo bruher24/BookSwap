@@ -25,7 +25,7 @@ class SettingController extends Controller
         $validated = $request->validated();
         $setting = $settingService->create($validated);
         if (!$setting) {
-            return ResponseHelper::errorResponse(['Ошибка при создании настройки']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании настройки']);
         }
         $settingResource = new SettingResource($setting);
         return ResponseHelper::successResponse([
@@ -37,7 +37,7 @@ class SettingController extends Controller
     {
         $setting = $settingService->get($id);
         if (!$setting) {
-            return ResponseHelper::errorResponse(['Ошибка при получении настройки']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении настройки']);
         }
         $settingResource = new SettingResource($setting);
         return ResponseHelper::successResponse([
@@ -52,7 +52,7 @@ class SettingController extends Controller
     ): JsonResponse {
         $validated = $request->validated();
         if (!$settingService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении настройки']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении настройки']);
         }
         return ResponseHelper::successResponse([], 'Настройка успешно обновлена');
     }
@@ -60,7 +60,7 @@ class SettingController extends Controller
     public function destroy(SettingServiceInterface $settingService, string $id): JsonResponse
     {
         if (!$settingService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении настройки']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении настройки']);
         }
         return ResponseHelper::successResponse([], 'Настройка успешно удалена');
     }

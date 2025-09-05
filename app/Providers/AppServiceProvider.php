@@ -42,7 +42,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -91,18 +90,6 @@ class AppServiceProvider extends ServiceProvider
                     SecurityScheme::http('bearer')
                 );
             });
-
-        Gate::define('is-admin', function (User $user) {
-            return $user->isAdmin();
-        });
-
-        Gate::define('crud-itself', function (User $user, User $model) {
-            return $user->is($model);
-        });
-
-        View::composer('*', function ($view) use ($auth) {
-            $view->with('user', $auth->user());
-        });
 
         Queue::failing(function (JobFailed $event) {
             Log::error(

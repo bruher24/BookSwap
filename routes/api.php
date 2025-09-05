@@ -153,19 +153,18 @@ Route::prefix('v1')->name('api.')
                         Route::delete('{book}', 'dislike')->name('dislike');
                     });
 
-                Route::prefix('{user}/settings')->name('settings.')
-                    ->controller(UserSettingController::class)
-                    ->group(function () {
-                        Route::get('/', 'index')->name('index');
-                        Route::put('{setting}', 'update')->name('update');
-                    });
-
                 Route::prefix('{user}/notifications')->name('notifications.')
                     ->controller(UserNotificationController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
                         Route::post('/', 'readAll')->name('readAll');
-                        Route::delete('{notification}', 'read')->name('read');
+                    });
+
+                Route::prefix('{user}/settings')->name('settings.')
+                    ->controller(UserSettingController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')->name('index');
+                        Route::put('{setting}', 'update')->name('update');
                     });
             });
         Route::get('search', SearchController::class)->name('search');

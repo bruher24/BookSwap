@@ -25,7 +25,7 @@ class BookTypeController extends Controller
         $validated = $request->validated();
         $bookType = $bookTypeService->create($validated);
         if (!$bookType) {
-            return ResponseHelper::errorResponse(['Ошибка при создании типа']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании типа']);
         }
         $bookTypeResource = new BookTypeResource($bookType);
         return ResponseHelper::successResponse([
@@ -37,7 +37,7 @@ class BookTypeController extends Controller
     {
         $bookType = $bookTypeService->get($id);
         if (!$bookType) {
-            return ResponseHelper::errorResponse(['Ошибка при получении типа']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении типа']);
         }
         $bookTypeResource = new BookTypeResource($bookType);
         return ResponseHelper::successResponse([
@@ -52,7 +52,7 @@ class BookTypeController extends Controller
     ): JsonResponse {
         $validated = $request->validated();
         if (!$bookTypeService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении типа']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении типа']);
         }
         return ResponseHelper::successResponse([], 'Тип успешно обновлен');
     }
@@ -60,7 +60,7 @@ class BookTypeController extends Controller
     public function destroy(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
     {
         if (!$bookTypeService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении типа']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении типа']);
         }
         return ResponseHelper::successResponse([], 'Тип успешно удален');
     }

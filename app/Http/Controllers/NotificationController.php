@@ -27,7 +27,7 @@ class NotificationController extends Controller
         $validated = $request->validated();
         $notification = $notificationService->create($validated);
         if (!$notification) {
-            return ResponseHelper::errorResponse(['Ошибка при создании уведомления']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании уведомления']);
         }
         $notificationResource = new NotificationResource($notification);
         return ResponseHelper::successResponse([
@@ -39,7 +39,7 @@ class NotificationController extends Controller
     {
         $notification = $notificationService->get($id);
         if (!$notification) {
-            return ResponseHelper::errorResponse(['Ошибка при получении уведомления']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении уведомления']);
         }
         $notificationResource = new NotificationResource($notification);
         return ResponseHelper::successResponse([
@@ -54,7 +54,7 @@ class NotificationController extends Controller
     ): JsonResponse {
         $validated = $request->validated();
         if (!$notificationService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении уведомления']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении уведомления']);
         }
         return ResponseHelper::successResponse([], 'Уведомление успешно обновлено');
     }
@@ -62,7 +62,7 @@ class NotificationController extends Controller
     public function destroy(NotificationServiceInterface $notificationService, string $id): JsonResponse
     {
         if (!$notificationService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении уведомления']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении уведомления']);
         }
         return ResponseHelper::successResponse([], 'Уведомление успешно удалено');
     }

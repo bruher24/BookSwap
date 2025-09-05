@@ -26,7 +26,7 @@ class BookController extends Controller
         $validated = $request->validated();
         $book = $bookService->create($validated);
         if (!$book) {
-            return ResponseHelper::errorResponse(['Ошибка при создании книги']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании книги']);
         }
         $bookResource = new BookResource($book);
         return ResponseHelper::successResponse([
@@ -38,7 +38,7 @@ class BookController extends Controller
     {
         $book = $bookService->get($id);
         if (!$book) {
-            return ResponseHelper::errorResponse(['Ошибка при получении книги']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении книги']);
         }
         $bookResource = new BookResource($book);
         return ResponseHelper::successResponse([
@@ -50,7 +50,7 @@ class BookController extends Controller
     {
         $validated = $request->validated();
         if (!$bookService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении книги']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении книги']);
         }
         return ResponseHelper::successResponse([], 'Книга успешно обновлена');
     }
@@ -58,7 +58,7 @@ class BookController extends Controller
     public function destroy(BookServiceInterface $bookService, string $id): JsonResponse
     {
         if (!$bookService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении книги']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении книги']);
         }
         return ResponseHelper::successResponse([], 'Книга успешно удалена');
     }

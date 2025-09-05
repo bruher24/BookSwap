@@ -120,43 +120,6 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function addToFavorites($user_id, $book_id): bool
-    {
-        DB::beginTransaction();
-        try {
-            $created = UsersFavoriteBooks::withTrashed()->updateOrCreate([
-                'user_id' => $user_id,
-                'book_id' => $book_id,
-            ])->restore();
-            if (!$created) {
-                throw new Exception('Ошибка при добавлении в избранное');
-            }
-
-            DB::commit();
-            return true;
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
-
-    public function removeFromFavorites($user_id, $book_id): bool
-    {
-        DB::beginTransaction();
-        try {
-            $record = UsersFavoriteBooks::where('user_id', $user_id)->where('book_id', $book_id)->firstOrFail();
-            $record->deleteOrFail();
-
-            DB::commit();
-            return true;
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
-
     public function getChat(User $user, User $recipient): Chat|false
     {
         $arr = [$user->id, $recipient->id];

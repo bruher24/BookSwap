@@ -26,7 +26,7 @@ class FilterController extends Controller
         $validated = $request->validated();
         $filter = $filterService->create($validated);
         if (!$filter) {
-            return ResponseHelper::errorResponse(['Ошибка при создании фильтра']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании фильтра']);
         }
         $filterResource = new FilterResource($filter);
         return ResponseHelper::successResponse([
@@ -38,7 +38,7 @@ class FilterController extends Controller
     {
         $filter = $filterService->get($id);
         if (!$filter) {
-            return ResponseHelper::errorResponse(['Ошибка при получении фильтра']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении фильтра']);
         }
         $filterResource = new FilterResource($filter);
         return ResponseHelper::successResponse([
@@ -53,7 +53,7 @@ class FilterController extends Controller
     ): JsonResponse {
         $validated = $request->validated();
         if (!$filterService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении фильтра']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении фильтра']);
         }
         return ResponseHelper::successResponse([], 'Фильтр успешно обновлен');
     }
@@ -61,7 +61,7 @@ class FilterController extends Controller
     public function destroy(FilterServiceInterface $filterService, string $id): JsonResponse
     {
         if (!$filterService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении фильтра']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении фильтра']);
         }
         return ResponseHelper::successResponse([], 'Фильтр успешно удален');
     }

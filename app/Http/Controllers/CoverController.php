@@ -25,7 +25,7 @@ class CoverController extends Controller
         $validated = $request->validated();
         $cover = $coverService->create($validated);
         if (!$cover) {
-            return ResponseHelper::errorResponse(['Ошибка при создании обложки']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании обложки']);
         }
         $coverResource = new CoverResource($cover);
         return ResponseHelper::successResponse([
@@ -37,7 +37,7 @@ class CoverController extends Controller
     {
         $cover = $coverService->get($id);
         if (!$cover) {
-            return ResponseHelper::errorResponse(['Ошибка при получении обложки']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении обложки']);
         }
         $coverResource = new CoverResource($cover);
         return ResponseHelper::successResponse([
@@ -49,7 +49,7 @@ class CoverController extends Controller
     {
         $validated = $request->validated();
         if (!$coverService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении обложки']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении обложки']);
         }
         return ResponseHelper::successResponse([], 'Обложка успешно обновлена');
     }
@@ -57,7 +57,7 @@ class CoverController extends Controller
     public function destroy(CoverServiceInterface $coverService, string $id): JsonResponse
     {
         if (!$coverService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении обложки']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении обложки']);
         }
         return ResponseHelper::successResponse([], 'Обложка успешно удалена');
     }

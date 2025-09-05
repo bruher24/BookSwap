@@ -2,43 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Helpers\ResponseHelper;
+use App\Http\Resources\NotificationResource;
+use App\Interfaces\NotificationServiceInterface;
+use Illuminate\Http\JsonResponse;
 
 class UserNotificationController extends Controller
 {
-    // TODO: сделать тут все нормально
-    public function index(UserServiceInterface $userService, User $user): JsonResponse
+    public function index(NotificationServiceInterface $notificationService, string $user_id): JsonResponse
     {
-        $notifications = $userService->getUserNotifications($user);
-        return ResponseHelper::successResponse('Success', [
-            'notifications' => $notifications,
+        $notifications = $notificationService->byUser($user_id);
+        $notificationResourceCollection = NotificationResource::collection($notifications);
+        return ResponseHelper::successResponse([
+            'notifications' => $notificationResourceCollection,
         ]);
     }
 
-    public function checkAll(Request $request, UserServiceInterface $userService, User $user): JsonResponse
+    public function readAll(NotificationServiceInterface $notificationService, string $user_id): JsonResponse
     {
-        $notifications = $request->input('notifications');
-        if (isset($notifications)) {
-            $checked = $userService->checkManyNotifications($user, $notifications);
-        } else {
-            $checked = $userService->checkAllNotifications($user);
+        if (!$notificationService->readAll($user_id)) {
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении уведомлений']);
         }
-        if (!$checked) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении уведомлений',
-            ]);
-        }
-        return ResponseHelper::successResponse('Success');
-    }
-
-    public function check(UserServiceInterface $userService, User $user, Notification $notification): JsonResponse
-    {
-        $checked = $userService->checkOneNotification($user, $notification->id);
-        if (!$checked) {
-            return ResponseHelper::errorResponse([
-                'ERR' => 'Ошибка при обновлении уведомлений',
-            ]);
-        }
-        return ResponseHelper::successResponse('Success');
+        return ResponseHelper::successResponse([], 'Уведомления успешно прочитаны');
     }
 }

@@ -13,27 +13,23 @@ interface UserServiceInterface extends ServiceInterface
 
     public function get(int $id): User|false;
 
-    public function updateSettings(User $user, array $data): bool;
+    public function updateSettings(string $user_id, array $data): bool;
 
-    public function addToFavorites($user_id, $book_id): bool;
+    public function chats(string $user_id): Collection;
 
-    public function removeFromFavorites($user_id, $book_id): bool;
+    public function getChat(string $user_id, User $recipient): Chat|false;
 
-    public function chats(User $user): Collection;
+    public function sendMessage(string $user_id, User $recipient, string $body): Message|false;
 
-    public function getChat(User $user, User $recipient): Chat|false;
+    public function getUserNotifications(string $user_id): Collection;
 
-    public function sendMessage(User $user, User $recipient, string $body): Message|false;
+    public function checkOneNotification(string $user_id, int $notificationId): bool;
 
-    public function getUserNotifications(User $user): Collection;
+    public function checkManyNotifications(string $user_id, array $notificationIds): bool;
 
-    public function checkOneNotification(User $user, int $notificationId): bool;
+    public function getUnreadMessages(string $user_id): Collection;
 
-    public function checkManyNotifications(User $user, array $notificationIds): bool;
-
-    public function getUnreadMessages(User $user): Collection;
-
-    public function readMessages(User $user, array $messagesToRead): bool;
+    public function readMessages(string $user_id, array $messagesToRead): bool;
 
     public function updateNotifications(Collection $notifications): bool;
 }

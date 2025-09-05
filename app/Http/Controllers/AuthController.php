@@ -8,10 +8,8 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Laravel\Sanctum\NewAccessToken;
 
 class AuthController extends Controller
 {
@@ -24,7 +22,7 @@ class AuthController extends Controller
 
         $user = $userService->create($validated);
         if (!$user) {
-            return ResponseHelper::errorResponse(['Ошибка при регистрации']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при регистрации']);
         }
 
         $token = $authService->refreshToken($user->id);
@@ -44,12 +42,12 @@ class AuthController extends Controller
         $validated = $request->validated();
 
         if (!$authService->login($validated)) {
-            return ResponseHelper::errorResponse(['Ошибка аутентификации']);
+            return ResponseHelper::errorResponse(400, ['Ошибка аутентификации']);
         }
 
         $token = $authService->refreshToken($validated['email']);
         if (empty($token)) {
-            return ResponseHelper::errorResponse(['Ошибка получения токена']);
+            return ResponseHelper::errorResponse(400, ['Ошибка получения токена']);
         }
 
         $user = $userService->where('email', $validated['email'])->first();
@@ -61,16 +59,13 @@ class AuthController extends Controller
         ], 'Успешная аутентификация');
     }
 
-    public function refresh(
-        UserServiceInterface $userService,
-        AuthServiceInterface $authService,
-        Request $request
-    ): JsonResponse {
+    public function refresh(AuthServiceInterface $authService, Request $request): JsonResponse
+    {
         $email = $request->input('email');
-        
+
         $token = $authService->refreshToken($email);
         if (empty($token)) {
-            return ResponseHelper::errorResponse(['Ошибка обновления токена']);
+            return ResponseHelper::errorResponse(400, ['Ошибка обновления токена']);
         }
 
         return ResponseHelper::successResponse([
@@ -82,7 +77,7 @@ class AuthController extends Controller
     {
         $email = $request->input('email');
         if (!$authService->logout($email)) {
-            return ResponseHelper::errorResponse(['Ошибка при выходе из аккаунта']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при выходе из аккаунта']);
         }
         return ResponseHelper::successResponse([], 'До свидания');
     }

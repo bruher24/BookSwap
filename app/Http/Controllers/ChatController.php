@@ -26,7 +26,7 @@ class ChatController extends Controller
         $validated = $request->validated();
         $chat = $chatService->create($validated);
         if (!$chat) {
-            return ResponseHelper::errorResponse(['Ошибка при создании чата']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании чата']);
         }
         $chatResource = new ChatResource($chat);
         return ResponseHelper::successResponse([
@@ -38,7 +38,7 @@ class ChatController extends Controller
     {
         $chat = $chatService->get($id);
         if (!$chat) {
-            return ResponseHelper::errorResponse(['Ошибка при получении чата']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении чата']);
         }
         $chatResource = new ChatResource($chat);
         return ResponseHelper::successResponse([
@@ -50,7 +50,7 @@ class ChatController extends Controller
     {
         $validated = $request->validated();
         if (!$chatService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении чата']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении чата']);
         }
         return ResponseHelper::successResponse([], 'Чат успешно обновлен');
     }
@@ -58,7 +58,7 @@ class ChatController extends Controller
     public function destroy(ChatServiceInterface $chatService, string $id): JsonResponse
     {
         if (!$chatService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении чата']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении чата']);
         }
         return ResponseHelper::successResponse([], 'Чат успешно удален');
     }

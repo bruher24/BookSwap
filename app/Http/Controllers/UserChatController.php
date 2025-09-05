@@ -20,7 +20,7 @@ class UserChatController extends Controller
         $recipient_id = $request->input('recipient');
         $user = $userService->get($user_id);
         if (!$user) {
-            return ResponseHelper::errorResponse(['Ошибка при получении пользователя']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении пользователя']);
         }
         $chats = $userService->chats($user);
 
@@ -33,7 +33,7 @@ class UserChatController extends Controller
                 'first_user_id' => $arr[0],
                 'second_user_id' => $arr[1],
             ])) {
-                return ResponseHelper::errorResponse(['Ошибка при создании чата']);
+                return ResponseHelper::errorResponse(400, ['Ошибка при создании чата']);
             }
             $user->refresh();
             $chats = $userService->chats($user);
@@ -79,7 +79,7 @@ class UserChatController extends Controller
         $message = $userService->sendMessage($user, $recipient, $body);
         $messageResource = new MessageResource($message);
         if (!$message) {
-            return ResponseHelper::errorResponse(['Ошибка при отправке сообщения']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при отправке сообщения']);
         }
         return ResponseHelper::successResponse([
             'message' => $messageResource,
@@ -93,7 +93,7 @@ class UserChatController extends Controller
         $user = $userService->get($id);
         $checked = $userService->readMessages($user, $messagesToRead);
         if (!$checked) {
-            return ResponseHelper::errorResponse(['Ошибка при прочтении сообщений']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при прочтении сообщений']);
         }
         return ResponseHelper::successResponse();
     }

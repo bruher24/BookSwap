@@ -6,11 +6,8 @@ use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
-use App\Interfaces\BookServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -28,7 +25,7 @@ class UserController extends Controller
         $validated = $request->validated();
         $user = $userService->create($validated);
         if (!$user) {
-            return ResponseHelper::errorResponse(['Ошибка при создании пользователя']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании пользователя']);
         }
         $userResource = new UserResource($user);
         return ResponseHelper::successResponse([
@@ -40,7 +37,7 @@ class UserController extends Controller
     {
         $user = $userService->get($id);
         if (!$user) {
-            return ResponseHelper::errorResponse(['Ошибка при получении пользователя']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении пользователя']);
         }
         $userResource = new UserResource($user);
         return ResponseHelper::successResponse([
@@ -50,14 +47,9 @@ class UserController extends Controller
 
     public function update(UserServiceInterface $userService, UpdateUserRequest $request, string $id): JsonResponse
     {
-        $user = $userService->get($id);
-        if (!Gate::allows('crud-itself', $user)) {
-            return ResponseHelper::errorResponse(['Ошибка доступа']);
-        }
-
         $validated = $request->validated();
         if (!$userService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении пользователя']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении пользователя']);
         }
         return ResponseHelper::successResponse([], 'Пользователь успешно обновлен');
     }
@@ -65,7 +57,7 @@ class UserController extends Controller
     public function destroy(UserServiceInterface $userService, string $id): JsonResponse
     {
         if (!$userService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении пользователя']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении пользователя']);
         }
         return ResponseHelper::successResponse([], 'Пользователь успешно удален');
     }

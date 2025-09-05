@@ -25,7 +25,7 @@ class MessageController extends Controller
         $validated = $request->validated();
         $message = $messageService->create($validated);
         if (!$message) {
-            return ResponseHelper::errorResponse(['Ошибка при создании сообщения']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании сообщения']);
         }
         $messageResource = new MessageResource($message);
         return ResponseHelper::successResponse([
@@ -37,7 +37,7 @@ class MessageController extends Controller
     {
         $message = $messageService->get($id);
         if (!$message) {
-            return ResponseHelper::errorResponse(['Ошибка при получении сообщения']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении сообщения']);
         }
         $messageResource = new MessageResource($message);
         return ResponseHelper::successResponse([
@@ -52,7 +52,7 @@ class MessageController extends Controller
     ): JsonResponse {
         $validated = $request->validated();
         if (!$messageService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении сообщения']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении сообщения']);
         }
         return ResponseHelper::successResponse([], 'Сообщение успешно обновлено');
     }
@@ -60,7 +60,7 @@ class MessageController extends Controller
     public function destroy(MessageServiceInterface $messageService, string $id): JsonResponse
     {
         if (!$messageService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении сообщения']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении сообщения']);
         }
         return ResponseHelper::successResponse([], 'Сообщение успешно удалено');
     }

@@ -25,7 +25,7 @@ class PhotoController extends Controller
         $validated = $request->validated();
         $photo = $photoService->create($validated);
         if (!$photo) {
-            return ResponseHelper::errorResponse(['Ошибка при создании фото']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании фото']);
         }
         $photoResource = new PhotoResource($photo);
         return ResponseHelper::successResponse([
@@ -37,7 +37,7 @@ class PhotoController extends Controller
     {
         $photo = $photoService->get($id);
         if (!$photo) {
-            return ResponseHelper::errorResponse(['Ошибка при получении фото']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении фото']);
         }
         $photoResource = new PhotoResource($photo);
         return ResponseHelper::successResponse([
@@ -49,7 +49,7 @@ class PhotoController extends Controller
     {
         $validated = $request->validated();
         if (!$photoService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(['Ошибка при обновлении фото']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении фото']);
         }
         return ResponseHelper::successResponse([], 'Фото успешно обновлено');
     }
@@ -57,7 +57,7 @@ class PhotoController extends Controller
     public function destroy(PhotoServiceInterface $photoService, string $id): JsonResponse
     {
         if (!$photoService->delete($id)) {
-            return ResponseHelper::errorResponse(['Ошибка при удалении фото']);
+            return ResponseHelper::errorResponse(400, ['Ошибка при удалении фото']);
         }
         return ResponseHelper::successResponse([], 'Фото успешно удалено');
     }
