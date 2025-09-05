@@ -14,13 +14,5 @@ interface BookServiceInterface extends ServiceInterface
 
     public function get(int $id): Book|false;
 
-    public function byUser(User $user, array $conditions = []): array;
-
-    public function byAuthor(Author $author, array $conditions = []): array;
-
-    public function byGenre(Genre $genre, array $conditions = []): array;
-
-    public function where(array $conditions = []): Collection;
-
     public function attach(Book $book, array $authors): bool;
 }

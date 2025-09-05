@@ -3,125 +3,24 @@
 namespace App\Services;
 
 use App\Interfaces\BookServiceInterface;
-use App\Models\Author;
 use App\Models\Book;
 use App\Models\Cover;
-use App\Models\Genre;
-use App\Models\User;
 use Exception;
-use Throwable;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Throwable;
 
 class BookService extends Service implements BookServiceInterface
 {
-    public function __construct(
-        private readonly AuthorService $authorService,
-        private readonly GenreService $genreService
-    ) {
+    public function __construct()
+    {
         parent::__construct(Book::class);
         $this->ucFirstFields = [
             'name',
             'publishing_house',
         ];
-    }
-
-    public function byUser(User $user, array $conditions = []): array
-    {
-        try {
-            $books = $this->where($conditions)->where('user_id', $user->id);
-            $allBooks = Book::where('user_id', $user->id)->get();
-            $params = $this->params($allBooks);
-
-            return [$books, $params] ?? [];
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return [];
-        }
-    }
-
-    public function byAuthor(Author $author, array $conditions = []): array
-    {
-        try {
-            $conditions['authors'] = [$author->id];
-            $books = $this->where($conditions);
-            $allBooks = $this->where(['authors' => [$author->id]]);
-            $params = $this->params($allBooks);
-            unset($params['authors']);
-
-            return [$books, $params] ?? [];
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return [];
-        }
-    }
-
-    public function byGenre(Genre $genre, array $conditions = []): array
-    {
-        try {
-            $conditions['genres'] = [$genre->id];
-            $books = $this->where($conditions);
-            $allBooks = $this->where(['genres' => [$genre->id]]);
-            $params = $this->params($allBooks);
-            unset($params['genres']);
-
-            return [$books, $params] ?? [];
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return [];
-        }
-    }
-
-    public function where(array $conditions = []): Collection
-    {
-        try {
-            if (empty($conditions)) {
-                return $this->getAll();
-            }
-
-            $books = Book::where('deleted_at', null);
-
-            if (isset($conditions['names'])) {
-                $books->where('name', 'like', '%' . $conditions['names'] . '%');
-            }
-
-            if (isset($conditions['publishing_houses'])) {
-                $books->where('publishing_house', 'like', '%' . $conditions['publishing_houses'] . '%');
-            }
-
-            if (isset($conditions['genres'])) {
-                $genres = $this->genreService->getMany($conditions['genres']);
-                if ($genres->isNotEmpty()) {
-                    $books->whereHas('genres', function ($query) use ($genres) {
-                        $query->whereIn('id', $genres->pluck('id'));
-                    });
-                }
-            }
-
-            if (isset($conditions['authors'])) {
-                $authors = $this->authorService->getMany($conditions['authors']);
-                if ($authors->isNotEmpty()) {
-                    $books->whereHas('authors', function ($query) use ($authors) {
-                        $query->whereIn('id', $authors->pluck('id'));
-                    });
-                }
-            }
-
-            if (isset($conditions['years'])) {
-                $books->whereIn('publication_year', $conditions['years']);
-            }
-
-            if (isset($conditions['book_types'])) {
-                $books->whereIn('book_type', $conditions['book_types']);
-            }
-            return $books->get();
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return new Collection();
-        }
     }
 
     public function create(array $data): Book|false
