@@ -25,10 +25,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->name('api.')
     ->middleware(['auth:sanctum', 'throttle:api'])
     ->group(function () {
-        Route::missing(function () {
-            abort(404);
-        });
-
         Route::prefix('auth')->name('auth.')->controller(AuthController::class)
             ->group(function () {
                 Route::post('register', 'register')->name('register')->withoutMiddleware('auth:sanctum');

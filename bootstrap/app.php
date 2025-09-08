@@ -1,9 +1,12 @@
 <?php
 
+use App\Helpers\ResponseHelper;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,10 +17,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->redirectGuestsTo('home');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
+            if ($request->wantsJson()) {
+                return ResponseHelper::errorResponse(404, ['Not found']);
+            }
+        });
     })
     ->withSchedule(function (Schedule $schedule) {
         $schedule->command('sanctum:prune-expired')->daily();
