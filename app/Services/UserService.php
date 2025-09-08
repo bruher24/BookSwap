@@ -10,7 +10,6 @@ use App\Models\Notification;
 use App\Models\Photo;
 use App\Models\Setting;
 use App\Models\User;
-use App\Models\UsersFavoriteBooks;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -98,29 +97,7 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function updateSettings(User $user, array $data): bool
-    {
-        DB::beginTransaction();
-        try {
-            $setting = $user->settings()->where('name', $data['setting_name']);
-            if ($setting->firstOrFail()) {
-                $id = $setting->first()->id;
-                $setting->updateExistingPivot($id, ['value' => $data['setting_value'] ?? 'off']);
-            } else {
-                $toAttach = Setting::where('name', $data['setting_name'])->firstOrFail();
-                $user->settings()->attach($toAttach->id, ['value' => $data['setting_value'] ?? 'off']);
-            }
-
-            DB::commit();
-            return true;
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
-
-    public function getChat(User $user, User $recipient): Chat|false
+    public function getChat(string $user_id, string $recipient_id): Chat|false
     {
         $arr = [$user->id, $recipient->id];
         sort($arr);
@@ -139,7 +116,7 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function chats(User $user): Collection
+    public function chats(string $user_id): Collection
     {
         try {
             Log::debug('Cache check');
@@ -153,7 +130,7 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function sendMessage(User $user, User $recipient, string $body): Message|false
+    public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false
     {
         DB::beginTransaction();
         try {
@@ -188,12 +165,12 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function getUserNotifications(User $user): Collection
+    public function getUserNotifications(string $user_id): Collection
     {
         return $user->notifications()->get();
     }
 
-    public function checkOneNotification(User $user, int $notificationId): bool
+    public function checkOneNotification(string $user_id, int $notificationId): bool
     {
         DB::beginTransaction();
         try {
@@ -210,13 +187,7 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function checkAllNotifications(User $user): bool
-    {
-        $notifications = $user->notifications()->get();
-        return $this->updateNotifications($notifications);
-    }
-
-    public function checkManyNotifications(User $user, array $notificationIds): bool
+    public function checkManyNotifications(string $user_id, array $notificationIds): bool
     {
         $notifications = $user->notifications()->whereIn('id', $notificationIds)->get();
         return $this->updateNotifications($notifications);
@@ -239,12 +210,12 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function getUnreadMessages(User $user): Collection
+    public function getUnreadMessages(string $user_id): Collection
     {
         return $user->unreadMessages()->distinct()->get(['id', 'from_id']);
     }
 
-    public function readMessages(User $user, array $messagesToRead): bool
+    public function readMessages(string $user_id, array $messagesToRead): bool
     {
         DB::beginTransaction();
         try {

@@ -16,6 +16,7 @@ use App\Interfaces\NotificationServiceInterface;
 use App\Interfaces\PhotoServiceInterface;
 use App\Interfaces\SettingServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use App\Interfaces\UserSettingServiceInterface;
 use App\Models\User;
 use App\Services\AuthorService;
 use App\Services\AuthService;
@@ -31,6 +32,7 @@ use App\Services\NotificationService;
 use App\Services\PhotoService;
 use App\Services\SettingService;
 use App\Services\UserService;
+use App\Services\UserSettingService;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
@@ -65,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PhotoServiceInterface::class, PhotoService::class);
         $this->app->bind(SettingServiceInterface::class, SettingService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(UserSettingServiceInterface::class, UserSettingService::class);
 
         Scramble::ignoreDefaultRoutes();
     }

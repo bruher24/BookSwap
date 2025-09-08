@@ -13,13 +13,11 @@ interface UserServiceInterface extends ServiceInterface
 
     public function get(int $id): User|false;
 
-    public function updateSettings(string $user_id, array $data): bool;
-
     public function chats(string $user_id): Collection;
 
-    public function getChat(string $user_id, User $recipient): Chat|false;
+    public function getChat(string $user_id, string $recipient_id): Chat|false;
 
-    public function sendMessage(string $user_id, User $recipient, string $body): Message|false;
+    public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false;
 
     public function getUserNotifications(string $user_id): Collection;
 

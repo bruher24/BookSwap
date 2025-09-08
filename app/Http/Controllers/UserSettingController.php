@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\UpdateSettingsValuesRequest;
 use App\Http\Resources\SettingResource;
 use App\Interfaces\UserServiceInterface;
+use App\Interfaces\UserSettingServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class UserSettingController extends Controller
 {
@@ -20,18 +21,21 @@ class UserSettingController extends Controller
     }
 
     public function update(
-        UserServiceInterface $userService,
-        UpdateSettingValueRequest $request,
-        string $user_id,
-        string $setting_id
+        UserSettingServiceInterface $userSettingService,
+        UpdateSettingsValuesRequest $request,
+        string $user_id
     ): JsonResponse {
-        $user = $userService->get($user_id);
-        $updated = $user->settings()->updateExistingPivot($setting_id, [
-            'value' => $request->input('value'),
-        ]);
-        if (!$updated) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении настройки']);
+        $validated = $request->validated();
+        $settingsData = $validated['settingsData'];
+        $isValidSettingsData = $userSettingService->validateSettingsData($settingsData);
+
+        if (!$isValidSettingsData) {
+            return ResponseHelper::errorResponse(400, ['Некорректные входные данные']);
         }
-        return ResponseHelper::successResponse([], 'Настройка успешно обновлена');
+
+        if (!$userSettingService->updateSettings($user_id, $settingsData)) {
+            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении настроек']);
+        }
+        return ResponseHelper::successResponse([], 'Настройки успешно обновлены');
     }
 }

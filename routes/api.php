@@ -164,7 +164,7 @@ Route::prefix('v1')->name('api.')
                     ->controller(UserSettingController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
-                        Route::put('{setting}', 'update')->name('update');
+                        Route::put('/', 'update')->name('update');
                     });
             });
         Route::get('search', SearchController::class)->name('search');

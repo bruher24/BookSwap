@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->string('label')->unique();
             $table->string('description')->nullable();
+            $table->string('available_values');
             $table->timestamps();
             $table->softDeletes();
         });
