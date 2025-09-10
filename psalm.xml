@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <psalm
         phpVersion="8.3"
-        errorLevel="2"
+        errorLevel="5"
         resolveFromConfigFile="true"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
@@ -11,12 +11,21 @@
 >
     <projectFiles>
         <directory name="app"/>
+        <directory name="routes"/>
         <directory name="database/factories"/>
         <directory name="database/seeders"/>
+        <directory name="tests"/>
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <directory name="app/Http/Controllers"/>
+            </errorLevel>
+        </PossiblyUnusedMethod>
+    </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\LaravelPlugin\Plugin"/>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>

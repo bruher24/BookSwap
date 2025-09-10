@@ -30,3 +30,4 @@ Thumbs.db
 /.npm/
 .lesshst
 /docker/nginx/certs
+/.cache
