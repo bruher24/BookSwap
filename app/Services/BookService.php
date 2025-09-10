@@ -89,9 +89,10 @@ class BookService extends Service implements BookServiceInterface
         return $authors;
     }
 
-    public function attach(Book $book, array $authors): bool
+    public function attach(string $book_id, array $authors): bool
     {
         try {
+            $book = $this->get($book_id);
             if (isset($authors['ids'])) {
                 $book->authors()->attach($authors['ids']);
             }
