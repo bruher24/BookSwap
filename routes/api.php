@@ -166,6 +166,14 @@ Route::prefix('v1')->name('api.')
         Route::get('search', SearchController::class)->name('search');
     });
 
+// dev only
+Route::get('psalm', function () {
+    $html = file_get_contents(__DIR__ . '/../psalm-report.html');
+    if ($html === false) {
+        $html = '';
+    }
+    return response($html, 200)->header('Content-Type', 'text/html');
+});
 
 Scramble::registerUiRoute('docs');
 Scramble::registerJsonSpecificationRoute('docs.json');
