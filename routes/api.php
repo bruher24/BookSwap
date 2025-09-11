@@ -22,6 +22,12 @@ use App\Http\Middleware\IsAdmin;
 use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Facades\Route;
 
+Route::get('test', function () {
+    return response()->json([
+        'test' => 'test',
+    ]);
+});
+
 Route::prefix('v1')->name('api.')
     ->middleware(['auth:sanctum', 'throttle:api'])
     ->group(function () {

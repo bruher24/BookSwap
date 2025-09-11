@@ -16,6 +16,7 @@ services:
             - app
         networks:
             - app-network
+            - microlib_proxy
 
     app:
         build:
@@ -40,7 +41,7 @@ services:
         volumes:
             - .:/app
         working_dir: /app
-        command: /composer/vendor/bin/psalm --no-cache
+        #        command: /composer/vendor/bin/psalm --no-cache
         networks:
             - app-network
 
@@ -148,6 +149,8 @@ services:
 networks:
     app-network:
         driver: bridge
+    microlib_proxy:
+        external: true
 
 volumes:
     postgres_data:
