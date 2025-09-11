@@ -49,7 +49,7 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function get(int $id): User|false
+    public function get(string $id): User|false
     {
         return parent::get($id);
     }
@@ -94,25 +94,6 @@ class UserService extends Service implements UserServiceInterface
             DB::rollBack();
             Log::error($e->getMessage());
             return false;
-        }
-    }
-
-    public function getChat(string $user_id, string $recipient_id): Chat|false
-    {
-        $arr = [$user->id, $recipient->id];
-        sort($arr);
-        return Chat::where('first_user_id', $arr[0])->where('second_user_id', $arr[1])->first();
-    }
-
-    public function groupMessages(Collection $messages): Collection
-    {
-        try {
-            return $messages->groupBy(function (Message $item, int $key) {
-                return mb_substr($item->created_at, 0, 10);
-            });
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return new Collection();
         }
     }
 
@@ -210,9 +191,19 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function getUnreadMessages(string $user_id): Collection
+    public function getUnreadMessages(string $user_id): Collection|false
     {
-        return $user->unreadMessages()->distinct()->get(['id', 'from_id']);
+        try {
+            $user = $this->get($user_id);
+            if (!$user) {
+                throw new Exception();
+            }
+            $messages = $user->unreadMessages()->distinct()->get(['id', 'from_id']);
+            return $messages->groupBy('chat_id');
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
     public function readMessages(string $user_id, array $messagesToRead): bool

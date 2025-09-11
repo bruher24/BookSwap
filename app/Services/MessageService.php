@@ -17,7 +17,7 @@ class MessageService extends Service implements MessageServiceInterface
         return parent::create($data);
     }
 
-    public function get(int $id): Message|false
+    public function get(string $id): Message|false
     {
         return parent::get($id);
     }

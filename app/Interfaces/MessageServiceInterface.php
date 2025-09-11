@@ -8,5 +8,5 @@ interface MessageServiceInterface extends ServiceInterface
 {
     public function create(array $data): Message|false;
 
-    public function get(int $id): Message|false;
+    public function get(string $id): Message|false;
 }

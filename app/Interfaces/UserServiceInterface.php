@@ -11,11 +11,9 @@ interface UserServiceInterface extends ServiceInterface
 {
     public function create(array $data): User|false;
 
-    public function get(int $id): User|false;
+    public function get(string $id): User|false;
 
     public function chats(string $user_id): Collection;
-
-    public function getChat(string $user_id, string $recipient_id): Chat|false;
 
     public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false;
 
@@ -25,7 +23,7 @@ interface UserServiceInterface extends ServiceInterface
 
     public function checkManyNotifications(string $user_id, array $notificationIds): bool;
 
-    public function getUnreadMessages(string $user_id): Collection;
+    public function getUnreadMessages(string $user_id): Collection|false;
 
     public function readMessages(string $user_id, array $messagesToRead): bool;
 

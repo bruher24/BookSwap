@@ -8,5 +8,5 @@ interface BookTypeServiceInterface extends ServiceInterface
 {
     public function create(array $data): BookType|false;
 
-    public function get(int $id): BookType|false;
+    public function get(string $id): BookType|false;
 }

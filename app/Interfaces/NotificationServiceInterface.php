@@ -9,7 +9,7 @@ interface NotificationServiceInterface extends ServiceInterface
 {
     public function create(array $data): Notification|false;
 
-    public function get(int $id): Notification|false;
+    public function get(string $id): Notification|false;
 
     public function byUser(string $user_id): Collection;
 

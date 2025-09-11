@@ -17,7 +17,7 @@ class CoverService extends Service implements CoverServiceInterface
         return parent::create($data);
     }
 
-    public function get(int $id): Cover|false
+    public function get(string $id): Cover|false
     {
         return parent::get($id);
     }

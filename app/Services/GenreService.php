@@ -20,7 +20,7 @@ class GenreService extends Service implements GenreServiceInterface
         return parent::create($data);
     }
 
-    public function get(int $id): Genre|false
+    public function get(string $id): Genre|false
     {
         return parent::get($id);
     }

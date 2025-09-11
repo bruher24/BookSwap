@@ -50,7 +50,7 @@ abstract class Service implements ServiceInterface
         return $data;
     }
 
-    public function get(int $id): Model|false
+    public function get(string $id): Model|false
     {
         try {
             return $this->modelClass::findOrFail($id);

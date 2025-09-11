@@ -8,5 +8,5 @@ interface DealServiceInterface extends ServiceInterface
 {
     public function create(array $data): Deal|false;
 
-    public function get(int $id): Deal|false;
+    public function get(string $id): Deal|false;
 }

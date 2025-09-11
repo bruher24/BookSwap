@@ -17,7 +17,7 @@ class SettingService extends Service implements SettingServiceInterface
         return parent::create($data);
     }
 
-    public function get(int $id): Setting|false
+    public function get(string $id): Setting|false
     {
         return parent::get($id);
     }

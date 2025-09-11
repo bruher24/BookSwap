@@ -64,7 +64,7 @@ class BookService extends Service implements BookServiceInterface
         }
     }
 
-    public function get(int $id): Book|false
+    public function get(string $id): Book|false
     {
         return parent::get($id);
     }

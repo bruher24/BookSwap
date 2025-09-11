@@ -12,7 +12,7 @@ interface BookServiceInterface extends ServiceInterface
 {
     public function create(array $data): Book|false;
 
-    public function get(int $id): Book|false;
+    public function get(string $id): Book|false;
 
     public function attach(string $book_id, array $authors): bool;
 }

@@ -8,5 +8,5 @@ interface GenreServiceInterface extends ServiceInterface
 {
     public function create(array $data): Genre|false;
 
-    public function get(int $id): Genre|false;
+    public function get(string $id): Genre|false;
 }

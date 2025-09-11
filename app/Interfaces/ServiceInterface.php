@@ -9,7 +9,7 @@ interface ServiceInterface
 {
     public function create(array $data): Model|false;
 
-    public function get(int $id): Model|false;
+    public function get(string $id): Model|false;
 
     public function getMany(array $ids): Collection;
 

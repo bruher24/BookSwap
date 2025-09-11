@@ -47,7 +47,7 @@
                 </style>
 </head>
 <body>
-<section><h1>Total violations: 319</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
+<section><h1>Total violations: 311</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
 <ul id="psalmErrors">
   <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
 <h3>app/Events/MessageSent.php:21</h3>
@@ -66,51 +66,6 @@
 </ul>
 <p>Cannot find explicit references to property App\Events\MessageSent::$queue (but did find some potential references)</p>
 <pre data-start="22" class="line-numbersx"><code class="language-php">    public string /**##(##**/$queue/**##)##**/ = 'listeners';</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Http/Controllers/MainController.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Http\Controllers\MainController is never used</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/MainController/**##)##**/ extends Controller</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Http/Controllers/MessageController.php:12</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Http\Controllers\MessageController is never used</p>
-<pre data-start="12" class="line-numbersx"><code class="language-php">class /**##(##**/MessageController/**##)##**/ extends Controller</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Http/Controllers/NotificationController.php:12</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Http\Controllers\NotificationController is never used</p>
-<pre data-start="12" class="line-numbersx"><code class="language-php">class /**##(##**/NotificationController/**##)##**/ extends Controller</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidArgument">
-<h3>app/Http/Controllers/SearchController.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidArgument</li>
-</ul>
-<p>Argument 1 of Illuminate\Support\Collection::put expects 'authors'|'books', but 'total' provided</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">        $found-&gt;put(/**##(##**/'total'/**##)##**/, $total);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidArgument">
-<h3>app/Http/Controllers/SearchController.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidArgument</li>
-</ul>
-<p>Argument 2 of Illuminate\Support\Collection::put expects Illuminate\Database\Eloquent\Collection&lt;int, App\Models\Author&gt;|Illuminate\Database\Eloquent\Collection&lt;int, App\Models\Book&gt;, but int provided</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">        $found-&gt;put('total', /**##(##**/$total/**##)##**/);</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedParam">
 <h3>app/Http/Controllers/UserChatController.php:49</h3>
@@ -427,41 +382,23 @@
 <p>Cannot find any calls to method App\Http\Requests\StoreGenreRequest::rules</p>
 <pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreMessageRequest.php:14</h3>
+  <li data-severity="error" data-psalm-type="UnusedClass">
+<h3>app/Http/Requests/StoreMessageRequest.php:9</h3>
 <ul class="tags">
 <li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
+<li>UnusedClass</li>
 </ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreMessageRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
+<p>Class App\Http\Requests\StoreMessageRequest is never used</p>
+<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/StoreMessageRequest/**##)##**/ extends FormRequest</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreMessageRequest.php:24</h3>
+  <li data-severity="error" data-psalm-type="UnusedClass">
+<h3>app/Http/Requests/StoreNotificationRequest.php:9</h3>
 <ul class="tags">
 <li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
+<li>UnusedClass</li>
 </ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreMessageRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreNotificationRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreNotificationRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreNotificationRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreNotificationRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
+<p>Class App\Http\Requests\StoreNotificationRequest is never used</p>
+<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/StoreNotificationRequest/**##)##**/ extends FormRequest</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Http/Requests/StorePhotoRequest.php:13</h3>
@@ -661,41 +598,23 @@
 <p>Cannot find any calls to method App\Http\Requests\UpdateGenreRequest::rules</p>
 <pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateMessageRequest.php:14</h3>
+  <li data-severity="error" data-psalm-type="UnusedClass">
+<h3>app/Http/Requests/UpdateMessageRequest.php:9</h3>
 <ul class="tags">
 <li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
+<li>UnusedClass</li>
 </ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateMessageRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
+<p>Class App\Http\Requests\UpdateMessageRequest is never used</p>
+<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/UpdateMessageRequest/**##)##**/ extends FormRequest</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateMessageRequest.php:24</h3>
+  <li data-severity="error" data-psalm-type="UnusedClass">
+<h3>app/Http/Requests/UpdateNotificationRequest.php:9</h3>
 <ul class="tags">
 <li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
+<li>UnusedClass</li>
 </ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateMessageRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateNotificationRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateNotificationRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateNotificationRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateNotificationRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
+<p>Class App\Http\Requests\UpdateNotificationRequest is never used</p>
+<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/UpdateNotificationRequest/**##)##**/ extends FormRequest</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Http/Requests/UpdatePhotoRequest.php:14</h3>
@@ -880,6 +799,15 @@
      * @return array&lt;string, mixed&gt;
      */
     /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedClass">
+<h3>app/Http/Resources/MessageResource.php:8</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedClass</li>
+</ul>
+<p>Class App\Http\Resources\MessageResource is never used</p>
+<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/MessageResource/**##)##**/ extends JsonResource</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>app/Http/Resources/MessageResource.php:15</h3>

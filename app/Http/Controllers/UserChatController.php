@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Resources\ChatResource;
+use App\Http\Resources\MessageResource;
 use App\Interfaces\ChatServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
@@ -46,26 +47,29 @@ class UserChatController extends Controller
         ]);
     }
 
-    public function messages(UserServiceInterface $userService, string $user_id, string $recipient_id): JsonResponse
+    public function messages(ChatServiceInterface $chatService, string $user_id, string $recipient_id): JsonResponse
     {
-        // TODO: добавить JsonResource
-        // TODO: вынести в сервис
-        $chat = $userService->getChat($user, $recipient);
-        $grouped = $userService->groupMessages($chat->messages()->orderBy('created_at')->orderBy('id')->get());
+        $chat = $chatService->byUsers($user_id, $recipient_id);
+        $messages = $chatService->messages($chat->id);
+
+        $messageResourceCollection = MessageResource::collection($messages);
 
         return ResponseHelper::successResponse([
-            'messages' => $grouped,
-            'recipient' => $recipient,
-            'is_blocked' => $chat->is_blocked,
+            'messages' => $messageResourceCollection,
+            'blocked_by' => $chat->blocked_by,
         ]);
     }
 
-    public function unreadMessages(UserServiceInterface $userService, string $id): JsonResponse
+    public function unreadMessages(UserServiceInterface $userService, string $user_id): JsonResponse
     {
-        $user = $userService->get($id);
-        $messages = $userService->getUnreadMessages($user);
+        $messages = $userService->getUnreadMessages($user_id);
+        if (!$messages) {
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении сообщений']);
+        }
+        $messageResourceCollection = MessageResource::collection($messages);
+        
         return ResponseHelper::successResponse([
-            'messages' => $messages,
+            'messages' => $messageResourceCollection,
         ]);
     }
 
@@ -76,7 +80,7 @@ class UserChatController extends Controller
         string $recipient_id
     ): JsonResponse {
         $body = $request->input('body');
-        $message = $userService->sendMessage($user, $recipient, $body);
+        $message = $userService->sendMessage($user_id, $recipient_id, $body);
         $messageResource = new MessageResource($message);
         if (!$message) {
             return ResponseHelper::errorResponse(400, ['Ошибка при отправке сообщения']);

@@ -19,6 +19,7 @@ class SearchController extends Controller
         $found = collect([
             'books' => Book::search($query)->get(),
             'authors' => Author::search($query)->get(),
+            'total' => 0,
         ]);
 
         $total = $found->get('books')->count() + $found->get('authors')->count();

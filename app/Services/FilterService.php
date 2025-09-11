@@ -17,7 +17,7 @@ class FilterService extends Service implements FilterServiceInterface
         return parent::create($data);
     }
 
-    public function get(int $id): Filter|false
+    public function get(string $id): Filter|false
     {
         return parent::get($id);
     }
