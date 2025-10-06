@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\BookTypeServiceInterface;
 use App\Models\BookType;
+use Override;
 
 class BookTypeService extends Service implements BookTypeServiceInterface
 {
@@ -12,11 +13,13 @@ class BookTypeService extends Service implements BookTypeServiceInterface
         parent::__construct(BookType::class);
     }
 
+    #[Override]
     public function create(array $data): BookType|false
     {
         return parent::create($data);
     }
 
+    #[Override]
     public function get(string $id): BookType|false
     {
         return parent::get($id);

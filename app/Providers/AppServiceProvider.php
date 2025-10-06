@@ -75,7 +75,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(Guard $auth): void
+    public function boot(): void
     {
         date_default_timezone_set('Europe/Samara');
 
@@ -83,7 +83,7 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perSecond(3)->by($request->user()?->id ?: $request->ip());
         });
 
-        Gate::define('viewApiDocs', function (User $user) {
+        Gate::define('viewApiDocs', function () {
             return false;
         });
 

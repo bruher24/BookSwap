@@ -47,7 +47,7 @@
                 </style>
 </head>
 <body>
-<section><h1>Total violations: 311</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
+<section><h1>Total violations: 188</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
 <ul id="psalmErrors">
   <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
 <h3>app/Events/MessageSent.php:21</h3>
@@ -67,105 +67,6 @@
 <p>Cannot find explicit references to property App\Events\MessageSent::$queue (but did find some potential references)</p>
 <pre data-start="22" class="line-numbersx"><code class="language-php">    public string /**##(##**/$queue/**##)##**/ = 'listeners';</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedParam">
-<h3>app/Http/Controllers/UserChatController.php:49</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedParam</li>
-</ul>
-<p>Param #2 is never referenced in this method</p>
-<pre data-start="49" class="line-numbersx"><code class="language-php">    public function messages(UserServiceInterface $userService, string /**##(##**/$user_id/**##)##**/, string $recipient_id): JsonResponse</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedParam">
-<h3>app/Http/Controllers/UserChatController.php:49</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedParam</li>
-</ul>
-<p>Param #3 is never referenced in this method</p>
-<pre data-start="49" class="line-numbersx"><code class="language-php">    public function messages(UserServiceInterface $userService, string $user_id, string /**##(##**/$recipient_id/**##)##**/): JsonResponse</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Http/Controllers/UserChatController.php:53</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="53" class="line-numbersx"><code class="language-php">        $chat = $userService-&gt;getChat(/**##(##**/$user/**##)##**/, $recipient);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Http/Controllers/UserChatController.php:53</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $recipient</p>
-<pre data-start="53" class="line-numbersx"><code class="language-php">        $chat = $userService-&gt;getChat($user, /**##(##**/$recipient/**##)##**/);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedInterfaceMethod">
-<h3>app/Http/Controllers/UserChatController.php:54</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedInterfaceMethod</li>
-</ul>
-<p>Method App\Interfaces\UserServiceInterface::groupMessages does not exist</p>
-<pre data-start="54" class="line-numbersx"><code class="language-php">        $grouped = $userService-&gt;/**##(##**/groupMessages/**##)##**/($chat-&gt;messages()-&gt;orderBy('created_at')-&gt;orderBy('id')-&gt;get());</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Controllers/UserChatController.php:59</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object $chat of type false</p>
-<pre data-start="59" class="line-numbersx"><code class="language-php">            'is_blocked' =&gt; /**##(##**/$chat-&gt;is_blocked/**##)##**/,</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedParam">
-<h3>app/Http/Controllers/UserChatController.php:75</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedParam</li>
-</ul>
-<p>Param #3 is never referenced in this method</p>
-<pre data-start="75" class="line-numbersx"><code class="language-php">        string /**##(##**/$user_id/**##)##**/,</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedParam">
-<h3>app/Http/Controllers/UserChatController.php:76</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedParam</li>
-</ul>
-<p>Param #4 is never referenced in this method</p>
-<pre data-start="76" class="line-numbersx"><code class="language-php">        string /**##(##**/$recipient_id/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Http/Controllers/UserChatController.php:79</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="79" class="line-numbersx"><code class="language-php">        $message = $userService-&gt;sendMessage(/**##(##**/$user/**##)##**/, $recipient, $body);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Http/Controllers/UserChatController.php:79</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $recipient</p>
-<pre data-start="79" class="line-numbersx"><code class="language-php">        $message = $userService-&gt;sendMessage($user, /**##(##**/$recipient/**##)##**/, $body);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedClass">
-<h3>app/Http/Controllers/UserChatController.php:80</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedClass</li>
-</ul>
-<p>Class, interface or enum named App\Http\Controllers\MessageResource does not exist</p>
-<pre data-start="80" class="line-numbersx"><code class="language-php">        $messageResource = new /**##(##**/MessageResource/**##)##**/($message);</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Http/Middleware/BearerAuthorization.php:18</h3>
 <ul class="tags">
@@ -175,15 +76,6 @@
 <p>Cannot find any calls to method App\Http\Middleware\BearerAuthorization::handle</p>
 <pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/handle/**##)##**/(Request $request, Closure $next): Response</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="InvalidArgument">
-<h3>app/Http/Middleware/BearerAuthorization.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidArgument</li>
-</ul>
-<p>Argument 1 of App\Helpers\ResponseHelper::errorResponse expects int, but list{'Недостаточно прав'} provided</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">            return ResponseHelper::errorResponse(/**##(##**/['Недостаточно прав']);/**##)##**/</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Http/Middleware/IsAdmin.php:18</h3>
 <ul class="tags">
@@ -192,15 +84,6 @@
 </ul>
 <p>Cannot find any calls to method App\Http\Middleware\IsAdmin::handle</p>
 <pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/handle/**##)##**/(Request $request, Closure $next): Response</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidArgument">
-<h3>app/Http/Middleware/IsAdmin.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidArgument</li>
-</ul>
-<p>Argument 1 of App\Helpers\ResponseHelper::errorResponse expects int, but list{'Недостаточно прав'} provided</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">            return ResponseHelper::errorResponse(/**##(##**/['Недостаточно прав']);/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Http/Requests/AuthRequest.php:13</h3>
@@ -688,409 +571,6 @@
 <p>Cannot find any calls to method App\Http\Requests\UpdateUserRequest::rules</p>
 <pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/AuthorResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\AuthorResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/BookResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\BookResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/BookTypeResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\BookTypeResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/ChatResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\ChatResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/CoverResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\CoverResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/DealResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\DealResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/FilterResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\FilterResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/GenreResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\GenreResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Http/Resources/MessageResource.php:8</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Http\Resources\MessageResource is never used</p>
-<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/MessageResource/**##)##**/ extends JsonResource</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/MessageResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\MessageResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/NotificationResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\NotificationResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/PhotoResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\PhotoResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/SearchResultsResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\SearchResultsResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/SettingResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\SettingResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Http/Resources/UserResource.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Http\Resources\UserResource::toarray should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**
-     * Transform the resource into an array.
-     *
-     * @return array&lt;string, mixed&gt;
-     */
-    /**##(##**/public function toArray(Request $request): array/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/AuthorServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\AuthorServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Author|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/AuthorServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\AuthorServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Author|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/BookServiceInterface.php:13</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\BookServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Book|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/BookServiceInterface.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\BookServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Book|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/BookTypeServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\BookTypeServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): BookType|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/BookTypeServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\BookTypeServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): BookType|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/ChatServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\ChatServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Chat|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/ChatServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\ChatServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Chat|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/CoverServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\CoverServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Cover|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/CoverServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\CoverServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Cover|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/DealServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\DealServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Deal|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/DealServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\DealServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Deal|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/FilterServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\FilterServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Filter|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/FilterServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\FilterServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Filter|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/GenreServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\GenreServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Genre|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/GenreServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\GenreServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Genre|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/MessageServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\MessageServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Message|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/MessageServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\MessageServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Message|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/NotificationServiceInterface.php:10</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\NotificationServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Notification|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/NotificationServiceInterface.php:12</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\NotificationServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="12" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Notification|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/PhotoServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\PhotoServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Photo|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/PhotoServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\PhotoServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Photo|false;/**##)##**/</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Interfaces/ServiceInterface.php:14</h3>
 <ul class="tags">
@@ -1099,69 +579,6 @@
 </ul>
 <p>Cannot find any calls to method App\Interfaces\ServiceInterface::getMany</p>
 <pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/getMany/**##)##**/(array $ids): Collection;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/SettingServiceInterface.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\SettingServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Setting|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/SettingServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\SettingServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Setting|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/UserServiceInterface.php:12</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\UserServiceInterface::create should have the "Override" attribute</p>
-<pre data-start="12" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): User|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Interfaces/UserServiceInterface.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Interfaces\UserServiceInterface::get should have the "Override" attribute</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): User|false;/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/UserServiceInterface.php:22</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\UserServiceInterface::getUserNotifications</p>
-<pre data-start="22" class="line-numbersx"><code class="language-php">    public function /**##(##**/getUserNotifications/**##)##**/(string $user_id): Collection;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/UserServiceInterface.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\UserServiceInterface::checkOneNotification</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/checkOneNotification/**##)##**/(string $user_id, int $notificationId): bool;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/UserServiceInterface.php:26</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\UserServiceInterface::checkManyNotifications</p>
-<pre data-start="26" class="line-numbersx"><code class="language-php">    public function /**##(##**/checkManyNotifications/**##)##**/(string $user_id, array $notificationIds): bool;</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UnusedClass">
 <h3>app/Listeners/SendMessageNotification.php:10</h3>
@@ -1442,102 +859,6 @@
 <p>Cannot find any calls to method App\Models\BookType::books</p>
 <pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/books/**##)##**/(): HasMany</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Chat.php:30</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Chat::current_user</p>
-<pre data-start="30" class="line-numbersx"><code class="language-php">    public function /**##(##**/current_user/**##)##**/(User $user): User</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
-<h3>app/Models/Chat.php:30</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidNullableReturnType</li>
-</ul>
-<p>The declared return type 'App\Models\User' for App\Models\Chat::current_user is not nullable, but 'TRelatedModel|null' contains null</p>
-<pre data-start="30" class="line-numbersx"><code class="language-php">    public function current_user(User $user): /**##(##**/User/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="NullableReturnStatement">
-<h3>app/Models/Chat.php:32</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>NullableReturnStatement</li>
-</ul>
-<p>The declared return type 'App\Models\User' for App\Models\Chat::current_user is not nullable, but the function returns '(TRelatedModel:Illuminate\Database\Eloquent\Relations\BelongsTo as Illuminate\Database\Eloquent\Model)|null'</p>
-<pre data-start="32" class="line-numbersx"><code class="language-php">        return /**##(##**/match (true) {
-            $user-&gt;is($this-&gt;first_user) =&gt; $this-&gt;first_user()-&gt;first(),
-            $user-&gt;is($this-&gt;second_user) =&gt; $this-&gt;second_user()-&gt;first(),
-        }/**##)##**/;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Chat.php:33</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedThisPropertyFetch</li>
-</ul>
-<p>Instance property App\Models\Chat::$first_user is not defined</p>
-<pre data-start="33" class="line-numbersx"><code class="language-php">            $user-&gt;is(/**##(##**/$this-&gt;first_user/**##)##**/) =&gt; $this-&gt;first_user()-&gt;first(),</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Chat.php:34</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedThisPropertyFetch</li>
-</ul>
-<p>Instance property App\Models\Chat::$second_user is not defined</p>
-<pre data-start="34" class="line-numbersx"><code class="language-php">            $user-&gt;is(/**##(##**/$this-&gt;second_user/**##)##**/) =&gt; $this-&gt;second_user()-&gt;first(),</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Chat.php:38</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Chat::other_user</p>
-<pre data-start="38" class="line-numbersx"><code class="language-php">    public function /**##(##**/other_user/**##)##**/(User $user): User</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
-<h3>app/Models/Chat.php:38</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidNullableReturnType</li>
-</ul>
-<p>The declared return type 'App\Models\User' for App\Models\Chat::other_user is not nullable, but 'TRelatedModel|null' contains null</p>
-<pre data-start="38" class="line-numbersx"><code class="language-php">    public function other_user(User $user): /**##(##**/User/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="NullableReturnStatement">
-<h3>app/Models/Chat.php:40</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>NullableReturnStatement</li>
-</ul>
-<p>The declared return type 'App\Models\User' for App\Models\Chat::other_user is not nullable, but the function returns '(TRelatedModel:Illuminate\Database\Eloquent\Relations\BelongsTo as Illuminate\Database\Eloquent\Model)|null'</p>
-<pre data-start="40" class="line-numbersx"><code class="language-php">        return /**##(##**/match (true) {
-            $user-&gt;isNot($this-&gt;first_user) =&gt; $this-&gt;first_user()-&gt;first(),
-            $user-&gt;isNot($this-&gt;second_user) =&gt; $this-&gt;second_user()-&gt;first(),
-        }/**##)##**/;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Chat.php:41</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedThisPropertyFetch</li>
-</ul>
-<p>Instance property App\Models\Chat::$first_user is not defined</p>
-<pre data-start="41" class="line-numbersx"><code class="language-php">            $user-&gt;isNot(/**##(##**/$this-&gt;first_user/**##)##**/) =&gt; $this-&gt;first_user()-&gt;first(),</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Chat.php:42</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedThisPropertyFetch</li>
-</ul>
-<p>Instance property App\Models\Chat::$second_user is not defined</p>
-<pre data-start="42" class="line-numbersx"><code class="language-php">            $user-&gt;isNot(/**##(##**/$this-&gt;second_user/**##)##**/) =&gt; $this-&gt;second_user()-&gt;first(),</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
 <h3>app/Models/Cover.php:16</h3>
 <ul class="tags">
@@ -1601,23 +922,14 @@
 <p>Cannot find any calls to method App\Models\Phone::user</p>
 <pre data-start="19" class="line-numbersx"><code class="language-php">    public function /**##(##**/user/**##)##**/(): BelongsTo</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
-<h3>app/Models/Photo.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedProperty</li>
-</ul>
-<p>Cannot find explicit references to property App\Models\Photo::$basePhotoName (but did find some potential references)</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public static string /**##(##**/$basePhotoName/**##)##**/ = "avatars/avatar.png";</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Photo.php:20</h3>
+<h3>app/Models/Photo.php:18</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Models\Photo::users</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    public function /**##(##**/users/**##)##**/(): HasMany</code></pre>
+<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/users/**##)##**/(): HasMany</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Models/Role.php:22</h3>
@@ -1705,15 +1017,6 @@
 <p>Cannot find explicit calls to method App\Models\User::books (but did find some potential callers)</p>
 <pre data-start="100" class="line-numbersx"><code class="language-php">    public function /**##(##**/books/**##)##**/(): HasMany</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/User.php:120</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Models\User::chats (but did find some potential callers)</p>
-<pre data-start="120" class="line-numbersx"><code class="language-php">    public function /**##(##**/chats/**##)##**/(): HasMany</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="InvalidReturnType">
 <h3>app/Models/User.php:127</h3>
 <ul class="tags">
@@ -1731,15 +1034,6 @@
 </ul>
 <p>The inferred type 'Illuminate\Database\Eloquent\Builder&lt;TRelatedModel:Illuminate\Database\Eloquent\Relations\HasMany as Illuminate\Database\Eloquent\Model&gt;' does not match the declared return type 'Illuminate\Database\Eloquent\Relations\HasMany' for App\Models\User::notifications</p>
 <pre data-start="129" class="line-numbersx"><code class="language-php">        return /**##(##**/$this-&gt;hasMany(Notification::class)-&gt;where('seen', false)/**##)##**/;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/User.php:132</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Models\User::unreadMessages (but did find some potential callers)</p>
-<pre data-start="132" class="line-numbersx"><code class="language-php">    public function /**##(##**/unreadMessages/**##)##**/(): HasMany</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="InvalidReturnType">
 <h3>app/Models/User.php:132</h3>
@@ -1770,24 +1064,6 @@
      * Register any application services.
      */
     /**##(##**/public function register(): void/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedParam">
-<h3>app/Providers/AppServiceProvider.php:78</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedParam</li>
-</ul>
-<p>Param #1 is never referenced in this method</p>
-<pre data-start="78" class="line-numbersx"><code class="language-php">    public function boot(Guard /**##(##**/$auth/**##)##**/): void</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClosureParam">
-<h3>app/Providers/AppServiceProvider.php:86</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClosureParam</li>
-</ul>
-<p>Param user is never referenced in this method</p>
-<pre data-start="86" class="line-numbersx"><code class="language-php">        Gate::define('viewApiDocs', function (User /**##(##**/$user/**##)##**/) {</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Services/AuthService.php:15</h3>
@@ -1825,347 +1101,167 @@
 <p>Method App\Services\AuthService::logout should have the "Override" attribute</p>
 <pre data-start="49" class="line-numbersx"><code class="language-php">    /**##(##**/public function logout(string $email): bool/**##)##**/</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/AuthorService.php:10</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\AuthorService::create should have the "Override" attribute</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Author|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/AuthorService.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\AuthorService::get should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Author|false/**##)##**/</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/AuthorService.php:20</h3>
+<h3>app/Services/AuthorService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\AuthorService::__construct</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/BookService.php:17</h3>
+<h3>app/Services/BookService.php:18</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\BookService::__construct</p>
-<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookService.php:26</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\BookService::create should have the "Override" attribute</p>
-<pre data-start="26" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Book|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookService.php:67</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\BookService::get should have the "Override" attribute</p>
-<pre data-start="67" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Book|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookService.php:92</h3>
+<h3>app/Services/BookService.php:95</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\BookService::attach should have the "Override" attribute</p>
-<pre data-start="92" class="line-numbersx"><code class="language-php">    /**##(##**/public function attach(string $book_id, array $authors): bool/**##)##**/</code></pre>
+<pre data-start="95" class="line-numbersx"><code class="language-php">    /**##(##**/public function attach(string $book_id, array $authors): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/BookTypeService.php:10</h3>
+<h3>app/Services/BookTypeService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\BookTypeService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookTypeService.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\BookTypeService::create should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): BookType|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookTypeService.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\BookTypeService::get should have the "Override" attribute</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): BookType|false/**##)##**/</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/ChatService.php:10</h3>
+<h3>app/Services/ChatService.php:19</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\ChatService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="19" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:15</h3>
+<h3>app/Services/ChatService.php:45</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
-<p>Method App\Services\ChatService::create should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Chat|false/**##)##**/</code></pre>
+<p>Method App\Services\ChatService::byusers should have the "Override" attribute</p>
+<pre data-start="45" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUsers(string $user_id, string $recipient_id): Chat|false/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:20</h3>
+<h3>app/Services/ChatService.php:61</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
-<p>Method App\Services\ChatService::get should have the "Override" attribute</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Chat|false/**##)##**/</code></pre>
+<p>Method App\Services\ChatService::messages should have the "Override" attribute</p>
+<pre data-start="61" class="line-numbersx"><code class="language-php">    /**##(##**/public function messages(string $chat_id): Collection/**##)##**/</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/ChatService.php:78</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\ChatService::sendmessage should have the "Override" attribute</p>
+<pre data-start="78" class="line-numbersx"><code class="language-php">    /**##(##**/public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false/**##)##**/</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
+<h3>app/Services/ChatService.php:85</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidPropertyFetch</li>
+</ul>
+<p>Cannot fetch property on non-object $chat of type false</p>
+<pre data-start="85" class="line-numbersx"><code class="language-php">                'chat_id' =&gt; /**##(##**/$chat-&gt;id/**##)##**/,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/CoverService.php:10</h3>
+<h3>app/Services/CoverService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\CoverService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/CoverService.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\CoverService::create should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Cover|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/CoverService.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\CoverService::get should have the "Override" attribute</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Cover|false/**##)##**/</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/DealService.php:10</h3>
+<h3>app/Services/DealService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\DealService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/DealService.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\DealService::create should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Deal|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/DealService.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\DealService::get should have the "Override" attribute</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Deal|false/**##)##**/</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/FilterService.php:10</h3>
+<h3>app/Services/FilterService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\FilterService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/FilterService.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\FilterService::create should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Filter|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/FilterService.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\FilterService::get should have the "Override" attribute</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Filter|false/**##)##**/</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/GenreService.php:10</h3>
+<h3>app/Services/GenreService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\GenreService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/GenreService.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\GenreService::create should have the "Override" attribute</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Genre|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/GenreService.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\GenreService::get should have the "Override" attribute</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Genre|false/**##)##**/</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/MessageService.php:10</h3>
+<h3>app/Services/MessageService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\MessageService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/MessageService.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\MessageService::create should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Message|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/MessageService.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\MessageService::get should have the "Override" attribute</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Message|false/**##)##**/</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/NotificationService.php:11</h3>
+<h3>app/Services/NotificationService.php:12</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\NotificationService::__construct</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/NotificationService.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\NotificationService::create should have the "Override" attribute</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Notification|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/NotificationService.php:21</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\NotificationService::get should have the "Override" attribute</p>
-<pre data-start="21" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Notification|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/NotificationService.php:26</h3>
+<h3>app/Services/NotificationService.php:29</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\NotificationService::byuser should have the "Override" attribute</p>
-<pre data-start="26" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(string $user_id): Collection/**##)##**/</code></pre>
+<pre data-start="29" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(string $user_id): Collection/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/NotificationService.php:31</h3>
+<h3>app/Services/NotificationService.php:34</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\NotificationService::readall should have the "Override" attribute</p>
-<pre data-start="31" class="line-numbersx"><code class="language-php">    /**##(##**/public function readAll(string $user_id): bool/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidReturnType">
-<h3>app/Services/NotificationService.php:31</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidReturnType</li>
-</ul>
-<p>The declared return type 'bool' for App\Services\NotificationService::readAll is incorrect, got 'int'</p>
-<pre data-start="31" class="line-numbersx"><code class="language-php">    public function readAll(string $user_id): /**##(##**/bool/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidReturnStatement">
-<h3>app/Services/NotificationService.php:33</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidReturnStatement</li>
-</ul>
-<p>The inferred type 'int' does not match the declared return type 'bool' for App\Services\NotificationService::readAll</p>
-<pre data-start="33" class="line-numbersx"><code class="language-php">        return /**##(##**/Notification::where('user_id', $user_id)-&gt;update(['seen' =&gt; true])/**##)##**/;</code></pre>
+<pre data-start="34" class="line-numbersx"><code class="language-php">    /**##(##**/public function readAll(string $user_id): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/PhotoService.php:10</h3>
+<h3>app/Services/PhotoService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\PhotoService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/PhotoService.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\PhotoService::create should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Photo|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/PhotoService.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\PhotoService::get should have the "Override" attribute</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Photo|false/**##)##**/</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>app/Services/Service.php:22</h3>
@@ -2183,7 +1279,7 @@
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\Service::get should have the "Override" attribute</p>
-<pre data-start="53" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Model|false/**##)##**/</code></pre>
+<pre data-start="53" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(string $id): Model|false/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>app/Services/Service.php:63</h3>
@@ -2231,31 +1327,13 @@
 <pre data-start="107" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(string $id): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/SettingService.php:10</h3>
+<h3>app/Services/SettingService.php:11</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\SettingService::__construct</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/SettingService.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\SettingService::create should have the "Override" attribute</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Setting|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/SettingService.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\SettingService::get should have the "Override" attribute</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): Setting|false/**##)##**/</code></pre>
+<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>app/Services/UserFavoritesService.php:16</h3>
@@ -2285,305 +1363,40 @@
 <pre data-start="51" class="line-numbersx"><code class="language-php">    /**##(##**/public function removeFromFavorites($user_id, $book_id): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/UserService.php:24</h3>
+<h3>app/Services/UserService.php:25</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\UserService::__construct</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:29</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::create should have the "Override" attribute</p>
-<pre data-start="29" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): User|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:52</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::get should have the "Override" attribute</p>
-<pre data-start="52" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(int $id): User|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:57</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::update should have the "Override" attribute</p>
-<pre data-start="57" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(string $id, array $data): bool/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:100</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::getchat should have the "Override" attribute</p>
-<pre data-start="100" class="line-numbersx"><code class="language-php">    /**##(##**/public function getChat(string $user_id, string $recipient_id): Chat|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
-<h3>app/Services/UserService.php:100</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidNullableReturnType</li>
-</ul>
-<p>The declared return type 'App\Models\Chat|false' for App\Services\UserService::getChat is not nullable, but 'App\Models\Chat|null' contains null</p>
-<pre data-start="100" class="line-numbersx"><code class="language-php">    public function getChat(string $user_id, string $recipient_id): /**##(##**/Chat|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:102</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="102" class="line-numbersx"><code class="language-php">        $arr = [/**##(##**/$user/**##)##**/-&gt;id, $recipient-&gt;id];</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:102</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $recipient</p>
-<pre data-start="102" class="line-numbersx"><code class="language-php">        $arr = [$user-&gt;id, /**##(##**/$recipient/**##)##**/-&gt;id];</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="NullableReturnStatement">
 <h3>app/Services/UserService.php:104</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>NullableReturnStatement</li>
-</ul>
-<p>The declared return type 'App\Models\Chat|false' for App\Services\UserService::getChat is not nullable, but the function returns 'App\Models\Chat&amp;static|null'</p>
-<pre data-start="104" class="line-numbersx"><code class="language-php">        return /**##(##**/Chat::where('first_user_id', $arr[0])-&gt;where('second_user_id', $arr[1])-&gt;first()/**##)##**/;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/UserService.php:107</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Services\UserService::groupMessages</p>
-<pre data-start="107" class="line-numbersx"><code class="language-php">    public function /**##(##**/groupMessages/**##)##**/(Collection $messages): Collection</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidTemplateParam">
-<h3>app/Services/UserService.php:110</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidTemplateParam</li>
-</ul>
-<p>Extended template param TModel of Illuminate\Database\Eloquent\Collection&lt;array-key, Illuminate\Database\Eloquent\Collection&lt;int, mixed&gt;&amp;static&gt;&amp;static expects type Illuminate\Database\Eloquent\Model, type Illuminate\Database\Eloquent\Collection&lt;int, mixed&gt;&amp;static given</p>
-<pre data-start="110" class="line-numbersx"><code class="language-php">            return /**##(##**/$messages-&gt;groupBy(function (Message $item, int $key) {
-                return mb_substr($item-&gt;created_at, 0, 10);
-            })/**##)##**/;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidTemplateParam">
-<h3>app/Services/UserService.php:110</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidTemplateParam</li>
-</ul>
-<p>Extended template param TModel of Illuminate\Database\Eloquent\Collection&lt;int, mixed&gt;&amp;static expects type Illuminate\Database\Eloquent\Model, type mixed given</p>
-<pre data-start="110" class="line-numbersx"><code class="language-php">            return /**##(##**/$messages-&gt;groupBy(function (Message $item, int $key) {
-                return mb_substr($item-&gt;created_at, 0, 10);
-            })/**##)##**/;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClosureParam">
-<h3>app/Services/UserService.php:110</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClosureParam</li>
-</ul>
-<p>Param key is never referenced in this method</p>
-<pre data-start="110" class="line-numbersx"><code class="language-php">            return $messages-&gt;groupBy(function (Message $item, int /**##(##**/$key/**##)##**/) {</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:119</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::chats should have the "Override" attribute</p>
-<pre data-start="119" class="line-numbersx"><code class="language-php">    /**##(##**/public function chats(string $user_id): Collection/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:123</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="123" class="line-numbersx"><code class="language-php">            return Cache::remember(/**##(##**/$user/**##)##**/-&gt;id . '_chats', 60, function () use ($user) {</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:123</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="123" class="line-numbersx"><code class="language-php">            return Cache::remember($user-&gt;id . '_chats', 60, function () use (/**##(##**/$user/**##)##**/) {</code></pre>
+<pre data-start="104" class="line-numbersx"><code class="language-php">    /**##(##**/public function chats(string $user_id): Collection/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:133</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::sendmessage should have the "Override" attribute</p>
-<pre data-start="133" class="line-numbersx"><code class="language-php">    /**##(##**/public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:137</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="137" class="line-numbersx"><code class="language-php">            $chat = $this-&gt;getChat(/**##(##**/$user/**##)##**/, $recipient);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:137</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $recipient</p>
-<pre data-start="137" class="line-numbersx"><code class="language-php">            $chat = $this-&gt;getChat($user, /**##(##**/$recipient/**##)##**/);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Services/UserService.php:140</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object $chat of type false</p>
-<pre data-start="140" class="line-numbersx"><code class="language-php">                'chat_id' =&gt; /**##(##**/$chat-&gt;id/**##)##**/,</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Services/UserService.php:141</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object $user of type string</p>
-<pre data-start="141" class="line-numbersx"><code class="language-php">                'from_id' =&gt; /**##(##**/$user-&gt;id/**##)##**/,</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Services/UserService.php:142</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object $recipient of type string</p>
-<pre data-start="142" class="line-numbersx"><code class="language-php">                'to_id' =&gt; /**##(##**/$recipient-&gt;id/**##)##**/,</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:168</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::getusernotifications should have the "Override" attribute</p>
-<pre data-start="168" class="line-numbersx"><code class="language-php">    /**##(##**/public function getUserNotifications(string $user_id): Collection/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:170</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="170" class="line-numbersx"><code class="language-php">        return /**##(##**/$user/**##)##**/-&gt;notifications()-&gt;get();</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:173</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::checkonenotification should have the "Override" attribute</p>
-<pre data-start="173" class="line-numbersx"><code class="language-php">    /**##(##**/public function checkOneNotification(string $user_id, int $notificationId): bool/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:177</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="177" class="line-numbersx"><code class="language-php">            $notification = /**##(##**/$user/**##)##**/-&gt;notifications()-&gt;findOrFail($notificationId);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:190</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::checkmanynotifications should have the "Override" attribute</p>
-<pre data-start="190" class="line-numbersx"><code class="language-php">    /**##(##**/public function checkManyNotifications(string $user_id, array $notificationIds): bool/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:192</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="192" class="line-numbersx"><code class="language-php">        $notifications = /**##(##**/$user/**##)##**/-&gt;notifications()-&gt;whereIn('id', $notificationIds)-&gt;get();</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:196</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\UserService::updatenotifications should have the "Override" attribute</p>
-<pre data-start="196" class="line-numbersx"><code class="language-php">    /**##(##**/public function updateNotifications(Collection $notifications): bool/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:213</h3>
+<h3>app/Services/UserService.php:124</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::getunreadmessages should have the "Override" attribute</p>
-<pre data-start="213" class="line-numbersx"><code class="language-php">    /**##(##**/public function getUnreadMessages(string $user_id): Collection/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:215</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="215" class="line-numbersx"><code class="language-php">        return /**##(##**/$user/**##)##**/-&gt;unreadMessages()-&gt;distinct()-&gt;get(['id', 'from_id']);</code></pre>
+<pre data-start="124" class="line-numbersx"><code class="language-php">    /**##(##**/public function getUnreadMessages(string $user_id): Collection|false/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:218</h3>
+<h3>app/Services/UserService.php:140</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::readmessages should have the "Override" attribute</p>
-<pre data-start="218" class="line-numbersx"><code class="language-php">    /**##(##**/public function readMessages(string $user_id, array $messagesToRead): bool/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedVariable">
-<h3>app/Services/UserService.php:222</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedVariable</li>
-</ul>
-<p>Cannot find referenced variable $user</p>
-<pre data-start="222" class="line-numbersx"><code class="language-php">            $messages = /**##(##**/$user/**##)##**/-&gt;unreadMessages()-&gt;whereIn('id', $messagesToRead)-&gt;get();</code></pre>
+<pre data-start="140" class="line-numbersx"><code class="language-php">    /**##(##**/public function readMessages(string $user_id, array $messagesToRead): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Services/UserSettingService.php:14</h3>

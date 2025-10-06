@@ -50,6 +50,17 @@ class UserChatController extends Controller
     public function messages(ChatServiceInterface $chatService, string $user_id, string $recipient_id): JsonResponse
     {
         $chat = $chatService->byUsers($user_id, $recipient_id);
+        if (!$chat) {
+            $chat = $chatService->create([
+                'first_user_id' => $user_id,
+                'second_user_id' => $recipient_id,
+            ]);
+        }
+
+        if (!$chat) {
+            return ResponseHelper::errorResponse(400, ['Ошибка при создании чата']);
+        }
+        
         $messages = $chatService->messages($chat->id);
 
         $messageResourceCollection = MessageResource::collection($messages);
@@ -67,7 +78,7 @@ class UserChatController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении сообщений']);
         }
         $messageResourceCollection = MessageResource::collection($messages);
-        
+
         return ResponseHelper::successResponse([
             'messages' => $messageResourceCollection,
         ]);
@@ -75,12 +86,12 @@ class UserChatController extends Controller
 
     public function send(
         Request $request,
-        UserServiceInterface $userService,
+        ChatServiceInterface $chatService,
         string $user_id,
         string $recipient_id
     ): JsonResponse {
         $body = $request->input('body');
-        $message = $userService->sendMessage($user_id, $recipient_id, $body);
+        $message = $chatService->sendMessage($user_id, $recipient_id, $body);
         $messageResource = new MessageResource($message);
         if (!$message) {
             return ResponseHelper::errorResponse(400, ['Ошибка при отправке сообщения']);

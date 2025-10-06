@@ -16,7 +16,7 @@ services:
             - app
         networks:
             - app-network
-            - microlib_proxy
+    #            - microlib_proxy
 
     app:
         build:

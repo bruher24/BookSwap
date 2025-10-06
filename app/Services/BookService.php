@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Override;
 use Throwable;
 
 class BookService extends Service implements BookServiceInterface
@@ -23,6 +24,7 @@ class BookService extends Service implements BookServiceInterface
         ];
     }
 
+    #[Override]
     public function create(array $data): Book|false
     {
         DB::beginTransaction();
@@ -64,6 +66,7 @@ class BookService extends Service implements BookServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Book|false
     {
         return parent::get($id);

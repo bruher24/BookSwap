@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\NotificationServiceInterface;
 use App\Models\Notification;
 use Illuminate\Database\Eloquent\Collection;
+use Override;
 
 class NotificationService extends Service implements NotificationServiceInterface
 {
@@ -13,11 +14,13 @@ class NotificationService extends Service implements NotificationServiceInterfac
         parent::__construct(Notification::class);
     }
 
+    #[Override]
     public function create(array $data): Notification|false
     {
         return parent::create($data);
     }
 
+    #[Override]
     public function get(string $id): Notification|false
     {
         return parent::get($id);
@@ -30,6 +33,6 @@ class NotificationService extends Service implements NotificationServiceInterfac
 
     public function readAll(string $user_id): bool
     {
-        return Notification::where('user_id', $user_id)->update(['seen' => true]);
+        return !!Notification::where('user_id', $user_id)->update(['seen' => true]);
     }
 }

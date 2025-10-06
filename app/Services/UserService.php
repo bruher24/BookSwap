@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 class UserService extends Service implements UserServiceInterface
@@ -26,6 +27,7 @@ class UserService extends Service implements UserServiceInterface
         parent::__construct(User::class);
     }
 
+    #[Override]
     public function create(array $data): User|false
     {
         DB::beginTransaction();
@@ -49,11 +51,13 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): User|false
     {
         return parent::get($id);
     }
 
+    #[Override]
     public function update(string $id, array $data): bool
     {
         DB::beginTransaction();
@@ -100,6 +104,11 @@ class UserService extends Service implements UserServiceInterface
     public function chats(string $user_id): Collection
     {
         try {
+            $user = $this->get($user_id);
+            if (!$user) {
+                throw new Exception();
+            }
+
             Log::debug('Cache check');
             return Cache::remember($user->id . '_chats', 60, function () use ($user) {
                 Log::debug('Stored in cache: ' . $user->id . '_chats');
@@ -111,85 +120,6 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
-    public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false
-    {
-        DB::beginTransaction();
-        try {
-            $chat = $this->getChat($user, $recipient);
-
-            $message = new Message([
-                'chat_id' => $chat->id,
-                'from_id' => $user->id,
-                'to_id' => $recipient->id,
-                'body' => $body,
-            ]);
-
-            $saved = $chat->messages()->save($message);
-
-            if (!$saved) {
-                throw new Exception('Ошибка при сохранении сообщения');
-            }
-
-            DB::commit();
-
-            $message->refresh();
-
-            if ($message->to_id != $message->from_id) {
-                Event::dispatch(new MessageSent($message));
-            }
-
-            return $message;
-        } catch (Throwable $exception) {
-            DB::rollBack();
-            Log::error($exception->getMessage());
-            return false;
-        }
-    }
-
-    public function getUserNotifications(string $user_id): Collection
-    {
-        return $user->notifications()->get();
-    }
-
-    public function checkOneNotification(string $user_id, int $notificationId): bool
-    {
-        DB::beginTransaction();
-        try {
-            $notification = $user->notifications()->findOrFail($notificationId);
-
-            $notification->updateOrFail(['seen' => true]);
-
-            DB::commit();
-            return true;
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
-
-    public function checkManyNotifications(string $user_id, array $notificationIds): bool
-    {
-        $notifications = $user->notifications()->whereIn('id', $notificationIds)->get();
-        return $this->updateNotifications($notifications);
-    }
-
-    public function updateNotifications(Collection $notifications): bool
-    {
-        DB::beginTransaction();
-        try {
-            $notifications->each(function (Notification $notification) {
-                $notification->updateOrFail(['seen' => true]);
-            });
-
-            DB::commit();
-            return true;
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
 
     public function getUnreadMessages(string $user_id): Collection|false
     {
@@ -198,6 +128,7 @@ class UserService extends Service implements UserServiceInterface
             if (!$user) {
                 throw new Exception();
             }
+
             $messages = $user->unreadMessages()->distinct()->get(['id', 'from_id']);
             return $messages->groupBy('chat_id');
         } catch (Throwable $e) {
@@ -210,6 +141,11 @@ class UserService extends Service implements UserServiceInterface
     {
         DB::beginTransaction();
         try {
+            $user = $this->get($user_id);
+            if (!$user) {
+                throw new Exception();
+            }
+
             $messages = $user->unreadMessages()->whereIn('id', $messagesToRead)->get();
 
             $messages->each(function (Message $message) {

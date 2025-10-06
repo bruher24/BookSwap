@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\AuthorServiceInterface;
 use App\Models\Author;
+use Override;
 
 class AuthorService extends Service implements AuthorServiceInterface
 {
@@ -17,11 +18,13 @@ class AuthorService extends Service implements AuthorServiceInterface
         ];
     }
 
+    #[Override]
     public function create(array $data): Author|false
     {
         return parent::create($data);
     }
 
+    #[Override]
     public function get(string $id): Author|false
     {
         return parent::get($id);

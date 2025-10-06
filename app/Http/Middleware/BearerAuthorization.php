@@ -17,11 +17,11 @@ class BearerAuthorization
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        $abilities = $token->abilities;
+        $token = PersonalAccessToken::findToken($request->bearerToken() ?? '');
+        $abilities = $token->abilities ?? [];
 
         if (!in_array($request->email, $abilities) && !in_array('admin', $abilities)) {
-            return ResponseHelper::errorResponse(['Недостаточно прав']);
+            return ResponseHelper::errorResponse(403, ['Недостаточно прав']);
         }
         return $next($request);
     }

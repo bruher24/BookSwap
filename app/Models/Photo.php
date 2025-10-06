@@ -11,8 +11,6 @@ class Photo extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
-    public static string $basePhotoName = "avatars/avatar.png";
-
     public $fillable = [
         'src',
     ];
