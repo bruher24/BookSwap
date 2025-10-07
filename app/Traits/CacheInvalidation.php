@@ -11,8 +11,8 @@ trait CacheInvalidation
     public static function bootCacheInvalidation(): void
     {
         static::saved(function ($model) {
-            Cache::forget(get_class($model));
-            Log::debug('Forgot: ' . get_class($model));
+            Cache::forget($model::CACHE_KEY);
+            Log::debug('Forgot: ' . $model::CACHE_KEY);
             if ($model instanceof Chat) {
                 Cache::forget($model->first_user_id . '_chats');
                 Log::debug('Forgot: ' . $model->first_user_id . '_chats');
@@ -20,8 +20,8 @@ trait CacheInvalidation
         });
 
         static::deleted(function ($model) {
-            Cache::forget(get_class($model));
-            Log::debug('Forgot: ' . get_class($model));
+            Cache::forget($model::CACHE_KEY);
+            Log::debug('Forgot: ' . $model::CACHE_KEY);
             if ($model instanceof Chat) {
                 Cache::forget($model->first_user_id . '_chats');
                 Log::debug('Forgot: ' . $model->first_user_id . '_chats');
@@ -29,8 +29,8 @@ trait CacheInvalidation
         });
 
         static::restored(function ($model) {
-            Cache::forget(get_class($model));
-            Log::debug('Forgot: ' . get_class($model));
+            Cache::forget($model::CACHE_KEY);
+            Log::debug('Forgot: ' . $model::CACHE_KEY);
             if ($model instanceof Chat) {
                 Cache::forget($model->first_user_id . '_chats');
                 Log::debug('Forgot: ' . $model->first_user_id . '_chats');

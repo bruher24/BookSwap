@@ -13,6 +13,8 @@ class Book extends Model
 {
     use SoftDeletes, Searchable, CacheInvalidation;
 
+    const string CACHE_KEY = 'books';
+
     public $fillable = [
         'name',
         'user_id',

@@ -11,6 +11,8 @@ class Cover extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
+    const string CACHE_KEY = 'covers';
+
     private string $baseCoverPath = 'storage/app/public/cover.png';
 
     public static int $baseCoverId = 1;

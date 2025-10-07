@@ -68,8 +68,8 @@ abstract class Service implements ServiceInterface
     public function getAll(): Collection
     {
         try {
-            return Cache::remember($this->modelClass, 600, function () {
-                Log::debug('Stored in cache: ' . $this->modelClass);
+            return Cache::remember($this->modelClass::CACHE_KEY, 600, function () {
+                Log::debug('Stored in cache: ' . $this->modelClass::CACHE_KEY);
                 return $this->modelClass::all();
             });
         } catch (Throwable $e) {

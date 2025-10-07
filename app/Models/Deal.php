@@ -11,6 +11,8 @@ class Deal extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
+    const string CACHE_KEY = 'deals';
+
     public $fillable = [
         'seller_id',
         'buyer_id',

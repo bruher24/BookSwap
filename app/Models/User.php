@@ -21,6 +21,8 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CacheInvalidation;
 
+    const string CACHE_KEY = 'users';
+
     /**
      * The attributes that are mass assignable.
      *

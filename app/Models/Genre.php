@@ -11,6 +11,8 @@ class Genre extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
+    const string CACHE_KEY = 'genres';
+
     public $fillable = [
         'name',
     ];

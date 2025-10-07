@@ -11,6 +11,8 @@ class Role extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
+    const string CACHE_KEY = 'roles';
+
     public const int ADMIN_ROLE_ID = 1;
 
     public const int USER_ROLE_ID = 2;

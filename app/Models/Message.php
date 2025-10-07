@@ -11,6 +11,8 @@ class Message extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
+    const string CACHE_KEY = 'messages';
+
     public $fillable = [
         'chat_id',
         'from_id',

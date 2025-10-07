@@ -10,6 +10,8 @@ class Notification extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
+    const string CACHE_KEY = 'notifications';
+
     public $fillable = [
         'subject',
         'body',

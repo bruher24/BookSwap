@@ -11,6 +11,8 @@ class Photo extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
+    const string CACHE_KEY = 'photos';
+
     public $fillable = [
         'src',
     ];

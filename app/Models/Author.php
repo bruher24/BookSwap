@@ -12,6 +12,8 @@ class Author extends Model
 {
     use SoftDeletes, Searchable, CacheInvalidation;
 
+    const string CACHE_KEY = 'authors';
+
     public $fillable = [
         'lastname',
         'firstname',

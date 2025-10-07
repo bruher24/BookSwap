@@ -12,6 +12,8 @@ class Setting extends Model
 {
     use SoftDeletes, CacheInvalidation;
 
+    const string CACHE_KEY = 'settings';
+
     public $fillable = [
         'name',
         'label',
