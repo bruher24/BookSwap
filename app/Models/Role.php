@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
-    use SoftDeletes, CacheInvalidation;
+    use SoftDeletes;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'roles';
+    public const string CACHE_KEY = 'roles';
 
     public const int ADMIN_ROLE_ID = 1;
 

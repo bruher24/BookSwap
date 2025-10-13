@@ -29,20 +29,20 @@ class StoreDealRequest extends FormRequest
                 'integer',
                 'different:buyer_id',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
                 Rule::unique('deals', 'seller_id')
                     ->where('buyer_id', request('buyer_id'))
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'buyer_id' => [
                 'required',
                 'integer',
                 'different:seller_id',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
                 Rule::unique('deals', 'buyer_id')
                     ->where('seller_id', request('seller_id'))
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'date' => [
                 'required',

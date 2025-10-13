@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Book;
 use App\Models\Cover;
 use Illuminate\Database\Seeder;
 

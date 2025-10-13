@@ -15,6 +15,7 @@ class AuthorController extends Controller
     {
         $authors = $authorService->getAll();
         $authorResourceCollection = AuthorResource::collection($authors);
+
         return ResponseHelper::successResponse([
             'authors' => $authorResourceCollection,
         ]);
@@ -28,6 +29,7 @@ class AuthorController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании автора']);
         }
         $authorResource = new AuthorResource($author);
+
         return ResponseHelper::successResponse([
             'author' => $authorResource,
         ], 'Автор успешно создан');
@@ -40,6 +42,7 @@ class AuthorController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении автора']);
         }
         $authorResource = new AuthorResource($author);
+
         return ResponseHelper::successResponse([
             'author' => $authorResource,
         ]);
@@ -54,6 +57,7 @@ class AuthorController extends Controller
         if (!$authorService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении автора']);
         }
+
         return ResponseHelper::successResponse([], 'Автор успешно обновлен');
     }
 
@@ -62,6 +66,7 @@ class AuthorController extends Controller
         if (!$authorService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении автора']);
         }
+
         return ResponseHelper::successResponse([], 'Автор успешно удален');
     }
 }

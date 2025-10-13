@@ -15,6 +15,7 @@ class UserSettingController extends Controller
     {
         $user = $userService->get($user_id);
         $settingResourceCollection = SettingResource::collection($user->settings()->get());
+
         return ResponseHelper::successResponse([
             'settings' => $settingResourceCollection,
         ]);
@@ -36,6 +37,7 @@ class UserSettingController extends Controller
         if (!$userSettingService->updateSettings($user_id, $settingsData)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении настроек']);
         }
+
         return ResponseHelper::successResponse([], 'Настройки успешно обновлены');
     }
 }

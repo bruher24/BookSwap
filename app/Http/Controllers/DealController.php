@@ -15,6 +15,7 @@ class DealController extends Controller
     {
         $deals = $dealService->getAll();
         $dealResourceCollection = DealResource::collection($deals);
+
         return ResponseHelper::successResponse([
             'deals' => $dealResourceCollection,
         ]);
@@ -28,6 +29,7 @@ class DealController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании сделки']);
         }
         $dealResource = new DealResource($deal);
+
         return ResponseHelper::successResponse([
             'deal' => $dealResource,
         ], 'Сделка успешно создана');
@@ -40,6 +42,7 @@ class DealController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении сделки']);
         }
         $dealResource = new DealResource($deal);
+
         return ResponseHelper::successResponse([
             'deal' => $dealResource,
         ]);
@@ -51,6 +54,7 @@ class DealController extends Controller
         if (!$dealService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении сделки']);
         }
+
         return ResponseHelper::successResponse([], 'Сделка успешно обновлена');
     }
 
@@ -59,6 +63,7 @@ class DealController extends Controller
         if (!$dealService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении сделки']);
         }
+
         return ResponseHelper::successResponse([], 'Сделка успешно удалена');
     }
 }

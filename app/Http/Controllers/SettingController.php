@@ -15,6 +15,7 @@ class SettingController extends Controller
     {
         $settings = $settingService->getAll();
         $settingResourceCollection = SettingResource::collection($settings);
+
         return ResponseHelper::successResponse([
             'settings' => $settingResourceCollection,
         ]);
@@ -28,6 +29,7 @@ class SettingController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании настройки']);
         }
         $settingResource = new SettingResource($setting);
+
         return ResponseHelper::successResponse([
             'setting' => $settingResource,
         ], 'Настройка успешно создана');
@@ -40,6 +42,7 @@ class SettingController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении настройки']);
         }
         $settingResource = new SettingResource($setting);
+
         return ResponseHelper::successResponse([
             'setting' => $settingResource,
         ]);
@@ -54,6 +57,7 @@ class SettingController extends Controller
         if (!$settingService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении настройки']);
         }
+
         return ResponseHelper::successResponse([], 'Настройка успешно обновлена');
     }
 
@@ -62,6 +66,7 @@ class SettingController extends Controller
         if (!$settingService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении настройки']);
         }
+
         return ResponseHelper::successResponse([], 'Настройка успешно удалена');
     }
 }

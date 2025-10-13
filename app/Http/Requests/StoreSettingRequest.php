@@ -28,13 +28,13 @@ class StoreSettingRequest extends FormRequest
                 'required',
                 'string',
                 Rule::unique('settings', 'name')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'label' => [
                 'required',
                 'string',
                 Rule::unique('settings', 'label')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'description' => [
                 'nullable',

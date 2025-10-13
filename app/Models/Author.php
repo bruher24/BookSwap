@@ -10,9 +10,11 @@ use Laravel\Scout\Searchable;
 
 class Author extends Model
 {
-    use SoftDeletes, Searchable, CacheInvalidation;
+    use CacheInvalidation;
+    use Searchable;
+    use SoftDeletes;
 
-    const string CACHE_KEY = 'authors';
+    public const string CACHE_KEY = 'authors';
 
     public $fillable = [
         'lastname',
@@ -44,7 +46,7 @@ class Author extends Model
     public function getFormattedNameAttribute(): string
     {
         return "$this->lastname "
-            . mb_substr($this->firstname, 0, 1) . "."
+            . mb_substr($this->firstname, 0, 1) . '.'
             . ($this->patronymic ? mb_substr($this->patronymic, 0, 1) : '');
     }
 

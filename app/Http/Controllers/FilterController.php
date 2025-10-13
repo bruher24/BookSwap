@@ -29,6 +29,7 @@ class FilterController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании фильтра']);
         }
         $filterResource = new FilterResource($filter);
+
         return ResponseHelper::successResponse([
             'filter' => $filterResource,
         ], 'Фильтр успешно создан');
@@ -41,6 +42,7 @@ class FilterController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении фильтра']);
         }
         $filterResource = new FilterResource($filter);
+
         return ResponseHelper::successResponse([
             'filter' => $filterResource,
         ]);
@@ -55,6 +57,7 @@ class FilterController extends Controller
         if (!$filterService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении фильтра']);
         }
+
         return ResponseHelper::successResponse([], 'Фильтр успешно обновлен');
     }
 
@@ -63,6 +66,7 @@ class FilterController extends Controller
         if (!$filterService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении фильтра']);
         }
+
         return ResponseHelper::successResponse([], 'Фильтр успешно удален');
     }
 }

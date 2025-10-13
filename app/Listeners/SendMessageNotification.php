@@ -4,12 +4,12 @@ namespace App\Listeners;
 
 use App\Events\MessageSent;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
 class SendMessageNotification implements ShouldQueue
 {
     public string $connection = 'redis';
+
     public string $queue = 'listeners';
 
     /**
@@ -17,7 +17,6 @@ class SendMessageNotification implements ShouldQueue
      */
     public function __construct()
     {
-        //
     }
 
     /**

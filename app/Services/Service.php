@@ -25,6 +25,7 @@ abstract class Service implements ServiceInterface
         DB::beginTransaction();
         try {
             $object = new $this->modelClass($formattedData);
+
             if (!$object->save()) {
                 throw new Exception("Ошибка при сохранении записи");
             }
@@ -120,4 +121,3 @@ abstract class Service implements ServiceInterface
         }
     }
 }
-

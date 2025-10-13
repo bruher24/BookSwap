@@ -28,7 +28,7 @@ class UpdateGenreRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('genres', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'name' => [
                 'required',
@@ -36,7 +36,7 @@ class UpdateGenreRequest extends FormRequest
                 'min:3',
                 'max:50',
                 Rule::unique('genres', 'name')
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('genre_id')),
             ],
         ];

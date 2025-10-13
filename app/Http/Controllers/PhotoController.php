@@ -15,6 +15,7 @@ class PhotoController extends Controller
     {
         $photos = $photoService->getAll();
         $photoResourceCollection = PhotoResource::collection($photos);
+
         return ResponseHelper::successResponse([
             'photos' => $photoResourceCollection,
         ]);
@@ -28,6 +29,7 @@ class PhotoController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании фото']);
         }
         $photoResource = new PhotoResource($photo);
+
         return ResponseHelper::successResponse([
             'photo' => $photoResource,
         ], 'Фото успешно создано');
@@ -40,6 +42,7 @@ class PhotoController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении фото']);
         }
         $photoResource = new PhotoResource($photo);
+
         return ResponseHelper::successResponse([
             'photo' => $photoResource,
         ]);
@@ -51,6 +54,7 @@ class PhotoController extends Controller
         if (!$photoService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении фото']);
         }
+
         return ResponseHelper::successResponse([], 'Фото успешно обновлено');
     }
 
@@ -59,6 +63,7 @@ class PhotoController extends Controller
         if (!$photoService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении фото']);
         }
+
         return ResponseHelper::successResponse([], 'Фото успешно удалено');
     }
 }

@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Phone extends Model
 {
-    use SoftDeletes, CacheInvalidation;
+    use SoftDeletes;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'phones';
+    public const string CACHE_KEY = 'phones';
 
     public $fillable = [
         'number',

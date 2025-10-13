@@ -28,7 +28,7 @@ class UpdateCoverRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('covers', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'src' => [
                 'required',

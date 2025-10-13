@@ -29,14 +29,14 @@ class StoreUserRequest extends FormRequest
                 'string',
                 'max:50',
                 Rule::unique('users', 'name')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'email' => [
                 'required',
                 'email',
                 'max:70',
                 Rule::unique('users', 'email')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'email_verified_at' => [
                 'nullable',
@@ -50,7 +50,7 @@ class StoreUserRequest extends FormRequest
                 'nullable',
                 'integer',
                 Rule::exists('photos', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'remember_token' => [
                 'nullable',

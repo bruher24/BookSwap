@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Genre extends Model
 {
-    use SoftDeletes, CacheInvalidation;
+    use SoftDeletes;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'genres';
+    public const string CACHE_KEY = 'genres';
 
     public $fillable = [
         'name',

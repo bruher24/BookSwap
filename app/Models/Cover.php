@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cover extends Model
 {
-    use SoftDeletes, CacheInvalidation;
+    use SoftDeletes;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'covers';
+    public const string CACHE_KEY = 'covers';
 
     private string $baseCoverPath = 'storage/app/public/cover.png';
 

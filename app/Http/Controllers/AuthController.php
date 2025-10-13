@@ -79,6 +79,7 @@ class AuthController extends Controller
         if (!$authService->logout($email)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при выходе из аккаунта']);
         }
+
         return ResponseHelper::successResponse([], 'До свидания');
     }
 }

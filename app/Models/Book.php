@@ -11,9 +11,11 @@ use Laravel\Scout\Searchable;
 
 class Book extends Model
 {
-    use SoftDeletes, Searchable, CacheInvalidation;
+    use SoftDeletes;
+    use Searchable;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'books';
+    public const string CACHE_KEY = 'books';
 
     public $fillable = [
         'name',

@@ -9,9 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BookType extends Model
 {
-    use SoftDeletes, CacheInvalidation;
+    use SoftDeletes;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'bookTypes';
+    public const string CACHE_KEY = 'bookTypes';
 
     public $fillable = [
         'name',

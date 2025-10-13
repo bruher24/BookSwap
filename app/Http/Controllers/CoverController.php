@@ -15,6 +15,7 @@ class CoverController extends Controller
     {
         $covers = $coverService->getAll();
         $coverResourceCollection = CoverResource::collection($covers);
+
         return ResponseHelper::successResponse([
             'covers' => $coverResourceCollection,
         ]);
@@ -28,6 +29,7 @@ class CoverController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании обложки']);
         }
         $coverResource = new CoverResource($cover);
+
         return ResponseHelper::successResponse([
             'cover' => $coverResource,
         ], 'Обложка успешно создана');
@@ -40,6 +42,7 @@ class CoverController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении обложки']);
         }
         $coverResource = new CoverResource($cover);
+
         return ResponseHelper::successResponse([
             'cover' => $coverResource,
         ]);
@@ -51,6 +54,7 @@ class CoverController extends Controller
         if (!$coverService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении обложки']);
         }
+
         return ResponseHelper::successResponse([], 'Обложка успешно обновлена');
     }
 
@@ -59,6 +63,7 @@ class CoverController extends Controller
         if (!$coverService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении обложки']);
         }
+
         return ResponseHelper::successResponse([], 'Обложка успешно удалена');
     }
 }

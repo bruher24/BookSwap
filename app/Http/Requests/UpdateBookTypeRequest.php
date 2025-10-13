@@ -28,14 +28,14 @@ class UpdateBookTypeRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('book_types', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'name' => [
                 'required',
                 'string',
                 'max:50',
                 Rule::unique('book_types', 'name')
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('book_type_id')),
             ],
         ];

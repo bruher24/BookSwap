@@ -28,7 +28,7 @@ class UpdateNotificationRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('notifications', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'subject' => [
                 'required',
@@ -42,7 +42,7 @@ class UpdateNotificationRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'seen' => [
                 'nullable',

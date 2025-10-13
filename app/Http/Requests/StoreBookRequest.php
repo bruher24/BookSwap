@@ -29,7 +29,7 @@ class StoreBookRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'name' => [
                 'required',
@@ -41,19 +41,19 @@ class StoreBookRequest extends FormRequest
                 'nullable',
                 'integer',
                 Rule::exists('authors', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'author_id1' => [
                 'nullable',
                 'integer',
                 Rule::exists('authors', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'author_id2' => [
                 'nullable',
                 'integer',
                 Rule::exists('authors', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'authorLastname' => [
                 'required_without:author_id',
@@ -93,14 +93,14 @@ class StoreBookRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('book_types', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'isbn' => [
                 'nullable',
                 'string',
                 'size:13',
                 Rule::unique('books', 'isbn')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
         ];
     }

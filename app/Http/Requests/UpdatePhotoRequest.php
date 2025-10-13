@@ -28,7 +28,7 @@ class UpdatePhotoRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('photos', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'src' => [
                 'required',

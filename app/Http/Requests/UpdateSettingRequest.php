@@ -28,20 +28,20 @@ class UpdateSettingRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('settings', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'name' => [
                 'required',
                 'string',
                 Rule::unique('settings', 'name')
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('setting_id')),
             ],
             'label' => [
                 'required',
                 'string',
                 Rule::unique('settings', 'label')
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('setting_id')),
             ],
             'description' => [

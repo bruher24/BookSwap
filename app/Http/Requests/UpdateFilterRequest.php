@@ -28,7 +28,7 @@ class UpdateFilterRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('filters', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'name' => [
                 'required',
@@ -36,14 +36,14 @@ class UpdateFilterRequest extends FormRequest
                 'min:3',
                 'max:30',
                 Rule::unique('filters', 'name')
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('filter_id')),
             ],
             'by_fields' => [
                 'required',
                 'string',
                 Rule::unique('filters', 'by_fields')
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('filter_id')),
             ],
             'is_active' => [

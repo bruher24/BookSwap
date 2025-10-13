@@ -60,7 +60,7 @@ class UserChatController extends Controller
         if (!$chat) {
             return ResponseHelper::errorResponse(400, ['Ошибка при создании чата']);
         }
-        
+
         $messages = $chatService->messages($chat->id);
 
         $messageResourceCollection = MessageResource::collection($messages);
@@ -96,6 +96,7 @@ class UserChatController extends Controller
         if (!$message) {
             return ResponseHelper::errorResponse(400, ['Ошибка при отправке сообщения']);
         }
+
         return ResponseHelper::successResponse([
             'message' => $messageResource,
         ], 'Сообщение успешно отправлено');
@@ -110,6 +111,7 @@ class UserChatController extends Controller
         if (!$checked) {
             return ResponseHelper::errorResponse(400, ['Ошибка при прочтении сообщений']);
         }
+
         return ResponseHelper::successResponse();
     }
 }

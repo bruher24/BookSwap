@@ -13,6 +13,7 @@ class UserFavoritesController extends Controller
     {
         $favorites = $userFavoritesService->favorites($userId);
         $favoritesResourceCollection = BookResource::collection($favorites);
+
         return ResponseHelper::successResponse([
             'favorites' => $favoritesResourceCollection,
         ]);
@@ -23,6 +24,7 @@ class UserFavoritesController extends Controller
         if (!$userFavoritesService->addToFavorites($userId, $bookId)) {
             return ResponseHelper::errorResponse(400, ['Ошибка добавления книги в избранное']);
         }
+
         return ResponseHelper::successResponse([], 'Книга добавлена в избранное');
     }
 
@@ -31,6 +33,7 @@ class UserFavoritesController extends Controller
         if (!$userFavoritesService->removeFromFavorites($userId, $bookId)) {
             return ResponseHelper::errorResponse(400, ['Ошибка удаления книги из избранного']);
         }
+
         return ResponseHelper::successResponse([], 'Книга удалена из избранного');
     }
 }

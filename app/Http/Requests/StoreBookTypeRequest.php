@@ -29,7 +29,7 @@ class StoreBookTypeRequest extends FormRequest
                 'string',
                 'max:50',
                 Rule::unique('book_types', 'name')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
         ];
     }

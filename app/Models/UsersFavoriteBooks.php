@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UsersFavoriteBooks extends Model
 {
-    use SoftDeletes, CacheInvalidation;
+    use SoftDeletes;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'userFavoriteBooks';
+    public const string CACHE_KEY = 'userFavoriteBooks';
 
     public $fillable = [
         'user_id',

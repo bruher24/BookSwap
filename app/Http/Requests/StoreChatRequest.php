@@ -29,20 +29,20 @@ class StoreChatRequest extends FormRequest
                 'integer',
                 'different:second_user_id',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
                 Rule::unique('chats', 'first_user_id')
                     ->where('second_user_id', request('second_user_id'))
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'second_user_id' => [
                 'required',
                 'integer',
                 'different:first_user_id',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
                 Rule::unique('chats', 'second_user_id')
                     ->where('first_user_id', request('first_user_id'))
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'blocked_by' => [
                 'nullable',

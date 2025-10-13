@@ -28,19 +28,19 @@ class StoreMessageRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('chats', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'from_id' => [
                 'required',
                 'integer',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'to_id' => [
                 'required',
                 'integer',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'subject' => [
                 'nullable',

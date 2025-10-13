@@ -10,9 +10,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Setting extends Model
 {
-    use SoftDeletes, CacheInvalidation;
+    use SoftDeletes;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'settings';
+    public const string CACHE_KEY = 'settings';
 
     public $fillable = [
         'name',
@@ -24,8 +25,8 @@ class Setting extends Model
     protected function availableValues(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => explode(',', $value),
-            set: fn(array $value) => implode(',', $value),
+            get: fn (string $value) => explode(',', $value),
+            set: fn (array $value) => implode(',', $value),
         );
     }
 

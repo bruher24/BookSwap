@@ -29,6 +29,7 @@ class BookController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании книги']);
         }
         $bookResource = new BookResource($book);
+
         return ResponseHelper::successResponse([
             'book' => $bookResource,
         ], 'Книга успешно создана');
@@ -41,6 +42,7 @@ class BookController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении книги']);
         }
         $bookResource = new BookResource($book);
+
         return ResponseHelper::successResponse([
             'book' => $bookResource,
         ]);
@@ -52,6 +54,7 @@ class BookController extends Controller
         if (!$bookService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении книги']);
         }
+
         return ResponseHelper::successResponse([], 'Книга успешно обновлена');
     }
 
@@ -60,6 +63,7 @@ class BookController extends Controller
         if (!$bookService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении книги']);
         }
+
         return ResponseHelper::successResponse([], 'Книга успешно удалена');
     }
 }

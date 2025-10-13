@@ -28,14 +28,14 @@ class UpdateUserRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'name' => [
                 'nullable',
                 'string',
                 'max:50',
                 Rule::unique('users', 'name')
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('user_id')),
             ],
             'email' => [
@@ -45,7 +45,7 @@ class UpdateUserRequest extends FormRequest
                 'max:100',
                 'email',
                 Rule::unique('users', 'email')
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('user_id')),
             ],
             'old_password' => [

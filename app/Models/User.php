@@ -19,9 +19,13 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CacheInvalidation;
+    use HasFactory;
+    use Notifiable;
+    use SoftDeletes;
+    use HasApiTokens;
+    use CacheInvalidation;
 
-    const string CACHE_KEY = 'users';
+    public const string CACHE_KEY = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -70,12 +74,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function getMainRoleAttribute(): int
+    public function getMainRoleAttribute(): ?int
     {
         return $this->roles()->min('id');
     }
 
-    public function getRegisteredDiffAttribute()
+    public function getRegisteredDiffAttribute(): ?string
     {
         $diff = Carbon::now()->diff($this->created_at);
 

@@ -29,7 +29,7 @@ class UpdateAuthorRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('authors', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'lastname' => [
                 'required',

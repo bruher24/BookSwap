@@ -15,6 +15,7 @@ class BookTypeController extends Controller
     {
         $bookTypes = $bookTypeService->getAll();
         $bookTypeResourceCollection = BookTypeResource::collection($bookTypes);
+
         return ResponseHelper::successResponse([
             'bookTypes' => $bookTypeResourceCollection,
         ]);
@@ -28,6 +29,7 @@ class BookTypeController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании типа']);
         }
         $bookTypeResource = new BookTypeResource($bookType);
+
         return ResponseHelper::successResponse([
             'bookType' => $bookTypeResource,
         ], 'Тип успешно создан');
@@ -40,6 +42,7 @@ class BookTypeController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении типа']);
         }
         $bookTypeResource = new BookTypeResource($bookType);
+
         return ResponseHelper::successResponse([
             'bookType' => $bookTypeResource,
         ]);
@@ -54,6 +57,7 @@ class BookTypeController extends Controller
         if (!$bookTypeService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении типа']);
         }
+
         return ResponseHelper::successResponse([], 'Тип успешно обновлен');
     }
 
@@ -62,6 +66,7 @@ class BookTypeController extends Controller
         if (!$bookTypeService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении типа']);
         }
+
         return ResponseHelper::successResponse([], 'Тип успешно удален');
     }
 }

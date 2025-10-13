@@ -2,19 +2,15 @@
 
 namespace App\Services;
 
-use App\Events\MessageSent;
+use App\Events\UserCreated;
+use App\Events\UserUpdated;
 use App\Interfaces\UserServiceInterface;
-use App\Models\Chat;
 use App\Models\Message;
-use App\Models\Notification;
-use App\Models\Photo;
-use App\Models\Setting;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Override;
@@ -34,13 +30,9 @@ class UserService extends Service implements UserServiceInterface
         try {
             $user = parent::create($data);
             if ($user instanceof User) {
-                $user->refresh();
-                $user->roles()->attach(2);
-                $user->photo()->associate(Photo::all()->first());
-                // TODO: изменить
-                $user->settings()->attach(Setting::all()->first(), ['value' => 'on']);
-                $user->save();
                 DB::commit();
+                UserCreated::dispatch($user);
+                $user->refresh();
                 return $user;
             }
             return false;
@@ -93,6 +85,7 @@ class UserService extends Service implements UserServiceInterface
             }
 
             DB::commit();
+            UserUpdated::dispatch($user);
             return true;
         } catch (Throwable $e) {
             DB::rollBack();

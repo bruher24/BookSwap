@@ -28,17 +28,17 @@ class UpdateDealRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('deals', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'seller_id' => [
                 'required',
                 'integer',
                 'different:buyer_id',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
                 Rule::unique('deals', 'seller_id')
                     ->where('buyer_id', request('buyer_id'))
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('deal_id')),
             ],
             'buyer_id' => [
@@ -46,10 +46,10 @@ class UpdateDealRequest extends FormRequest
                 'integer',
                 'different:seller_id',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
                 Rule::unique('deals', 'buyer_id')
                     ->where('seller_id', request('seller_id'))
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('deal_id')),
             ],
             'date' => [

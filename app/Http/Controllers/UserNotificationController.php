@@ -13,6 +13,7 @@ class UserNotificationController extends Controller
     {
         $notifications = $notificationService->byUser($user_id);
         $notificationResourceCollection = NotificationResource::collection($notifications);
+
         return ResponseHelper::successResponse([
             'notifications' => $notificationResourceCollection,
         ]);
@@ -23,6 +24,7 @@ class UserNotificationController extends Controller
         if (!$notificationService->readAll($user_id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении уведомлений']);
         }
+
         return ResponseHelper::successResponse([], 'Уведомления успешно прочитаны');
     }
 }

@@ -15,6 +15,7 @@ class GenreController extends Controller
     {
         $genres = $genreService->getAll();
         $genreResourceCollection = GenreResource::collection($genres);
+
         return ResponseHelper::successResponse([
             'genres' => $genreResourceCollection,
         ]);
@@ -28,6 +29,7 @@ class GenreController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании жанра']);
         }
         $genreResource = new GenreResource($genre);
+
         return ResponseHelper::successResponse([
             'genre' => $genreResource,
         ], 'Жанр успешно создан');
@@ -40,6 +42,7 @@ class GenreController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении жанра']);
         }
         $genreResource = new GenreResource($genre);
+
         return ResponseHelper::successResponse([
             'genre' => $genreResource,
         ]);
@@ -51,6 +54,7 @@ class GenreController extends Controller
         if (!$genreService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении жанра']);
         }
+
         return ResponseHelper::successResponse([], 'Жанр успешно обновлен');
     }
 
@@ -59,6 +63,7 @@ class GenreController extends Controller
         if (!$genreService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении жанра']);
         }
+
         return ResponseHelper::successResponse([], 'Жанр успешно удален');
     }
 }

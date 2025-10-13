@@ -28,17 +28,17 @@ class UpdateChatRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('chats', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'first_user_id' => [
                 'required',
                 'integer',
                 'different:second_user_id',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
                 Rule::unique('chats', 'first_user_id')
                     ->where('second_user_id', request('second_user_id'))
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('chat_id')),
             ],
             'second_user_id' => [
@@ -46,10 +46,10 @@ class UpdateChatRequest extends FormRequest
                 'integer',
                 'different:first_user_id',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
                 Rule::unique('chats', 'second_user_id')
                     ->where('first_user_id', request('first_user_id'))
-                    ->whereNull('deleted_at')
+                    ->withoutTrashed()
                     ->ignore(request('chat_id')),
             ],
             'blocked_by' => [

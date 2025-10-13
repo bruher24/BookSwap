@@ -36,7 +36,7 @@ class StoreNotificationRequest extends FormRequest
                 'required',
                 'integer',
                 Rule::exists('users', 'id')
-                    ->whereNull('deleted_at'),
+                    ->withoutTrashed(),
             ],
             'seen' => [
                 'nullable',

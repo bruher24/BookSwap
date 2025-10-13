@@ -15,6 +15,7 @@ class UserController extends Controller
     {
         $users = $userService->getAll();
         $userResourceCollection = UserResource::collection($users);
+
         return ResponseHelper::successResponse([
             'users' => $userResourceCollection,
         ]);
@@ -28,6 +29,7 @@ class UserController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании пользователя']);
         }
         $userResource = new UserResource($user);
+
         return ResponseHelper::successResponse([
             'user' => $userResource,
         ], 'Пользователь успешно создан');
@@ -40,6 +42,7 @@ class UserController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении пользователя']);
         }
         $userResource = new UserResource($user);
+
         return ResponseHelper::successResponse([
             'user' => $userResource,
         ]);
@@ -51,6 +54,7 @@ class UserController extends Controller
         if (!$userService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении пользователя']);
         }
+
         return ResponseHelper::successResponse([], 'Пользователь успешно обновлен');
     }
 
@@ -59,6 +63,7 @@ class UserController extends Controller
         if (!$userService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении пользователя']);
         }
+
         return ResponseHelper::successResponse([], 'Пользователь успешно удален');
     }
 }

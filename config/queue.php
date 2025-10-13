@@ -87,6 +87,15 @@ return [
             'queue' => '{listeners}',
             'retry_after' => (int)env('REDIS_QUEUE_RETRY_AFTER', 90),
             'block_for' => null,
+            'after_commit' => true,
+        ],
+
+        'mail' => [
+            'driver' => 'redis',
+            'connection' => env('REDIS_QUEUE_CONNECTION', 'queue'),
+            'queue' => '{mail}',
+            'retry_after' => (int)env('REDIS_QUEUE_RETRY_AFTER', 90),
+            'block_for' => null,
             'after_commit' => false,
         ],
 

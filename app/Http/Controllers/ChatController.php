@@ -9,13 +9,13 @@ use App\Http\Resources\ChatResource;
 use App\Interfaces\ChatServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-
 class ChatController extends Controller
 {
     public function index(ChatServiceInterface $chatService): JsonResponse
     {
         $chats = $chatService->getAll();
         $chatResourceCollection = ChatResource::collection($chats);
+
         return ResponseHelper::successResponse([
             'chats' => $chatResourceCollection,
         ]);
@@ -29,6 +29,7 @@ class ChatController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при создании чата']);
         }
         $chatResource = new ChatResource($chat);
+
         return ResponseHelper::successResponse([
             'chat' => $chatResource,
         ], 'Чат успешно создан');
@@ -41,6 +42,7 @@ class ChatController extends Controller
             return ResponseHelper::errorResponse(400, ['Ошибка при получении чата']);
         }
         $chatResource = new ChatResource($chat);
+
         return ResponseHelper::successResponse([
             'chat' => $chatResource,
         ]);
@@ -52,6 +54,7 @@ class ChatController extends Controller
         if (!$chatService->update($id, $validated)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при обновлении чата']);
         }
+
         return ResponseHelper::successResponse([], 'Чат успешно обновлен');
     }
 
@@ -60,6 +63,7 @@ class ChatController extends Controller
         if (!$chatService->delete($id)) {
             return ResponseHelper::errorResponse(400, ['Ошибка при удалении чата']);
         }
+
         return ResponseHelper::successResponse([], 'Чат успешно удален');
     }
 }
