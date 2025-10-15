@@ -25,8 +25,8 @@ class SendWelcomeEmail
             ->onConnection('redis')
             ->onQueue('mail');
         Log::debug('Going to send welcome email');
-        Mail::to($event->user)
-            ->queue($message);
+        //        Mail::to($event->user)
+        //            ->queue($message);
         Log::debug('Sent');
     }
 }

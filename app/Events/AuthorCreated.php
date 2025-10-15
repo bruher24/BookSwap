@@ -2,11 +2,13 @@
 
 namespace App\Events;
 
-use App\Models\Author;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AuthorCreated
+class AuthorCreated implements ShouldQueue
 {
     use Dispatchable;
     use SerializesModels;
@@ -15,7 +17,12 @@ class AuthorCreated
      * Create a new event instance.
      */
     public function __construct(
-        public Author $author
+        public string $author
     ) {
+    }
+
+    public function broadcastOn(): Channel
+    {
+        return new PrivateChannel('test-channel');
     }
 }

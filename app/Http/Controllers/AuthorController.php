@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AuthorCreated;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use App\Http\Resources\AuthorResource;
 use App\Interfaces\AuthorServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Redis;
 
 class AuthorController extends Controller
 {
@@ -15,6 +17,9 @@ class AuthorController extends Controller
     {
         $authors = $authorService->getAll();
         $authorResourceCollection = AuthorResource::collection($authors);
+
+        Redis::publish('listeners', 'TEST MESSAGE FROM LARAVEL');
+        AuthorCreated::dispatch('TEST MSG');
 
         return ResponseHelper::successResponse([
             'authors' => $authorResourceCollection,

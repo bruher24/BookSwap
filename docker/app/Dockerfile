@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
     zip unzip \
     git \
     supervisor \
+    msmtp \
+    msmtp-mta \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка php-расширений
@@ -31,6 +33,8 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp \
     exif \
     pcntl \
     xml
+
+COPY ./docker/app/msmtprc /etc/msmtprc
 
 # Установка Redis
 RUN pecl install redis && docker-php-ext-enable redis

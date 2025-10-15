@@ -35,6 +35,15 @@ services:
         networks:
             - app-network
 
+    #    mailhog:
+    #        image: mailhog/mailhog
+    #        container_name: app-mailhog
+    #        ports:
+    #            - "1025"
+    #            - "8025:8025"
+    #        networks:
+    #            - app-network
+
     psalm:
         image: ghcr.io/danog/psalm:latest
         container_name: app-psalm
@@ -79,6 +88,7 @@ services:
             - redis_data:/data
         networks:
             - app-network
+            - cache_proxy
 
     adminer:
         image: adminer:latest
@@ -149,6 +159,8 @@ services:
 networks:
     app-network:
         driver: bridge
+    cache_proxy:
+        external: true
     microlib_proxy:
         external: true
 
