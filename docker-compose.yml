@@ -28,6 +28,8 @@ services:
         ports:
             - "5173:5173"
             - "3030:3030"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
         volumes:
             - ./:/var/www/
         depends_on:
@@ -89,6 +91,17 @@ services:
         networks:
             - app-network
             - cache_proxy
+
+    redisinsight:
+        image: redislabs/redisinsight:latest
+        container_name: app-redisinsight
+        ports:
+            - "5540:${REDISINSIGHT_PORT}"
+        volumes:
+            - redisinsight:/db
+        restart: always
+        networks:
+            - app-network
 
     adminer:
         image: adminer:latest
@@ -168,6 +181,8 @@ volumes:
     postgres_data:
         driver: local
     redis_data:
+        driver: local
+    redisinsight:
         driver: local
     typesense_data:
         driver: local

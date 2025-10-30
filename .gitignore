@@ -31,3 +31,4 @@ Thumbs.db
 .lesshst
 /docker/nginx/certs
 /.cache
+/redisinsight
