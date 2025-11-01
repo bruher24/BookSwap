@@ -11,6 +11,7 @@ class AuthorServiceTest extends TestCase
 {
     use RefreshDatabase;
 
+    // TODO: перенести в feature, добавив вызов api
     public function test_create(): void
     {
         $service = new AuthorService();
