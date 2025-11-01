@@ -9,3 +9,7 @@ Route::get('coverage', function () {
     }
     return response($html, 200)->header('Content-Type', 'text/html');
 });
+
+Route::get('info', function () {
+    phpinfo();
+});

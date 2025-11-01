@@ -47,7 +47,7 @@ class Author extends Model
     {
         return "$this->lastname "
             . mb_substr($this->firstname, 0, 1) . '.'
-            . ($this->patronymic ? mb_substr($this->patronymic, 0, 1) : '');
+            . ($this->patronymic ? ' ' . mb_substr($this->patronymic, 0, 1) . '.' : '');
     }
 
     public function getFullNameAttribute(): string
