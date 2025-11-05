@@ -90,7 +90,7 @@ services:
             - redis_data:/data
         networks:
             - app-network
-            - cache_proxy
+#            - cache_proxy
 
     redisinsight:
         image: redislabs/redisinsight:latest
@@ -172,10 +172,10 @@ services:
 networks:
     app-network:
         driver: bridge
-    cache_proxy:
-        external: true
-    microlib_proxy:
-        external: true
+#    cache_proxy:
+#        external: true
+#    microlib_proxy:
+#        external: true
 
 volumes:
     postgres_data:
