@@ -27,9 +27,6 @@ class Book extends Model
         'book_type_id',
         'cover_id',
     ];
-    public $appends = [
-        'mainAuthor'
-    ];
 
     public function searchableAs(): string
     {
@@ -44,11 +41,6 @@ class Book extends Model
             'publishing_house' => $this->publishing_house,
             'created_at' => $this->created_at->timestamp,
         ];
-    }
-
-    public function getMainAuthorAttribute(): string
-    {
-        return $this->authors()->first()->formattedName;
     }
 
     public function genres(): BelongsToMany

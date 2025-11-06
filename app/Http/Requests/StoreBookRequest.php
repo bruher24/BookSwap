@@ -89,7 +89,7 @@ class StoreBookRequest extends FormRequest
                 'nullable',
                 Rule::date()->format('Y'),
             ],
-            'book_type' => [
+            'book_type_id' => [
                 'required',
                 'integer',
                 Rule::exists('book_types', 'id')

@@ -53,7 +53,7 @@ class BookService extends Service implements BookServiceInterface
             }
 
             $authors = $this->filterAuthorsData($data);
-            if (!empty($authors) && !$this->attach($book, $authors)) {
+            if (!empty($authors) && !$this->attach($book->id, $authors)) {
                 throw new Exception('Ошибка при добавлении авторов');
             }
 

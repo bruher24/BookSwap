@@ -24,6 +24,7 @@ class UpdateBookRequest extends FormRequest
      */
     public function rules(): array
     {
+        request()->merge(['book_id' => $this->route('book')]);
         return [
             'book_id' => [
                 'required',
@@ -81,7 +82,8 @@ class UpdateBookRequest extends FormRequest
             'authorBirthdate' => [
                 'nullable',
                 'date',
-                Rule::date()->beforeOrEqual(today()->subYears(16)),
+                Rule::date()
+                    ->beforeOrEqual(today()->subYears(16)),
             ],
             'page_count' => 'required|integer|min:1',
             'cover' => [
@@ -95,7 +97,7 @@ class UpdateBookRequest extends FormRequest
                 'nullable',
                 Rule::date()->format('Y'),
             ],
-            'book_type' => [
+            'book_type_id' => [
                 'required',
                 'integer',
                 Rule::exists('book_types', 'id')
@@ -106,8 +108,8 @@ class UpdateBookRequest extends FormRequest
                 'string',
                 'size:13',
                 Rule::unique('books', 'isbn')
-                    ->withoutTrashed()
-                    ->ignore(request('book_id')),
+                    ->ignore(request('book_id'))
+                    ->withoutTrashed(),
             ],
         ];
     }

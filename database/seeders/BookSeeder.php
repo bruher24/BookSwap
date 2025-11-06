@@ -17,7 +17,7 @@ class BookSeeder extends Seeder
                 'name' => 'Тестовая книга',
                 'publishing_house' => 'Питер',
                 'publication_year' => '2020',
-                'isbn' => '123456789',
+                'isbn' => str_repeat('1', 13),
                 'page_count' => 300,
             ],
             [
@@ -25,7 +25,7 @@ class BookSeeder extends Seeder
                 'name' => 'Онегин',
                 'publishing_house' => 'ЕЕЕ',
                 'publication_year' => '2021',
-                'isbn' => '12345678',
+                'isbn' => str_repeat('2', 13),
                 'page_count' => 400,
             ],
             [
@@ -33,7 +33,7 @@ class BookSeeder extends Seeder
                 'name' => 'Зов Ктулху',
                 'publishing_house' => 'фывфыв',
                 'publication_year' => '2022',
-                'isbn' => '1234567',
+                'isbn' => str_repeat('3', 13),
                 'page_count' => 666,
             ],
             [
@@ -41,7 +41,7 @@ class BookSeeder extends Seeder
                 'name' => 'ГОСТ 2281337',
                 'publishing_house' => 'минобр',
                 'publication_year' => '1978',
-                'isbn' => '00000001',
+                'isbn' => str_repeat('4', 13),
                 'page_count' => 3,
             ],
         ];

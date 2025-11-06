@@ -15,8 +15,9 @@ abstract class Service implements ServiceInterface
 {
     protected array $ucFirstFields = [];
 
-    public function __construct(protected string $modelClass)
-    {
+    public function __construct(
+        protected string $modelClass
+    ) {
     }
 
     public function create(array $data): Model|false
@@ -47,7 +48,6 @@ abstract class Service implements ServiceInterface
                 $value = ucfirst($value);
             }
         }
-
         return $data;
     }
 

@@ -47,24 +47,24 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{book}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{book}', 'update')->name('update');
-                Route::delete('{book}', 'destroy')->name('destroy');
+                Route::put('{book}', 'update')->name('update')->middleware(BearerAuthorization::class);
+                Route::delete('{book}', 'destroy')->name('destroy')->middleware(BearerAuthorization::class);
             });
 
-        Route::prefix('booktypes')->name('booktypes.')->controller(BookTypeController::class)
+        Route::prefix('book_types')->name('book_types.')->controller(BookTypeController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
-                Route::get('{booktype}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{booktype}', 'update')->name('update');
-                Route::delete('{booktype}', 'destroy')->name('destroy');
+                Route::get('{book_type}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
+                Route::put('{book_type}', 'update')->name('update');
+                Route::delete('{book_type}', 'destroy')->name('destroy');
             });
 
         Route::prefix('chats')->name('chats.')->controller(ChatController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store');
-                Route::get('{chat}', 'show')->name('show');
+                Route::get('{chat}', 'show')->name('show')->middleware(BearerAuthorization::class);
                 Route::put('{chat}', 'update')->name('update');
                 Route::delete('{chat}', 'destroy')->name('destroy');
             });

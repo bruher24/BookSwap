@@ -23,6 +23,7 @@ class UpdateBookTypeRequest extends FormRequest
      */
     public function rules(): array
     {
+        request()->merge(['book_type_id' => $this->route('book_type')]);
         return [
             'book_type_id' => [
                 'required',
@@ -35,8 +36,8 @@ class UpdateBookTypeRequest extends FormRequest
                 'string',
                 'max:50',
                 Rule::unique('book_types', 'name')
-                    ->withoutTrashed()
-                    ->ignore(request('book_type_id')),
+                    ->ignore(request('book_type_id'))
+                    ->withoutTrashed(),
             ],
         ];
     }

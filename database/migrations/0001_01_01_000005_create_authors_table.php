@@ -10,6 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        // TODO: добавить created_by или assigned_user_id
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
             $table->string('lastname', 100);

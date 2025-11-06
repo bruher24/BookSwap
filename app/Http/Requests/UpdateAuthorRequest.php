@@ -24,6 +24,7 @@ class UpdateAuthorRequest extends FormRequest
      */
     public function rules(): array
     {
+        request()->merge(['author_id' => $this->route('author')]);
         return [
             'author_id' => [
                 'required',

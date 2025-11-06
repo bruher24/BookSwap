@@ -54,12 +54,10 @@ class UserService extends Service implements UserServiceInterface
     {
         DB::beginTransaction();
         try {
-            $object = $this->get($id);
-            if (!$object instanceof User) {
-                return false;
+            $user = $this->get($id);
+            if (!$user instanceof User) {
+                throw new Exception('Пользователь не найден');
             }
-
-            $user = $object;
 
             if (isset($data['phone_number'])) {
                 $phoneNumber = str_replace(' ', '', $data['phone_number']);
@@ -73,15 +71,15 @@ class UserService extends Service implements UserServiceInterface
             unset($data['phone_number']);
 
             if (isset($data['password']) && !Hash::check($data['old_password'], $user->getAuthPassword())) {
-                return false;
+                throw new Exception('Старый пароль введен неправильно');
             }
 
             if ($data['password'] == null) {
                 unset($data['password']);
             }
 
-            if (!parent::update($user, $data)) {
-                return false;
+            if (!parent::update($id, $data)) {
+                throw new Exception('Ошибка при обновлении пользователя');
             }
 
             DB::commit();

@@ -23,6 +23,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        request()->merge(['user_id' => $this->route('user')]);
         return [
             'user_id' => [
                 'required',
@@ -35,8 +36,8 @@ class UpdateUserRequest extends FormRequest
                 'string',
                 'max:50',
                 Rule::unique('users', 'name')
-                    ->withoutTrashed()
-                    ->ignore(request('user_id')),
+                    ->ignore(request('user_id'))
+                    ->withoutTrashed(),
             ],
             'email' => [
                 'nullable',
@@ -45,8 +46,8 @@ class UpdateUserRequest extends FormRequest
                 'max:100',
                 'email',
                 Rule::unique('users', 'email')
-                    ->withoutTrashed()
-                    ->ignore(request('user_id')),
+                    ->ignore(request('user_id'))
+                    ->withoutTrashed(),
             ],
             'old_password' => [
                 'required_with:password',

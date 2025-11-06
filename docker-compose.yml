@@ -24,7 +24,7 @@ services:
             dockerfile: docker/app/Dockerfile
         container_name: app
         restart: always
-        user: 33:33
+        #        user: 33:33
         ports:
             - "5173:5173"
             - "3030:3030"
@@ -90,7 +90,7 @@ services:
             - redis_data:/data
         networks:
             - app-network
-#            - cache_proxy
+    #            - cache_proxy
 
     redisinsight:
         image: redislabs/redisinsight:latest

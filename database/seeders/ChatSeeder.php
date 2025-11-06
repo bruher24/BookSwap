@@ -9,10 +9,23 @@ class ChatSeeder extends Seeder
 {
     public function run()
     {
-        $chat = [
-            'first_user_id' => 1,
-            'second_user_id' => 2,
+        $chats = [
+            [
+                'first_user_id' => 1,
+                'second_user_id' => 2,
+            ],
+            [
+                'first_user_id' => 2,
+                'second_user_id' => 3,
+            ],
+            [
+                'first_user_id' => 3,
+                'second_user_id' => 4,
+            ],
         ];
-        Chat::create($chat);
+
+        collect($chats)->each(function ($chat) {
+            Chat::create($chat);
+        });
     }
 }
