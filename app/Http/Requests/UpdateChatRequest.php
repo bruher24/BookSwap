@@ -23,6 +23,7 @@ class UpdateChatRequest extends FormRequest
      */
     public function rules(): array
     {
+        request()->merge(['chat_id' => $this->route('chat')]);
         return [
             'chat_id' => [
                 'required',
@@ -40,6 +41,10 @@ class UpdateChatRequest extends FormRequest
                     ->where('second_user_id', request('second_user_id'))
                     ->withoutTrashed()
                     ->ignore(request('chat_id')),
+                Rule::unique('chats', 'second_user_id')
+                    ->where('first_user_id', request('second_user_id'))
+                    ->withoutTrashed()
+                    ->ignore(request('chat_id')),
             ],
             'second_user_id' => [
                 'required',
@@ -49,6 +54,10 @@ class UpdateChatRequest extends FormRequest
                     ->withoutTrashed(),
                 Rule::unique('chats', 'second_user_id')
                     ->where('first_user_id', request('first_user_id'))
+                    ->withoutTrashed()
+                    ->ignore(request('chat_id')),
+                Rule::unique('chats', 'first_user_id')
+                    ->where('second_user_id', request('first_user_id'))
                     ->withoutTrashed()
                     ->ignore(request('chat_id')),
             ],

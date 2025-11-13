@@ -65,8 +65,8 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store');
                 Route::get('{chat}', 'show')->name('show')->middleware(BearerAuthorization::class);
-                Route::put('{chat}', 'update')->name('update');
-                Route::delete('{chat}', 'destroy')->name('destroy');
+                Route::put('{chat}', 'update')->name('update')->middleware(BearerAuthorization::class);
+                Route::delete('{chat}', 'destroy')->name('destroy')->middleware(BearerAuthorization::class);
             });
 
         Route::prefix('covers')->name('covers.')->controller(CoverController::class)
@@ -75,7 +75,7 @@ Route::prefix('v1')->name('api.')
                 Route::post('/', 'store')->name('store');
                 Route::get('{cover}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
                 Route::put('{cover}', 'update')->name('update')->middleware(IsAdmin::class);
-                Route::delete('{cover}', 'destroy')->name('destroy');
+                Route::delete('{cover}', 'destroy')->name('destroy')->middleware(BearerAuthorization::class);
             });
 
         Route::prefix('deals')->name('deals.')->controller(DealController::class)

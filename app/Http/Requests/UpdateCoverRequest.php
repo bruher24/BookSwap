@@ -23,6 +23,7 @@ class UpdateCoverRequest extends FormRequest
      */
     public function rules(): array
     {
+        request()->merge(['cover_id' => $this->route('cover')]);
         return [
             'cover_id' => [
                 'required',

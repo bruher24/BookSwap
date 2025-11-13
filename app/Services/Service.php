@@ -105,6 +105,7 @@ abstract class Service implements ServiceInterface
         }
     }
 
+    // TODO: исправить удаление для всех моделей - сделать его идемподентным
     public function delete(string $id): bool
     {
         DB::beginTransaction();
