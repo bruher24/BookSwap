@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\StoreMessageRequest;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\MessageResource;
 use App\Interfaces\ChatServiceInterface;
@@ -85,7 +86,7 @@ class UserChatController extends Controller
     }
 
     public function send(
-        Request $request,
+        StoreMessageRequest $request,
         ChatServiceInterface $chatService,
         string $user_id,
         string $recipient_id
@@ -107,7 +108,13 @@ class UserChatController extends Controller
         // TODO: сделать нормально
         $messagesToRead = $request->input('messages');
         $user = $userService->get($id);
+
+        if (!$user) {
+            return ResponseHelper::errorResponse(400, ['Ошибка при получении пользователя']);
+        }
+
         $checked = $userService->readMessages($user->id, $messagesToRead);
+
         if (!$checked) {
             return ResponseHelper::errorResponse(400, ['Ошибка при прочтении сообщений']);
         }

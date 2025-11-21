@@ -47,736 +47,97 @@
                 </style>
 </head>
 <body>
-<section><h1>Total violations: 188</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
+<section><h1>Total violations: 104</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
 <ul id="psalmErrors">
-  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
-<h3>app/Events/MessageSent.php:21</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedProperty</li>
-</ul>
-<p>Cannot find explicit references to property App\Events\MessageSent::$connection (but did find some potential references)</p>
-<pre data-start="21" class="line-numbersx"><code class="language-php">    public string /**##(##**/$connection/**##)##**/ = 'redis';</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
-<h3>app/Events/MessageSent.php:22</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedProperty</li>
-</ul>
-<p>Cannot find explicit references to property App\Events\MessageSent::$queue (but did find some potential references)</p>
-<pre data-start="22" class="line-numbersx"><code class="language-php">    public string /**##(##**/$queue/**##)##**/ = 'listeners';</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Middleware/BearerAuthorization.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Middleware\BearerAuthorization::handle</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/handle/**##)##**/(Request $request, Closure $next): Response</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Middleware/IsAdmin.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Middleware\IsAdmin::handle</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/handle/**##)##**/(Request $request, Closure $next): Response</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/AuthRequest.php:13</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\AuthRequest::authorize</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/AuthRequest.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\AuthRequest::rules</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/SearchRequest.php:13</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\SearchRequest::authorize</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/SearchRequest.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\SearchRequest::rules</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreAuthorRequest.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreAuthorRequest::authorize</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreAuthorRequest.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreAuthorRequest::rules</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreBookRequest.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreBookRequest::authorize</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreBookRequest.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreBookRequest::rules</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreBookTypeRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreBookTypeRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreBookTypeRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreBookTypeRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreChatRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreChatRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreChatRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreChatRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreCoverRequest.php:13</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreCoverRequest::authorize</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreCoverRequest.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreCoverRequest::rules</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreDealRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreDealRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreDealRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreDealRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreFilterRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreFilterRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreFilterRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreFilterRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreGenreRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreGenreRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreGenreRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreGenreRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Http/Requests/StoreMessageRequest.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Http\Requests\StoreMessageRequest is never used</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/StoreMessageRequest/**##)##**/ extends FormRequest</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Http/Requests/StoreNotificationRequest.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Http\Requests\StoreNotificationRequest is never used</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/StoreNotificationRequest/**##)##**/ extends FormRequest</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StorePhotoRequest.php:13</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StorePhotoRequest::authorize</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StorePhotoRequest.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StorePhotoRequest::rules</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreSettingRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreSettingRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreSettingRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreSettingRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreUserRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreUserRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/StoreUserRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\StoreUserRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateAuthorRequest.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateAuthorRequest::authorize</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateAuthorRequest.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateAuthorRequest::rules</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateBookRequest.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateBookRequest::authorize</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateBookRequest.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateBookRequest::rules</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateBookTypeRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateBookTypeRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateBookTypeRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateBookTypeRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateChatRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateChatRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateChatRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateChatRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateCoverRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateCoverRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateCoverRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateCoverRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateDealRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateDealRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateDealRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateDealRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateFilterRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateFilterRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateFilterRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateFilterRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateGenreRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateGenreRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateGenreRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateGenreRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Http/Requests/UpdateMessageRequest.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Http\Requests\UpdateMessageRequest is never used</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/UpdateMessageRequest/**##)##**/ extends FormRequest</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Http/Requests/UpdateNotificationRequest.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Http\Requests\UpdateNotificationRequest is never used</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/UpdateNotificationRequest/**##)##**/ extends FormRequest</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdatePhotoRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdatePhotoRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdatePhotoRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdatePhotoRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateSettingRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateSettingRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateSettingRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateSettingRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateSettingsValuesRequest.php:13</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateSettingsValuesRequest::authorize</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateSettingsValuesRequest.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateSettingsValuesRequest::rules</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateUserRequest.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateUserRequest::authorize</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/authorize/**##)##**/(): bool</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Http/Requests/UpdateUserRequest.php:24</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Http\Requests\UpdateUserRequest::rules</p>
-<pre data-start="24" class="line-numbersx"><code class="language-php">    public function /**##(##**/rules/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/ServiceInterface.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\ServiceInterface::getMany</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/getMany/**##)##**/(array $ids): Collection;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedClass">
-<h3>app/Listeners/SendMessageNotification.php:10</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedClass</li>
-</ul>
-<p>Class App\Listeners\SendMessageNotification is never used</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">class /**##(##**/SendMessageNotification/**##)##**/ implements ShouldQueue</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
-<h3>app/Mail/MessageReceived.php:21</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedProperty</li>
-</ul>
-<p>Cannot find any references to property App\Mail\MessageReceived::$messageText</p>
-<pre data-start="21" class="line-numbersx"><code class="language-php">        public string /**##(##**/$messageText/**##)##**/,</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Mail/MessageReceived.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Mail\MessageReceived::headers</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">    public function /**##(##**/headers/**##)##**/(): Headers</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Mail/MessageReceived.php:42</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Mail\MessageReceived::envelope</p>
-<pre data-start="42" class="line-numbersx"><code class="language-php">    public function /**##(##**/envelope/**##)##**/(): Envelope</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Mail/MessageReceived.php:52</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Mail\MessageReceived::content</p>
-<pre data-start="52" class="line-numbersx"><code class="language-php">    public function /**##(##**/content/**##)##**/(): Content</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Mail/MessageReceived.php:65</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Mail\MessageReceived::attachments</p>
-<pre data-start="65" class="line-numbersx"><code class="language-php">    public function /**##(##**/attachments/**##)##**/(): array</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Author.php:32</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Author::toSearchableArray</p>
-<pre data-start="32" class="line-numbersx"><code class="language-php">    public function /**##(##**/toSearchableArray/**##)##**/(): array</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:35</h3>
+<h3>app/Models/Author.php:39</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
 <p>Instance property App\Models\Author::$id is not defined</p>
-<pre data-start="35" class="line-numbersx"><code class="language-php">            'id' =&gt; (string)/**##(##**/$this-&gt;id/**##)##**/,</code></pre>
+<pre data-start="39" class="line-numbersx"><code class="language-php">            'id' =&gt; (string)/**##(##**/$this-&gt;id/**##)##**/,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:36</h3>
+<h3>app/Models/Author.php:40</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
 <p>Instance property App\Models\Author::$lastname is not defined</p>
-<pre data-start="36" class="line-numbersx"><code class="language-php">            'lastname' =&gt; /**##(##**/$this-&gt;lastname/**##)##**/,</code></pre>
+<pre data-start="40" class="line-numbersx"><code class="language-php">            'lastname' =&gt; /**##(##**/$this-&gt;lastname/**##)##**/,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:37</h3>
+<h3>app/Models/Author.php:41</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
 <p>Instance property App\Models\Author::$firstname is not defined</p>
-<pre data-start="37" class="line-numbersx"><code class="language-php">            'firstname' =&gt; /**##(##**/$this-&gt;firstname/**##)##**/,</code></pre>
+<pre data-start="41" class="line-numbersx"><code class="language-php">            'firstname' =&gt; /**##(##**/$this-&gt;firstname/**##)##**/,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:38</h3>
+<h3>app/Models/Author.php:42</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
 <p>Instance property App\Models\Author::$created_at is not defined</p>
-<pre data-start="38" class="line-numbersx"><code class="language-php">            'created_at' =&gt; /**##(##**/$this-&gt;created_at/**##)##**/-&gt;timestamp,</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Author.php:42</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Author::getFormattedNameAttribute</p>
-<pre data-start="42" class="line-numbersx"><code class="language-php">    public function /**##(##**/getFormattedNameAttribute/**##)##**/(): string</code></pre>
+<pre data-start="42" class="line-numbersx"><code class="language-php">            'created_at' =&gt; /**##(##**/$this-&gt;created_at/**##)##**/-&gt;timestamp,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:44</h3>
+<h3>app/Models/Author.php:48</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
 <p>Instance property App\Models\Author::$lastname is not defined</p>
-<pre data-start="44" class="line-numbersx"><code class="language-php">        return "/**##(##**/$this-&gt;lastname/**##)##**/ "</code></pre>
+<pre data-start="48" class="line-numbersx"><code class="language-php">        return "/**##(##**/$this-&gt;lastname/**##)##**/ "</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:45</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedThisPropertyFetch</li>
-</ul>
-<p>Instance property App\Models\Author::$firstname is not defined</p>
-<pre data-start="45" class="line-numbersx"><code class="language-php">            . mb_substr(/**##(##**/$this-&gt;firstname/**##)##**/, 0, 1) . "."</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:46</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedThisPropertyFetch</li>
-</ul>
-<p>Instance property App\Models\Author::$patronymic is not defined</p>
-<pre data-start="46" class="line-numbersx"><code class="language-php">            . (/**##(##**/$this-&gt;patronymic/**##)##**/ ? mb_substr($this-&gt;patronymic, 0, 1) : '');</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Models/Author.php:49</h3>
 <ul class="tags">
 <li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Author::getFullNameAttribute</p>
-<pre data-start="49" class="line-numbersx"><code class="language-php">    public function /**##(##**/getFullNameAttribute/**##)##**/(): string</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:51</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedThisPropertyFetch</li>
-</ul>
-<p>Instance property App\Models\Author::$lastname is not defined</p>
-<pre data-start="51" class="line-numbersx"><code class="language-php">        return "/**##(##**/$this-&gt;lastname/**##)##**/ $this-&gt;firstname" . ($this-&gt;patronymic ? " $this-&gt;patronymic" : '');</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:51</h3>
-<ul class="tags">
-<li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
 <p>Instance property App\Models\Author::$firstname is not defined</p>
-<pre data-start="51" class="line-numbersx"><code class="language-php">        return "$this-&gt;lastname /**##(##**/$this-&gt;firstname/**##)##**/" . ($this-&gt;patronymic ? " $this-&gt;patronymic" : '');</code></pre>
+<pre data-start="49" class="line-numbersx"><code class="language-php">            . mb_substr(/**##(##**/$this-&gt;firstname/**##)##**/, 0, 1) . '.'</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Author.php:51</h3>
+<h3>app/Models/Author.php:50</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
 <p>Instance property App\Models\Author::$patronymic is not defined</p>
-<pre data-start="51" class="line-numbersx"><code class="language-php">        return "$this-&gt;lastname $this-&gt;firstname" . (/**##(##**/$this-&gt;patronymic/**##)##**/ ? " $this-&gt;patronymic" : '');</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Author.php:54</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Author::books</p>
-<pre data-start="54" class="line-numbersx"><code class="language-php">    public function /**##(##**/books/**##)##**/(): BelongsToMany</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Book.php:35</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Book::toSearchableArray</p>
-<pre data-start="35" class="line-numbersx"><code class="language-php">    public function /**##(##**/toSearchableArray/**##)##**/(): array</code></pre>
+<pre data-start="50" class="line-numbersx"><code class="language-php">            . (/**##(##**/$this-&gt;patronymic/**##)##**/ ? ' ' . mb_substr($this-&gt;patronymic, 0, 1) . '.' : '');</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/Book.php:38</h3>
+<h3>app/Models/Author.php:55</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
-<p>Instance property App\Models\Book::$id is not defined</p>
-<pre data-start="38" class="line-numbersx"><code class="language-php">            'id' =&gt; (string)/**##(##**/$this-&gt;id/**##)##**/,</code></pre>
+<p>Instance property App\Models\Author::$lastname is not defined</p>
+<pre data-start="55" class="line-numbersx"><code class="language-php">        return "/**##(##**/$this-&gt;lastname/**##)##**/ $this-&gt;firstname" . ($this-&gt;patronymic ? " $this-&gt;patronymic" : '');</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
+<h3>app/Models/Author.php:55</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedThisPropertyFetch</li>
+</ul>
+<p>Instance property App\Models\Author::$firstname is not defined</p>
+<pre data-start="55" class="line-numbersx"><code class="language-php">        return "$this-&gt;lastname /**##(##**/$this-&gt;firstname/**##)##**/" . ($this-&gt;patronymic ? " $this-&gt;patronymic" : '');</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
+<h3>app/Models/Author.php:55</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedThisPropertyFetch</li>
+</ul>
+<p>Instance property App\Models\Author::$patronymic is not defined</p>
+<pre data-start="55" class="line-numbersx"><code class="language-php">        return "$this-&gt;lastname $this-&gt;firstname" . (/**##(##**/$this-&gt;patronymic/**##)##**/ ? " $this-&gt;patronymic" : '');</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
 <h3>app/Models/Book.php:39</h3>
@@ -784,8 +145,8 @@
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
-<p>Instance property App\Models\Book::$name is not defined</p>
-<pre data-start="39" class="line-numbersx"><code class="language-php">            'name' =&gt; /**##(##**/$this-&gt;name/**##)##**/,</code></pre>
+<p>Instance property App\Models\Book::$id is not defined</p>
+<pre data-start="39" class="line-numbersx"><code class="language-php">            'id' =&gt; (string)/**##(##**/$this-&gt;id/**##)##**/,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
 <h3>app/Models/Book.php:40</h3>
@@ -793,8 +154,8 @@
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
-<p>Instance property App\Models\Book::$publishing_house is not defined</p>
-<pre data-start="40" class="line-numbersx"><code class="language-php">            'publishing_house' =&gt; /**##(##**/$this-&gt;publishing_house/**##)##**/,</code></pre>
+<p>Instance property App\Models\Book::$name is not defined</p>
+<pre data-start="40" class="line-numbersx"><code class="language-php">            'name' =&gt; /**##(##**/$this-&gt;name/**##)##**/,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
 <h3>app/Models/Book.php:41</h3>
@@ -802,265 +163,94 @@
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
+<p>Instance property App\Models\Book::$publishing_house is not defined</p>
+<pre data-start="41" class="line-numbersx"><code class="language-php">            'publishing_house' =&gt; /**##(##**/$this-&gt;publishing_house/**##)##**/,</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
+<h3>app/Models/Book.php:42</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedThisPropertyFetch</li>
+</ul>
 <p>Instance property App\Models\Book::$created_at is not defined</p>
-<pre data-start="41" class="line-numbersx"><code class="language-php">            'created_at' =&gt; /**##(##**/$this-&gt;created_at/**##)##**/-&gt;timestamp,</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Book.php:45</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Book::getMainAuthorAttribute</p>
-<pre data-start="45" class="line-numbersx"><code class="language-php">    public function /**##(##**/getMainAuthorAttribute/**##)##**/(): string</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="NullableReturnStatement">
-<h3>app/Models/Book.php:47</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>NullableReturnStatement</li>
-</ul>
-<p>The declared return type 'string' for App\Models\Book::getMainAuthorAttribute is not nullable, but the function returns 'mixed|null'</p>
-<pre data-start="47" class="line-numbersx"><code class="language-php">        return /**##(##**/$this-&gt;authors()-&gt;first()-&gt;formattedName/**##)##**/;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Book.php:60</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Book::cover</p>
-<pre data-start="60" class="line-numbersx"><code class="language-php">    public function /**##(##**/cover/**##)##**/(): BelongsTo</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Book.php:65</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Book::user</p>
-<pre data-start="65" class="line-numbersx"><code class="language-php">    public function /**##(##**/user/**##)##**/(): BelongsTo</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Book.php:70</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Book::book_type</p>
-<pre data-start="70" class="line-numbersx"><code class="language-php">    public function /**##(##**/book_type/**##)##**/(): BelongsTo</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/BookType.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\BookType::books</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/books/**##)##**/(): HasMany</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
-<h3>app/Models/Cover.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedProperty</li>
-</ul>
-<p>Cannot find explicit references to property App\Models\Cover::$baseCoverId (but did find some potential references)</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public static int /**##(##**/$baseCoverId/**##)##**/ = 1;</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Cover.php:22</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Cover::book</p>
-<pre data-start="22" class="line-numbersx"><code class="language-php">    public function /**##(##**/book/**##)##**/(): HasMany</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Deal.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Deal::dealItems</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    public function /**##(##**/dealItems/**##)##**/(): HasMany</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/DealItem.php:19</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\DealItem::deal</p>
-<pre data-start="19" class="line-numbersx"><code class="language-php">    public function /**##(##**/deal/**##)##**/(): BelongsTo</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Genre.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Genre::books</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/books/**##)##**/(): BelongsToMany</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Message.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Message::chat</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    public function /**##(##**/chat/**##)##**/(): BelongsTo</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Phone.php:19</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Phone::user</p>
-<pre data-start="19" class="line-numbersx"><code class="language-php">    public function /**##(##**/user/**##)##**/(): BelongsTo</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Photo.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Photo::users</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/users/**##)##**/(): HasMany</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Role.php:22</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Role::users</p>
-<pre data-start="22" class="line-numbersx"><code class="language-php">    public function /**##(##**/users/**##)##**/(): BelongsToMany</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Setting.php:22</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Setting::availableValues</p>
-<pre data-start="22" class="line-numbersx"><code class="language-php">    protected function /**##(##**/availableValues/**##)##**/(): Attribute</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/Setting.php:30</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Models\Setting::users</p>
-<pre data-start="30" class="line-numbersx"><code class="language-php">    public function /**##(##**/users/**##)##**/(): BelongsToMany</code></pre>
+<pre data-start="42" class="line-numbersx"><code class="language-php">            'created_at' =&gt; /**##(##**/$this-&gt;created_at/**##)##**/-&gt;timestamp,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingTemplateParam">
-<h3>app/Models/User.php:22</h3>
+<h3>app/Models/User.php:25</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingTemplateParam</li>
 </ul>
 <p>App\Models\User has missing template params when extending Laravel\Sanctum\HasApiTokens, expecting 1</p>
-<pre data-start="22" class="line-numbersx"><code class="language-php">    use HasFactory, Notifiable, SoftDeletes, /**##(##**/HasApiTokens/**##)##**/, CacheInvalidation;</code></pre>
+<pre data-start="25" class="line-numbersx"><code class="language-php">    use /**##(##**/HasApiTokens/**##)##**/;</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Models/User.php:63</h3>
+<h3>app/Models/User.php:69</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Models\User::casts should have the "Override" attribute</p>
-<pre data-start="63" class="line-numbersx"><code class="language-php">    /**
+<pre data-start="69" class="line-numbersx"><code class="language-php">    /**
      * Get the attributes that should be cast.
      *
      * @return array&lt;string, string&gt;
      */
     /**##(##**/protected function casts(): array/**##)##**/</code></pre>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/User.php:71</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Models\User::getMainRoleAttribute (but did find some potential callers)</p>
-<pre data-start="71" class="line-numbersx"><code class="language-php">    public function /**##(##**/getMainRoleAttribute/**##)##**/(): int</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/User.php:76</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Models\User::getRegisteredDiffAttribute (but did find some potential callers)</p>
-<pre data-start="76" class="line-numbersx"><code class="language-php">    public function /**##(##**/getRegisteredDiffAttribute/**##)##**/()</code></pre>
-</li>
   <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
-<h3>app/Models/User.php:78</h3>
+<h3>app/Models/User.php:84</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>UndefinedThisPropertyFetch</li>
 </ul>
 <p>Instance property App\Models\User::$created_at is not defined</p>
-<pre data-start="78" class="line-numbersx"><code class="language-php">        $diff = Carbon::now()-&gt;diff(/**##(##**/$this-&gt;created_at/**##)##**/);</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Models/User.php:100</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Models\User::books (but did find some potential callers)</p>
-<pre data-start="100" class="line-numbersx"><code class="language-php">    public function /**##(##**/books/**##)##**/(): HasMany</code></pre>
+<pre data-start="84" class="line-numbersx"><code class="language-php">        $diff = Carbon::now()-&gt;diff(/**##(##**/$this-&gt;created_at/**##)##**/);</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="InvalidReturnType">
-<h3>app/Models/User.php:127</h3>
+<h3>app/Models/User.php:133</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>InvalidReturnType</li>
 </ul>
 <p>The declared return type 'Illuminate\Database\Eloquent\Relations\HasMany' for App\Models\User::notifications is incorrect, got 'Illuminate\Database\Eloquent\Builder&lt;TRelatedModel:Illuminate\Database\Eloquent\Relations\HasMany as Illuminate\Database\Eloquent\Model&gt;'</p>
-<pre data-start="127" class="line-numbersx"><code class="language-php">    public function notifications(): /**##(##**/HasMany/**##)##**/</code></pre>
+<pre data-start="133" class="line-numbersx"><code class="language-php">    public function notifications(): /**##(##**/HasMany/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="InvalidReturnStatement">
-<h3>app/Models/User.php:129</h3>
+<h3>app/Models/User.php:135</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>InvalidReturnStatement</li>
 </ul>
 <p>The inferred type 'Illuminate\Database\Eloquent\Builder&lt;TRelatedModel:Illuminate\Database\Eloquent\Relations\HasMany as Illuminate\Database\Eloquent\Model&gt;' does not match the declared return type 'Illuminate\Database\Eloquent\Relations\HasMany' for App\Models\User::notifications</p>
-<pre data-start="129" class="line-numbersx"><code class="language-php">        return /**##(##**/$this-&gt;hasMany(Notification::class)-&gt;where('seen', false)/**##)##**/;</code></pre>
+<pre data-start="135" class="line-numbersx"><code class="language-php">        return /**##(##**/$this-&gt;hasMany(Notification::class)-&gt;where('seen', false)/**##)##**/;</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="InvalidReturnType">
-<h3>app/Models/User.php:132</h3>
+<h3>app/Models/User.php:138</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>InvalidReturnType</li>
 </ul>
 <p>The declared return type 'Illuminate\Database\Eloquent\Relations\HasMany' for App\Models\User::unreadMessages is incorrect, got 'Illuminate\Database\Eloquent\Builder&lt;TRelatedModel:Illuminate\Database\Eloquent\Relations\HasMany as Illuminate\Database\Eloquent\Model&gt;'</p>
-<pre data-start="132" class="line-numbersx"><code class="language-php">    public function unreadMessages(): /**##(##**/HasMany/**##)##**/</code></pre>
+<pre data-start="138" class="line-numbersx"><code class="language-php">    public function unreadMessages(): /**##(##**/HasMany/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="InvalidReturnStatement">
-<h3>app/Models/User.php:134</h3>
+<h3>app/Models/User.php:140</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>InvalidReturnStatement</li>
 </ul>
 <p>The inferred type 'Illuminate\Database\Eloquent\Builder&lt;TRelatedModel:Illuminate\Database\Eloquent\Relations\HasMany as Illuminate\Database\Eloquent\Model&gt;' does not match the declared return type 'Illuminate\Database\Eloquent\Relations\HasMany' for App\Models\User::unreadMessages</p>
-<pre data-start="134" class="line-numbersx"><code class="language-php">        return /**##(##**/$this-&gt;hasMany(Message::class, 'to_id')-&gt;where('seen', false)/**##)##**/;</code></pre>
+<pre data-start="140" class="line-numbersx"><code class="language-php">        return /**##(##**/$this-&gt;hasMany(Message::class, 'to_id')-&gt;where('seen', false)/**##)##**/;</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Providers/AppServiceProvider.php:54</h3>
+<h3>app/Providers/AppServiceProvider.php:52</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Providers\AppServiceProvider::register should have the "Override" attribute</p>
-<pre data-start="54" class="line-numbersx"><code class="language-php">    /**
+<pre data-start="52" class="line-numbersx"><code class="language-php">    /**
      * Register any application services.
      */
     /**##(##**/public function register(): void/**##)##**/</code></pre>
@@ -1102,31 +292,22 @@
 <pre data-start="49" class="line-numbersx"><code class="language-php">    /**##(##**/public function logout(string $email): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/AuthorService.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Services\AuthorService::__construct</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/BookService.php:18</h3>
+<h3>app/Services/BookService.php:16</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\BookService::__construct</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookService.php:95</h3>
+<h3>app/Services/BookService.php:80</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\BookService::attach should have the "Override" attribute</p>
-<pre data-start="95" class="line-numbersx"><code class="language-php">    /**##(##**/public function attach(string $book_id, array $authors): bool/**##)##**/</code></pre>
+<pre data-start="80" class="line-numbersx"><code class="language-php">    /**##(##**/public function attach(string $book_id, array $authors): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Services/BookTypeService.php:11</h3>
@@ -1183,13 +364,49 @@
 <pre data-start="85" class="line-numbersx"><code class="language-php">                'chat_id' =&gt; /**##(##**/$chat-&gt;id/**##)##**/,</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/CoverService.php:11</h3>
+<h3>app/Services/CoverService.php:17</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\CoverService::__construct</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/CoverService.php:52</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\CoverService::update should have the "Override" attribute</p>
+<pre data-start="52" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(string $id, array $data): bool/**##)##**/</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
+<h3>app/Services/CoverService.php:55</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidPropertyFetch</li>
+</ul>
+<p>Cannot fetch property on non-object  of type false</p>
+<pre data-start="55" class="line-numbersx"><code class="language-php">            $old_path = /**##(##**/$this-&gt;get($id)-&gt;src/**##)##**/;</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/CoverService.php:89</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\CoverService::delete should have the "Override" attribute</p>
+<pre data-start="89" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(string $id): bool/**##)##**/</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
+<h3>app/Services/CoverService.php:92</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidPropertyFetch</li>
+</ul>
+<p>Cannot fetch property on non-object  of type false</p>
+<pre data-start="92" class="line-numbersx"><code class="language-php">            $path = /**##(##**/$this-&gt;get($id)-&gt;src/**##)##**/;</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Services/DealService.php:11</h3>
@@ -1255,76 +472,103 @@
 <pre data-start="34" class="line-numbersx"><code class="language-php">    /**##(##**/public function readAll(string $user_id): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/PhotoService.php:11</h3>
+<h3>app/Services/PhotoService.php:17</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\PhotoService::__construct</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/Service.php:22</h3>
+<h3>app/Services/PhotoService.php:52</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\PhotoService::update should have the "Override" attribute</p>
+<pre data-start="52" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(string $id, array $data): bool/**##)##**/</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
+<h3>app/Services/PhotoService.php:55</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidPropertyFetch</li>
+</ul>
+<p>Cannot fetch property on non-object  of type false</p>
+<pre data-start="55" class="line-numbersx"><code class="language-php">            $old_path = /**##(##**/$this-&gt;get($id)-&gt;src/**##)##**/;</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/PhotoService.php:89</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\PhotoService::delete should have the "Override" attribute</p>
+<pre data-start="89" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(string $id): bool/**##)##**/</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
+<h3>app/Services/PhotoService.php:92</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidPropertyFetch</li>
+</ul>
+<p>Cannot fetch property on non-object  of type false</p>
+<pre data-start="92" class="line-numbersx"><code class="language-php">            $path = /**##(##**/$this-&gt;get($id)-&gt;src/**##)##**/;</code></pre>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/Service.php:23</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\Service::create should have the "Override" attribute</p>
-<pre data-start="22" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Model|false/**##)##**/</code></pre>
+<pre data-start="23" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Model|false/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/Service.php:53</h3>
+<h3>app/Services/Service.php:54</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\Service::get should have the "Override" attribute</p>
-<pre data-start="53" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(string $id): Model|false/**##)##**/</code></pre>
+<pre data-start="54" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(string $id): Model|false/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/Service.php:63</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\Service::getmany should have the "Override" attribute</p>
-<pre data-start="63" class="line-numbersx"><code class="language-php">    /**##(##**/public function getMany(array $ids): Collection/**##)##**/</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/Service.php:68</h3>
+<h3>app/Services/Service.php:64</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\Service::getall should have the "Override" attribute</p>
-<pre data-start="68" class="line-numbersx"><code class="language-php">    /**##(##**/public function getAll(): Collection/**##)##**/</code></pre>
+<pre data-start="64" class="line-numbersx"><code class="language-php">    /**##(##**/public function getAll(): Collection/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/Service.php:81</h3>
+<h3>app/Services/Service.php:77</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\Service::where should have the "Override" attribute</p>
-<pre data-start="81" class="line-numbersx"><code class="language-php">    /**##(##**/public function where(string $field, string $value): Collection/**##)##**/</code></pre>
+<pre data-start="77" class="line-numbersx"><code class="language-php">    /**##(##**/public function where(string $field, string $value): Collection/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/Service.php:91</h3>
+<h3>app/Services/Service.php:87</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\Service::update should have the "Override" attribute</p>
-<pre data-start="91" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(string $id, array $data): bool/**##)##**/</code></pre>
+<pre data-start="87" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(string $id, array $data): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/Service.php:107</h3>
+<h3>app/Services/Service.php:104</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\Service::delete should have the "Override" attribute</p>
-<pre data-start="107" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(string $id): bool/**##)##**/</code></pre>
+<pre data-start="104" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(string $id): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Services/SettingService.php:11</h3>
@@ -1363,40 +607,40 @@
 <pre data-start="51" class="line-numbersx"><code class="language-php">    /**##(##**/public function removeFromFavorites($user_id, $book_id): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/UserService.php:25</h3>
+<h3>app/Services/UserService.php:21</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Services\UserService::__construct</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
+<pre data-start="21" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:104</h3>
+<h3>app/Services/UserService.php:95</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::chats should have the "Override" attribute</p>
-<pre data-start="104" class="line-numbersx"><code class="language-php">    /**##(##**/public function chats(string $user_id): Collection/**##)##**/</code></pre>
+<pre data-start="95" class="line-numbersx"><code class="language-php">    /**##(##**/public function chats(string $user_id): Collection/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:124</h3>
+<h3>app/Services/UserService.php:115</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::getunreadmessages should have the "Override" attribute</p>
-<pre data-start="124" class="line-numbersx"><code class="language-php">    /**##(##**/public function getUnreadMessages(string $user_id): Collection|false/**##)##**/</code></pre>
+<pre data-start="115" class="line-numbersx"><code class="language-php">    /**##(##**/public function getUnreadMessages(string $user_id): Collection|false/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:140</h3>
+<h3>app/Services/UserService.php:131</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::readmessages should have the "Override" attribute</p>
-<pre data-start="140" class="line-numbersx"><code class="language-php">    /**##(##**/public function readMessages(string $user_id, array $messagesToRead): bool/**##)##**/</code></pre>
+<pre data-start="131" class="line-numbersx"><code class="language-php">    /**##(##**/public function readMessages(string $user_id, array $messagesToRead): bool/**##)##**/</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Services/UserSettingService.php:14</h3>
@@ -1578,6 +822,15 @@
 <p>Cannot find any calls to method App\Models\Filter::bootCacheInvalidation</p>
 <pre data-start="11" class="line-numbersx"><code class="language-php">    public static function /**##(##**/bootCacheInvalidation/**##)##**/(): void</code></pre>
 </li>
+  <li data-severity="error" data-psalm-type="UnusedClass">
+<h3>database/factories/AuthorFactory.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedClass</li>
+</ul>
+<p>Class Database\Factories\AuthorFactory is never used</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">class /**##(##**/AuthorFactory/**##)##**/ extends Factory</code></pre>
+</li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>database/factories/UserFactory.php:25</h3>
 <ul class="tags">
@@ -1608,7 +861,7 @@
 <li>UnusedClosureParam</li>
 </ul>
 <p>Param attributes is never referenced in this method</p>
-<pre data-start="41" class="line-numbersx"><code class="language-php">        return $this-&gt;state(fn(array /**##(##**/$attributes/**##)##**/) =&gt; [</code></pre>
+<pre data-start="41" class="line-numbersx"><code class="language-php">        return $this-&gt;state(fn (array /**##(##**/$attributes/**##)##**/) =&gt; [</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>database/seeders/AuthorSeeder.php:10</h3>
@@ -1647,13 +900,13 @@
 <pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/run/**##)##**/()</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>database/seeders/CoverSeeder.php:11</h3>
+<h3>database/seeders/CoverSeeder.php:10</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method Database\Seeders\CoverSeeder::run</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/run/**##)##**/(): void</code></pre>
+<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/run/**##)##**/(): void</code></pre>
 </li>
   <li data-severity="error" data-psalm-type="UnusedClass">
 <h3>database/seeders/DatabaseSeeder.php:7</h3>
@@ -1744,15 +997,6 @@
 </ul>
 <p>Cannot find any calls to method Database\Seeders\UserSeeder::run</p>
 <pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/run/**##)##**/(): void</code></pre>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidScope">
-<h3>routes/console.php:7</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidScope</li>
-</ul>
-<p>Invalid reference to $this in a non-class context</p>
-<pre data-start="7" class="line-numbersx"><code class="language-php">    /**##(##**/$this/**##)##**/-&gt;comment(Inspiring::quote());</code></pre>
 </li>
 </ul>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/prism.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/components/prism-markup-templating.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/components/prism-php.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/plugins/line-numbers/prism-line-numbers.min.js"></script><script type="text/javascript">

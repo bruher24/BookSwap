@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Override;
 
 class UpdatePhotoRequest extends FormRequest
 {
@@ -16,6 +17,7 @@ class UpdatePhotoRequest extends FormRequest
         return true;
     }
 
+    #[Override]
     protected function prepareForValidation(): void
     {
         $this->merge(['photo_id' => $this->route('photo')]);

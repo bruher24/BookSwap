@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Override;
 
 class UpdateSettingRequest extends FormRequest
 {
@@ -16,6 +17,7 @@ class UpdateSettingRequest extends FormRequest
         return true;
     }
 
+    #[Override]
     protected function prepareForValidation(): void
     {
         $this->merge(['setting_id' => $this->route('setting')]);

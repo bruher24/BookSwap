@@ -61,11 +61,6 @@ abstract class Service implements ServiceInterface
         }
     }
 
-    public function getMany(array $ids): Collection
-    {
-        return $this->modelClass::whereIn('id', $ids)->get();
-    }
-
     public function getAll(): Collection
     {
         try {

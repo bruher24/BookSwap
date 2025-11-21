@@ -11,8 +11,6 @@ interface ServiceInterface
 
     public function get(string $id): Model|false;
 
-    public function getMany(array $ids): Collection;
-
     public function getAll(): Collection;
 
     public function where(string $field, string $value): Collection;
