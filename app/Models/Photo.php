@@ -13,6 +13,7 @@ class Photo extends Model
     use CacheInvalidation;
 
     public const string CACHE_KEY = 'photos';
+    public const string BASE_PHOTO_ID = '1';
 
     public $fillable = [
         'src',

@@ -8,8 +8,6 @@ use App\Models\Cover;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Override;
 use Throwable;
 
@@ -29,22 +27,9 @@ class BookService extends Service implements BookServiceInterface
     {
         DB::beginTransaction();
         try {
-            $data['cover_id'] = Cover::$baseCoverId;
+            $data['cover_id'] = Cover::BASE_COVER_ID;
             if (isset($data['cover'])) {
-                $uuid = Str::uuid()->toString();
-                $fileType = $data['cover']->getClientOriginalExtension();
-                $path = Storage::disk('public')->putFileAs('covers', $data['cover'], $uuid . "." . $fileType);
-                if ($path) {
-                    $cover = new Cover([
-                        'src' => $path,
-                    ]);
-                    $cover->save();
-                    $data['cover_id'] = $cover->id;
-                } else {
-                    Log::error('Ошибка сохранения нового файла', [
-                        'file' => $data['cover']
-                    ]);
-                }
+                // TODO: пускать ивент создания обложки
             }
 
             $book = parent::create($data);

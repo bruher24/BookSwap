@@ -40,6 +40,10 @@ class StoreSettingRequest extends FormRequest
                 'nullable',
                 'string',
             ],
+            'available_values' => [
+                'nullable',
+                'array'
+            ]
         ];
     }
 }

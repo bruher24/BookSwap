@@ -16,6 +16,11 @@ class UpdateGenreRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['genre_id' => $this->route('genre')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

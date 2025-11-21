@@ -13,16 +13,13 @@ class Cover extends Model
     use CacheInvalidation;
 
     public const string CACHE_KEY = 'covers';
-
-    private string $baseCoverPath = 'storage/app/public/cover.png';
-
-    public static int $baseCoverId = 1;
+    public const string BASE_COVER_ID = '1';
 
     public $fillable = [
-        'src'
+        'src',
     ];
 
-    public function book(): HasMany
+    public function books(): HasMany
     {
         return $this->hasMany(Book::class);
     }

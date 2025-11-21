@@ -16,6 +16,11 @@ class UpdateDealRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['deal_id' => $this->route('deal')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -36,10 +41,6 @@ class UpdateDealRequest extends FormRequest
                 'different:buyer_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
-                Rule::unique('deals', 'seller_id')
-                    ->where('buyer_id', request('buyer_id'))
-                    ->withoutTrashed()
-                    ->ignore(request('deal_id')),
             ],
             'buyer_id' => [
                 'required',
@@ -47,10 +48,6 @@ class UpdateDealRequest extends FormRequest
                 'different:seller_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
-                Rule::unique('deals', 'buyer_id')
-                    ->where('seller_id', request('seller_id'))
-                    ->withoutTrashed()
-                    ->ignore(request('deal_id')),
             ],
             'date' => [
                 'required',

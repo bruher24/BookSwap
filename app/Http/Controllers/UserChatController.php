@@ -23,7 +23,7 @@ class UserChatController extends Controller
         if (!$user) {
             return ResponseHelper::errorResponse(400, ['Ошибка при получении пользователя']);
         }
-        $chats = $userService->chats($user);
+        $chats = $userService->chats($user->id);
 
         if (isset($recipient_id)
             && $chats->where('first_user_id', $recipient_id)->isEmpty()
@@ -37,7 +37,7 @@ class UserChatController extends Controller
                 return ResponseHelper::errorResponse(400, ['Ошибка при создании чата']);
             }
             $user->refresh();
-            $chats = $userService->chats($user);
+            $chats = $userService->chats($user->id);
         }
 
         $chatResourceCollection = ChatResource::collection($chats);
@@ -107,7 +107,7 @@ class UserChatController extends Controller
         // TODO: сделать нормально
         $messagesToRead = $request->input('messages');
         $user = $userService->get($id);
-        $checked = $userService->readMessages($user, $messagesToRead);
+        $checked = $userService->readMessages($user->id, $messagesToRead);
         if (!$checked) {
             return ResponseHelper::errorResponse(400, ['Ошибка при прочтении сообщений']);
         }

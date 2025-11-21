@@ -16,6 +16,11 @@ class UpdateSettingRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['setting_id' => $this->route('setting')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -48,6 +53,10 @@ class UpdateSettingRequest extends FormRequest
                 'nullable',
                 'string',
             ],
+            'available_values' => [
+                'nullable',
+                'array'
+            ]
         ];
     }
 }

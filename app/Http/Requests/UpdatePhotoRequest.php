@@ -16,6 +16,11 @@ class UpdatePhotoRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['photo_id' => $this->route('photo')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

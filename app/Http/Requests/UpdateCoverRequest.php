@@ -16,6 +16,11 @@ class UpdateCoverRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['cover_id' => $this->route('cover')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,7 +28,6 @@ class UpdateCoverRequest extends FormRequest
      */
     public function rules(): array
     {
-        request()->merge(['cover_id' => $this->route('cover')]);
         return [
             'cover_id' => [
                 'required',
