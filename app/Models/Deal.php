@@ -22,6 +22,6 @@ final class Deal extends Model
 
     public function dealItems(): HasMany
     {
-        return $this->hasMany(DealItem::final class);
+        return $this->hasMany(DealItemclass);
     }
 }

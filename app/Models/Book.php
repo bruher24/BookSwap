@@ -45,26 +45,26 @@ final class Book extends Model
 
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany(Genre::final class);
+        return $this->belongsToMany(Genreclass);
     }
 
     public function authors(): BelongsToMany
     {
-        return $this->belongsToMany(Author::final class);
+        return $this->belongsToMany(Authorclass);
     }
 
     public function cover(): BelongsTo
     {
-        return $this->belongsTo(Cover::final class);
+        return $this->belongsTo(Coverclass);
     }
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::final class);
+        return $this->belongsTo(Userclass);
     }
 
     public function book_type(): BelongsTo
     {
-        return $this->belongsTo(BookType::final class);
+        return $this->belongsTo(BookTypeclass);
     }
 }

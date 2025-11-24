@@ -32,6 +32,6 @@ final class Setting extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::final class);
+        return $this->belongsToMany(Userclass);
     }
 }

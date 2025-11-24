@@ -21,6 +21,6 @@ final class Photo extends Model
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::final class);
+        return $this->hasMany(Userclass);
     }
 }

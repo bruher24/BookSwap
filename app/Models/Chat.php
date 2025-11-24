@@ -21,6 +21,6 @@ final class Chat extends Model
 
     public function messages(): HasMany
     {
-        return $this->hasMany(Message::final class);
+        return $this->hasMany(Messageclass);
     }
 }

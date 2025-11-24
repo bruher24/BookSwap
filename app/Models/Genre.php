@@ -20,6 +20,6 @@ final class Genre extends Model
 
     public function books(): BelongsToMany
     {
-        return $this->belongsToMany(Book::final class);
+        return $this->belongsToMany(Bookclass);
     }
 }

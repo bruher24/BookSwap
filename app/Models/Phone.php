@@ -21,6 +21,6 @@ final class Phone extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::final class);
+        return $this->belongsTo(Userclass);
     }
 }
