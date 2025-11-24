@@ -6,8 +6,11 @@ use App\Interfaces\FilterServiceInterface;
 use App\Models\Filter;
 use Override;
 
-class FilterService extends Service implements FilterServiceInterface
+final class FilterService extends Service implements FilterServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Filter::class);

@@ -6,8 +6,11 @@ use App\Interfaces\GenreServiceInterface;
 use App\Models\Genre;
 use Override;
 
-class GenreService extends Service implements GenreServiceInterface
+final class GenreService extends Service implements GenreServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Genre::class);

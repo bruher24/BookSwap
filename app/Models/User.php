@@ -15,8 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Override;
 
-class User extends Authenticatable
+final class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
@@ -27,11 +28,6 @@ class User extends Authenticatable
 
     public const string CACHE_KEY = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -39,11 +35,6 @@ class User extends Authenticatable
         'photo_id',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -61,11 +52,7 @@ class User extends Authenticatable
         'photo',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    #[Override]
     protected function casts(): array
     {
         return [
@@ -100,43 +87,43 @@ class User extends Authenticatable
 
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::final class);
     }
 
     public function books(): HasMany
     {
-        return $this->hasMany(Book::class);
+        return $this->hasMany(Book::final class);
     }
 
     public function phone(): HasOne
     {
-        return $this->hasOne(Phone::class);
+        return $this->hasOne(Phone::final class);
     }
 
     public function photo(): BelongsTo
     {
-        return $this->belongsTo(Photo::class);
+        return $this->belongsTo(Photo::final class);
     }
 
     public function settings(): BelongsToMany
     {
-        return $this->belongsToMany(Setting::class)->withPivot('value')->withTimestamps();
+        return $this->belongsToMany(Setting::final class)->withPivot('value')->withTimestamps();
     }
 
     public function chats(): HasMany
     {
-        $chatsAsFirst = $this->hasMany(Chat::class, 'first_user_id');
-        $chatsAsSecond = $this->hasMany(Chat::class, 'second_user_id');
+        $chatsAsFirst = $this->hasMany(Chat::final class, 'first_user_id');
+        $chatsAsSecond = $this->hasMany(Chat::final class, 'second_user_id');
         return $chatsAsFirst->union($chatsAsSecond);
     }
 
     public function notifications(): HasMany
     {
-        return $this->hasMany(Notification::class)->where('seen', false);
+        return $this->hasMany(Notification::final class)->where('seen', false);
     }
 
     public function unreadMessages(): HasMany
     {
-        return $this->hasMany(Message::class, 'to_id')->where('seen', false);
+        return $this->hasMany(Message::final class, 'to_id')->where('seen', false);
     }
 }

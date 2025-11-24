@@ -8,6 +8,7 @@ use Override;
 
 /**
  * @extends Factory<Author>
+ * @psalm-suppress UnusedClass
  */
 class AuthorFactory extends Factory
 {

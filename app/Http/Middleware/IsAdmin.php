@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsAdmin
+final class IsAdmin
 {
     /**
      * Handle an incoming request.

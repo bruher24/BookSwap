@@ -14,8 +14,11 @@ use Illuminate\Support\Facades\Log;
 use Override;
 use Throwable;
 
-class ChatService extends Service implements ChatServiceInterface
+final class ChatService extends Service implements ChatServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Chat::class);
@@ -42,6 +45,7 @@ class ChatService extends Service implements ChatServiceInterface
         return parent::get($id);
     }
 
+    #[Override]
     public function byUsers(string $user_id, string $recipient_id): Chat|false
     {
         try {
@@ -58,6 +62,7 @@ class ChatService extends Service implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function messages(string $chat_id): Collection
     {
         try {
@@ -75,11 +80,16 @@ class ChatService extends Service implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false
     {
         DB::beginTransaction();
         try {
             $chat = $this->byUsers($user_id, $recipient_id);
+
+            if (!$chat instanceof Chat) {
+                throw new Exception('Ошибка получения чата');
+            }
 
             $message = new Message([
                 'chat_id' => $chat->id,

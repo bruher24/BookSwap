@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Deal extends Model
+final class Deal extends Model
 {
     use SoftDeletes;
     use CacheInvalidation;
@@ -22,6 +22,6 @@ class Deal extends Model
 
     public function dealItems(): HasMany
     {
-        return $this->hasMany(DealItem::class);
+        return $this->hasMany(DealItem::final class);
     }
 }

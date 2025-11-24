@@ -7,7 +7,7 @@ use App\Http\Resources\NotificationResource;
 use App\Interfaces\NotificationServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class UserNotificationController extends Controller
+final class UserNotificationController extends Controller
 {
     public function index(NotificationServiceInterface $notificationService, string $user_id): JsonResponse
     {

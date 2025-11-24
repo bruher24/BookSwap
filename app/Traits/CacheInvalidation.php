@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Log;
 
 trait CacheInvalidation
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public static function bootCacheInvalidation(): void
     {
         static::saved(function ($model) {

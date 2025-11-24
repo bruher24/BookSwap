@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-class Book extends Model
+final class Book extends Model
 {
     use SoftDeletes;
     use Searchable;
@@ -45,26 +45,26 @@ class Book extends Model
 
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany(Genre::class);
+        return $this->belongsToMany(Genre::final class);
     }
 
     public function authors(): BelongsToMany
     {
-        return $this->belongsToMany(Author::class);
+        return $this->belongsToMany(Author::final class);
     }
 
     public function cover(): BelongsTo
     {
-        return $this->belongsTo(Cover::class);
+        return $this->belongsTo(Cover::final class);
     }
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::final class);
     }
 
     public function book_type(): BelongsTo
     {
-        return $this->belongsTo(BookType::class);
+        return $this->belongsTo(BookType::final class);
     }
 }

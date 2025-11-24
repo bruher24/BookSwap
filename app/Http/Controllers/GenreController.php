@@ -9,7 +9,7 @@ use App\Http\Resources\GenreResource;
 use App\Interfaces\GenreServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class GenreController extends Controller
+final class GenreController extends Controller
 {
     public function index(GenreServiceInterface $genreService): JsonResponse
     {

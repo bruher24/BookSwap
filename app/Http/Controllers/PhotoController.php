@@ -9,7 +9,7 @@ use App\Http\Resources\PhotoResource;
 use App\Interfaces\PhotoServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class PhotoController extends Controller
+final class PhotoController extends Controller
 {
     public function index(PhotoServiceInterface $photoService): JsonResponse
     {

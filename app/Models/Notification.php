@@ -6,7 +6,7 @@ use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Notification extends Model
+final class Notification extends Model
 {
     use SoftDeletes;
     use CacheInvalidation;

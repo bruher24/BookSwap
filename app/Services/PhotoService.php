@@ -12,8 +12,11 @@ use Illuminate\Support\Str;
 use Override;
 use Throwable;
 
-class PhotoService extends Service implements PhotoServiceInterface
+final class PhotoService extends Service implements PhotoServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Photo::class);
@@ -26,7 +29,7 @@ class PhotoService extends Service implements PhotoServiceInterface
             // TODO: кидать ивент, чтобы создание падало в очередь
             $path = $this->storeFile($data['src']);
 
-            if (!$path) {
+            if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
@@ -49,20 +52,21 @@ class PhotoService extends Service implements PhotoServiceInterface
         return parent::get($id);
     }
 
+    #[Override]
     public function update(string $id, array $data): bool
     {
         try {
-            $old_path = $this->get($id)->src;
+            $old_file = $this->get($id);
 
             // TODO: кидать ивент, чтобы удаление падало в очередь
-            if ($id !== Photo::BASE_PHOTO_ID) {
-                Storage::disk('public')->delete($old_path);
+            if ($id !== Photo::BASE_PHOTO_ID && $old_file instanceof Photo) {
+                Storage::disk('public')->delete($old_file->src);
             }
 
             // TODO: кидать ивент, чтобы создание падало в очередь
             $path = $this->storeFile($data['src']);
 
-            if (!$path) {
+            if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
@@ -86,10 +90,15 @@ class PhotoService extends Service implements PhotoServiceInterface
         return Storage::disk('public')->putFileAs('avatars', $file, $uuid . "." . $fileType);
     }
 
+    #[Override]
     public function delete(string $id): bool
     {
         try {
-            $path = $this->get($id)->src;
+            $file = $this->get($id);
+
+            if (!$file instanceof Photo) {
+                throw new Exception('Файл не найден');
+            }
 
             // TODO: жесткое удаление либо не удалять файл какое-то время
             if (!parent::delete($id)) {
@@ -98,7 +107,7 @@ class PhotoService extends Service implements PhotoServiceInterface
 
             // TODO: кидать ивент, чтобы падало в очередь
             if ($id !== Photo::BASE_PHOTO_ID) {
-                Storage::disk('public')->delete($path);
+                Storage::disk('public')->delete($file->src);
             }
 
             return true;

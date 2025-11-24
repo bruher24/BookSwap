@@ -9,7 +9,7 @@ use App\Http\Resources\DealResource;
 use App\Interfaces\DealServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class DealController extends Controller
+final class DealController extends Controller
 {
     public function index(DealServiceInterface $dealService): JsonResponse
     {

@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Log;
 use Override;
 use Throwable;
 
-class BookService extends Service implements BookServiceInterface
+final class BookService extends Service implements BookServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod}
+     */
     public function __construct()
     {
         parent::__construct(Book::class);
@@ -77,10 +80,16 @@ class BookService extends Service implements BookServiceInterface
         return $authors;
     }
 
+    #[Override]
     public function attach(string $book_id, array $authors): bool
     {
         try {
             $book = $this->get($book_id);
+
+            if (!$book instanceof Book) {
+                throw new Exception('Ошибка получения книги');
+            }
+
             if (isset($authors['ids'])) {
                 $book->authors()->attach($authors['ids']);
             }

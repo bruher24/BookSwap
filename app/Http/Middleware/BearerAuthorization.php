@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
-class BearerAuthorization
+final class BearerAuthorization
 {
     /**
      * Handle an incoming request.

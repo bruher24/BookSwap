@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateAuthorRequest extends FormRequest
+final class UpdateAuthorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

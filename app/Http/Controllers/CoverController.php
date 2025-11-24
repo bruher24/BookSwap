@@ -9,7 +9,7 @@ use App\Http\Resources\CoverResource;
 use App\Interfaces\CoverServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class CoverController extends Controller
+final class CoverController extends Controller
 {
     public function index(CoverServiceInterface $coverService): JsonResponse
     {

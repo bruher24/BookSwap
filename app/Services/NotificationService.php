@@ -7,8 +7,11 @@ use App\Models\Notification;
 use Illuminate\Database\Eloquent\Collection;
 use Override;
 
-class NotificationService extends Service implements NotificationServiceInterface
+final class NotificationService extends Service implements NotificationServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Notification::class);
@@ -26,11 +29,13 @@ class NotificationService extends Service implements NotificationServiceInterfac
         return parent::get($id);
     }
 
+    #[Override]
     public function byUser(string $user_id): Collection
     {
         return Notification::where('user_id', $user_id)->get();
     }
 
+    #[Override]
     public function readAll(string $user_id): bool
     {
         return !!Notification::where('user_id', $user_id)->update(['seen' => true]);

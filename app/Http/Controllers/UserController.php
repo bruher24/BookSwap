@@ -9,7 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class UserController extends Controller
+final class UserController extends Controller
 {
     public function index(UserServiceInterface $userService): JsonResponse
     {

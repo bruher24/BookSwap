@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 abstract class Service implements ServiceInterface
@@ -20,6 +21,7 @@ abstract class Service implements ServiceInterface
     ) {
     }
 
+    #[Override]
     public function create(array $data): Model|false
     {
         $formattedData = $this->formatData($data);
@@ -51,6 +53,7 @@ abstract class Service implements ServiceInterface
         return $data;
     }
 
+    #[Override]
     public function get(string $id): Model|false
     {
         try {
@@ -61,6 +64,7 @@ abstract class Service implements ServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -74,6 +78,7 @@ abstract class Service implements ServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -84,11 +89,17 @@ abstract class Service implements ServiceInterface
         }
     }
 
+    #[Override]
     public function update(string $id, array $data): bool
     {
         DB::beginTransaction();
         try {
             $object = $this->get($id);
+
+            if (!$object instanceof Model) {
+                throw new Exception('Ошибка получения модели');
+            }
+
             $object->updateOrFail($data);
 
             DB::commit();
@@ -101,11 +112,17 @@ abstract class Service implements ServiceInterface
     }
 
     // TODO: исправить удаление для всех моделей - сделать его идемподентным
+    #[Override]
     public function delete(string $id): bool
     {
         DB::beginTransaction();
         try {
             $object = $this->get($id);
+
+            if (!$object instanceof Model) {
+                throw new Exception('Ошибка получения модели');
+            }
+
             $object->deleteOrFail();
 
             DB::commit();

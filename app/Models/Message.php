@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Message extends Model
+final class Message extends Model
 {
     use SoftDeletes;
     use CacheInvalidation;
@@ -25,6 +25,6 @@ class Message extends Model
 
     public function chat(): BelongsTo
     {
-        return $this->belongsTo(Chat::class);
+        return $this->belongsTo(Chat::final class);
     }
 }

@@ -9,7 +9,7 @@ use App\Http\Resources\SettingResource;
 use App\Interfaces\SettingServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class SettingController extends Controller
+final class SettingController extends Controller
 {
     public function index(SettingServiceInterface $settingService): JsonResponse
     {

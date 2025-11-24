@@ -16,8 +16,11 @@ use Illuminate\Support\Facades\Log;
 use Override;
 use Throwable;
 
-class UserService extends Service implements UserServiceInterface
+final class UserService extends Service implements UserServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(User::class);
@@ -92,6 +95,7 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function chats(string $user_id): Collection
     {
         try {
@@ -112,6 +116,7 @@ class UserService extends Service implements UserServiceInterface
     }
 
 
+    #[Override]
     public function getUnreadMessages(string $user_id): Collection|false
     {
         try {
@@ -128,6 +133,7 @@ class UserService extends Service implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function readMessages(string $user_id, array $messagesToRead): bool
     {
         DB::beginTransaction();

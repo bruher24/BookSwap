@@ -9,7 +9,7 @@ use App\Http\Resources\FilterResource;
 use App\Interfaces\FilterServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class FilterController extends Controller
+final class FilterController extends Controller
 {
     public function index(FilterServiceInterface $filterService): JsonResponse
     {

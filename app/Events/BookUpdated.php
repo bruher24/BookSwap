@@ -6,7 +6,7 @@ use App\Models\Book;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class BookUpdated
+final class BookUpdated
 {
     use Dispatchable;
     use SerializesModels;

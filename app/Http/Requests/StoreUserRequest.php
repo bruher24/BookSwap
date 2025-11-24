@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreUserRequest extends FormRequest
+final class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

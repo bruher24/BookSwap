@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Override;
 
-class UpdateGenreRequest extends FormRequest
+final class UpdateGenreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

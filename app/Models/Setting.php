@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Setting extends Model
+final class Setting extends Model
 {
     use SoftDeletes;
     use CacheInvalidation;
@@ -25,13 +25,13 @@ class Setting extends Model
     protected function availableValues(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => explode(',', $value),
-            set: fn (array $value) => implode(',', $value),
+            get: fn(string $value) => explode(',', $value),
+            set: fn(array $value) => implode(',', $value),
         );
     }
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::final class);
     }
 }

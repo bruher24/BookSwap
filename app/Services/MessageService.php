@@ -6,8 +6,11 @@ use App\Interfaces\MessageServiceInterface;
 use App\Models\Message;
 use Override;
 
-class MessageService extends Service implements MessageServiceInterface
+final class MessageService extends Service implements MessageServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Message::class);

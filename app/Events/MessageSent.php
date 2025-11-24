@@ -12,7 +12,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Override;
 
-class MessageSent implements ShouldBroadcast
+final class MessageSent implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithBroadcasting;

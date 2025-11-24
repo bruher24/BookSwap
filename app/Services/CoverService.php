@@ -12,8 +12,11 @@ use Illuminate\Support\Str;
 use Override;
 use Throwable;
 
-class CoverService extends Service implements CoverServiceInterface
+final class CoverService extends Service implements CoverServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Cover::class);
@@ -26,7 +29,7 @@ class CoverService extends Service implements CoverServiceInterface
             // TODO: кидать ивент, чтобы создание падало в очередь
             $path = $this->storeFile($data['src']);
 
-            if (!$path) {
+            if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
@@ -49,20 +52,20 @@ class CoverService extends Service implements CoverServiceInterface
         return parent::get($id);
     }
 
+    #[Override]
     public function update(string $id, array $data): bool
     {
         try {
-            $old_path = $this->get($id)->src;
-
             // TODO: кидать ивент, чтобы удаление падало в очередь
-            if ($id !== Cover::BASE_COVER_ID) {
-                Storage::disk('public')->delete($old_path);
+            $old_file = $this->get($id);
+            if ($id !== Cover::BASE_COVER_ID && $old_file instanceof Cover) {
+                Storage::disk('public')->delete($old_file->src);
             }
 
             // TODO: кидать ивент, чтобы создание падало в очередь
             $path = $this->storeFile($data['src']);
 
-            if (!$path) {
+            if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
@@ -86,10 +89,14 @@ class CoverService extends Service implements CoverServiceInterface
         return Storage::disk('public')->putFileAs('covers', $file, $uuid . "." . $fileType);
     }
 
+    #[Override]
     public function delete(string $id): bool
     {
         try {
-            $path = $this->get($id)->src;
+            $file = $this->get($id);
+            if (!$file instanceof Cover) {
+                throw new Exception('Файл не найден');
+            }
 
             // TODO: жесткое удаление либо не удалять файл какое-то время
             if (!parent::delete($id)) {
@@ -98,7 +105,7 @@ class CoverService extends Service implements CoverServiceInterface
 
             // TODO: кидать ивент, чтобы падало в очередь
             if ($id !== Cover::BASE_COVER_ID) {
-                Storage::disk('public')->delete($path);
+                Storage::disk('public')->delete($file->src);
             }
 
             return true;

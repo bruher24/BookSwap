@@ -8,25 +8,32 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
-class AuthService implements AuthServiceInterface
+final class AuthService implements AuthServiceInterface
 {
-    public function __construct(private UserServiceInterface $userService)
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function __construct(private readonly UserServiceInterface $userService)
     {
     }
 
+    #[Override]
     public function login(array $credentials): bool
     {
+        $remember = !!($credentials['remember'] ?? 0);
         if (!Auth::attempt([
             'email' => $credentials['email'],
             'password' => $credentials['password'],
-        ], $credentials['remember'] ?? 0)) {
+        ], $remember)) {
             return false;
         }
         return true;
     }
 
+    #[Override]
     public function refreshToken(string $email): string
     {
         try {
@@ -46,6 +53,7 @@ class AuthService implements AuthServiceInterface
         }
     }
 
+    #[Override]
     public function logout(string $email): bool
     {
         try {

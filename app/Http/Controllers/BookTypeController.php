@@ -9,7 +9,7 @@ use App\Http\Resources\BookTypeResource;
 use App\Interfaces\BookTypeServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class BookTypeController extends Controller
+final class BookTypeController extends Controller
 {
     public function index(BookTypeServiceInterface $bookTypeService): JsonResponse
     {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class DealItem extends Model
+final class DealItem extends Model
 {
     use SoftDeletes;
     use CacheInvalidation;
@@ -21,6 +21,6 @@ class DealItem extends Model
 
     public function deal(): BelongsTo
     {
-        return $this->belongsTo(Deal::class);
+        return $this->belongsTo(Deal::final class);
     }
 }

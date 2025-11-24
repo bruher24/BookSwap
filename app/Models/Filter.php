@@ -6,7 +6,7 @@ use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Filter extends Model
+final class Filter extends Model
 {
     use SoftDeletes;
     use CacheInvalidation;

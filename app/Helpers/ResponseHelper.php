@@ -4,10 +4,10 @@ namespace App\Helpers;
 
 use Illuminate\Http\JsonResponse;
 
-class ResponseHelper
+final class ResponseHelper
 {
     // TODO: прописать правильные http-коды (401, 403, 201, 204 и т.п.)
-    public static function successResponse(array $data = [], string $systemMessage = null): JsonResponse
+    public static function successResponse(array $data = [], ?string $systemMessage = null): JsonResponse
     {
         $data['success'] = true;
         if (isset($systemMessage)) {

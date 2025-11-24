@@ -6,8 +6,11 @@ use App\Interfaces\DealServiceInterface;
 use App\Models\Deal;
 use Override;
 
-class DealService extends Service implements DealServiceInterface
+final class DealService extends Service implements DealServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Deal::class);

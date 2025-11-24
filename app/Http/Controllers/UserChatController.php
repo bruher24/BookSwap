@@ -11,7 +11,7 @@ use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class UserChatController extends Controller
+final class UserChatController extends Controller
 {
     public function index(
         ChatServiceInterface $chatService,

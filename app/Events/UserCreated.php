@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserCreated implements ShouldQueue
+final class UserCreated implements ShouldQueue
 {
     use Dispatchable;
     use SerializesModels;

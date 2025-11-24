@@ -6,8 +6,11 @@ use App\Interfaces\SettingServiceInterface;
 use App\Models\Setting;
 use Override;
 
-class SettingService extends Service implements SettingServiceInterface
+final class SettingService extends Service implements SettingServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(Setting::class);

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Override;
 
-class UpdateFilterRequest extends FormRequest
+final class UpdateFilterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

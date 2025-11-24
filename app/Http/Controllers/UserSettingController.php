@@ -7,13 +7,17 @@ use App\Http\Requests\UpdateSettingsValuesRequest;
 use App\Http\Resources\SettingResource;
 use App\Interfaces\UserServiceInterface;
 use App\Interfaces\UserSettingServiceInterface;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
-class UserSettingController extends Controller
+final class UserSettingController extends Controller
 {
     public function index(UserServiceInterface $userService, string $user_id): JsonResponse
     {
         $user = $userService->get($user_id);
+        if (!$user instanceof User) {
+            return ResponseHelper::errorResponse(400, ['Пользователь не найден']);
+        }
         $settingResourceCollection = SettingResource::collection($user->settings()->get());
 
         return ResponseHelper::successResponse([

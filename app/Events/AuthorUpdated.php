@@ -6,7 +6,7 @@ use App\Models\Author;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AuthorUpdated
+final class AuthorUpdated
 {
     use Dispatchable;
     use SerializesModels;

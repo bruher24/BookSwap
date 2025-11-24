@@ -11,7 +11,7 @@ use App\Interfaces\AuthorServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Redis;
 
-class AuthorController extends Controller
+final class AuthorController extends Controller
 {
     public function index(AuthorServiceInterface $authorService): JsonResponse
     {

@@ -6,8 +6,11 @@ use App\Interfaces\BookTypeServiceInterface;
 use App\Models\BookType;
 use Override;
 
-class BookTypeService extends Service implements BookTypeServiceInterface
+final class BookTypeService extends Service implements BookTypeServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct()
     {
         parent::__construct(BookType::class);

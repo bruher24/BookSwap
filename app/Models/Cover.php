@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Cover extends Model
+final class Cover extends Model
 {
     use SoftDeletes;
     use CacheInvalidation;
@@ -21,6 +21,6 @@ class Cover extends Model
 
     public function books(): HasMany
     {
-        return $this->hasMany(Book::class);
+        return $this->hasMany(Book::final class);
     }
 }

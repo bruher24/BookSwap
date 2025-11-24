@@ -6,7 +6,7 @@ use App\Interfaces\AuthorServiceInterface;
 use App\Models\Author;
 use Override;
 
-class AuthorService extends Service implements AuthorServiceInterface
+final class AuthorService extends Service implements AuthorServiceInterface
 {
     public function __construct()
     {

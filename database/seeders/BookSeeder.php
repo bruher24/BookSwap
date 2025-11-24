@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Book;
-use App\Models\BookType;
 use App\Models\Cover;
 use Illuminate\Database\Seeder;
 
@@ -48,8 +47,8 @@ class BookSeeder extends Seeder
         $id = 1;
         foreach ($books as $bookData) {
             $book = new Book($bookData);
-            $book->cover_id = Cover::first()->id;
-            $book->book_type_id = BookType::find($id)->id;
+            $book->cover_id = Cover::BASE_COVER_ID;
+            $book->book_type_id = $id;
             $book->save();
             $book->authors()->attach($id);
             $book->genres()->attach($id);

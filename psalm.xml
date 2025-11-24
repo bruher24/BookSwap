@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <psalm
     phpVersion="8.3"
-    errorLevel="5"
+    errorLevel="2"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
@@ -26,6 +26,9 @@
                 <directory name="app/Http/Middleware"/>
                 <directory name="app/Http/Requests"/>
                 <directory name="app/Models"/>
+                <directory name="database/factories"/>
+                <directory name="database/migrations"/>
+                <directory name="database/seeders"/>
             </errorLevel>
         </PossiblyUnusedMethod>
         <PossiblyUnusedProperty>
@@ -33,6 +36,62 @@
                 <directory name="app/Events"/>
             </errorLevel>
         </PossiblyUnusedProperty>
+        <UndefinedThisPropertyFetch>
+            <errorLevel type="suppress">
+                <directory name="app/Models"/>
+            </errorLevel>
+        </UndefinedThisPropertyFetch>
+        <InvalidReturnType>
+            <errorLevel type="suppress">
+                <directory name="app/Models"/>
+            </errorLevel>
+        </InvalidReturnType>
+        <InvalidReturnStatement>
+            <errorLevel type="suppress">
+                <directory name="app/Models"/>
+            </errorLevel>
+        </InvalidReturnStatement>
+        <MissingTemplateParam>
+            <errorLevel type="suppress">
+                <directory name="app/Models"/>
+            </errorLevel>
+        </MissingTemplateParam>
+        <UnusedClosureParam>
+            <errorLevel type="suppress">
+                <directory name="database/factories"/>
+            </errorLevel>
+        </UnusedClosureParam>
+        <UndefinedMagicPropertyFetch>
+            <errorLevel type="suppress">
+                <directory name="app"/>
+                <directory name="database"/>
+                <directory name="tests"/>
+            </errorLevel>
+        </UndefinedMagicPropertyFetch>
+        <UndefinedMagicMethod>
+            <errorLevel type="suppress">
+                <directory name="app"/>
+                <directory name="database"/>
+                <directory name="tests"/>
+            </errorLevel>
+        </UndefinedMagicMethod>
+        <UndefinedMagicPropertyAssignment>
+            <errorLevel type="suppress">
+                <directory name="app"/>
+                <directory name="database"/>
+                <directory name="tests"/>
+            </errorLevel>
+        </UndefinedMagicPropertyAssignment>
+        <MoreSpecificReturnType>
+            <errorLevel type="suppress">
+                <directory name="app/Services"/>
+            </errorLevel>
+        </MoreSpecificReturnType>
+        <LessSpecificReturnStatement>
+            <errorLevel type="suppress">
+                <directory name="app/Services"/>
+            </errorLevel>
+        </LessSpecificReturnStatement>
     </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\LaravelPlugin\Plugin"/>

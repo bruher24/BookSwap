@@ -7,7 +7,7 @@ use App\Http\Resources\BookResource;
 use App\Services\UserFavoritesService;
 use Illuminate\Http\JsonResponse;
 
-class UserFavoritesController extends Controller
+final class UserFavoritesController extends Controller
 {
     public function index(UserFavoritesService $userFavoritesService, string $userId): JsonResponse
     {

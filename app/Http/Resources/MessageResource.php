@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
-class MessageResource extends JsonResource
+final class MessageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

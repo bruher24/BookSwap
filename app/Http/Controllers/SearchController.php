@@ -7,22 +7,37 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Resources\SearchResultsResource;
 use App\Models\Author;
 use App\Models\Book;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
-class SearchController extends Controller
+final class SearchController extends Controller
 {
     public function __invoke(SearchRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $query = $validated['query'];
+        $total = 0;
 
         $found = collect([
             'books' => Book::search($query)->get(),
             'authors' => Author::search($query)->get(),
-            'total' => 0,
+            'total' => $total,
         ]);
 
-        $total = $found->get('books')->count() + $found->get('authors')->count();
+        $foundBooks = $found->get('books');
+        $foundAuthors = $found->get('authors');
+
+        if ($foundBooks instanceof Collection) {
+            $total += $foundBooks->count();
+        }
+
+        if ($foundAuthors instanceof Collection) {
+            $total += $foundAuthors->count();
+        }
+
+        /**
+         * @psalm-suppress ArgumentTypeCoercion
+         */
         $found->put('total', $total);
 
         $searchResults = new SearchResultsResource($found);

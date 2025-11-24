@@ -9,7 +9,7 @@ use App\Http\Resources\ChatResource;
 use App\Interfaces\ChatServiceInterface;
 use Illuminate\Http\JsonResponse;
 
-class ChatController extends Controller
+final class ChatController extends Controller
 {
     public function index(ChatServiceInterface $chatService): JsonResponse
     {

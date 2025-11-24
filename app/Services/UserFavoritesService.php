@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
-class UserFavoritesService implements UserFavoritesServiceInterface
+final class UserFavoritesService implements UserFavoritesServiceInterface
 {
+    #[Override]
     public function favorites(string $user_id): Collection
     {
         try {
@@ -26,6 +28,7 @@ class UserFavoritesService implements UserFavoritesServiceInterface
         }
     }
 
+    #[Override]
     public function addToFavorites($user_id, $book_id): bool
     {
         DB::beginTransaction();
@@ -48,6 +51,7 @@ class UserFavoritesService implements UserFavoritesServiceInterface
         }
     }
 
+    #[Override]
     public function removeFromFavorites($user_id, $book_id): bool
     {
         DB::beginTransaction();
