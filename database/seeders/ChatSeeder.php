@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\Chat;
 use Illuminate\Database\Seeder;
 
-class ChatSeeder extends Seeder
+final class ChatSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $chats = [
             [

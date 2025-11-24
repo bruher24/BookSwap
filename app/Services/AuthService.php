@@ -23,11 +23,11 @@ final class AuthService implements AuthServiceInterface
     #[Override]
     public function login(array $credentials): bool
     {
-        $remember = !!($credentials['remember'] ?? 0);
+        $remember = $credentials['remember'] ?? false;
         if (!Auth::attempt([
             'email' => $credentials['email'],
             'password' => $credentials['password'],
-        ], $remember)) {
+        ], $remember === true)) {
             return false;
         }
         return true;

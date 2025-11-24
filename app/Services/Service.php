@@ -16,6 +16,9 @@ abstract class Service implements ServiceInterface
 {
     protected array $ucFirstFields = [];
 
+    /**
+     * @param class-string $modelClass
+     */
     public function __construct(
         protected string $modelClass
     ) {
@@ -68,7 +71,7 @@ abstract class Service implements ServiceInterface
     public function getAll(): Collection
     {
         try {
-            return Cache::remember($this->modelClass::CACHE_KEY, 600, function () {
+            return Cache::remember($this->modelClass::CACHE_KEY, 600, function (): Collection {
                 Log::debug('Stored in cache: ' . $this->modelClass::CACHE_KEY);
                 return $this->modelClass::all();
             });

@@ -10,8 +10,9 @@ use Override;
 
 /**
  * @extends Factory<User>
+ * @psalm-suppress PropertyNotSetInConstructor
  */
-class UserFactory extends Factory
+final class UserFactory extends Factory
 {
     /**
      * The current password being used by the factory.

@@ -29,7 +29,7 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
     }
 
     #[Override]
-    public function addToFavorites($user_id, $book_id): bool
+    public function addToFavorites(string $user_id, string $book_id): bool
     {
         DB::beginTransaction();
         try {
@@ -52,7 +52,7 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
     }
 
     #[Override]
-    public function removeFromFavorites($user_id, $book_id): bool
+    public function removeFromFavorites(string $user_id, string $book_id): bool
     {
         DB::beginTransaction();
         try {

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\Cover;
 use Illuminate\Database\Seeder;
 
-class CoverSeeder extends Seeder
+final class CoverSeeder extends Seeder
 {
     public function run(): void
     {

@@ -92,6 +92,11 @@
                 <directory name="app/Services"/>
             </errorLevel>
         </LessSpecificReturnStatement>
+        <MissingClosureParamType>
+            <errorLevel type="suppress">
+                <directory name="app/Http/Requests"/>
+            </errorLevel>
+        </MissingClosureParamType>
     </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\LaravelPlugin\Plugin"/>

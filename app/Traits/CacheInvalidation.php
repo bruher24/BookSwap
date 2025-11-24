@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Interfaces\Cacheable;
 use App\Models\Chat;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +14,7 @@ trait CacheInvalidation
      */
     public static function bootCacheInvalidation(): void
     {
-        static::saved(function ($model) {
+        static::saved(function (Cacheable $model) {
             Cache::forget($model::CACHE_KEY);
             Log::debug('Forgot: ' . $model::CACHE_KEY);
             if ($model instanceof Chat) {
@@ -22,7 +23,7 @@ trait CacheInvalidation
             }
         });
 
-        static::deleted(function ($model) {
+        static::deleted(function (Cacheable $model) {
             Cache::forget($model::CACHE_KEY);
             Log::debug('Forgot: ' . $model::CACHE_KEY);
             if ($model instanceof Chat) {
@@ -31,7 +32,7 @@ trait CacheInvalidation
             }
         });
 
-        static::restored(function ($model) {
+        static::restored(function (Cacheable $model) {
             Cache::forget($model::CACHE_KEY);
             Log::debug('Forgot: ' . $model::CACHE_KEY);
             if ($model instanceof Chat) {

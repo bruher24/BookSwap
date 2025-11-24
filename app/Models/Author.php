@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
 use Database\Factories\AuthorFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-final class Author extends Model
+final class Author extends Model implements Cacheable
 {
     /** @use HasFactory<AuthorFactory> */
     use HasFactory;

@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\Notification;
 use Illuminate\Database\Seeder;
 
-class NotificationSeeder extends Seeder
+final class NotificationSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $notifications = [
             [

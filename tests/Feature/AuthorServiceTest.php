@@ -7,7 +7,7 @@ use App\Services\AuthorService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AuthorServiceTest extends TestCase
+final class AuthorServiceTest extends TestCase
 {
     use RefreshDatabase;
 

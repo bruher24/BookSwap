@@ -9,8 +9,9 @@ use Override;
 /**
  * @extends Factory<Author>
  * @psalm-suppress UnusedClass
+ * @psalm-suppress PropertyNotSetInConstructor
  */
-class AuthorFactory extends Factory
+final class AuthorFactory extends Factory
 {
     /**
      * Define the model's default state.

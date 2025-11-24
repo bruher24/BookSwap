@@ -6,7 +6,7 @@ use App\Models\Book;
 use App\Models\Cover;
 use Illuminate\Database\Seeder;
 
-class BookSeeder extends Seeder
+final class BookSeeder extends Seeder
 {
     public function run(): void
     {

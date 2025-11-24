@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\Message;
 use Illuminate\Database\Seeder;
 
-class MessageSeeder extends Seeder
+final class MessageSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $messages = [
             [

@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\Phone;
 use Illuminate\Database\Seeder;
 
-class PhoneSeeder extends Seeder
+final class PhoneSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
         $phones = [
             [

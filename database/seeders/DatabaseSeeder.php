@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 /**
  * @psalm-suppress UnusedClass
  */
-class DatabaseSeeder extends Seeder
+final class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.

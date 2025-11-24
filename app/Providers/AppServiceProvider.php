@@ -17,6 +17,7 @@ use App\Interfaces\PhotoServiceInterface;
 use App\Interfaces\SettingServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Interfaces\UserSettingServiceInterface;
+use App\Models\User;
 use App\Services\AuthorService;
 use App\Services\AuthService;
 use App\Services\BookService;
@@ -80,7 +81,9 @@ final class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Europe/Samara');
 
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perSecond(3)->by($request->user()?->id ?: $request->ip());
+            $user = $request->user();
+            $limitBy = $user instanceof User ? $user->id : $request->ip();
+            return Limit::perSecond(3)->by($limitBy);
         });
 
         Gate::define('viewApiDocs', function () {
