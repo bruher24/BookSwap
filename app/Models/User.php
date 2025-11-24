@@ -87,43 +87,43 @@ final class User extends Authenticatable
 
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Roleclass);
+        return $this->belongsToMany(Role::class);
     }
 
     public function books(): HasMany
     {
-        return $this->hasMany(Bookclass);
+        return $this->hasMany(Book::class);
     }
 
     public function phone(): HasOne
     {
-        return $this->hasOne(Phoneclass);
+        return $this->hasOne(Phone::class);
     }
 
     public function photo(): BelongsTo
     {
-        return $this->belongsTo(Photoclass);
+        return $this->belongsTo(Photo::class);
     }
 
     public function settings(): BelongsToMany
     {
-        return $this->belongsToMany(Settingclass)->withPivot('value')->withTimestamps();
+        return $this->belongsToMany(Setting::class)->withPivot('value')->withTimestamps();
     }
 
     public function chats(): HasMany
     {
-        $chatsAsFirst = $this->hasMany(Chatclass, 'first_user_id');
-        $chatsAsSecond = $this->hasMany(Chatclass, 'second_user_id');
+        $chatsAsFirst = $this->hasMany(Chat::class, 'first_user_id');
+        $chatsAsSecond = $this->hasMany(Chat::class, 'second_user_id');
         return $chatsAsFirst->union($chatsAsSecond);
     }
 
     public function notifications(): HasMany
     {
-        return $this->hasMany(Notificationclass)->where('seen', false);
+        return $this->hasMany(Notification::class)->where('seen', false);
     }
 
     public function unreadMessages(): HasMany
     {
-        return $this->hasMany(Messageclass, 'to_id')->where('seen', false);
+        return $this->hasMany(Message::class, 'to_id')->where('seen', false);
     }
 }

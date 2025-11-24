@@ -21,6 +21,6 @@ final class DealItem extends Model
 
     public function deal(): BelongsTo
     {
-        return $this->belongsTo(Dealclass);
+        return $this->belongsTo(Dealc::lass);
     }
 }

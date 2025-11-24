@@ -21,6 +21,6 @@ final class Cover extends Model
 
     public function books(): HasMany
     {
-        return $this->hasMany(Bookclass);
+        return $this->hasMany(Book::class);
     }
 }

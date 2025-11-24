@@ -25,13 +25,13 @@ final class Setting extends Model
     protected function availableValues(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => explode(',', $value),
-            set: fn(array $value) => implode(',', $value),
+            get: fn (string $value) => explode(',', $value),
+            set: fn (array $value) => implode(',', $value),
         );
     }
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(Userclass);
+        return $this->belongsToMany(User::class);
     }
 }

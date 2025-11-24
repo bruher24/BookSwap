@@ -25,6 +25,6 @@ final class Message extends Model
 
     public function chat(): BelongsTo
     {
-        return $this->belongsTo(Chatclass);
+        return $this->belongsTo(Chat::class);
     }
 }
