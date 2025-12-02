@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Events\AuthorCreated;
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use App\Http\Resources\AuthorResource;
+use App\Http\Resources\FailureResource;
+use App\Http\Resources\SuccessResource;
 use App\Interfaces\AuthorServiceInterface;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Redis;
 
 final class AuthorController extends Controller
 {
-    public function index(AuthorServiceInterface $authorService): JsonResponse
+    public function index(AuthorServiceInterface $authorService): JsonResource
     {
         $authors = $authorService->getAll();
         $authorResourceCollection = AuthorResource::collection($authors);
@@ -21,57 +22,64 @@ final class AuthorController extends Controller
         Redis::publish('listeners', 'TEST MESSAGE FROM LARAVEL');
         AuthorCreated::dispatch('TEST MSG');
 
-        return ResponseHelper::successResponse([
-            'authors' => $authorResourceCollection,
-        ]);
+        $data = ['authors' => $authorResourceCollection];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function store(AuthorServiceInterface $authorService, StoreAuthorRequest $request): JsonResponse
+    public function store(AuthorServiceInterface $authorService, StoreAuthorRequest $request): JsonResource
     {
         $validated = $request->validated();
         $author = $authorService->create($validated);
-        if (!$author) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при создании автора']);
-        }
-        $authorResource = new AuthorResource($author);
 
-        return ResponseHelper::successResponse([
-            'author' => $authorResource,
-        ], 'Автор успешно создан');
+        if (!$author) {
+            $errors = ['Ошибка при создании автора'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $authorResource = new AuthorResource($author);
+        $data = ['author' => $authorResource];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function show(AuthorServiceInterface $authorService, string $id): JsonResponse
+    public function show(AuthorServiceInterface $authorService, string $id): JsonResource
     {
         $author = $authorService->get($id);
-        if (!$author) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при получении автора']);
-        }
-        $authorResource = new AuthorResource($author);
 
-        return ResponseHelper::successResponse([
-            'author' => $authorResource,
-        ]);
+        if (!$author) {
+            $errors = ['Ошибка при получении автора'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $authorResource = new AuthorResource($author);
+        $data = ['author' => $authorResource];
+
+        return new SuccessResource(['data' => $data]);
     }
 
     public function update(
         AuthorServiceInterface $authorService,
         UpdateAuthorRequest $request,
         string $id
-    ): JsonResponse {
+    ): JsonResource {
         $validated = $request->validated();
+
         if (!$authorService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении автора']);
+            $errors = ['Ошибка при обновлении автора'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Автор успешно обновлен');
+        return new SuccessResource([]);
     }
 
-    public function destroy(AuthorServiceInterface $authorService, string $id): JsonResponse
+    public function destroy(AuthorServiceInterface $authorService, string $id): JsonResource
     {
         if (!$authorService->delete($id)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при удалении автора']);
+            $errors = ['Ошибка при удалении автора'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Автор успешно удален');
+        return new SuccessResource([]);
     }
 }

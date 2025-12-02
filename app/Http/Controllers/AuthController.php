@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\FailureResource;
+use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserResource;
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class AuthController extends Controller
 {
@@ -17,69 +18,78 @@ final class AuthController extends Controller
         UserServiceInterface $userService,
         AuthServiceInterface $authService,
         StoreUserRequest $request
-    ): JsonResponse {
+    ): JsonResource {
         $validated = $request->validated();
-
         $user = $userService->create($validated);
+
         if (!$user) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при регистрации']);
+            $errors = ['Ошибка при регистрации'];
+            return new FailureResource(['errors' => $errors]);
         }
 
         $token = $authService->refreshToken($user->id);
         $userResource = new UserResource($user);
-
-        return ResponseHelper::successResponse([
+        $data = [
             'user' => $userResource,
-            'token' => $token,
-        ], 'Успешная регистрация');
+            'token' => $token
+        ];
+
+        return new SuccessResource(['data' => $data]);
     }
 
     public function login(
         UserServiceInterface $userService,
         AuthServiceInterface $authService,
         AuthRequest $request
-    ): JsonResponse {
+    ): JsonResource {
         $validated = $request->validated();
 
         if (!$authService->login($validated)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка аутентификации']);
+            $errors = ['Ошибка аутентификации'];
+            return new FailureResource(['errors' => $errors]);
         }
 
         $token = $authService->refreshToken($validated['email']);
+
         if (empty($token)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка получения токена']);
+            $errors = ['Ошибка получения токена'];
+            return new FailureResource(['errors' => $errors]);
         }
 
         $user = $userService->where('email', $validated['email'])->first();
         $userResource = new UserResource($user);
-
-        return ResponseHelper::successResponse([
+        $data = [
             'user' => $userResource,
-            'token' => $token,
-        ], 'Успешная аутентификация');
+            'token' => $token
+        ];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function refresh(AuthServiceInterface $authService, Request $request): JsonResponse
+    public function refresh(AuthServiceInterface $authService, Request $request): JsonResource
     {
         $email = $request->input('email');
-
         $token = $authService->refreshToken($email);
+
         if (empty($token)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка обновления токена']);
+            $errors = ['Ошибка обновления токена'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([
-            'token' => $token,
-        ]);
+        $data = ['token' => $token];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function logout(AuthServiceInterface $authService, Request $request): JsonResponse
+    public function logout(AuthServiceInterface $authService, Request $request): JsonResource
     {
         $email = $request->input('email');
+
         if (!$authService->logout($email)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при выходе из аккаунта']);
+            $errors = ['Ошибка при выходе из аккаунта'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'До свидания');
+        return new SuccessResource([]);
     }
 }

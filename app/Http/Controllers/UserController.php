@@ -2,68 +2,75 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\FailureResource;
+use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserResource;
 use App\Interfaces\UserServiceInterface;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class UserController extends Controller
 {
-    public function index(UserServiceInterface $userService): JsonResponse
+    public function index(UserServiceInterface $userService): JsonResource
     {
         $users = $userService->getAll();
         $userResourceCollection = UserResource::collection($users);
+        $data = ['users' => $userResourceCollection];
 
-        return ResponseHelper::successResponse([
-            'users' => $userResourceCollection,
-        ]);
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function store(UserServiceInterface $userService, StoreUserRequest $request): JsonResponse
+    public function store(UserServiceInterface $userService, StoreUserRequest $request): JsonResource
     {
         $validated = $request->validated();
         $user = $userService->create($validated);
-        if (!$user) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при создании пользователя']);
-        }
-        $userResource = new UserResource($user);
 
-        return ResponseHelper::successResponse([
-            'user' => $userResource,
-        ], 'Пользователь успешно создан');
+        if (!$user) {
+            $errors = ['Ошибка при создании пользователя'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $userResource = new UserResource($user);
+        $data = ['user' => $userResource];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function show(UserServiceInterface $userService, string $id): JsonResponse
+    public function show(UserServiceInterface $userService, string $id): JsonResource
     {
         $user = $userService->get($id);
-        if (!$user) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при получении пользователя']);
-        }
-        $userResource = new UserResource($user);
 
-        return ResponseHelper::successResponse([
-            'user' => $userResource,
-        ]);
+        if (!$user) {
+            $errors = ['Ошибка при получении пользователя'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $userResource = new UserResource($user);
+        $data = ['user' => $userResource];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function update(UserServiceInterface $userService, UpdateUserRequest $request, string $id): JsonResponse
+    public function update(UserServiceInterface $userService, UpdateUserRequest $request, string $id): JsonResource
     {
         $validated = $request->validated();
+
         if (!$userService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении пользователя']);
+            $errors = ['Ошибка при обновлении пользователя'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Пользователь успешно обновлен');
+        return new SuccessResource([]);
     }
 
-    public function destroy(UserServiceInterface $userService, string $id): JsonResponse
+    public function destroy(UserServiceInterface $userService, string $id): JsonResource
     {
         if (!$userService->delete($id)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при удалении пользователя']);
+            $errors = ['Ошибка при удалении пользователя'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Пользователь успешно удален');
+        return new SuccessResource([]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\UserCreated;
+use App\Events\UserDeleted;
 use App\Events\UserUpdated;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Message;
@@ -32,13 +33,13 @@ final class UserService extends Service implements UserServiceInterface
         DB::beginTransaction();
         try {
             $user = parent::create($data);
-            if ($user instanceof User) {
-                DB::commit();
-                UserCreated::dispatch($user);
-                $user->refresh();
-                return $user;
+
+            if (!$user instanceof User) {
+                throw new Exception('Ошибка при создании пользователя');
             }
-            return false;
+            DB::commit();
+            UserCreated::dispatch($user);
+            return $user->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
@@ -74,7 +75,7 @@ final class UserService extends Service implements UserServiceInterface
             unset($data['phone_number']);
 
             if (isset($data['password']) && !Hash::check($data['old_password'], $user->getAuthPassword())) {
-                throw new Exception('Старый пароль введен неправильно');
+                throw new Exception('Старый пароль указан неверно');
             }
 
             if ($data['password'] == null) {
@@ -86,13 +87,24 @@ final class UserService extends Service implements UserServiceInterface
             }
 
             DB::commit();
-            UserUpdated::dispatch($user);
+            UserUpdated::dispatch($user->refresh());
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
             return false;
         }
+    }
+
+    public function delete(string $id): bool
+    {
+        $user = $this->get($id);
+
+        if ($user instanceof User) {
+            UserDeleted::dispatch($user);
+        }
+
+        return parent::delete($id);
     }
 
     #[Override]

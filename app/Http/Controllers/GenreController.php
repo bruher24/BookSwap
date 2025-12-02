@@ -2,68 +2,74 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreGenreRequest;
 use App\Http\Requests\UpdateGenreRequest;
+use App\Http\Resources\FailureResource;
 use App\Http\Resources\GenreResource;
+use App\Http\Resources\SuccessResource;
 use App\Interfaces\GenreServiceInterface;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class GenreController extends Controller
 {
-    public function index(GenreServiceInterface $genreService): JsonResponse
+    public function index(GenreServiceInterface $genreService): JsonResource
     {
         $genres = $genreService->getAll();
         $genreResourceCollection = GenreResource::collection($genres);
+        $data = ['genres' => $genreResourceCollection];
 
-        return ResponseHelper::successResponse([
-            'genres' => $genreResourceCollection,
-        ]);
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function store(GenreServiceInterface $genreService, StoreGenreRequest $request): JsonResponse
+    public function store(GenreServiceInterface $genreService, StoreGenreRequest $request): JsonResource
     {
         $validated = $request->validated();
         $genre = $genreService->create($validated);
-        if (!$genre) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при создании жанра']);
-        }
-        $genreResource = new GenreResource($genre);
 
-        return ResponseHelper::successResponse([
-            'genre' => $genreResource,
-        ], 'Жанр успешно создан');
+        if (!$genre) {
+            $errors = ['Ошибка при создании жанра'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $genreResource = new GenreResource($genre);
+        $data = ['genre' => $genreResource];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function show(GenreServiceInterface $genreService, string $id): JsonResponse
+    public function show(GenreServiceInterface $genreService, string $id): JsonResource
     {
         $genre = $genreService->get($id);
-        if (!$genre) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при получении жанра']);
-        }
-        $genreResource = new GenreResource($genre);
 
-        return ResponseHelper::successResponse([
-            'genre' => $genreResource,
-        ]);
+        if (!$genre) {
+            $errors = ['Ошибка при получении жанра'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $genreResource = new GenreResource($genre);
+        $data = ['genre' => $genreResource];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function update(GenreServiceInterface $genreService, UpdateGenreRequest $request, string $id): JsonResponse
+    public function update(GenreServiceInterface $genreService, UpdateGenreRequest $request, string $id): JsonResource
     {
         $validated = $request->validated();
         if (!$genreService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении жанра']);
+            $errors = ['Ошибка при обновлении жанра'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Жанр успешно обновлен');
+        return new SuccessResource([]);
     }
 
-    public function destroy(GenreServiceInterface $genreService, string $id): JsonResponse
+    public function destroy(GenreServiceInterface $genreService, string $id): JsonResource
     {
         if (!$genreService->delete($id)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при удалении жанра']);
+            $errors = ['Ошибка при удалении жанра'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Жанр успешно удален');
+        return new SuccessResource([]);
     }
 }

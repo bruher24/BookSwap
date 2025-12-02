@@ -2,46 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\UpdateSettingsValuesRequest;
+use App\Http\Resources\FailureResource;
 use App\Http\Resources\SettingResource;
+use App\Http\Resources\SuccessResource;
 use App\Interfaces\UserServiceInterface;
 use App\Interfaces\UserSettingServiceInterface;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class UserSettingController extends Controller
 {
-    public function index(UserServiceInterface $userService, string $user_id): JsonResponse
+    public function index(UserServiceInterface $userService, string $user_id): JsonResource
     {
         $user = $userService->get($user_id);
-        if (!$user instanceof User) {
-            return ResponseHelper::errorResponse(400, ['Пользователь не найден']);
-        }
-        $settingResourceCollection = SettingResource::collection($user->settings()->get());
 
-        return ResponseHelper::successResponse([
-            'settings' => $settingResourceCollection,
-        ]);
+        if (!$user instanceof User) {
+            $errors = ['Пользователь не найден'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $settingResourceCollection = SettingResource::collection($user->settings()->get());
+        $data = ['settings' => $settingResourceCollection];
+
+        return new SuccessResource(['data' => $data]);
     }
 
     public function update(
         UserSettingServiceInterface $userSettingService,
         UpdateSettingsValuesRequest $request,
         string $user_id
-    ): JsonResponse {
+    ): JsonResource {
         $validated = $request->validated();
         $settingsData = $validated['settingsData'];
         $isValidSettingsData = $userSettingService->validateSettingsData($settingsData);
 
         if (!$isValidSettingsData) {
-            return ResponseHelper::errorResponse(400, ['Некорректные входные данные']);
+            $errors = ['Некорректные входные данные'];
+            return new FailureResource(['errors' => $errors]);
         }
 
         if (!$userSettingService->updateSettings($user_id, $settingsData)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении настроек']);
+            $errors = ['Ошибка при обновлении настроек'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Настройки успешно обновлены');
+        return new SuccessResource([]);
     }
 }

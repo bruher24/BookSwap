@@ -9,7 +9,6 @@ use App\Models\Message;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 use Override;
 use Throwable;
@@ -109,7 +108,7 @@ final class ChatService extends Service implements ChatServiceInterface
             $message->refresh();
 
             if ($message->to_id != $message->from_id) {
-                Event::dispatch(new MessageSent($message));
+                MessageSent::dispatch($message);
             }
 
             return $message;

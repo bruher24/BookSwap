@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
+use App\Http\Resources\FailureResource;
 use App\Http\Resources\NotificationResource;
+use App\Http\Resources\SuccessResource;
 use App\Interfaces\NotificationServiceInterface;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class UserNotificationController extends Controller
 {
-    public function index(NotificationServiceInterface $notificationService, string $user_id): JsonResponse
+    public function index(NotificationServiceInterface $notificationService, string $user_id): JsonResource
     {
         $notifications = $notificationService->byUser($user_id);
         $notificationResourceCollection = NotificationResource::collection($notifications);
+        $data = ['notifications' => $notificationResourceCollection];
 
-        return ResponseHelper::successResponse([
-            'notifications' => $notificationResourceCollection,
-        ]);
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function readAll(NotificationServiceInterface $notificationService, string $user_id): JsonResponse
+    public function readAll(NotificationServiceInterface $notificationService, string $user_id): JsonResource
     {
         if (!$notificationService->readAll($user_id)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении уведомлений']);
+            $errors = ['Ошибка при обновлении уведомлений'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Уведомления успешно прочитаны');
+        return new SuccessResource([]);
     }
 }

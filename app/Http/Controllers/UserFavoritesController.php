@@ -2,38 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\FailureResource;
+use App\Http\Resources\SuccessResource;
 use App\Services\UserFavoritesService;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class UserFavoritesController extends Controller
 {
-    public function index(UserFavoritesService $userFavoritesService, string $userId): JsonResponse
+    public function index(UserFavoritesService $userFavoritesService, string $userId): JsonResource
     {
         $favorites = $userFavoritesService->favorites($userId);
         $favoritesResourceCollection = BookResource::collection($favorites);
+        $data = ['favorites' => $favoritesResourceCollection];
 
-        return ResponseHelper::successResponse([
-            'favorites' => $favoritesResourceCollection,
-        ]);
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function like(UserFavoritesService $userFavoritesService, string $userId, string $bookId): JsonResponse
+    public function like(UserFavoritesService $userFavoritesService, string $userId, string $bookId): JsonResource
     {
         if (!$userFavoritesService->addToFavorites($userId, $bookId)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка добавления книги в избранное']);
+            $errors = ['Ошибка добавления книги в избранное'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Книга добавлена в избранное');
+        return new SuccessResource([]);
     }
 
-    public function dislike(UserFavoritesService $userFavoritesService, string $userId, string $bookId): JsonResponse
+    public function dislike(UserFavoritesService $userFavoritesService, string $userId, string $bookId): JsonResource
     {
         if (!$userFavoritesService->removeFromFavorites($userId, $bookId)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка удаления книги из избранного']);
+            $errors = ['Ошибка удаления книги из избранного'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Книга удалена из избранного');
+        return new SuccessResource([]);
     }
 }

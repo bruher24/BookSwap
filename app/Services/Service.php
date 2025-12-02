@@ -123,10 +123,10 @@ abstract class Service implements ServiceInterface
             $object = $this->get($id);
 
             if (!$object instanceof Model) {
-                throw new Exception('Ошибка получения модели');
+                return true;
             }
 
-            $object->deleteOrFail();
+            $object->delete();
 
             DB::commit();
             return true;

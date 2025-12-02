@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\SearchResultsResource;
+use App\Http\Resources\SuccessResource;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class SearchController extends Controller
 {
-    public function __invoke(SearchRequest $request): JsonResponse
+    public function __invoke(SearchRequest $request): JsonResource
     {
         $validated = $request->validated();
         $query = $validated['query'];
@@ -39,11 +39,9 @@ final class SearchController extends Controller
          * @psalm-suppress ArgumentTypeCoercion
          */
         $found->put('total', $total);
-
         $searchResults = new SearchResultsResource($found);
+        $data = ['search_results' => $searchResults];
 
-        return ResponseHelper::successResponse([
-            'search_results' => $searchResults,
-        ]);
+        return new SuccessResource(['data' => $data]);
     }
 }

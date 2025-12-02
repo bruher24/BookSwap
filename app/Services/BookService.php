@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Events\BookCreated;
+use App\Events\BookDeleted;
+use App\Events\BookUpdated;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\Cover;
@@ -46,6 +49,7 @@ final class BookService extends Service implements BookServiceInterface
             }
 
             DB::commit();
+            BookCreated::dispatch($book);
             return $book;
         } catch (Throwable $e) {
             DB::rollBack();
@@ -58,6 +62,29 @@ final class BookService extends Service implements BookServiceInterface
     public function get(string $id): Book|false
     {
         return parent::get($id);
+    }
+
+    public function update(string $id, array $data): bool
+    {
+        $book = $this->get($id);
+        $updated = parent::update($id, $data);
+
+        if ($book instanceof Book && $updated) {
+            BookUpdated::dispatch($book);
+        }
+
+        return $updated;
+    }
+
+    public function delete(string $id): bool
+    {
+        $book = $this->get($id);
+
+        if ($book instanceof Book) {
+            BookDeleted::dispatch($book);
+        }
+
+        return parent::delete($id);
     }
 
     private function filterAuthorsData(array $data): array

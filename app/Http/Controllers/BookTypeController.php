@@ -2,71 +2,78 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\StoreBookTypeRequest;
 use App\Http\Requests\UpdateBookTypeRequest;
 use App\Http\Resources\BookTypeResource;
+use App\Http\Resources\FailureResource;
+use App\Http\Resources\SuccessResource;
 use App\Interfaces\BookTypeServiceInterface;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 final class BookTypeController extends Controller
 {
-    public function index(BookTypeServiceInterface $bookTypeService): JsonResponse
+    public function index(BookTypeServiceInterface $bookTypeService): JsonResource
     {
         $bookTypes = $bookTypeService->getAll();
         $bookTypeResourceCollection = BookTypeResource::collection($bookTypes);
+        $data = ['bookTypes' => $bookTypeResourceCollection];
 
-        return ResponseHelper::successResponse([
-            'bookTypes' => $bookTypeResourceCollection,
-        ]);
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function store(BookTypeServiceInterface $bookTypeService, StoreBookTypeRequest $request): JsonResponse
+    public function store(BookTypeServiceInterface $bookTypeService, StoreBookTypeRequest $request): JsonResource
     {
         $validated = $request->validated();
         $bookType = $bookTypeService->create($validated);
-        if (!$bookType) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при создании типа']);
-        }
-        $bookTypeResource = new BookTypeResource($bookType);
 
-        return ResponseHelper::successResponse([
-            'bookType' => $bookTypeResource,
-        ], 'Тип успешно создан');
+        if (!$bookType) {
+            $errors = ['Ошибка при создании типа'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $bookTypeResource = new BookTypeResource($bookType);
+        $data = ['bookType' => $bookTypeResource];
+
+        return new SuccessResource(['data' => $data]);
     }
 
-    public function show(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
+    public function show(BookTypeServiceInterface $bookTypeService, string $id): JsonResource
     {
         $bookType = $bookTypeService->get($id);
-        if (!$bookType) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при получении типа']);
-        }
-        $bookTypeResource = new BookTypeResource($bookType);
 
-        return ResponseHelper::successResponse([
-            'bookType' => $bookTypeResource,
-        ]);
+        if (!$bookType) {
+            $errors = ['Ошибка при получении типа'];
+            return new FailureResource(['errors' => $errors]);
+        }
+
+        $bookTypeResource = new BookTypeResource($bookType);
+        $data = ['bookType' => $bookTypeResource];
+
+        return new SuccessResource(['data' => $data]);
     }
 
     public function update(
         BookTypeServiceInterface $bookTypeService,
         UpdateBookTypeRequest $request,
         string $id
-    ): JsonResponse {
+    ): JsonResource {
         $validated = $request->validated();
+
         if (!$bookTypeService->update($id, $validated)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при обновлении типа']);
+            $errors = ['Ошибка при обновлении типа'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Тип успешно обновлен');
+        return new SuccessResource([]);
     }
 
-    public function destroy(BookTypeServiceInterface $bookTypeService, string $id): JsonResponse
+    public function destroy(BookTypeServiceInterface $bookTypeService, string $id): JsonResource
     {
         if (!$bookTypeService->delete($id)) {
-            return ResponseHelper::errorResponse(400, ['Ошибка при удалении типа']);
+            $errors = ['Ошибка при удалении типа'];
+            return new FailureResource(['errors' => $errors]);
         }
 
-        return ResponseHelper::successResponse([], 'Тип успешно удален');
+        return new SuccessResource([]);
     }
 }
