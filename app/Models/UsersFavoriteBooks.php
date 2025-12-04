@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class UsersFavoriteBooks extends Model
+final class UsersFavoriteBooks extends Model implements Cacheable
 {
     use SoftDeletes;
     use CacheInvalidation;

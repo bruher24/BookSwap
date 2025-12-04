@@ -37,14 +37,14 @@ services:
         networks:
             - app-network
 
-    #    mailhog:
-    #        image: mailhog/mailhog
-    #        container_name: app-mailhog
-    #        ports:
-    #            - "1025"
-    #            - "8025:8025"
-    #        networks:
-    #            - app-network
+    mailhog:
+        image: mailhog/mailhog
+        container_name: app-mailhog
+        ports:
+            - "1025"
+            - "8025:8025"
+        networks:
+            - app-network
 
     psalm:
         image: ghcr.io/danog/psalm:latest

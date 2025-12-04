@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class Setting extends Model
+final class Setting extends Model implements Cacheable
 {
     use SoftDeletes;
     use CacheInvalidation;

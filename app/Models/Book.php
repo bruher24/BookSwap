@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
-final class Book extends Model
+final class Book extends Model implements Cacheable
 {
     use SoftDeletes;
     use Searchable;

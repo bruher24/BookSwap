@@ -15,8 +15,7 @@ final class UserController extends Controller
     public function index(UserServiceInterface $userService): JsonResource
     {
         $users = $userService->getAll();
-        $userResourceCollection = UserResource::collection($users);
-        $data = ['users' => $userResourceCollection];
+        $data = ['users' => UserResource::collection($users)];
 
         return new SuccessResource(['data' => $data]);
     }
@@ -31,8 +30,7 @@ final class UserController extends Controller
             return new FailureResource(['errors' => $errors]);
         }
 
-        $userResource = new UserResource($user);
-        $data = ['user' => $userResource];
+        $data = ['user' => new UserResource($user)];
 
         return new SuccessResource(['data' => $data]);
     }
@@ -46,8 +44,7 @@ final class UserController extends Controller
             return new FailureResource(['errors' => $errors]);
         }
 
-        $userResource = new UserResource($user);
-        $data = ['user' => $userResource];
+        $data = ['user' => new UserResource($user)];
 
         return new SuccessResource(['data' => $data]);
     }

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class Phone extends Model
+final class Phone extends Model implements Cacheable
 {
     use SoftDeletes;
     use CacheInvalidation;

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
 use Carbon\Carbon;
 use Database\Factories\UserFactory;
@@ -17,7 +18,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Override;
 
-final class User extends Authenticatable
+final class User extends Authenticatable implements Cacheable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
