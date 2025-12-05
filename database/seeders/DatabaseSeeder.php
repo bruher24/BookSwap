@@ -18,9 +18,9 @@ final class DatabaseSeeder extends Seeder
 
         $this->call([
             RoleSeeder::class,
-            PhotoSeeder::class,
             SettingSeeder::class,
             UserSeeder::class,
+            PhotoSeeder::class,
             NotificationSeeder::class,
             ChatSeeder::class,
             MessageSeeder::class,

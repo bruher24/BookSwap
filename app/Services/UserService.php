@@ -7,7 +7,6 @@ use App\Events\UserDeleted;
 use App\Events\UserUpdated;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Message;
-use App\Models\Photo;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,9 +32,6 @@ final class UserService extends Service implements UserServiceInterface
     {
         DB::beginTransaction();
         try {
-            if (empty($data['photo_id'])) {
-                $data['photo_id'] = Photo::BASE_PHOTO_ID;
-            }
             $user = parent::create($data);
 
             if (!$user instanceof User) {

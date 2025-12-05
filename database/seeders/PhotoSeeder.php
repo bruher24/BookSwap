@@ -12,6 +12,7 @@ final class PhotoSeeder extends Seeder
         $photos = [
             [
                 'src' => 'avatars/avatar.png',
+                'user_id' => 1,
             ],
         ];
 

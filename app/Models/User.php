@@ -8,7 +8,6 @@ use App\Traits\CacheInvalidation;
 use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -101,9 +100,9 @@ final class User extends Authenticatable implements Cacheable
         return $this->hasOne(Phone::class);
     }
 
-    public function photo(): BelongsTo
+    public function photo(): HasOne
     {
-        return $this->belongsTo(Photo::class);
+        return $this->hasOne(Photo::class);
     }
 
     public function settings(): BelongsToMany

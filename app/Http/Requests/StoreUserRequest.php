@@ -46,12 +46,6 @@ final class StoreUserRequest extends FormRequest
                 'required',
                 'string',
             ],
-            'photo_id' => [
-                'nullable',
-                'integer',
-                Rule::exists('photos', 'id')
-                    ->withoutTrashed(),
-            ],
             'remember_token' => [
                 'nullable',
                 'string',
