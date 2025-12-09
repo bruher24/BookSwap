@@ -36,6 +36,7 @@ services:
             - postgres
         networks:
             - app-network
+            - cache_proxy
 
     mailhog:
         image: mailhog/mailhog
@@ -78,30 +79,30 @@ services:
         networks:
             - app-network
 
-    redis:
-        image: redis:latest
-        container_name: app-redis
-        restart: always
-        user: "redis"
-        command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
-        ports:
-            - "6379:${REDIS_PORT}"
-        volumes:
-            - redis_data:/data
-        networks:
-            - app-network
+    #    redis:
+    #        image: redis:latest
+    #        container_name: app-redis
+    #        restart: always
+    #        user: "redis"
+    #        command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    #        ports:
+    #            - "6379:${REDIS_PORT}"
+    #        volumes:
+    #            - redis_data:/data
+    #        networks:
+    #            - app-network
     #            - cache_proxy
-
-    redisinsight:
-        image: redislabs/redisinsight:latest
-        container_name: app-redisinsight
-        ports:
-            - "5540:${REDISINSIGHT_PORT}"
-        volumes:
-            - redisinsight:/db
-        restart: always
-        networks:
-            - app-network
+    #
+    #    redisinsight:
+    #        image: redislabs/redisinsight:latest
+    #        container_name: app-redisinsight
+    #        ports:
+    #            - "5540:${REDISINSIGHT_PORT}"
+    #        volumes:
+    #            - redisinsight:/db
+    #        restart: always
+    #        networks:
+    #            - app-network
 
     adminer:
         image: adminer:latest
@@ -172,8 +173,8 @@ services:
 networks:
     app-network:
         driver: bridge
-#    cache_proxy:
-#        external: true
+    cache_proxy:
+        external: true
 #    microlib_proxy:
 #        external: true
 
