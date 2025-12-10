@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\ResponseHelper;
+use App\Http\Resources\FailureResource;
 use Closure;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -18,16 +18,22 @@ final class BearerAuthorization
     public function handle(Request $request, Closure $next): Response
     {
         $token = PersonalAccessToken::findToken($request->bearerToken() ?? '');
-        $abilities = $token->abilities ?? [];
+        $abilities = (array)($token->abilities ?? []);
 
         if (!in_array($request->email, $abilities) && !in_array('admin', $abilities)) {
-            return ResponseHelper::errorResponse(403, ['Недостаточно прав']);
+            return response()->json(new FailureResource([
+                'errors' => ['Недостаточно прав'],
+                'statusCode' => Response::HTTP_FORBIDDEN
+            ]));
         }
 
         // TODO: заглушка для тестов
         if (($request->email === 'admin@super.com' || $request->book == '2' || $request->chat == '2')
             && !in_array('super', $abilities)) {
-            return ResponseHelper::errorResponse(403, ['Недостаточно прав']);
+            return response()->json(new FailureResource([
+                'errors' => ['Недостаточно прав'],
+                'statusCode' => Response::HTTP_FORBIDDEN
+            ]));
         }
 
         return $next($request);

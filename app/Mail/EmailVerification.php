@@ -17,6 +17,7 @@ final class EmailVerification extends Mailable
 
     /**
      * Create a new message instance.
+     * @psalm-suppress PossiblyUnusedProperty
      */
     public function __construct(
         public User $user

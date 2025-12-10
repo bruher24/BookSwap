@@ -64,6 +64,7 @@ final class BookService extends Service implements BookServiceInterface
         return parent::get($id);
     }
 
+    #[Override]
     public function update(string $id, array $data): bool
     {
         $book = $this->get($id);
@@ -76,6 +77,7 @@ final class BookService extends Service implements BookServiceInterface
         return $updated;
     }
 
+    #[Override]
     public function delete(string $id): bool
     {
         $book = $this->get($id);

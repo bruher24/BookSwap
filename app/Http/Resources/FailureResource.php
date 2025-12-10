@@ -16,8 +16,8 @@ final class FailureResource extends JsonResource
     #[Override]
     public function toArray(Request $request): array
     {
-        $statusCode = $this['statusCode'] ?? 400;
-        $errors = $this['errors'] ?? [];
+        $statusCode = (int)($this['statusCode'] ?? 400);
+        $errors = (array)($this['errors'] ?? []);
 
         return [
             'statusCode' => $statusCode,

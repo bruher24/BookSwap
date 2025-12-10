@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\ResponseHelper;
+use App\Http\Resources\FailureResource;
 use Closure;
 use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -18,10 +18,13 @@ final class IsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         $token = PersonalAccessToken::findToken($request->bearerToken() ?? '');
-        $abilities = $token->abilities ?? [];
+        $abilities = (array)($token->abilities ?? []);
 
         if (!in_array('admin', $abilities)) {
-            return ResponseHelper::errorResponse(403, ['Недостаточно прав']);
+            return response()->json(new FailureResource([
+                'errors' => ['Недостаточно прав'],
+                'statusCode' => Response::HTTP_FORBIDDEN
+            ]));
         }
         return $next($request);
     }

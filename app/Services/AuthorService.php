@@ -39,6 +39,7 @@ final class AuthorService extends Service implements AuthorServiceInterface
         return parent::get($id);
     }
 
+    #[Override]
     public function update(string $id, array $data): bool
     {
         $author = $this->get($id);
@@ -51,6 +52,7 @@ final class AuthorService extends Service implements AuthorServiceInterface
         return $updated;
     }
 
+    #[Override]
     public function delete(string $id): bool
     {
         $author = $this->get($id);

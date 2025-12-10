@@ -96,6 +96,7 @@ final class UserService extends Service implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function delete(string $id): bool
     {
         $user = $this->get($id);
