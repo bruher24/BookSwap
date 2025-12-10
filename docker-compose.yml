@@ -16,7 +16,6 @@ services:
             - app
         networks:
             - app-network
-    #            - microlib_proxy
 
     app:
         build:
@@ -36,16 +35,9 @@ services:
             - postgres
         networks:
             - app-network
-            - cache_proxy
-
-    mailhog:
-        image: mailhog/mailhog
-        container_name: app-mailhog
-        ports:
-            - "1025"
-            - "8025:8025"
-        networks:
-            - app-network
+            - cache-proxy
+            - mailhog-proxy
+            - typesense-proxy
 
     psalm:
         image: ghcr.io/danog/psalm:latest
@@ -53,7 +45,6 @@ services:
         volumes:
             - .:/app
         working_dir: /app
-        #        command: /composer/vendor/bin/psalm --no-cache
         networks:
             - app-network
 
@@ -79,31 +70,6 @@ services:
         networks:
             - app-network
 
-    #    redis:
-    #        image: redis:latest
-    #        container_name: app-redis
-    #        restart: always
-    #        user: "redis"
-    #        command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
-    #        ports:
-    #            - "6379:${REDIS_PORT}"
-    #        volumes:
-    #            - redis_data:/data
-    #        networks:
-    #            - app-network
-    #            - cache_proxy
-    #
-    #    redisinsight:
-    #        image: redislabs/redisinsight:latest
-    #        container_name: app-redisinsight
-    #        ports:
-    #            - "5540:${REDISINSIGHT_PORT}"
-    #        volumes:
-    #            - redisinsight:/db
-    #        restart: always
-    #        networks:
-    #            - app-network
-
     adminer:
         image: adminer:latest
         container_name: app-adminer
@@ -118,28 +84,6 @@ services:
             - "8080:8080"
         depends_on:
             - postgres
-        networks:
-            - app-network
-
-    typesense:
-        image: typesense/typesense:29.0
-        container_name: app-typesense
-        restart: always
-        #        user: 33:33
-        command: '--data-dir /data --api-key=xyz --enable-cors'
-        ports:
-            - "8108:${TYPESENSE_PORT}"
-        volumes:
-            - typesense_data:/data
-        networks:
-            - app-network
-
-    dashboard:
-        image: ghcr.io/lewynation/typesense-admin-dashboard:latest
-        container_name: app-dashboard
-        restart: always
-        ports:
-            - "3005:3000"
         networks:
             - app-network
 
@@ -173,17 +117,13 @@ services:
 networks:
     app-network:
         driver: bridge
-    cache_proxy:
+    cache-proxy:
         external: true
-#    microlib_proxy:
-#        external: true
+    mailhog-proxy:
+        external: true
+    typesense-proxy:
+        external: true
 
 volumes:
     postgres_data:
-        driver: local
-    redis_data:
-        driver: local
-    redisinsight:
-        driver: local
-    typesense_data:
         driver: local

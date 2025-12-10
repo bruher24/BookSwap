@@ -37,3 +37,7 @@ clear_photos:
 
 clear_covers:
 	docker compose exec app find storage/app/public/covers/ -type f -not -name 'cover.png' -print0 | xargs -0 rm --
+
+index_models:
+	docker compose exec app php artisan scout:import 'App\Models\Author'
+	docker compose exec app php artisan scout:import 'App\Models\Book'
