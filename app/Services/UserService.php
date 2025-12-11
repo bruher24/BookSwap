@@ -39,6 +39,10 @@ final class UserService extends Service implements UserServiceInterface
             }
             DB::commit();
             UserCreated::dispatch($user);
+
+            $rabbitmq = new RabbitMQService();
+            $rabbitmq->sendMessage('user-service', 'user created');
+
             return $user->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
