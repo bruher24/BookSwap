@@ -13,6 +13,10 @@ final class AuthorCreated implements ShouldQueue
     use Dispatchable;
     use SerializesModels;
 
+    public string $connection = 'rabbitmq';
+
+    public string $queue = 'events';
+
     /**
      * Create a new event instance.
      */

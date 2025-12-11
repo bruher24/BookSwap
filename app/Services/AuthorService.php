@@ -36,6 +36,7 @@ final class AuthorService extends Service implements AuthorServiceInterface
     #[Override]
     public function get(string $id): Author|false
     {
+        AuthorCreated::dispatch(Author::find(1));
         return parent::get($id);
     }
 

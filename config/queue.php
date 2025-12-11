@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -119,6 +120,27 @@ return [
                     'vhost' => env('RABBITMQ_VHOST', '/'),
                 ],
             ],
+            'options' => [
+                'queue' => [
+                    'name' => env('RABBITMQ_QUEUE', 'default'),
+                    'declare' => env('RABBITMQ_QUEUE_DECLARE', true),
+                    'bind' => env('RABBITMQ_QUEUE_BIND', true),
+                    'passive' => env('RABBITMQ_QUEUE_PASSIVE', false),
+                    'durable' => env('RABBITMQ_QUEUE_DURABLE', true),
+                    'exclusive' => env('RABBITMQ_QUEUE_EXCLUSIVE', false),
+                    'auto_delete' => env('RABBITMQ_QUEUE_AUTODELETE', false),
+                    'arguments' => null,
+                ],
+                'exchange' => [
+                    'name' => env('RABBITMQ_EXCHANGE_NAME', ''),
+                    'declare' => env('RABBITMQ_EXCHANGE_DECLARE', true),
+                    'type' => env('RABBITMQ_EXCHANGE_TYPE', 'direct'),
+                    'passive' => env('RABBITMQ_EXCHANGE_PASSIVE', false),
+                    'durable' => env('RABBITMQ_EXCHANGE_DURABLE', true),
+                    'auto_delete' => env('RABBITMQ_EXCHANGE_AUTODELETE', false),
+                ],
+            ],
+            'worker' => env('RABBITMQ_WORKER', 'default'),
         ],
     ],
 
