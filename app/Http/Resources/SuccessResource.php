@@ -17,7 +17,7 @@ final class SuccessResource extends JsonResource
     public function toArray(Request $request): array
     {
         $statusCode = $this['statusCode'] ?? 200;
-        $data = $this['data'] ?? [];
+        $data = $this->toArray($request);
 
         return [
             'statusCode' => $statusCode,

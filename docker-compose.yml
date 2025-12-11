@@ -103,6 +103,17 @@ services:
         networks:
             - app-network
 
+    swagger-ui:
+        image: swaggerapi/swagger-ui
+        container_name: app-swagger-ui
+        restart: always
+        ports:
+            - "8001:8080"
+        volumes:
+            - ./swagger:/oas:ro
+        environment:
+            SWAGGER_JSON: /oas/openapi.yaml
+
 #    sequin:
 #        image: sequin/sequin:latest
 #        container_name: app-sequin
@@ -144,4 +155,6 @@ volumes:
     postgres_data:
         driver: local
     rabbitmq_data:
+        driver: local
+    swagger:
         driver: local

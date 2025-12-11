@@ -22,9 +22,7 @@ final class AuthorController extends Controller
         Redis::publish('listeners', 'TEST MESSAGE FROM LARAVEL');
         AuthorCreated::dispatch('TEST MSG');
 
-        $data = ['authors' => $authorResourceCollection];
-
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource(['authors' => $authorResourceCollection]);
     }
 
     public function store(AuthorServiceInterface $authorService, StoreAuthorRequest $request): JsonResource
@@ -38,9 +36,8 @@ final class AuthorController extends Controller
         }
 
         $authorResource = new AuthorResource($author);
-        $data = ['author' => $authorResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource(['author' => $authorResource]);
     }
 
     public function show(AuthorServiceInterface $authorService, string $id): JsonResource
@@ -53,9 +50,8 @@ final class AuthorController extends Controller
         }
 
         $authorResource = new AuthorResource($author);
-        $data = ['author' => $authorResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource(['author' => $authorResource]);
     }
 
     public function update(
