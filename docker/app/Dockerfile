@@ -32,6 +32,7 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp \
     mbstring \
     exif \
     pcntl \
+    sockets \
     xml
 
 COPY ./docker/app/msmtprc /etc/msmtprc

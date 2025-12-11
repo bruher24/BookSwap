@@ -13,8 +13,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.16",
         "laravel/tinker": "^2.10.1",
-        "php-amqplib/php-amqplib": "^2.8",
-        "typesense/typesense-php": "^5.1"
+        "typesense/typesense-php": "^5.1",
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^14"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

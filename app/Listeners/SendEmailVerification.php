@@ -22,7 +22,7 @@ final class SendEmailVerification implements ShouldQueue
      */
     public function viaConnection(): string
     {
-        return 'redis';
+        return 'rabbitmq';
     }
 
     /**

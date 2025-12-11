@@ -36,8 +36,6 @@ final class AuthorService extends Service implements AuthorServiceInterface
     #[Override]
     public function get(string $id): Author|false
     {
-        $rabbitmq = new RabbitMQService();
-        $rabbitmq->sendMessage('test', 'hello world');
         return parent::get($id);
     }
 
