@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Override;
 
-final class UpdateDealRequest extends FormRequest
+final class StoreTradeOfferRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,12 +14,6 @@ final class UpdateDealRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
-    }
-
-    #[Override]
-    protected function prepareForValidation(): void
-    {
-        $this->merge(['deal_id' => $this->route('deal')]);
     }
 
     /**
@@ -31,25 +24,30 @@ final class UpdateDealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'deal_id' => [
+            'sender_id' => [
                 'required',
                 'integer',
-                Rule::exists('deals', 'id')
-                    ->withoutTrashed(),
-            ],
-            'seller_id' => [
-                'required',
-                'integer',
-                'different:buyer_id',
+                'different:receiver_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
+                Rule::unique('deals', 'sender_id')
+                    ->where('receiver_id', request('receiver_id'))
+                    ->withoutTrashed(),
             ],
-            'buyer_id' => [
+            'receiver_id' => [
                 'required',
                 'integer',
-                'different:seller_id',
+                'different:sender_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
+                Rule::unique('deals', 'receiver_id')
+                    ->where('sender_id', request('sender_id'))
+                    ->withoutTrashed(),
+            ],
+            'trade_offer_items' => [
+                'required',
+                'array',
+                Rule::exists('books', 'id'),
             ],
             'date' => [
                 'required',

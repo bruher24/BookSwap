@@ -8,20 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-final class DealItem extends Model implements Cacheable
+final class TradeOfferItem extends Model implements Cacheable
 {
     use SoftDeletes;
     use CacheInvalidation;
 
-    public const string CACHE_KEY = 'dealItems';
+    public const string CACHE_KEY = 'tradeOfferItems';
 
     public $fillable = [
-        'deal_id',
+        'trade_offer_id',
         'book_id',
     ];
 
-    public function deal(): BelongsTo
+    public function tradeOffer(): BelongsTo
     {
-        return $this->belongsTo(Deal::class);
+        return $this->belongsTo(TradeOffer::class);
     }
 }

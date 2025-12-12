@@ -6,18 +6,18 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookTypeController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CoverController;
-use App\Http\Controllers\DealController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TradeOfferController;
 use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFavoritesController;
 use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\UserSettingController;
-use App\Http\Middleware\BearerAuthorization;
+use App\Http\Middleware\BearerAuth;
 use App\Http\Middleware\IsAdmin;
 use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Facades\Route;
@@ -29,8 +29,8 @@ Route::prefix('v1')->name('api.')
             ->group(function () {
                 Route::post('register', 'register')->name('register')->withoutMiddleware('auth:sanctum');
                 Route::post('login', 'login')->name('login')->withoutMiddleware('auth:sanctum');
-                Route::post('refresh', 'refresh')->name('refresh')->middleware(BearerAuthorization::class);
-                Route::post('logout', 'logout')->name('logout')->middleware(BearerAuthorization::class);
+                Route::post('refresh', 'refresh')->name('refresh')->middleware(BearerAuth::class);
+                Route::post('logout', 'logout')->name('logout')->middleware(BearerAuth::class);
             });
 
         Route::prefix('authors')->name('authors.')->controller(AuthorController::class)
@@ -47,8 +47,8 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{book}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{book}', 'update')->name('update')->middleware(BearerAuthorization::class);
-                Route::delete('{book}', 'destroy')->name('destroy')->middleware(BearerAuthorization::class);
+                Route::put('{book}', 'update')->name('update')->middleware(BearerAuth::class);
+                Route::delete('{book}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
             });
 
         Route::prefix('book_types')->name('book_types.')->controller(BookTypeController::class)
@@ -64,9 +64,9 @@ Route::prefix('v1')->name('api.')
             ->group(function () {
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store');
-                Route::get('{chat}', 'show')->name('show')->middleware(BearerAuthorization::class);
-                Route::put('{chat}', 'update')->name('update')->middleware(BearerAuthorization::class);
-                Route::delete('{chat}', 'destroy')->name('destroy')->middleware(BearerAuthorization::class);
+                Route::get('{chat}', 'show')->name('show')->middleware(BearerAuth::class);
+                Route::put('{chat}', 'update')->name('update')->middleware(BearerAuth::class);
+                Route::delete('{chat}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
             });
 
         Route::prefix('covers')->name('covers.')->controller(CoverController::class)
@@ -75,16 +75,20 @@ Route::prefix('v1')->name('api.')
                 Route::post('/', 'store')->name('store');
                 Route::get('{cover}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
                 Route::put('{cover}', 'update')->name('update')->middleware(IsAdmin::class);
-                Route::delete('{cover}', 'destroy')->name('destroy')->middleware(BearerAuthorization::class);
+                Route::delete('{cover}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
             });
 
-        Route::prefix('deals')->name('deals.')->controller(DealController::class)
+        Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
-                Route::post('/', 'store')->name('store');
-                Route::get('{deal}', 'show')->name('show');
-                Route::put('{deal}', 'update')->name('update')->middleware(IsAdmin::class);
-                Route::delete('{deal}', 'destroy')->name('destroy');
+                Route::post('/', 'store')->name('store')->middleware(BearerAuth::class);
+                Route::get('{trade_offer}', 'show')->name('show')->middleware(BearerAuth::class);
+                Route::get('by_sender/{sender}', 'bySender')->name('bySender')->middleware(BearerAuth::class);
+                Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver')->middleware(BearerAuth::class);
+                Route::patch('{trade_offer}/accept', 'accept')->name('accept')->middleware(BearerAuth::class);
+                Route::patch('{trade_offer}/reject', 'reject')->name('reject')->middleware(BearerAuth::class);
+                Route::put('{trade_offer}', 'update')->name('update')->middleware(BearerAuth::class);
+                Route::delete('{trade_offer}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
             });
 
         Route::prefix('filters')->name('filters.')->controller(FilterController::class)

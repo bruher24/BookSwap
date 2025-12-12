@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
-final class BearerAuthorization
+final class BearerAuth
 {
     /**
      * Handle an incoming request.
@@ -20,7 +20,9 @@ final class BearerAuthorization
         $token = PersonalAccessToken::findToken($request->bearerToken() ?? '');
         $abilities = (array)($token->abilities ?? []);
 
-        if (!in_array($request->email, $abilities) && !in_array('admin', $abilities)) {
+        // TODO: реализовать авторизацию по токену
+        // найти юзера по токену, а дальше?
+        if (!in_array($request->email, $abilities) || !in_array('admin', $abilities)) {
             return response()->json(new FailureResource([
                 'errors' => ['Недостаточно прав'],
                 'statusCode' => Response::HTTP_FORBIDDEN

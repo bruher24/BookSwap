@@ -14,6 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('name', 100);
+            $table->boolean('is_available')->default(true);
             $table->string('publishing_house', 100)->nullable();
             $table->year('publication_year')->nullable();
             $table->string('isbn', 20)->unique()->nullable();

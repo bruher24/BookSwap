@@ -5,8 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Override;
 
-final class StoreDealRequest extends FormRequest
+final class UpdateTradeOfferRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,6 +15,12 @@ final class StoreDealRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    #[Override]
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['trade_offer_id' => $this->route('trade_offer')]);
     }
 
     /**
@@ -24,25 +31,30 @@ final class StoreDealRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'seller_id' => [
+            'trade_offer_id' => [
                 'required',
                 'integer',
-                'different:buyer_id',
-                Rule::exists('users', 'id')
-                    ->withoutTrashed(),
-                Rule::unique('deals', 'seller_id')
-                    ->where('buyer_id', request('buyer_id'))
+                Rule::exists('trade_offers', 'id')
                     ->withoutTrashed(),
             ],
-            'buyer_id' => [
+            'sender_id' => [
                 'required',
                 'integer',
-                'different:seller_id',
+                'different:receiver_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
-                Rule::unique('deals', 'buyer_id')
-                    ->where('seller_id', request('seller_id'))
+            ],
+            'receiver_id' => [
+                'required',
+                'integer',
+                'different:sender_id',
+                Rule::exists('users', 'id')
                     ->withoutTrashed(),
+            ],
+            'trade_offer_items' => [
+                'required',
+                'array',
+                Rule::exists('books', 'id'),
             ],
             'date' => [
                 'required',
