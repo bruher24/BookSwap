@@ -1,0 +1,27 @@
+type: object
+properties:
+  name:
+    type: string
+      null
+    maxLength: 50
+  email:
+    type: string
+      null
+    format: email
+    minLength: 5
+    maxLength: 100
+  old_password:
+    type: string
+      null
+  password:
+    type: string
+      null
+  password_confirmation:
+    type: string
+      null
+  phone_number:
+    type: string
+      null
+required:
+  - user_id
+title: UpdateUserRequest

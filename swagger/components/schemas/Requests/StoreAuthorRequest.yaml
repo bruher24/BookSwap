@@ -1,0 +1,19 @@
+type: object
+      properties:
+        lastname:
+          type: string
+          maxLength: 100
+        firstname:
+          type: string
+          maxLength: 100
+        patronymic:
+          type: string
+            null
+          maxLength: 100
+        birthdate:
+          type: string
+            null
+      required:
+        - lastname
+        - firstname
+      title: StoreAuthorRequest

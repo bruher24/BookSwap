@@ -1,0 +1,13 @@
+type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+            null
+      required:
+        - name
+        - label
+      title: StoreSettingRequest

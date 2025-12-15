@@ -1,0 +1,14 @@
+type: object
+properties:
+  name:
+    type: string
+  label:
+    type: string
+  description:
+    type: string
+      null
+required:
+  - setting_id
+  - name
+  - label
+title: UpdateSettingRequest

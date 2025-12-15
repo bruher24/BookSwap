@@ -1,0 +1,9 @@
+type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 50
+      required:
+        - name
+      title: StoreGenreRequest

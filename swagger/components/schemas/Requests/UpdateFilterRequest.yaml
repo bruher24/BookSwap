@@ -1,0 +1,16 @@
+type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 30
+        by_fields:
+          type: string
+        is_active:
+          type: boolean
+            null
+      required:
+        - filter_id
+        - name
+        - by_fields
+      title: UpdateFilterRequest
