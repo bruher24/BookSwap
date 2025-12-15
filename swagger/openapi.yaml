@@ -1,16 +1,3810 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
-  title: Sample API
-  version: 1.0.0
+  title: BookSwap
+  version: 0.0.1
+servers:
+  - url: http://localhost/api/v1
+security:
+  http:
 paths:
-  /hello:
-    get:
-      summary: Hello World Request
+
+  /auth/register:
+    post:
+      operationId: auth.register
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreUserRequest"
       responses:
-        "200":
+        200:
           description: OK
           content:
-            text/plain:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/UserResource"
+                  token:
+                    type: string
+                required:
+                  - user
+                  - token
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    minItems: 1
+                    maxItems: 3
+                required:
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /auth/login:
+    post:
+      operationId: auth.login
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequest"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/UserResource"
+                  token:
+                    type: string
+                required:
+                  - user
+                  - token
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /auth/refresh:
+    post:
+      operationId: auth.refresh
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                required:
+                  - token
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка обновления токена
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /auth/logout:
+    post:
+      operationId: auth.logout
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при выходе из аккаунта
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /authors:
+    get:
+      operationId: authors.index
+      tags:
+        - Author
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authors:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AuthorResource"
+                required:
+                  - authors
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: authors.store
+      tags:
+        - Author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreAuthorRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  author:
+                    $ref: "#/components/schemas/AuthorResource"
+                required:
+                  - author
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании автора
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /authors/id:
+    get:
+      operationId: authors.show
+      tags:
+        - Author
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  author:
+                    $ref: "#/components/schemas/AuthorResource"
+                required:
+                  - author
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении автора
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: authors.update
+      tags:
+        - Author
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAuthorRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении автора
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: authors.destroy
+      tags:
+        - Author
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении автора
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /books:
+    get:
+      operationId: books.index
+      tags:
+        - Book
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BookResource"
+                required:
+                  - books
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: books.store
+      tags:
+        - Book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreBookRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  book:
+                    $ref: "#/components/schemas/BookResource"
+                required:
+                  - book
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании книги
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /books/id:
+    get:
+      operationId: books.show
+      tags:
+        - Book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  book:
+                    $ref: "#/components/schemas/BookResource"
+                required:
+                  - book
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении книги
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: books.update
+      tags:
+        - Book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBookRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении книги
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: books.destroy
+      tags:
+        - Book
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении книги
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /booktypes:
+    get:
+      operationId: booktypes.index
+      tags:
+        - BookType
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookTypes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/BookTypeResource"
+                required:
+                  - bookTypes
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: booktypes.store
+      tags:
+        - BookType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreBookTypeRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookType:
+                    $ref: "#/components/schemas/BookTypeResource"
+                required:
+                  - bookType
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании типа
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /booktypes/id:
+    get:
+      operationId: booktypes.show
+      tags:
+        - BookType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookType:
+                    $ref: "#/components/schemas/BookTypeResource"
+                required:
+                  - bookType
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении типа
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: booktypes.update
+      tags:
+        - BookType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBookTypeRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении типа
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: booktypes.destroy
+      tags:
+        - BookType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении типа
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /chats:
+    get:
+      operationId: chats.index
+      tags:
+        - Chat
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chats:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ChatResource"
+                required:
+                  - chats
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: chats.store
+      tags:
+        - Chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreChatRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chat:
+                    $ref: "#/components/schemas/ChatResource"
+                required:
+                  - chat
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании чата
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /chats/id:
+    get:
+      operationId: chats.show
+      tags:
+        - Chat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chat:
+                    $ref: "#/components/schemas/ChatResource"
+                required:
+                  - chat
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении чата
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: chats.update
+      tags:
+        - Chat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateChatRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении чата
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: chats.destroy
+      tags:
+        - Chat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении чата
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /covers:
+    get:
+      operationId: covers.index
+      tags:
+        - Cover
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  covers:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CoverResource"
+                required:
+                  - covers
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: covers.store
+      tags:
+        - Cover
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreCoverRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cover:
+                    $ref: "#/components/schemas/CoverResource"
+                required:
+                  - cover
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании обложки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /covers/id:
+    get:
+      operationId: covers.show
+      tags:
+        - Cover
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cover:
+                    $ref: "#/components/schemas/CoverResource"
+                required:
+                  - cover
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении обложки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: covers.update
+      tags:
+        - Cover
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCoverRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении обложки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: covers.destroy
+      tags:
+        - Cover
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении обложки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /deals:
+    get:
+      operationId: deals.index
+      tags:
+        - Deal
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deals:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DealResource"
+                required:
+                  - deals
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: deals.store
+      tags:
+        - Deal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreDealRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deal:
+                    $ref: "#/components/schemas/DealResource"
+                required:
+                  - deal
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании сделки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /deals/id:
+    get:
+      operationId: deals.show
+      tags:
+        - Deal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deal:
+                    $ref: "#/components/schemas/DealResource"
+                required:
+                  - deal
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении сделки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: deals.update
+      tags:
+        - Deal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDealRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении сделки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: deals.destroy
+      tags:
+        - Deal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении сделки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /filters:
+    get:
+      operationId: filters.index
+      tags:
+        - Filter
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  filters:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/FilterResource"
+                required:
+                  - filters
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: filters.store
+      tags:
+        - Filter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreFilterRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  filter:
+                    $ref: "#/components/schemas/FilterResource"
+                required:
+                  - filter
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании фильтра
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /filters/id:
+    get:
+      operationId: filters.show
+      tags:
+        - Filter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  filter:
+                    $ref: "#/components/schemas/FilterResource"
+                required:
+                  - filter
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении фильтра
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: filters.update
+      tags:
+        - Filter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFilterRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении фильтра
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: filters.destroy
+      tags:
+        - Filter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении фильтра
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /genres:
+    get:
+      operationId: genres.index
+      tags:
+        - Genre
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  genres:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/GenreResource"
+                required:
+                  - genres
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: genres.store
+      tags:
+        - Genre
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreGenreRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  genre:
+                    $ref: "#/components/schemas/GenreResource"
+                required:
+                  - genre
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании жанра
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /genres/id:
+    get:
+      operationId: genres.show
+      tags:
+        - Genre
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  genre:
+                    $ref: "#/components/schemas/GenreResource"
+                required:
+                  - genre
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении жанра
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: genres.update
+      tags:
+        - Genre
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGenreRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении жанра
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: genres.destroy
+      tags:
+        - Genre
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении жанра
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /photos:
+    get:
+      operationId: photos.index
+      tags:
+        - Photo
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photos:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PhotoResource"
+                required:
+                  - photos
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: photos.store
+      tags:
+        - Photo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StorePhotoRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photo:
+                    $ref: "#/components/schemas/PhotoResource"
+                required:
+                  - photo
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании фото
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /photos/id:
+    get:
+      operationId: photos.show
+      tags:
+        - Photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photo:
+                    $ref: "#/components/schemas/PhotoResource"
+                required:
+                  - photo
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении фото
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: photos.update
+      tags:
+        - Photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePhotoRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении фото
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: photos.destroy
+      tags:
+        - Photo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении фото
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /search:
+    get:
+      operationId: search
+      tags:
+        - Search
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 3
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  search_results:
+                    $ref: "#/components/schemas/SearchResultsResource"
+                required:
+                  - search_results
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /settings:
+    get:
+      operationId: settings.index
+      tags:
+        - Setting
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  settings:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SettingResource"
+                required:
+                  - settings
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: settings.store
+      tags:
+        - Setting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreSettingRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  setting:
+                    $ref: "#/components/schemas/SettingResource"
+                required:
+                  - setting
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании настройки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /settings/id:
+    get:
+      operationId: settings.show
+      tags:
+        - Setting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  setting:
+                    $ref: "#/components/schemas/SettingResource"
+                required:
+                  - setting
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении настройки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: settings.update
+      tags:
+        - Setting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSettingRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при обновлении настройки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: settings.destroy
+      tags:
+        - Setting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении настройки
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /users:
+    get:
+      operationId: users.index
+      tags:
+        - User
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserResource"
+                required:
+                  - users
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: users.store
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreUserRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/UserResource"
+                required:
+                  - user
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при создании пользователя
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+
+  /users/id:
+    get:
+      operationId: users.show
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/UserResource"
+                required:
+                  - user
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при получении пользователя
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+    put:
+      operationId: users.update
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    errors:
+                      type: array
+                      prefixItems:
+                        type: string
+                        enum: Ошибка при обновлении пользователя
+                      minItems: 1
+                      maxItems: 1
+                  required:
+                    - success
+                    - errors
+        422:
+          $ref: "#/components/responses/ValidationException"
+    delete:
+      operationId: users.destroy
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                minItems: 0
+                maxItems: 0
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при удалении пользователя
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /users/user_id/chats:
+    get:
+      operationId: users.chats.index
+      tags:
+        - UserChat
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: recipient
+          in: query
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chats:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ChatResource"
+                required:
+                  - chats
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  type: object
+                  properties:
+                    success:
+                      type: boolean
+                    errors:
+                      type: array
+                      prefixItems:
+                        type: string
+                        enum: Ошибка при создании чата
+                      minItems: 1
+                      maxItems: 1
+                  required:
+                    - success
+                    - errors
+
+  /users/user_id/chats/recipient_id/messages:
+    get:
+      operationId: users.chats.messages
+      tags:
+        - UserChat
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: recipient_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: string
+                  recipient:
+                    type: string
+                  is_blocked:
+                    type: string
+                required:
+                  - messages
+                  - recipient
+                  - is_blocked
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    post:
+      operationId: users.chats.send
+      tags:
+        - UserChat
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: recipient_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                required:
+                  - message
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при отправке сообщения
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /users/id/chats/chat/messages/message:
+    put:
+      operationId: users.chats.read
+      tags:
+        - UserChat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: chat
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: message
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                messages:
+                  type: string
+                  description:
+                    TODO: сделать нормально
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
               schema:
                 type: string
-                example: "Hello, World!"
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  errors:
+                    type: array
+                    prefixItems:
+                      type: string
+                      enum: Ошибка при прочтении сообщений
+                    minItems: 1
+                    maxItems: 1
+                required:
+                  - success
+                  - errors
+
+  /users/user/favorites:
+    get:
+      operationId: users.favorites.index
+      tags:
+        - UserFavorites
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+
+  /users/user/favorites/book:
+    post:
+      operationId: users.favorites.like
+      tags:
+        - UserFavorites
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: book
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+    delete:
+      operationId: users.favorites.dislike
+      tags:
+        - UserFavorites
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: book
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+
+  /users/user/notifications:
+    get:
+      operationId: users.notifications.index
+      tags:
+        - UserNotification
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: The user ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          $ref: "#/components/responses/ModelNotFoundException"
+
+  /users/user/settings:
+    get:
+      operationId: users.settings.index
+      tags:
+        - UserSetting
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+
+  /users/user/settings/setting:
+    put:
+      operationId: users.settings.update
+      tags:
+        - UserSetting
+      parameters:
+        - name: user
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: setting
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          $ref: "#/components/responses/AuthenticationException"
+        404:
+          $ref: "#/components/responses/ModelNotFoundException"
+components:
+  securitySchemes:
+    http:
+      type: http
+      scheme: bearer
+  schemas:
+    AuthRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        remember:
+          type: boolean
+            null
+      required:
+        - email
+        - password
+      title: AuthRequest
+    AuthorResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        lastname:
+          type: string
+        firstname:
+          type: string
+        patronymic:
+          type: string
+            null
+        birthdate:
+          type: string
+            null
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - lastname
+        - firstname
+        - patronymic
+        - birthdate
+        - created_at
+        - updated_at
+        - deleted_at
+      title: AuthorResource
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        name:
+          type: string
+        publishing_house:
+          type: string
+            null
+        publication_year:
+          type: integer
+            null
+        isbn:
+          type: string
+            null
+        page_count:
+          type: integer
+        book_type_id:
+          type: integer
+        cover_id:
+          type: integer
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - user_id
+        - name
+        - publishing_house
+        - publication_year
+        - isbn
+        - page_count
+        - book_type_id
+        - cover_id
+        - created_at
+        - updated_at
+        - deleted_at
+      title: Book
+    BookResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        user_id:
+          type: integer
+        name:
+          type: string
+        publishing_house:
+          type: string
+            null
+        publication_year:
+          type: integer
+            null
+        isbn:
+          type: string
+            null
+        page_count:
+          type: integer
+        book_type_id:
+          type: integer
+        cover_id:
+          type: integer
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - user_id
+        - name
+        - publishing_house
+        - publication_year
+        - isbn
+        - page_count
+        - book_type_id
+        - cover_id
+        - created_at
+        - updated_at
+        - deleted_at
+      title: BookResource
+    BookTypeResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - deleted_at
+      title: BookTypeResource
+    ChatResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        first_user_id:
+          type: integer
+        second_user_id:
+          type: integer
+        is_blocked:
+          type: string
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - first_user_id
+        - second_user_id
+        - is_blocked
+        - created_at
+        - updated_at
+        - deleted_at
+      title: ChatResource
+    CoverResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        src:
+          type: string
+            null
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - src
+        - created_at
+        - updated_at
+        - deleted_at
+      title: CoverResource
+    DealResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        seller_id:
+          type: integer
+        buyer_id:
+          type: integer
+        date:
+          type: string
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - seller_id
+        - buyer_id
+        - date
+        - created_at
+        - updated_at
+        - deleted_at
+      title: DealResource
+    FilterResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        by_fields:
+          type: string
+        disabled:
+          type: string
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - name
+        - by_fields
+        - disabled
+        - created_at
+        - updated_at
+        - deleted_at
+      title: FilterResource
+    GenreResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - deleted_at
+      title: GenreResource
+    Phone:
+      type: object
+      properties:
+        id:
+          type: integer
+        number:
+          type: string
+        user_id:
+          type: integer
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - number
+        - user_id
+        - created_at
+        - updated_at
+        - deleted_at
+      title: Phone
+    Photo:
+      type: object
+      properties:
+        id:
+          type: integer
+        src:
+          type: string
+            null
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - src
+        - created_at
+        - updated_at
+        - deleted_at
+      title: Photo
+    PhotoResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        src:
+          type: string
+            null
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - src
+        - created_at
+        - updated_at
+        - deleted_at
+      title: PhotoResource
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - deleted_at
+      title: Role
+    SearchResultsResource:
+      type: object
+      properties:
+        books:
+          type: array
+          items:
+            $ref: "#/components/schemas/BookResource"
+        authors:
+          type: array
+          items:
+            $ref: "#/components/schemas/AuthorResource"
+        total:
+          type: integer
+      required:
+        - books
+        - authors
+        - total
+      title: SearchResultsResource
+    SettingResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+            null
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+      required:
+        - id
+        - name
+        - label
+        - description
+        - created_at
+        - updated_at
+        - deleted_at
+      title: SettingResource
+    StoreAuthorRequest:
+      type: object
+      properties:
+        lastname:
+          type: string
+          maxLength: 100
+        firstname:
+          type: string
+          maxLength: 100
+        patronymic:
+          type: string
+            null
+          maxLength: 100
+        birthdate:
+          type: string
+            null
+      required:
+        - lastname
+        - firstname
+      title: StoreAuthorRequest
+    StoreBookRequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        name:
+          type: string
+          maxLength: 100
+        author_id:
+          type: integer
+            null
+        author_id1:
+          type: integer
+            null
+        author_id2:
+          type: integer
+            null
+        authorLastname:
+          type: string
+            null
+          maxLength: 100
+        authorFirstname:
+          type: string
+            null
+          maxLength: 100
+        authorPatronymic:
+          type: string
+            null
+          maxLength: 100
+        authorBirthdate:
+          type: string
+            null
+          format: date-time
+        page_count:
+          type: integer
+          minimum: 1
+        cover:
+          type: string
+            null
+          format: binary
+          contentMediaType: application/octet-stream
+          maxLength: 2048
+        publishing_house:
+          type: string
+            null
+        publication_year:
+          type: string
+            null
+          format: date
+        book_type:
+          type: integer
+        isbn:
+          type: string
+            null
+          minLength: 13
+          maxLength: 13
+      required:
+        - user_id
+        - name
+        - page_count
+        - book_type
+      title: StoreBookRequest
+    StoreBookTypeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+      required:
+        - name
+      title: StoreBookTypeRequest
+    StoreChatRequest:
+      type: object
+      properties:
+        first_user_id:
+          type: integer
+        second_user_id:
+          type: integer
+        blocked_by:
+          type: string
+            null
+          enum: first
+            second
+      required:
+        - first_user_id
+        - second_user_id
+      title: StoreChatRequest
+    StoreCoverRequest:
+      type: object
+      properties:
+        src:
+          type: string
+          format: binary
+          contentMediaType: application/octet-stream
+      required:
+        - src
+      title: StoreCoverRequest
+    StoreDealRequest:
+      type: object
+      properties:
+        seller_id:
+          type: integer
+        buyer_id:
+          type: integer
+        date:
+          type: string
+      required:
+        - seller_id
+        - buyer_id
+        - date
+      title: StoreDealRequest
+    StoreFilterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 30
+        by_fields:
+          type: string
+        is_active:
+          type: boolean
+            null
+      required:
+        - name
+        - by_fields
+      title: StoreFilterRequest
+    StoreGenreRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 50
+      required:
+        - name
+      title: StoreGenreRequest
+    StorePhotoRequest:
+      type: object
+      properties:
+        src:
+          type: string
+          format: binary
+          contentMediaType: application/octet-stream
+      required:
+        - src
+      title: StorePhotoRequest
+    StoreSettingRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+            null
+      required:
+        - name
+        - label
+      title: StoreSettingRequest
+    StoreUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+          maxLength: 70
+        email_verified_at:
+          type: string
+            null
+        password:
+          type: string
+        photo_id:
+          type: integer
+            null
+        remember_token:
+          type: string
+            null
+          maxLength: 100
+      required:
+        - name
+        - email
+        - password
+      title: StoreUserRequest
+    UpdateAuthorRequest:
+      type: object
+      properties:
+        lastname:
+          type: string
+          maxLength: 100
+        firstname:
+          type: string
+          maxLength: 100
+        patronymic:
+          type: string
+            null
+          maxLength: 100
+        birthdate:
+          type: string
+            null
+      required:
+        - author_id
+        - lastname
+        - firstname
+      title: UpdateAuthorRequest
+    UpdateBookRequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        name:
+          type: string
+            null
+          maxLength: 100
+        author_id:
+          type: integer
+            null
+        author_id1:
+          type: integer
+            null
+        author_id2:
+          type: integer
+            null
+        authorLastname:
+          type: string
+            null
+          maxLength: 100
+        authorFirstname:
+          type: string
+            null
+          maxLength: 100
+        authorPatronymic:
+          type: string
+            null
+          maxLength: 100
+        authorBirthdate:
+          type: string
+            null
+          format: date-time
+        page_count:
+          type: integer
+          minimum: 1
+        cover:
+          type: string
+            null
+          format: binary
+          contentMediaType: application/octet-stream
+          maxLength: 2048
+        publishing_house:
+          type: string
+            null
+        publication_year:
+          type: string
+            null
+          format: date
+        book_type:
+          type: integer
+        isbn:
+          type: string
+            null
+          minLength: 13
+          maxLength: 13
+      required:
+        - book_id
+        - user_id
+        - page_count
+        - book_type
+      title: UpdateBookRequest
+    UpdateBookTypeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+      required:
+        - book_type_id
+        - name
+      title: UpdateBookTypeRequest
+    UpdateChatRequest:
+      type: object
+      properties:
+        first_user_id:
+          type: integer
+        second_user_id:
+          type: integer
+        blocked_by:
+          type: string
+            null
+          enum: first
+            second
+      required:
+        - chat_id
+        - first_user_id
+        - second_user_id
+      title: UpdateChatRequest
+    UpdateCoverRequest:
+      type: object
+      properties:
+        src:
+          type: string
+          format: binary
+          contentMediaType: application/octet-stream
+      required:
+        - cover_id
+        - src
+      title: UpdateCoverRequest
+    UpdateDealRequest:
+      type: object
+      properties:
+        seller_id:
+          type: integer
+        buyer_id:
+          type: integer
+        date:
+          type: string
+      required:
+        - deal_id
+        - seller_id
+        - buyer_id
+        - date
+      title: UpdateDealRequest
+    UpdateFilterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 30
+        by_fields:
+          type: string
+        is_active:
+          type: boolean
+            null
+      required:
+        - filter_id
+        - name
+        - by_fields
+      title: UpdateFilterRequest
+    UpdateGenreRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 50
+      required:
+        - genre_id
+        - name
+      title: UpdateGenreRequest
+    UpdatePhotoRequest:
+      type: object
+      properties:
+        src:
+          type: string
+          format: binary
+          contentMediaType: application/octet-stream
+      required:
+        - photo_id
+        - src
+      title: UpdatePhotoRequest
+    UpdateSettingRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+            null
+      required:
+        - setting_id
+        - name
+        - label
+      title: UpdateSettingRequest
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+            null
+          maxLength: 50
+        email:
+          type: string
+            null
+          format: email
+          minLength: 5
+          maxLength: 100
+        old_password:
+          type: string
+            null
+        password:
+          type: string
+            null
+        password_confirmation:
+          type: string
+            null
+        phone_number:
+          type: string
+            null
+      required:
+        - user_id
+      title: UpdateUserRequest
+    UserResource:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        email_verified_at:
+          type: string
+            null
+          format: date-time
+        photo_id:
+          type: integer
+            null
+        created_at:
+          type: string
+            null
+          format: date-time
+        updated_at:
+          type: string
+            null
+          format: date-time
+        deleted_at:
+          type: string
+            null
+          format: date-time
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+        books:
+          type: array
+          items:
+            $ref: "#/components/schemas/Book"
+        phone:
+          $ref: "#/components/schemas/Phone"
+        photo:
+          $ref: "#/components/schemas/Photo"
+      required:
+        - id
+        - name
+        - email
+        - email_verified_at
+        - photo_id
+        - created_at
+        - updated_at
+        - deleted_at
+      title: UserResource
+  responses:
+    AuthenticationException:
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Error overview.
+            required:
+              - message
+    ValidationException:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Errors overview.
+              errors:
+                type: object
+                description: A detailed description of each field that failed validation.
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+            required:
+              - message
+              - errors
+    ModelNotFoundException:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Error overview.
+            required:
+              - message
