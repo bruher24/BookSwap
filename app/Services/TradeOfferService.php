@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\TradeOfferCreated;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Models\TradeOffer;
 use Exception;
@@ -23,7 +24,12 @@ final class TradeOfferService extends Service implements TradeOfferServiceInterf
     #[Override]
     public function create(array $data): TradeOffer|false
     {
-        return parent::create($data);
+        $tradeOffer = parent::create($data);
+
+        if ($tradeOffer) {
+            TradeOfferCreated::dispatch($tradeOffer);
+        }
+        return $tradeOffer;
     }
 
     #[Override]
