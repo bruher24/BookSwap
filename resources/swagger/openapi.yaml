@@ -5,7 +5,6 @@ info:
 servers:
   - url: http://localhost/api/v1
 paths:
-
   /auth/register:
     post:
       operationId: auth.register
@@ -56,7 +55,7 @@ paths:
               $ref: "./components/schemas/Requests/AuthRequest.yaml"
             examples:
               default:
-                $ref: "./components/examples/AuthRequestExample"
+                $ref: "./components/examples/AuthRequestExample.yaml"
       responses:
         200:
           description: OK
@@ -222,17 +221,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /authors/id:
+  /authors/{author}:
+    parameters:
+      - name: author
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: authors.show
       tags:
         - Author
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -258,12 +257,6 @@ paths:
       operationId: authors.update
       tags:
         - Author
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -285,12 +278,6 @@ paths:
       operationId: authors.destroy
       tags:
         - Author
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -388,17 +375,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /books/id:
+  /books/{book}:
+    parameters:
+      - name: book
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: books.show
       tags:
         - Book
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -419,12 +406,6 @@ paths:
       operationId: books.update
       tags:
         - Book
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -446,12 +427,6 @@ paths:
       operationId: books.destroy
       tags:
         - Book
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -546,17 +521,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /booktypes/id:
+  /booktypes/{booktype}:
+    parameters:
+      - name: booktype
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: booktypes.show
       tags:
         - BookType
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -577,12 +552,6 @@ paths:
       operationId: booktypes.update
       tags:
         - BookType
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -604,12 +573,6 @@ paths:
       operationId: booktypes.destroy
       tags:
         - BookType
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -706,17 +669,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /chats/id:
+  /chats/{chat}:
+    parameters:
+      - name: chat
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: chats.show
       tags:
         - Chat
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -739,12 +702,6 @@ paths:
       operationId: chats.update
       tags:
         - Chat
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -766,12 +723,6 @@ paths:
       operationId: chats.destroy
       tags:
         - Chat
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -866,17 +817,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /covers/id:
+  /covers/{cover}:
+    parameters:
+      - name: cover
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: covers.show
       tags:
         - Cover
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -899,12 +850,6 @@ paths:
       operationId: covers.update
       tags:
         - Cover
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -926,12 +871,6 @@ paths:
       operationId: covers.destroy
       tags:
         - Cover
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -959,11 +898,11 @@ paths:
                   - success
                   - errors
 
-  /deals:
+  /trade_offers:
     get:
-      operationId: deals.index
+      operationId: trade_offers.index
       tags:
-        - Deal
+        - TradeOffer
       responses:
         200:
           description: "OK"
@@ -972,18 +911,18 @@ paths:
               schema:
                 type: object
                 properties:
-                  deals:
+                  trade_offers:
                     type: array
                     items:
                       $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
                 required:
-                  - deals
+                  - trade_offers
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
     post:
-      operationId: deals.store
+      operationId: trade_offers.store
       tags:
-        - Deal
+        - TradeOffer
       requestBody:
         required: true
         content:
@@ -998,10 +937,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  deal:
+                  trade_offer:
                     $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
                 required:
-                  - deal
+                  - trade_offer
         400:
           $ref: "./components/responses/BadRequest.yaml"
         401:
@@ -1028,17 +967,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /deals/id:
+  /trade_offers/{trade_offer}:
+    parameters:
+      - name: trade_offer
+        in: path
+        required: true
+        schema:
+          type: string
     get:
-      operationId: deals.show
+      operationId: trade_offers.show
       tags:
-        - Deal
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+        - TradeOffer
       responses:
         200:
           description: "OK"
@@ -1047,10 +986,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  deal:
+                  trade_offer:
                     $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
                 required:
-                  - deal
+                  - trade_offer
         400:
           $ref: "./components/responses/BadRequest.yaml"
         401:
@@ -1058,15 +997,9 @@ paths:
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
     put:
-      operationId: deals.update
+      operationId: trade_offers.update
       tags:
-        - Deal
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+        - TradeOffer
       requestBody:
         required: true
         content:
@@ -1085,15 +1018,9 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
     delete:
-      operationId: deals.destroy
+      operationId: trade_offers.destroy
       tags:
-        - Deal
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+        - TradeOffer
       responses:
         200:
           description: "OK"
@@ -1188,17 +1115,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /filters/id:
+  /filters/{filter}:
+    parameters:
+      - name: filter
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: filters.show
       tags:
         - Filter
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1221,12 +1148,6 @@ paths:
       operationId: filters.update
       tags:
         - Filter
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -1248,12 +1169,6 @@ paths:
       operationId: filters.destroy
       tags:
         - Filter
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1348,17 +1263,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /genres/id:
+  /genres/{genre}:
+    parameters:
+      - name: genre
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: genres.show
       tags:
         - Genre
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1381,12 +1296,6 @@ paths:
       operationId: genres.update
       tags:
         - Genre
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -1408,12 +1317,6 @@ paths:
       operationId: genres.destroy
       tags:
         - Genre
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1508,17 +1411,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /photos/id:
+  /photos/{photo}:
+    parameters:
+      - name: photo
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: photos.show
       tags:
         - Photo
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1541,12 +1444,6 @@ paths:
       operationId: photos.update
       tags:
         - Photo
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -1568,12 +1465,6 @@ paths:
       operationId: photos.destroy
       tags:
         - Photo
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1602,17 +1493,17 @@ paths:
                   - errors
 
   /search:
+    parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 3
     get:
       operationId: search
       tags:
         - Search
-      parameters:
-        - name: query
-          in: query
-          required: true
-          schema:
-            type: string
-            minLength: 3
       responses:
         200:
           description: "OK"
@@ -1701,17 +1592,17 @@ paths:
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
-  /settings/id:
+  /settings/{setting}:
+    parameters:
+      - name: setting
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: settings.show
       tags:
         - Setting
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1734,12 +1625,6 @@ paths:
       operationId: settings.update
       tags:
         - Setting
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -1761,12 +1646,6 @@ paths:
       operationId: settings.destroy
       tags:
         - Setting
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1864,16 +1743,16 @@ paths:
           $ref: "./components/responses/ValidationException.yaml"
 
   /users/{user}:
+    parameters:
+      - name: user
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: users.show
       tags:
         - User
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1896,12 +1775,6 @@ paths:
       operationId: users.update
       tags:
         - User
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         required: true
         content:
@@ -1923,12 +1796,6 @@ paths:
       operationId: users.destroy
       tags:
         - User
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -1988,22 +1855,22 @@ paths:
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
 
-  /users/user_id/chats/recipient_id/messages:
+  /users/{user}/chats/{recipient}/messages:
+    parameters:
+      - name: user
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: recipient
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: users.chats.messages
       tags:
         - UserChat
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: recipient_id
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -2030,17 +1897,6 @@ paths:
       operationId: users.chats.send
       tags:
         - UserChat
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: recipient_id
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -2085,27 +1941,27 @@ paths:
                   - success
                   - errors
 
-  /users/id/chats/chat/messages/message:
+  /users/{user}/chats/{chat}/messages/{message}:
+    parameters:
+      - name: user
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: chat
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: message
+        in: path
+        required: true
+        schema:
+          type: string
     put:
       operationId: users.chats.read
       tags:
         - UserChat
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: chat
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: message
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -2130,17 +1986,17 @@ paths:
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
 
-  /users/user/favorites:
+  /users/{user}/favorites:
+    parameters:
+      - name: user
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: users.favorites.index
       tags:
         - UserFavorites
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -2149,22 +2005,22 @@ paths:
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
 
-  /users/user/favorites/book:
+  /users/{user}/favorites/{book}:
+    parameters:
+      - name: user
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: book
+        in: path
+        required: true
+        schema:
+          type: string
     post:
       operationId: users.favorites.like
       tags:
         - UserFavorites
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: book
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -2176,17 +2032,6 @@ paths:
       operationId: users.favorites.dislike
       tags:
         - UserFavorites
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: book
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -2195,18 +2040,18 @@ paths:
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
 
-  /users/user/notifications:
+  /users/{user}/notifications:
+    parameters:
+      - name: user
+        in: path
+        required: true
+        description: The user ID
+        schema:
+          type: string
     get:
       operationId: users.notifications.index
       tags:
         - UserNotification
-      parameters:
-        - name: user
-          in: path
-          required: true
-          description: The user ID
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -2221,17 +2066,17 @@ paths:
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
 
-  /users/user/settings:
+  /users/{user}/settings:
+    parameters:
+      - name: user
+        in: path
+        required: true
+        schema:
+          type: string
     get:
       operationId: users.settings.index
       tags:
         - UserSetting
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -2240,22 +2085,22 @@ paths:
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
 
-  /users/user/settings/setting:
+  /users/{user}/settings/{setting}:
+    parameters:
+      - name: user
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: setting
+        in: path
+        required: true
+        schema:
+          type: string
     put:
       operationId: users.settings.update
       tags:
         - UserSetting
-      parameters:
-        - name: user
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: setting
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         200:
           description: "OK"
@@ -2289,7 +2134,7 @@ components:
       $ref: "./components/schemas/Resources/ChatResource.yaml"
     CoverResource:
       $ref: "./components/schemas/Resources/CoverResource.yaml"
-    DealResource:
+    TradeOfferResource:
       $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
     FilterResource:
       $ref: "./components/schemas/Resources/FilterResource.yaml"
@@ -2317,7 +2162,7 @@ components:
       $ref: "./components/schemas/Requests/StoreChatRequest.yaml"
     StoreCoverRequest:
       $ref: "./components/schemas/Requests/StoreCoverRequest.yaml"
-    StoreDealRequest:
+    StoreTradeOfferRequest:
       $ref: "./components/schemas/Requests/StoreTradeOfferRequest.yaml"
     StoreFilterRequest:
       $ref: "./components/schemas/Requests/StoreFilterRequest.yaml"
@@ -2339,7 +2184,7 @@ components:
       $ref: "./components/schemas/Requests/UpdateChatRequest.yaml"
     UpdateCoverRequest:
       $ref: "./components/schemas/Requests/UpdateCoverRequest.yaml"
-    UpdateDealRequest:
+    UpdateTradeOfferRequest:
       $ref: "./components/schemas/Requests/UpdateTradeOfferRequest.yaml"
     UpdateFilterRequest:
       $ref: "./components/schemas/Requests/UpdateFilterRequest.yaml"
