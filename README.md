@@ -1,4 +1,4 @@
-# BookSwap
+mark# BookSwap
 
 Суть: Пользователи могут выкладывать книги, которые готовы отдать, и брать другие книги в обмен.  
 Фичи:
@@ -12,5 +12,4 @@
 
 ## API
 
-https://.postman.co/workspace/My-Workspace~
-150403f0-116d-4de4-852e-d6c9cf08e14f/api/146bea4c-5d19-45ed-ab42-6327001b45de?action=share&creator=19265685
+[Postman API Definition + Collection](https://.postman.co/workspace/My-Workspace~150403f0-116d-4de4-852e-d6c9cf08e14f/api/146bea4c-5d19-45ed-ab42-6327001b45de?action=share&creator=19265685) (OUTDATED)
