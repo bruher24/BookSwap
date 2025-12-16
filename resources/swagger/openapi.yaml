@@ -71,6 +71,9 @@ paths:
                 required:
                   - user
                   - token
+              examples:
+                success:
+                  $ref: "./components/examples/LoginExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
         401:
@@ -91,6 +94,12 @@ paths:
               properties:
                 email:
                   type: string
+            examples:
+              default:
+                summary: RefreshRequestExample
+                value: {
+                  email: "john@doe.com"
+                }
       responses:
         200:
           description: "OK"
@@ -103,29 +112,18 @@ paths:
                     type: string
                 required:
                   - token
+              examples:
+                success:
+                  summary: RefreshExample
+                  value: {
+                    token: "1234567890"
+                  }
         400:
           $ref: "./components/responses/BadRequest.yaml"
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
         404:
-          description: "Bad request"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  errors:
-                    type: array
-                    prefixItems:
-                      type: string
-                      enum: Ошибка обновления токена
-                    minItems: 1
-                    maxItems: 1
-                required:
-                  - success
-                  - errors
+          $ref: "./components/responses/BadRequest.yaml"
 
   /auth/logout:
     post:
@@ -140,6 +138,12 @@ paths:
               properties:
                 email:
                   type: string
+            examples:
+              default:
+                summary: LogoutRequestExample
+                value: {
+                  email: "john@doe.com"
+                }
       responses:
         200:
           description: "OK"
@@ -148,24 +152,7 @@ paths:
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
         404:
-          description: "Bad request"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  errors:
-                    type: array
-                    prefixItems:
-                      type: string
-                      enum: Ошибка при выходе из аккаунта
-                    minItems: 1
-                    maxItems: 1
-                required:
-                  - success
-                  - errors
+          $ref: "./components/responses/ModelNotFoundException.yaml"
 
   /authors:
     get:
@@ -2119,89 +2106,3 @@ components:
     http:
       type: http
       scheme: bearer
-  schemas:
-    AuthRequest:
-      $ref: "./components/schemas/Requests/AuthRequest.yaml"
-    AuthorResource:
-      $ref: "./components/schemas/Resources/AuthorResource.yaml"
-    Book:
-      $ref: "./components/schemas/Models/Book.yaml"
-    BookResource:
-      $ref: "./components/schemas/Resources/BookResource.yaml"
-    BookTypeResource:
-      $ref: "./components/schemas/Resources/BookTypeResource.yaml"
-    ChatResource:
-      $ref: "./components/schemas/Resources/ChatResource.yaml"
-    CoverResource:
-      $ref: "./components/schemas/Resources/CoverResource.yaml"
-    TradeOfferResource:
-      $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
-    FilterResource:
-      $ref: "./components/schemas/Resources/FilterResource.yaml"
-    GenreResource:
-      $ref: "./components/schemas/Resources/GenreResource.yaml"
-    Phone:
-      $ref: "./components/schemas/Models/Photo.yaml"
-    Photo:
-      $ref: "./components/schemas/Models/Photo.yaml"
-    PhotoResource:
-      $ref: "./components/schemas/Resources/PhotoResource.yaml"
-    Role:
-      $ref: "./components/schemas/Models/Role.yaml"
-    SearchResultsResource:
-      $ref: "./components/schemas/Resources/SearchResultsResource.yaml"
-    SettingResource:
-      $ref: "./components/schemas/Resources/SettingResource.yaml"
-    StoreAuthorRequest:
-      $ref: "./components/schemas/Requests/StoreAuthorRequest.yaml"
-    StoreBookRequest:
-      $ref: "./components/schemas/Requests/StoreBookRequest.yaml"
-    StoreBookTypeRequest:
-      $ref: "./components/schemas/Requests/StoreBookTypeRequest.yaml"
-    StoreChatRequest:
-      $ref: "./components/schemas/Requests/StoreChatRequest.yaml"
-    StoreCoverRequest:
-      $ref: "./components/schemas/Requests/StoreCoverRequest.yaml"
-    StoreTradeOfferRequest:
-      $ref: "./components/schemas/Requests/StoreTradeOfferRequest.yaml"
-    StoreFilterRequest:
-      $ref: "./components/schemas/Requests/StoreFilterRequest.yaml"
-    StoreGenreRequest:
-      $ref: "./components/schemas/Requests/StoreGenreRequest.yaml"
-    StorePhotoRequest:
-      $ref: "./components/schemas/Requests/StorePhotoRequest.yaml"
-    StoreSettingRequest:
-      $ref: "./components/schemas/Requests/StoreSettingRequest.yaml"
-    StoreUserRequest:
-      $ref: "./components/schemas/Requests/StoreUserRequest.yaml"
-    UpdateAuthorRequest:
-      $ref: "./components/schemas/Requests/UpdateAuthorRequest.yaml"
-    UpdateBookRequest:
-      $ref: "./components/schemas/Requests/UpdateBookRequest.yaml"
-    UpdateBookTypeRequest:
-      $ref: "./components/schemas/Requests/UpdateBookTypeRequest.yaml"
-    UpdateChatRequest:
-      $ref: "./components/schemas/Requests/UpdateChatRequest.yaml"
-    UpdateCoverRequest:
-      $ref: "./components/schemas/Requests/UpdateCoverRequest.yaml"
-    UpdateTradeOfferRequest:
-      $ref: "./components/schemas/Requests/UpdateTradeOfferRequest.yaml"
-    UpdateFilterRequest:
-      $ref: "./components/schemas/Requests/UpdateFilterRequest.yaml"
-    UpdateGenreRequest:
-      $ref: "./components/schemas/Requests/UpdateGenreRequest.yaml"
-    UpdatePhotoRequest:
-      $ref: "./components/schemas/Requests/UpdatePhotoRequest.yaml"
-    UpdateSettingRequest:
-      $ref: "./components/schemas/Requests/UpdateSettingRequest.yaml"
-    UpdateUserRequest:
-      $ref: "./components/schemas/Requests/UpdateUserRequest.yaml"
-    UserResource:
-      $ref: "./components/schemas/Resources/UserResource.yaml"
-  responses:
-    AuthenticationException:
-      $ref: "./components/responses/AuthenticationException.yaml"
-    ModelNotFoundException:
-      $ref: "./components/responses/ModelNotFoundException.yaml"
-    ValidationException:
-      $ref: "./components/responses/ValidationException.yaml"
