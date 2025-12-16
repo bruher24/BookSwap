@@ -1,0 +1,4 @@
+summary: AuthenticationExceptionExample
+value: {
+  message: "Unauthenticated",
+}

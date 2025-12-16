@@ -1,0 +1,14 @@
+description: Not found
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error overview.
+      required:
+        - message
+    examples:
+      default:
+        $ref: "../examples/ModelNotFoundExceptionExample.yaml"

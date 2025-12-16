@@ -66,6 +66,7 @@ final class AuthorController extends Controller
             return new FailureResource(['errors' => $errors]);
         }
 
+        // TODO: возвращать обновленный ресурс после PUT
         return new SuccessResource([]);
     }
 

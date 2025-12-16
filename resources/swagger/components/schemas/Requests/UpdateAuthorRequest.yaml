@@ -1,0 +1,22 @@
+type: object
+properties:
+  lastname:
+    type: string
+    maxLength: 100
+  firstname:
+    type: string
+    maxLength: 100
+  patronymic:
+    oneOf:
+      - type: string
+        maxLength: 100
+      - type: 'null'
+  birthdate:
+    oneOf:
+      - type: string
+      - type: 'null'
+required:
+  - author_id
+  - lastname
+  - firstname
+title: UpdateAuthorRequest

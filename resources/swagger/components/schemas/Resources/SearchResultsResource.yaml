@@ -1,0 +1,17 @@
+type: object
+properties:
+  books:
+    type: array
+    items:
+      $ref: "./BookResource.yaml"
+  authors:
+    type: array
+    items:
+      $ref: "./AuthorResource.yaml"
+  total:
+    type: integer
+required:
+  - books
+  - authors
+  - total
+title: SearchResultsResource

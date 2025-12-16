@@ -1,9 +1,0 @@
-type: object
-      properties:
-        src:
-          type: string
-          format: binary
-          contentMediaType: application/octet-stream
-      required:
-        - src
-      title: StorePhotoRequest

@@ -32,12 +32,15 @@ clear:
 	docker compose exec app cat /dev/null > storage/logs/laravel.log
 	clear
 
-clear_photos:
+clear-photos:
 	docker compose exec app find storage/app/public/avatars/ -type f -not -name 'avatar.png' -print0 | xargs -0 rm --
 
-clear_covers:
+clear-covers:
 	docker compose exec app find storage/app/public/covers/ -type f -not -name 'cover.png' -print0 | xargs -0 rm --
 
-index_models:
+index-models:
 	docker compose exec app php artisan scout:import 'App\Models\Author'
 	docker compose exec app php artisan scout:import 'App\Models\Book'
+
+test-api:
+	openapi-spec-validator --errors all --schema 3.1  resources/swagger/openapi.yaml

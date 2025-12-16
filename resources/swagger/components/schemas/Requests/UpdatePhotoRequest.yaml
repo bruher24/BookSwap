@@ -1,0 +1,10 @@
+type: object
+properties:
+  src:
+    type: string
+    format: binary
+    contentMediaType: application/octet-stream
+required:
+  - photo_id
+  - src
+title: UpdatePhotoRequest

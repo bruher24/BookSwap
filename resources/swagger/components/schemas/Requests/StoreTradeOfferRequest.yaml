@@ -1,0 +1,18 @@
+type: object
+properties:
+  sender_id:
+    type: integer
+  receiver_id:
+    type: integer
+  trade_offer_items:
+    type: array
+    items:
+      type: integer
+  date:
+    type: string
+required:
+  - sender_id
+  - receiver_id
+  - trade_offer_items
+  - date
+title: StoreTradeOfferRequest

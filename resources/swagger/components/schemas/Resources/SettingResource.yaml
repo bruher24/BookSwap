@@ -1,0 +1,36 @@
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  label:
+    type: string
+  description:
+    oneOf:
+      - type: string
+      - type: 'null'
+  created_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  updated_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  deleted_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+required:
+  - id
+  - name
+  - label
+  - description
+  - created_at
+  - updated_at
+  - deleted_at
+title: SettingResource

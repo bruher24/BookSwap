@@ -1,0 +1,29 @@
+type: object
+properties:
+  name:
+    type: string
+    maxLength: 50
+  email:
+    type: string
+    format: email
+    maxLength: 70
+  email_verified_at:
+    oneOf:
+      - type: string
+      - type: 'null'
+  password:
+    type: string
+  photo_id:
+    oneOf:
+      - type: integer
+      - type: 'null'
+  remember_token:
+    oneOf:
+      - type: string
+        maxLength: 100
+      - type: 'null'
+required:
+  - name
+  - email
+  - password
+title: StoreUserRequest

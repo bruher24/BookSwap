@@ -1,0 +1,8 @@
+summary: ValidationExceptionExample
+value: {
+  message: "Field1 must be <rule> and <amount> more errors",
+  errors: {
+    Field1: "Field1 must by <rule>",
+    Field2: "Field2 must by <rule>"
+  }
+}

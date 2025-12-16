@@ -1,0 +1,22 @@
+summary: AuthorResourceCollectionExample
+value:
+  - {
+    id: 1,
+    lastname: "Doe",
+    firstname: "John",
+    patronymic: "Petrovich",
+    birthdate: "1998-01-01",
+    created_at: "2025-12-06 14:32",
+    updated_at: "2025-12-06 14:32",
+    deleted_at: "2025-12-06 14:32"
+  }
+  - {
+    id: 2,
+    lastname: "Torwalds",
+    firstname: "Linus",
+    patronymic: "Ivanovich",
+    birthdate: "1955-10-27",
+    created_at: "2025-12-06 14:32",
+    updated_at: "2025-12-06 14:32",
+    deleted_at: "2025-12-06 14:32"
+  }

@@ -1,0 +1,4 @@
+summary: ModelNotFoundExceptionExample
+value: {
+  message: "Model not found",
+}

@@ -1,0 +1,19 @@
+type: object
+properties:
+  seller_id:
+    type: integer
+  buyer_id:
+    type: integer
+  trade_offer_items:
+    type: array
+    items:
+      type: integer
+  date:
+    type: string
+required:
+  - trade_offer_id
+  - seller_id
+  - buyer_id
+  - trade_offer_items
+  - date
+title: UpdateTradeOfferRequest

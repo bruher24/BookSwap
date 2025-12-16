@@ -1,0 +1,55 @@
+type: array
+items:
+  type: object
+  properties:
+    id:
+      type: integer
+    user_id:
+      type: integer
+    name:
+      type: string
+    publishing_house:
+      type: string
+    publication_year:
+      oneOf:
+        - type: integer
+        - type: 'null'
+    isbn:
+      oneOf:
+        - type: string
+        - type: 'null'
+    page_count:
+      type: integer
+    book_type_id:
+      type: integer
+    cover_id:
+      type: integer
+    created_at:
+      oneOf:
+        - type: string
+          format: date-time
+        - type: 'null'
+    updated_at:
+      oneOf:
+        - type: string
+          format: date-time
+        - type: 'null'
+    deleted_at:
+      oneOf:
+        - type: string
+          format: date-time
+        - type: 'null'
+  required:
+    - id
+    - user_id
+    - name
+    - publishing_house
+    - publication_year
+    - isbn
+    - page_count
+    - book_type_id
+    - cover_id
+    - created_at
+    - updated_at
+    - deleted_at
+  title: Book

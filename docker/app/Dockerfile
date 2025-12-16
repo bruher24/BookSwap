@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libonig-dev \
     libxml2-dev \
+    libyaml-dev \
     zip unzip \
     git \
     supervisor \
@@ -34,6 +35,8 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp \
     pcntl \
     sockets \
     xml
+
+RUN pecl install yaml && docker-php-ext-enable yaml
 
 COPY ./docker/app/msmtprc /etc/msmtprc
 

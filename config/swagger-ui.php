@@ -31,14 +31,14 @@ return [
              * The middleware that is applied to the route.
              */
             'middleware' => [
-                'web',
-                EnsureUserIsAuthorized::class,
+                //'web',
+                //EnsureUserIsAuthorized::class,
             ],
 
             /*
              * Specify the validator URL. Set to false to disable validation.
              */
-            'validator_url' => env('SWAGGER_UI_VALIDATOR_URL'),
+            'validator_url' => env('SWAGGER_UI_VALIDATOR_URL', false),
 
             /*
              * If enabled the file will be modified to set the server url and oauth urls.

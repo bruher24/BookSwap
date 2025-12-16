@@ -1,0 +1,74 @@
+type: object
+properties:
+  user_id:
+    type: integer
+  name:
+    oneOf:
+      - type: string
+        maxLength: 100
+      - type: 'null'
+  author_id:
+    oneOf:
+      - type: integer
+      - type: 'null'
+  author_id1:
+    oneOf:
+      - type: integer
+      - type: 'null'
+  author_id2:
+    oneOf:
+      - type: integer
+      - type: 'null'
+  authorLastname:
+    oneOf:
+      - type: string
+        maxLength: 100
+      - type: 'null'
+  authorFirstname:
+    oneOf:
+      - type: string
+        maxLength: 100
+      - type: 'null'
+  authorPatronymic:
+    oneOf:
+      - type: string
+        maxLength: 100
+      - type: 'null'
+  authorBirthdate:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  page_count:
+    type: integer
+    minimum: 1
+  cover:
+    oneOf:
+      - type: string
+        format: binary
+        contentMediaType: application/octet-stream
+        maxLength: 2048
+      - type: 'null'
+  publishing_house:
+    oneOf:
+      - type: string
+      - type: 'null'
+  publication_year:
+    oneOf:
+      - type: string
+        format: date
+      - type: 'null'
+  book_type:
+    type: integer
+  isbn:
+    oneOf:
+      - type: string
+        minLength: 13
+        maxLength: 13
+      - type: 'null'
+required:
+  - book_id
+  - user_id
+  - page_count
+  - book_type
+title: UpdateBookRequest

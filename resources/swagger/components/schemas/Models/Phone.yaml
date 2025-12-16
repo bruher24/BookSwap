@@ -1,0 +1,33 @@
+type: array
+items:
+  type: object
+  properties:
+    id:
+      type: integer
+    number:
+      type: string
+    user_id:
+      type: integer
+    created_at:
+      oneOf:
+        - type: string
+          format: date-time
+        - type: 'null'
+    updated_at:
+      oneOf:
+        - type: string
+          format: date-time
+        - type: 'null'
+    deleted_at:
+      oneOf:
+        - type: string
+          format: date-time
+        - type: 'null'
+  required:
+    - id
+    - number
+    - user_id
+    - created_at
+    - updated_at
+    - deleted_at
+  title: Phone

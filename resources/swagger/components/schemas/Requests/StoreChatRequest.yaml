@@ -1,0 +1,19 @@
+type: object
+properties:
+  first_user_id:
+    type: integer
+  second_user_id:
+    type: integer
+  blocked_by:
+    oneOf:
+      - type: string
+        oneOf:
+          - title: first
+            const: 1
+          - title: second
+            const: 2
+      - type: 'null'
+required:
+  - first_user_id
+  - second_user_id
+title: StoreChatRequest

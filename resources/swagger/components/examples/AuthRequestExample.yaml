@@ -1,0 +1,6 @@
+summary: AuthRequestExample
+value: {
+  email: "mega@user.com",
+  password: "1234",
+  remember: true
+}

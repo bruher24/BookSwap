@@ -12,8 +12,8 @@ return new class () extends Migration {
     {
         Schema::create('trade_offers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('seller_id')->constrained('users')->onDelete('set null')->onUpdate('cascade');
-            $table->foreignId('buyer_id')->constrained('users')->onDelete('set null')->onUpdate('cascade');
+            $table->foreignId('sender_id')->constrained('users')->onDelete('set null')->onUpdate('cascade');
+            $table->foreignId('receiver_id')->constrained('users')->onDelete('set null')->onUpdate('cascade');
             $table->dateTime('date')->default(null);
             $table->boolean('accepted')->default(null);
             $table->timestamps();

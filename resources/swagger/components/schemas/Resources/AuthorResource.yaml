@@ -1,0 +1,41 @@
+type: object
+properties:
+  id:
+    type: integer
+  lastname:
+    type: string
+  firstname:
+    type: string
+  patronymic:
+    oneOf:
+      - type: string
+      - type: 'null'
+  birthdate:
+    oneOf:
+      - type: string
+      - type: 'null'
+  created_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  updated_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  deleted_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+required:
+  - id
+  - lastname
+  - firstname
+  - patronymic
+  - birthdate
+  - created_at
+  - updated_at
+  - deleted_at
+title: AuthorResource

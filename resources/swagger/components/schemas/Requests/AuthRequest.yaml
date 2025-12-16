@@ -1,0 +1,15 @@
+type: object
+properties:
+  email:
+    type: string
+    format: email
+  password:
+    type: string
+  remember:
+    oneOf:
+      - type: boolean
+      - type: 'null'
+required:
+  - email
+  - password
+title: AuthRequest

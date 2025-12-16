@@ -1,0 +1,4 @@
+summary: BadRequestExample
+value: {
+  message: "Bad request"
+}

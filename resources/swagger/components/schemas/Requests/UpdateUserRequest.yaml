@@ -1,0 +1,33 @@
+type: object
+properties:
+  name:
+    oneOf:
+      - type: string
+        maxLength: 50
+      - type: 'null'
+  email:
+    oneOf:
+      - type: string
+        format: email
+        minLength: 5
+        maxLength: 100
+      - type: 'null'
+  old_password:
+    oneOf:
+      - type: string
+      - type: 'null'
+  password:
+    oneOf:
+      - type: string
+      - type: 'null'
+  password_confirmation:
+    oneOf:
+      - type: string
+      - type: 'null'
+  phone_number:
+    oneOf:
+      - type: string
+      - type: 'null'
+required:
+  - user_id
+title: UpdateUserRequest

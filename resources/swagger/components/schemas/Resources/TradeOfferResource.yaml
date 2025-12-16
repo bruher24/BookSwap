@@ -1,0 +1,39 @@
+type: object
+properties:
+  id:
+    type: integer
+  seller_id:
+    type: integer
+  buyer_id:
+    type: integer
+  trade_offer_items:
+    type: array
+    items:
+      type: integer
+  date:
+    type: string
+  created_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  updated_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  deleted_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+required:
+  - id
+  - seller_id
+  - buyer_id
+  - trade_offer_items
+  - date
+  - created_at
+  - updated_at
+  - deleted_at
+title: TradeOfferResource

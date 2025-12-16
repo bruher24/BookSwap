@@ -1,0 +1,13 @@
+description: "Bad request"
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    examples:
+      default:
+        $ref: "../examples/BadRequestExample.yaml"

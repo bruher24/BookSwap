@@ -1,0 +1,15 @@
+type: object
+properties:
+  name:
+    type: string
+  label:
+    type: string
+  description:
+    oneOf:
+      - type: string
+      - type: 'null'
+required:
+  - setting_id
+  - name
+  - label
+title: UpdateSettingRequest
