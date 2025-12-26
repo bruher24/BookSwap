@@ -122,8 +122,6 @@ paths:
           $ref: "./components/responses/BadRequest.yaml"
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
-        404:
-          $ref: "./components/responses/BadRequest.yaml"
 
   /auth/logout:
     post:
@@ -151,8 +149,6 @@ paths:
           $ref: "./components/responses/BadRequest.yaml"
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
-        404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
 
   /authors:
     get:
@@ -236,8 +232,6 @@ paths:
                   $ref: "./components/examples/AuthorResourceExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
     put:
@@ -737,8 +731,6 @@ paths:
                   $ref: "./components/examples/CoverResourceExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
     put:
@@ -989,8 +981,6 @@ paths:
                   $ref: "./components/examples/FilterResourceExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
     put:
@@ -1114,8 +1104,6 @@ paths:
                   $ref: "./components/examples/GenreResourceExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
     put:
@@ -1239,8 +1227,6 @@ paths:
                   $ref: "./components/examples/PhotoResourceExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
     put:
@@ -1317,8 +1303,6 @@ paths:
                   $ref: "./components/examples/SearchResultsResourceExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
         422:
           $ref: "./components/responses/ValidationException.yaml"
 
@@ -1344,8 +1328,6 @@ paths:
               examples:
                 success:
                   $ref: "./components/examples/SettingResourceCollectionExample.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
     post:
       operationId: settings.store
       tags:
@@ -1406,8 +1388,6 @@ paths:
                   $ref: "./components/examples/SettingResourceExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
     put:
@@ -1533,8 +1513,6 @@ paths:
                   $ref: "./components/examples/UserResourceExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
-        401:
-          $ref: "./components/responses/AuthenticationException.yaml"
         404:
           $ref: "./components/responses/ModelNotFoundException.yaml"
     put:
@@ -1718,7 +1696,7 @@ paths:
                 messages:
                   type: string
                   description:
-                    TODO: сделать нормально
+                  # TODO: сделать нормально
       responses:
         200:
           description: "OK"
@@ -1747,6 +1725,20 @@ paths:
       responses:
         200:
           description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  favorites:
+                    type: array
+                    items:
+                      $ref: "./components/schemas/Resources/BookResource.yaml"
+                required:
+                  - favorites
+              examples:
+                success:
+                  $ref: "./components/examples/BookResourceCollectionExample.yaml"
         400:
           $ref: "./components/responses/BadRequest.yaml"
         401:
@@ -1773,12 +1765,19 @@ paths:
       responses:
         200:
           description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                required:
+                  - message
         400:
           $ref: "./components/responses/BadRequest.yaml"
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
-        404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
     delete:
       operationId: users.favorites.dislike
       tags:
@@ -1786,13 +1785,21 @@ paths:
       responses:
         202:
           description: "Accepted"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                required:
+                  - message
         400:
           $ref: "./components/responses/BadRequest.yaml"
         401:
           $ref: "./components/responses/AuthenticationException.yaml"
-        404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
 
+  # TODO: добавить ресурс уведомления
   /users/{user}/notifications:
     parameters:
       - name: user
