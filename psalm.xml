@@ -35,6 +35,7 @@
         <PossiblyUnusedProperty>
             <errorLevel type="suppress">
                 <directory name="app/Events"/>
+                <directory name="app/Listeners"/>
             </errorLevel>
         </PossiblyUnusedProperty>
         <UndefinedThisPropertyFetch>
@@ -96,6 +97,7 @@
         <MissingClosureParamType>
             <errorLevel type="suppress">
                 <directory name="app/Http/Requests"/>
+                <file name="app/Providers/SwaggerUiServiceProvider.php"/>
             </errorLevel>
         </MissingClosureParamType>
         <UnusedClass>
@@ -103,6 +105,11 @@
                 <directory name="app/Listeners"/>
             </errorLevel>
         </UnusedClass>
+        <UndefinedThisPropertyAssignment>
+            <errorLevel type="suppress">
+                <directory name="app/Models"/>
+            </errorLevel>
+        </UndefinedThisPropertyAssignment>
     </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\LaravelPlugin\Plugin"/>

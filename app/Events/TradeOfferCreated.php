@@ -6,7 +6,7 @@ use App\Models\TradeOffer;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TradeOfferCreated
+final class TradeOfferCreated
 {
     use Dispatchable;
     use SerializesModels;

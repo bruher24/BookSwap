@@ -2,18 +2,29 @@
 
 namespace App\Jobs;
 
+use Override;
 use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs\RabbitMQJob;
 
-class NonLaravelJob extends RabbitMQJob
+/**
+ * @psalm-suppress UnusedClass
+ */
+final class NonLaravelJob extends RabbitMQJob
 {
+    /**
+     * @psalm-suppress MissingPropertyType
+     */
     public $handlers = [
         'send_email' => TestJob::class
     ];
 
+    #[Override]
+    /**
+     * @psalm-suppress MissingPropertyType
+     */
     public function payload(): array
     {
         // Assuming the message was sent as json encoded, here you could do:
-        $data = json_decode($this->message->body);
+        $data = json_decode($this->message->getBody());
         $action = $data['action'];
         $handler = $this->handlers[$action];
 
