@@ -20,7 +20,7 @@ final class SendTradeOfferNotification implements ShouldQueue
      */
     public function viaConnection(): string
     {
-        return 'rabbitmq';
+        return 'redis';
     }
 
     /**

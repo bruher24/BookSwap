@@ -12,7 +12,7 @@ final class UserCreated implements ShouldQueue
     use Dispatchable;
     use SerializesModels;
 
-    public string $connection = 'rabbitmq';
+    public string $connection = 'redis';
 
     public string $queue = 'listeners';
 

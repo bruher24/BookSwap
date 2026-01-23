@@ -36,6 +36,7 @@
             <errorLevel type="suppress">
                 <directory name="app/Events"/>
                 <directory name="app/Listeners"/>
+                <file name="app/Mail/EmailVerification.php"/>
             </errorLevel>
         </PossiblyUnusedProperty>
         <UndefinedThisPropertyFetch>
