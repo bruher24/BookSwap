@@ -1,6 +1,6 @@
 <?php
 
-use App\Helpers\ResponseHelper;
+use App\Http\Resources\FailureResource;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -21,7 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
             if ($request->wantsJson()) {
-                return ResponseHelper::errorResponse(404, ['Not found']);
+                return new FailureResource(['errors' => ['Not found']]);
             }
         });
     })

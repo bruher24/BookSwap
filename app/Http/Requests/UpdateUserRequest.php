@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Override;
 
 final class UpdateUserRequest extends FormRequest
 {
@@ -17,13 +18,23 @@ final class UpdateUserRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    #[Override]
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'user_id' => $this->route('user'),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
-        request()->merge(['user_id' => $this->route('user')]);
         return [
             'user_id' => [
                 'required',
@@ -36,7 +47,7 @@ final class UpdateUserRequest extends FormRequest
                 'string',
                 'max:50',
                 Rule::unique('users', 'name')
-                    ->ignore(request('user_id'))
+                    ->ignore($this->input('user_id'))
                     ->withoutTrashed(),
             ],
             'email' => [
@@ -46,7 +57,7 @@ final class UpdateUserRequest extends FormRequest
                 'max:100',
                 'email',
                 Rule::unique('users', 'email')
-                    ->ignore(request('user_id'))
+                    ->ignore($this->input('user_id'))
                     ->withoutTrashed(),
             ],
             'old_password' => [
@@ -70,7 +81,7 @@ final class UpdateUserRequest extends FormRequest
                 'nullable',
                 'string',
                 Rule::unique('phones', 'number')
-                    ->whereNot('user_id', request('user_id')),
+                    ->whereNot('user_id', $this->input('user_id')),
             ],
         ];
     }

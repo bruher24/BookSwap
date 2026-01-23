@@ -12,6 +12,16 @@
             <directory>tests/Feature</directory>
         </testsuite>
     </testsuites>
+    <coverage>
+        <report>
+            <!-- HTML-отчет в папку coverage -->
+            <html outputDirectory="coverage"/>
+            <!-- Текстовый вывод в консоль -->
+            <text outputFile="php://stdout"/>
+            <!-- XML-отчет в формате Clover (для внешних сервисов) -->
+            <clover outputFile="coverage/clover.xml"/>
+        </report>
+    </coverage>
     <source>
         <include>
             <directory>app</directory>

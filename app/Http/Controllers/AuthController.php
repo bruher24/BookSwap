@@ -63,7 +63,7 @@ final class AuthController extends Controller
             'token' => $token
         ];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function refresh(AuthServiceInterface $authService, Request $request): JsonResource

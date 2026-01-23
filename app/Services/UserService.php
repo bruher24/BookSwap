@@ -74,12 +74,14 @@ final class UserService extends Service implements UserServiceInterface
 
             unset($data['phone_number']);
 
-            if (isset($data['password']) && !Hash::check($data['old_password'], $user->getAuthPassword())) {
-                throw new Exception('Старый пароль указан неверно');
-            }
+            if (isset($data['password'])) {
+                if (!Hash::check($data['old_password'], $user->getAuthPassword())) {
+                    throw new Exception('Старый пароль указан неверно');
+                }
 
-            if ($data['password'] == null) {
-                unset($data['password']);
+                if ($data['password'] == null) {
+                    unset($data['password']);
+                }
             }
 
             if (!parent::update($id, $data)) {
