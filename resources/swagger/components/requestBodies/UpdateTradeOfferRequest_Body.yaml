@@ -3,4 +3,4 @@ required: true
 content:
   application/json:
     schema:
-      $ref: "../schemas/Requests/UpdateTradeOfferRequest.yaml"
+      $ref: "../schemas/requests/UpdateTradeOfferRequest.yaml"

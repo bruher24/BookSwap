@@ -3,7 +3,7 @@ required: true
 content:
   application/json:
     schema:
-      $ref: "../schemas/Requests/StoreUserRequest.yaml"
+      $ref: "../schemas/requests/StoreUserRequest.yaml"
     examples:
       default:
-        $ref: "../examples/StoreUserRequest_Example.yaml"
+        $ref: "examples/StoreUserRequest_Example.yaml"

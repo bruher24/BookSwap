@@ -3,4 +3,4 @@ required: true
 content:
   application/json:
     schema:
-      $ref: "../schemas/Requests/UpdateChatRequest.yaml"
+      $ref: "../schemas/requests/UpdateChatRequest.yaml"

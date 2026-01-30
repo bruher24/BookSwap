@@ -3,4 +3,4 @@ required: true
 content:
   application/json:
     schema:
-      $ref: "../schemas/Requests/StoreTradeOfferRequest.yaml"
+      $ref: "../schemas/requests/StoreTradeOfferRequest.yaml"
