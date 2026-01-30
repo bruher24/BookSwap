@@ -5,6 +5,7 @@ info:
 servers:
   - url: http://localhost/api/v1
 paths:
+  # TODO: сделать auth, поменять везде Example на _Example
   /auth/register:
     post:
       operationId: auth.register
@@ -15,10 +16,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "components/schemas/Requests/StoreUserRequest.yaml"
+              $ref: "components/schemas/requests/StoreUserRequest.yaml"
             examples:
               default:
-                $ref: "components/examples/StoreUserRequestExample.yaml"
+                $ref: "components/requestBodies/examples/StoreUserRequest_Example.yaml"
       responses:
         200:
           description: OK
@@ -28,7 +29,7 @@ paths:
                 type: object
                 properties:
                   user:
-                    $ref: "components/schemas/Resources/UserResource.yaml"
+                    $ref: "components/schemas/resources/UserResource.yaml"
                   token:
                     type: string
                 required:
@@ -36,7 +37,7 @@ paths:
                   - token
               examples:
                 success:
-                  $ref: "components/examples/UserResourceExample.yaml"
+                  $ref: "components/responses/api/examples/UserResourceExample.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         422:
