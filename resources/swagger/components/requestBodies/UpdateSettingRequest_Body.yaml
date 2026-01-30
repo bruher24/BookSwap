@@ -1,0 +1,6 @@
+description: Setting update payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/UpdateSettingRequest.yaml"

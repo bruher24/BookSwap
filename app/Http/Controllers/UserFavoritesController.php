@@ -16,26 +16,26 @@ final class UserFavoritesController extends Controller
         $favoritesResourceCollection = BookResource::collection($favorites);
         $data = ['favorites' => $favoritesResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function like(UserFavoritesService $userFavoritesService, string $userId, string $bookId): JsonResource
     {
         if (!$userFavoritesService->addToFavorites($userId, $bookId)) {
             $errors = ['Ошибка добавления книги в избранное'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function dislike(UserFavoritesService $userFavoritesService, string $userId, string $bookId): JsonResource
     {
         if (!$userFavoritesService->removeFromFavorites($userId, $bookId)) {
             $errors = ['Ошибка удаления книги из избранного'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

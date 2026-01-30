@@ -1,0 +1,6 @@
+description: TradeOffer update payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/UpdateTradeOfferRequest.yaml"

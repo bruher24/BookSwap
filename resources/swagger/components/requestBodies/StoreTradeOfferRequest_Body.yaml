@@ -1,0 +1,6 @@
+description: TradeOffer creation payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/StoreTradeOfferRequest.yaml"

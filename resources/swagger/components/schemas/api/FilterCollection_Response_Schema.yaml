@@ -1,0 +1,9 @@
+ApiResponse_Schema_FilterCollection:
+allOf:
+  - $ref: 'Response_Schema.yaml'
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../../schemas/resources/FilterResource.yaml'

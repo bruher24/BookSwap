@@ -1,0 +1,6 @@
+description: BookType creation payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/StoreBookTypeRequest.yaml"

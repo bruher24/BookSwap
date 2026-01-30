@@ -1,0 +1,6 @@
+description: Filter creation payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/StoreFilterRequest.yaml"

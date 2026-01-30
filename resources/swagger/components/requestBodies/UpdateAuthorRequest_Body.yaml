@@ -1,0 +1,6 @@
+description: Author update payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/UpdateAuthorRequest.yaml"

@@ -18,7 +18,7 @@ final class CoverController extends Controller
         $coverResourceCollection = CoverResource::collection($covers);
         $data = ['covers' => $coverResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(CoverServiceInterface $coverService, StoreCoverRequest $request): JsonResource
@@ -28,13 +28,13 @@ final class CoverController extends Controller
 
         if (!$cover) {
             $errors = ['Ошибка при создании обложки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $coverResource = new CoverResource($cover);
         $data = ['cover' => $coverResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(CoverServiceInterface $coverService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class CoverController extends Controller
 
         if (!$cover) {
             $errors = ['Ошибка при получении обложки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $coverResource = new CoverResource($cover);
         $data = ['cover' => $coverResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(CoverServiceInterface $coverService, UpdateCoverRequest $request, string $id): JsonResource
@@ -58,19 +58,19 @@ final class CoverController extends Controller
 
         if (!$coverService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении обложки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(CoverServiceInterface $coverService, string $id): JsonResource
     {
         if (!$coverService->delete($id)) {
             $errors = ['Ошибка при удалении обложки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

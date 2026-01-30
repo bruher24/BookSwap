@@ -1,0 +1,7 @@
+ApiResponse_Schema_Photo:
+allOf:
+  - $ref: 'Response_Schema.yaml'
+  - type: object
+    properties:
+      data:
+        $ref: '../../schemas/resources/PhotoResource.yaml'

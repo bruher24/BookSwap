@@ -1,0 +1,9 @@
+description: User creation payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/StoreUserRequest.yaml"
+    examples:
+      default:
+        $ref: "../examples/StoreUserRequest_Example.yaml"

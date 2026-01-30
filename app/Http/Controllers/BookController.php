@@ -18,7 +18,7 @@ final class BookController extends Controller
         $bookResourceCollection = BookResource::collection($books);
         $data = ['books' => $bookResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(StoreBookRequest $request, BookServiceInterface $bookService): JsonResource
@@ -28,13 +28,13 @@ final class BookController extends Controller
 
         if (!$book) {
             $errors = ['Ошибка при создании книги'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $bookResource = new BookResource($book);
         $data = ['book' => $bookResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(BookServiceInterface $bookService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class BookController extends Controller
 
         if (!$book) {
             $errors = ['Ошибка при получении книги'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $bookResource = new BookResource($book);
         $data = ['book' => $bookResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(UpdateBookRequest $request, BookServiceInterface $bookService, string $id): JsonResource
@@ -58,19 +58,19 @@ final class BookController extends Controller
 
         if (!$bookService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении книги'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(BookServiceInterface $bookService, string $id): JsonResource
     {
         if (!$bookService->delete($id)) {
             $errors = ['Ошибка при удалении книги'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

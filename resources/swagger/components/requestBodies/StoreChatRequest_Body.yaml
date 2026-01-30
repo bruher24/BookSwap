@@ -1,0 +1,6 @@
+description: Chat creation payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/StoreChatRequest.yaml"

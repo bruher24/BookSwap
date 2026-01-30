@@ -1,0 +1,6 @@
+description: Cover update payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/Requests/UpdateCoverRequest.yaml"

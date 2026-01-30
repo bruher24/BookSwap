@@ -1,0 +1,8 @@
+description: "OK"
+content:
+  application/json:
+    schema:
+      $ref: "../../schemas/api/BookCollection_Response_Schema.yaml"
+    examples:
+      success:
+        $ref: "examples/BookResourceExample.yaml"

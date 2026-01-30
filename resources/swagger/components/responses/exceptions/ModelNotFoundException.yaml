@@ -1,4 +1,4 @@
-description: Unauthenticated
+description: Not found
 content:
   application/json:
     schema:
@@ -11,4 +11,4 @@ content:
         - message
     examples:
       default:
-        $ref: "../examples/AuthenticationExceptionExample.yaml"
+        $ref: "examples/ModelNotFoundExceptionExample.yaml"

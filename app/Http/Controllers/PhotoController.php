@@ -18,7 +18,7 @@ final class PhotoController extends Controller
         $photoResourceCollection = PhotoResource::collection($photos);
         $data = ['photos' => $photoResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(PhotoServiceInterface $photoService, StorePhotoRequest $request): JsonResource
@@ -28,13 +28,13 @@ final class PhotoController extends Controller
 
         if (!$photo) {
             $errors = ['Ошибка при создании фото'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $photoResource = new PhotoResource($photo);
         $data = ['photo' => $photoResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(PhotoServiceInterface $photoService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class PhotoController extends Controller
 
         if (!$photo) {
             $errors = ['Ошибка при получении фото'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $photoResource = new PhotoResource($photo);
         $data = ['photo' => $photoResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(PhotoServiceInterface $photoService, UpdatePhotoRequest $request, string $id): JsonResource
@@ -58,19 +58,19 @@ final class PhotoController extends Controller
 
         if (!$photoService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении фото'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(PhotoServiceInterface $photoService, string $id): JsonResource
     {
         if (!$photoService->delete($id)) {
             $errors = ['Ошибка при удалении фото'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

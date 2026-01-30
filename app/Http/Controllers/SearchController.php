@@ -27,6 +27,6 @@ final class SearchController extends Controller
         ]);
         $data = ['search_results' => $searchResults];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 }

@@ -26,7 +26,7 @@ final class UserChatController extends Controller
 
         if (!$user) {
             $errors = ['Ошибка при получении пользователя'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $chats = $userService->chats($user->id);
@@ -42,7 +42,7 @@ final class UserChatController extends Controller
                 'second_user_id' => $arr[1],
             ])) {
                 $errors = ['Ошибка при создании чата'];
-                return new FailureResource(['errors' => $errors]);
+                return new FailureResource($errors);
             }
 
             $user->refresh();
@@ -52,7 +52,7 @@ final class UserChatController extends Controller
         $chatResourceCollection = ChatResource::collection($chats);
         $data = ['chats' => $chatResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function messages(ChatServiceInterface $chatService, string $user_id, string $recipient_id): JsonResource
@@ -68,7 +68,7 @@ final class UserChatController extends Controller
 
         if (!$chat) {
             $errors = ['Ошибка при создании чата'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $messages = $chatService->messages($chat->id);
@@ -78,7 +78,7 @@ final class UserChatController extends Controller
             'blocked_by' => $chat->blocked_by,
         ];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function unreadMessages(UserServiceInterface $userService, string $user_id): JsonResource
@@ -87,13 +87,13 @@ final class UserChatController extends Controller
 
         if (!$messages) {
             $errors = ['Ошибка при получении сообщений'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $messageResourceCollection = MessageResource::collection($messages);
         $data = ['messages' => $messageResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function send(
@@ -108,32 +108,32 @@ final class UserChatController extends Controller
 
         if (!$message) {
             $errors = ['Ошибка при отправке сообщения'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $data = ['message' => $messageResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function read(UserServiceInterface $userService, Request $request, string $userId): JsonResource
     {
         // TODO: сделать нормально
-        $messagesToRead = $request->input('messages');
+        $messagesToRead = (array)$request->input('messages');
         $user = $userService->get($userId);
 
         if (!$user) {
             $errors = ['Ошибка при получении пользователя'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $checked = $userService->readMessages($user->id, $messagesToRead);
 
         if (!$checked) {
             $errors = ['Ошибка при прочтении сообщений'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }
