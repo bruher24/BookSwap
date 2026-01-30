@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/UserCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/UserResourceExample.yaml"
+        $ref: "examples/UserResourceCollectionExample.yaml"

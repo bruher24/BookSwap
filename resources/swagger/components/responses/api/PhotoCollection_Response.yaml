@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/PhotoCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/PhotoResourceExample.yaml"
+        $ref: "examples/PhotoResourceCollectionExample.yaml"

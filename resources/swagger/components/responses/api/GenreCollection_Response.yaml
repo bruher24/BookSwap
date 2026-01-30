@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/GenreCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/GenreResourceExample.yaml"
+        $ref: "examples/GenreResourceCollectionExample.yaml"
