@@ -19,13 +19,13 @@ final class UserSettingController extends Controller
 
         if (!$user instanceof User) {
             $errors = ['Пользователь не найден'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $settingResourceCollection = SettingResource::collection($user->settings()->get());
         $data = ['settings' => $settingResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(
@@ -39,14 +39,14 @@ final class UserSettingController extends Controller
 
         if (!$isValidSettingsData) {
             $errors = ['Некорректные входные данные'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         if (!$userSettingService->updateSettings($user_id, $settingsData)) {
             $errors = ['Ошибка при обновлении настроек'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

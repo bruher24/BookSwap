@@ -15,10 +15,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "./components/schemas/Requests/StoreUserRequest.yaml"
+              $ref: "components/schemas/Requests/StoreUserRequest.yaml"
             examples:
               default:
-                $ref: "./components/examples/StoreUserRequestExample.yaml"
+                $ref: "components/examples/StoreUserRequestExample.yaml"
       responses:
         200:
           description: OK
@@ -28,7 +28,7 @@ paths:
                 type: object
                 properties:
                   user:
-                    $ref: "./components/schemas/Resources/UserResource.yaml"
+                    $ref: "components/schemas/Resources/UserResource.yaml"
                   token:
                     type: string
                 required:
@@ -36,11 +36,11 @@ paths:
                   - token
               examples:
                 success:
-                  $ref: "./components/examples/UserResourceExample.yaml"
+                  $ref: "components/examples/UserResourceExample.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /auth/login:
     post:
@@ -52,10 +52,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "./components/schemas/Requests/AuthRequest.yaml"
+              $ref: "components/schemas/Requests/AuthRequest.yaml"
             examples:
               default:
-                $ref: "./components/examples/AuthRequestExample.yaml"
+                $ref: "components/examples/AuthRequest_Example.yaml"
       responses:
         200:
           description: OK
@@ -65,7 +65,7 @@ paths:
                 type: object
                 properties:
                   user:
-                    $ref: "./components/schemas/Resources/UserResource.yaml"
+                    $ref: "components/schemas/Resources/UserResource.yaml"
                   token:
                     type: string
                 required:
@@ -73,13 +73,13 @@ paths:
                   - token
               examples:
                 success:
-                  $ref: "./components/examples/LoginExample.yaml"
+                  $ref: "components/examples/LoginExample.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /auth/refresh:
     post:
@@ -119,9 +119,9 @@ paths:
                     token: "1234567890"
                   }
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /auth/logout:
     post:
@@ -146,9 +146,9 @@ paths:
         200:
           description: "OK"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /authors:
     get:
@@ -157,52 +157,22 @@ paths:
         - Author
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  authors:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/AuthorResource.yaml"
-                required:
-                  - authors
-              examples:
-                success:
-                  $ref: "./components/examples/AuthorResourceCollectionExample.yaml"
+          $ref: "components/responses/api/AuthorCollection_Response.yaml"
     post:
       operationId: authors.store
       tags:
         - Author
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreAuthorRequest.yaml"
+        $ref: "components/requestBodies/StoreAuthorRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  author:
-                    $ref: "./components/schemas/Resources/AuthorResource.yaml"
-                required:
-                  - author
-              examples:
-                success:
-                  $ref: "./components/examples/AuthorResourceExample.yaml"
+          $ref: "components/responses/api/Author_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /authors/{author}:
     parameters:
@@ -217,56 +187,28 @@ paths:
         - Author
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  author:
-                    $ref: "./components/schemas/Resources/AuthorResource.yaml"
-                required:
-                  - author
-              examples:
-                success:
-                  $ref: "./components/examples/AuthorResourceExample.yaml"
+          $ref: "components/responses/api/Author_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: authors.update
       tags:
         - Author
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateAuthorRequest.yaml"
+        $ref: "components/requestBodies/UpdateAuthorRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  author:
-                    $ref: "./components/schemas/Resources/AuthorResource.yaml"
-                required:
-                  - author
-              examples:
-                success:
-                  $ref: "./components/examples/AuthorResourceExample.yaml"
+          $ref: "components/responses/api/Author_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: authors.destroy
       tags:
@@ -275,9 +217,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /books:
     get:
@@ -286,49 +228,22 @@ paths:
         - Book
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  books:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/BookResource.yaml"
-                required:
-                  - books
-              examples:
-                success:
-                  $ref: "./components/examples/BookResourceExample.yaml"
+          $ref: "components/responses/api/Book_Response.yaml"
     post:
       operationId: books.store
       tags:
         - Book
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreBookRequest.yaml"
+        $ref: "components/requestBodies/StoreBookRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  book:
-                    $ref: "./components/schemas/Resources/BookResource.yaml"
-                required:
-                  - book
+          $ref: "components/responses/api/Book_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /books/{book}:
     parameters:
@@ -343,56 +258,28 @@ paths:
         - Book
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  book:
-                    $ref: "./components/schemas/Resources/BookResource.yaml"
-                required:
-                  - book
-              examples:
-                success:
-                  $ref: "./components/examples/BookResourceExample.yaml"
+          $ref: "components/responses/api/Book_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: books.update
       tags:
         - Book
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateBookRequest.yaml"
+        $ref: "components/requestBodies/UpdateBookRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  book:
-                    $ref: "./components/schemas/Resources/BookResource.yaml"
-                required:
-                  - book
-              examples:
-                success:
-                  $ref: "./components/examples/BookResourceExample.yaml"
+          $ref: "components/responses/api/Book_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: books.destroy
       tags:
@@ -401,9 +288,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /booktypes:
     get:
@@ -412,46 +299,22 @@ paths:
         - BookType
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  bookTypes:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/BookTypeResource.yaml"
-                required:
-                  - bookTypes
+          $ref: "components/responses/api/BookTypeCollection_Response.yaml"
     post:
       operationId: booktypes.store
       tags:
         - BookType
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreBookTypeRequest.yaml"
+        $ref: "components/requestBodies/StoreBookTypeRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  bookType:
-                    $ref: "./components/schemas/Resources/BookTypeResource.yaml"
-                required:
-                  - bookType
+          $ref: "components/responses/api/BookType_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /booktypes/{booktype}:
     parameters:
@@ -466,56 +329,28 @@ paths:
         - BookType
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  bookType:
-                    $ref: "./components/schemas/Resources/BookTypeResource.yaml"
-                required:
-                  - bookType
-              examples:
-                success:
-                  $ref: "./components/examples/BookTypeResourceExample.yaml"
+          $ref: "components/responses/api/BookType_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: booktypes.update
       tags:
         - BookType
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateBookTypeRequest.yaml"
+        $ref: "components/requestBodies/UpdateBookTypeRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  bookType:
-                    $ref: "./components/schemas/Resources/BookTypeResource.yaml"
-                required:
-                  - bookType
-              examples:
-                success:
-                  $ref: "./components/examples/BookTypeResourceExample.yaml"
+          $ref: "components/responses/api/BookType_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: booktypes.destroy
       tags:
@@ -524,9 +359,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /chats:
     get:
@@ -535,48 +370,24 @@ paths:
         - Chat
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  chats:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/ChatResource.yaml"
-                required:
-                  - chats
+          $ref: "components/responses/api/ChatCollection_Response.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
     post:
       operationId: chats.store
       tags:
         - Chat
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreChatRequest.yaml"
+        $ref: "components/requestBodies/StoreChatRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  chat:
-                    $ref: "./components/schemas/Resources/ChatResource.yaml"
-                required:
-                  - chat
+          $ref: "components/responses/api/Chat_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /chats/{chat}:
     parameters:
@@ -591,58 +402,30 @@ paths:
         - Chat
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  chat:
-                    $ref: "./components/schemas/Resources/ChatResource.yaml"
-                required:
-                  - chat
-              examples:
-                success:
-                  $ref: "./components/examples/ChatResourceExample.yaml"
+          $ref: "components/responses/api/Chat_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: chats.update
       tags:
         - Chat
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateChatRequest.yaml"
+        $ref: "components/requestBodies/UpdateChatRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  chat:
-                    $ref: "./components/schemas/Resources/ChatResource.yaml"
-                required:
-                  - chat
-              examples:
-                success:
-                  $ref: "./components/examples/ChatResourceExample.yaml"
+          $ref: "components/responses/api/Chat_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: chats.destroy
       tags:
@@ -651,9 +434,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /covers:
     get:
@@ -662,46 +445,22 @@ paths:
         - Cover
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  covers:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/CoverResource.yaml"
-                required:
-                  - covers
+          $ref: "components/responses/api/CoverCollection_Response.yaml"
     post:
       operationId: covers.store
       tags:
         - Cover
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreCoverRequest.yaml"
+        $ref: "components/requestBodies/StoreCoverRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  cover:
-                    $ref: "./components/schemas/Resources/CoverResource.yaml"
-                required:
-                  - cover
+          $ref: "components/responses/api/Cover_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /covers/{cover}:
     parameters:
@@ -716,56 +475,28 @@ paths:
         - Cover
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  cover:
-                    $ref: "./components/schemas/Resources/CoverResource.yaml"
-                required:
-                  - cover
-              examples:
-                success:
-                  $ref: "./components/examples/CoverResourceExample.yaml"
+          $ref: "components/responses/api/Cover_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: covers.update
       tags:
         - Cover
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateCoverRequest.yaml"
+        $ref: "components/requestBodies/UpdateCoverRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  cover:
-                    $ref: "./components/schemas/Resources/CoverResource.yaml"
-                required:
-                  - cover
-              examples:
-                success:
-                  $ref: "./components/examples/CoverResourceExample.yaml"
+          $ref: "components/responses/api/Cover_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: covers.destroy
       tags:
@@ -774,9 +505,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /trade_offers:
     get:
@@ -785,48 +516,24 @@ paths:
         - TradeOffer
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  trade_offers:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
-                required:
-                  - trade_offers
+          $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
     post:
       operationId: trade_offers.store
       tags:
         - TradeOffer
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreTradeOfferRequest.yaml"
+        $ref: "components/requestBodies/StoreTradeOfferRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  trade_offer:
-                    $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
-                required:
-                  - trade_offer
+          $ref: "components/responses/api/TradeOffer_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /trade_offers/{trade_offer}:
     parameters:
@@ -841,58 +548,30 @@ paths:
         - TradeOffer
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  trade_offer:
-                    $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
-                required:
-                  - trade_offer
-              examples:
-                success:
-                  $ref: "./components/examples/TradeOfferResourceExample.yaml"
+          $ref: "components/responses/api/TradeOffer_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: trade_offers.update
       tags:
         - TradeOffer
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateTradeOfferRequest.yaml"
+        $ref: "components/requestBodies/UpdateTradeOfferRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  trade_offer:
-                    $ref: "./components/schemas/Resources/TradeOfferResource.yaml"
-                required:
-                  - trade_offer
-              examples:
-                success:
-                  $ref: "./components/examples/TradeOfferResourceExample.yaml"
+          $ref: "components/responses/api/TradeOffer_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: trade_offers.destroy
       tags:
@@ -901,9 +580,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /filters:
     get:
@@ -912,46 +591,22 @@ paths:
         - Filter
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  filters:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/FilterResource.yaml"
-                required:
-                  - filters
+          $ref: "components/responses/api/FilterCollection_Response.yaml"
     post:
       operationId: filters.store
       tags:
         - Filter
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreFilterRequest.yaml"
+        $ref: "components/requestBodies/StoreFilterRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  filter:
-                    $ref: "./components/schemas/Resources/FilterResource.yaml"
-                required:
-                  - filter
+          $ref: "components/responses/api/Filter_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /filters/{filter}:
     parameters:
@@ -966,56 +621,28 @@ paths:
         - Filter
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  filter:
-                    $ref: "./components/schemas/Resources/FilterResource.yaml"
-                required:
-                  - filter
-              examples:
-                success:
-                  $ref: "./components/examples/FilterResourceExample.yaml"
+          $ref: "components/responses/api/Filter_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: filters.update
       tags:
         - Filter
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateFilterRequest.yaml"
+        $ref: "components/requestBodies/UpdateFilterRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  filter:
-                    $ref: "./components/schemas/Resources/FilterResource.yaml"
-                required:
-                  - filter
-              examples:
-                success:
-                  $ref: "./components/examples/FilterResourceExample.yaml"
+          $ref: "components/responses/api/Filter_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: filters.destroy
       tags:
@@ -1024,9 +651,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /genres:
     get:
@@ -1035,46 +662,22 @@ paths:
         - Genre
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  genres:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/GenreResource.yaml"
-                required:
-                  - genres
+          $ref: "components/responses/api/GenreCollection_Response.yaml"
     post:
       operationId: genres.store
       tags:
         - Genre
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreGenreRequest.yaml"
+        $ref: "components/requestBodies/StoreGenreRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  genre:
-                    $ref: "./components/schemas/Resources/GenreResource.yaml"
-                required:
-                  - genre
+          $ref: "components/responses/api/Genre_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /genres/{genre}:
     parameters:
@@ -1089,56 +692,28 @@ paths:
         - Genre
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  genre:
-                    $ref: "./components/schemas/Resources/GenreResource.yaml"
-                required:
-                  - genre
-              examples:
-                success:
-                  $ref: "./components/examples/GenreResourceExample.yaml"
+          $ref: "components/responses/api/Genre_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: genres.update
       tags:
         - Genre
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateGenreRequest.yaml"
+        $ref: "components/requestBodies/UpdateGenreRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  genre:
-                    $ref: "./components/schemas/Resources/GenreResource.yaml"
-                required:
-                  - genre
-              examples:
-                success:
-                  $ref: "./components/examples/GenreResourceExample.yaml"
+          $ref: "components/responses/api/Genre_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: genres.destroy
       tags:
@@ -1147,9 +722,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /photos:
     get:
@@ -1158,46 +733,22 @@ paths:
         - Photo
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  photos:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/PhotoResource.yaml"
-                required:
-                  - photos
+          $ref: "components/responses/api/PhotoCollection_Response.yaml"
     post:
       operationId: photos.store
       tags:
         - Photo
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StorePhotoRequest.yaml"
+        $ref: "components/requestBodies/StorePhotoRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  photo:
-                    $ref: "./components/schemas/Resources/PhotoResource.yaml"
-                required:
-                  - photo
+          $ref: "components/responses/api/Photo_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /photos/{photo}:
     parameters:
@@ -1212,56 +763,28 @@ paths:
         - Photo
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  photo:
-                    $ref: "./components/schemas/Resources/PhotoResource.yaml"
-                required:
-                  - photo
-              examples:
-                success:
-                  $ref: "./components/examples/PhotoResourceExample.yaml"
+          $ref: "components/responses/api/Photo_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: photos.update
       tags:
         - Photo
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdatePhotoRequest.yaml"
+        $ref: "components/requestBodies/UpdatePhotoRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  photo:
-                    $ref: "./components/schemas/Resources/PhotoResource.yaml"
-                required:
-                  - photo
-              examples:
-                success:
-                  $ref: "./components/examples/PhotoResourceExample.yaml"
+          $ref: "components/responses/api/Photo_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: photos.destroy
       tags:
@@ -1270,9 +793,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /search:
     parameters:
@@ -1288,23 +811,11 @@ paths:
         - Search
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  search_results:
-                    $ref: "./components/schemas/Resources/SearchResultsResource.yaml"
-                required:
-                  - search_results
-              examples:
-                success:
-                  $ref: "./components/examples/SearchResultsResourceExample.yaml"
+          $ref: "components/responses/api/SearchResults_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /settings:
     get:
@@ -1313,52 +824,22 @@ paths:
         - Setting
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  settings:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/SettingResource.yaml"
-                required:
-                  - settings
-              examples:
-                success:
-                  $ref: "./components/examples/SettingResourceCollectionExample.yaml"
+          $ref: "components/responses/api/SettingCollection_Response.yaml"
     post:
       operationId: settings.store
       tags:
         - Setting
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreSettingRequest.yaml"
+        $ref: "components/requestBodies/StoreSettingRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  setting:
-                    $ref: "./components/schemas/Resources/SettingResource.yaml"
-                required:
-                  - setting
-              examples:
-                success:
-                  $ref: "./components/examples/SettingResourceExample.yaml"
+          $ref: "components/responses/api/Setting_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /settings/{setting}:
     parameters:
@@ -1373,56 +854,28 @@ paths:
         - Setting
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  setting:
-                    $ref: "./components/schemas/Resources/SettingResource.yaml"
-                required:
-                  - setting
-              examples:
-                success:
-                  $ref: "./components/examples/SettingResourceExample.yaml"
+          $ref: "components/responses/api/Setting_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: settings.update
       tags:
         - Setting
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateSettingRequest.yaml"
+        $ref: "components/requestBodies/UpdateSettingRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  setting:
-                    $ref: "./components/schemas/Resources/SettingResource.yaml"
-                required:
-                  - setting
-              examples:
-                success:
-                  $ref: "./components/examples/SettingResourceExample.yaml"
+          $ref: "components/responses/api/Setting_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: settings.destroy
       tags:
@@ -1431,9 +884,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /users:
     get:
@@ -1442,48 +895,24 @@ paths:
         - User
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  users:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/UserResource.yaml"
-                required:
-                  - users
+          $ref: "components/responses/api/UserCollection_Response.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
     post:
       operationId: users.store
       tags:
         - User
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/StoreUserRequest.yaml"
+        $ref: "components/requestBodies/StoreUserRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    $ref: "./components/schemas/Resources/UserResource.yaml"
-                required:
-                  - user
+          $ref: "components/responses/api/User_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /users/{user}:
     parameters:
@@ -1498,56 +927,28 @@ paths:
         - User
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    $ref: "./components/schemas/Resources/UserResource.yaml"
-                required:
-                  - user
-              examples:
-                success:
-                  $ref: "./components/examples/UserResourceExample.yaml"
+          $ref: "components/responses/api/User_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
       operationId: users.update
       tags:
         - User
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "./components/schemas/Requests/UpdateUserRequest.yaml"
+        $ref: "components/requestBodies/UpdateUserRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    $ref: "./components/schemas/Resources/UserResource.yaml"
-                required:
-                  - user
-              examples:
-                success:
-                  $ref: "./components/examples/UserResourceExample.yaml"
+          $ref: "components/responses/api/User_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
-          $ref: "./components/responses/ValidationException.yaml"
+          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: users.destroy
       tags:
@@ -1556,9 +957,9 @@ paths:
         202:
           description: "Accepted"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   /users/{user}/chats:
     parameters:
@@ -1573,27 +974,13 @@ paths:
         - UserChat
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  chats:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/ChatResource.yaml"
-                required:
-                  - chats
-              examples:
-                success:
-                  $ref: "./components/examples/ChatResourceCollectionExample.yaml"
+          $ref: "components/responses/api/ChatCollection_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /users/{user}/chats/{recipient}/messages:
     parameters:
@@ -1630,11 +1017,11 @@ paths:
                   - recipient
                   - is_blocked
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     post:
       operationId: users.chats.send
       tags:
@@ -1660,11 +1047,11 @@ paths:
                 required:
                   - message
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /users/{user}/chats/{chat}/messages/{message}:
     parameters:
@@ -1705,11 +1092,11 @@ paths:
               schema:
                 type: string
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /users/{user}/favorites:
     parameters:
@@ -1724,27 +1111,13 @@ paths:
         - UserFavorites
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  favorites:
-                    type: array
-                    items:
-                      $ref: "./components/schemas/Resources/BookResource.yaml"
-                required:
-                  - favorites
-              examples:
-                success:
-                  $ref: "./components/examples/BookResourceCollectionExample.yaml"
+          $ref: "components/responses/api/BookCollection_Response.yaml"
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /users/{user}/favorites/{book}:
     parameters:
@@ -1769,15 +1142,20 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  message:
-                    type: object
                 required:
-                  - message
+                  - statusCode
+                  - data
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    additionalProperties: true
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
     delete:
       operationId: users.favorites.dislike
       tags:
@@ -1785,19 +1163,10 @@ paths:
       responses:
         202:
           description: "Accepted"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: object
-                required:
-                  - message
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
   # TODO: добавить ресурс уведомления
   /users/{user}/notifications:
@@ -1820,11 +1189,11 @@ paths:
               schema:
                 type: object
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /users/{user}/settings:
     parameters:
@@ -1840,12 +1209,13 @@ paths:
       responses:
         200:
           description: "OK"
+          # TODO: сделать
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /users/{user}/settings/{setting}:
     parameters:
@@ -1866,16 +1236,17 @@ paths:
       responses:
         200:
           description: "OK"
+          # TODO: сделать
           content:
             application/json:
               schema:
                 type: object
         400:
-          $ref: "./components/responses/BadRequest.yaml"
+          $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
-          $ref: "./components/responses/AuthenticationException.yaml"
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
         404:
-          $ref: "./components/responses/ModelNotFoundException.yaml"
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 components:
   securitySchemes:
     http:

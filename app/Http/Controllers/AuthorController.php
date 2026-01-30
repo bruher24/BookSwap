@@ -21,8 +21,9 @@ final class AuthorController extends Controller
 
         Redis::publish('listeners', 'TEST MESSAGE FROM LARAVEL');
         AuthorCreated::dispatch('TEST MSG');
+        $data = ['authors' => $authorResourceCollection];
 
-        return new SuccessResource(['authors' => $authorResourceCollection]);
+        return new SuccessResource($data);
     }
 
     public function store(AuthorServiceInterface $authorService, StoreAuthorRequest $request): JsonResource
@@ -32,12 +33,13 @@ final class AuthorController extends Controller
 
         if (!$author) {
             $errors = ['Ошибка при создании автора'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $authorResource = new AuthorResource($author);
+        $data = ['author' => $authorResource];
 
-        return new SuccessResource(['author' => $authorResource]);
+        return new SuccessResource($data);
     }
 
     public function show(AuthorServiceInterface $authorService, string $id): JsonResource
@@ -46,12 +48,13 @@ final class AuthorController extends Controller
 
         if (!$author) {
             $errors = ['Ошибка при получении автора'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $authorResource = new AuthorResource($author);
+        $data = ['author' => $authorResource];
 
-        return new SuccessResource(['author' => $authorResource]);
+        return new SuccessResource($data);
     }
 
     public function update(
@@ -63,20 +66,20 @@ final class AuthorController extends Controller
 
         if (!$authorService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении автора'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         // TODO: возвращать обновленный ресурс после PUT
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(AuthorServiceInterface $authorService, string $id): JsonResource
     {
         if (!$authorService->delete($id)) {
             $errors = ['Ошибка при удалении автора'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

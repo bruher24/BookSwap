@@ -18,7 +18,7 @@ final class FilterController extends Controller
         $filterResourceCollection = FilterResource::collection($filters);
         $data = ['filters' => $filterResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(FilterServiceInterface $filterService, StoreFilterRequest $request): JsonResource
@@ -28,13 +28,13 @@ final class FilterController extends Controller
 
         if (!$filter) {
             $errors = ['Ошибка при создании фильтра'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $filterResource = new FilterResource($filter);
         $data = ['filter' => $filterResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(FilterServiceInterface $filterService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class FilterController extends Controller
 
         if (!$filter) {
             $errors = ['Ошибка при получении фильтра'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $filterResource = new FilterResource($filter);
         $data = ['filter' => $filterResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(
@@ -61,19 +61,19 @@ final class FilterController extends Controller
 
         if (!$filterService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении фильтра'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(FilterServiceInterface $filterService, string $id): JsonResource
     {
         if (!$filterService->delete($id)) {
             $errors = ['Ошибка при удалении фильтра'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

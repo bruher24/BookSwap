@@ -18,7 +18,7 @@ final class TradeOfferController extends Controller
         $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
         $data = ['tradeOffers' => $tradeOfferResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(TradeOfferServiceInterface $tradeOfferService, StoreTradeOfferRequest $request): JsonResource
@@ -28,13 +28,13 @@ final class TradeOfferController extends Controller
 
         if (!$tradeOffer) {
             $errors = ['Ошибка при создании сделки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $tradeOfferResource = new TradeOfferResource($tradeOffer);
         $data = ['tradeOffer' => $tradeOfferResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class TradeOfferController extends Controller
 
         if (!$tradeOffer) {
             $errors = ['Ошибка при получении сделки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $tradeOfferResource = new TradeOfferResource($tradeOffer);
         $data = ['tradeOffer' => $tradeOfferResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(
@@ -61,20 +61,20 @@ final class TradeOfferController extends Controller
 
         if (!$tradeOfferService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении сделки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResource
     {
         if (!$tradeOfferService->delete($id)) {
             $errors = ['Ошибка при удалении сделки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function bySender(TradeOfferServiceInterface $tradeOfferService, string $senderId): JsonResource
@@ -82,8 +82,9 @@ final class TradeOfferController extends Controller
         $tradeOffers = $tradeOfferService->bySender($senderId);
         $statusCode = $tradeOffers->isEmpty() ? 204 : 200;
         $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
+        $data = ['tradeOffers' => $tradeOfferResourceCollection, 'statusCode' => $statusCode];
 
-        return new SuccessResource(['tradeOffers' => $tradeOfferResourceCollection, 'statusCode' => $statusCode]);
+        return new SuccessResource($data);
     }
 
     public function byReceiver(TradeOfferServiceInterface $tradeOfferService, string $receiverId): JsonResource
@@ -91,8 +92,9 @@ final class TradeOfferController extends Controller
         $tradeOffers = $tradeOfferService->byReceiver($receiverId);
         $statusCode = $tradeOffers->isEmpty() ? 204 : 200;
         $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
+        $data = ['tradeOffers' => $tradeOfferResourceCollection, 'statusCode' => $statusCode];
 
-        return new SuccessResource(['tradeOffers' => $tradeOfferResourceCollection, 'statusCode' => $statusCode]);
+        return new SuccessResource($data);
     }
 
     public function accept(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResource
@@ -101,7 +103,7 @@ final class TradeOfferController extends Controller
             return new FailureResource(['errors' => ['Ошибка при принятии предложения обмена']]);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function reject(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResource
@@ -110,6 +112,6 @@ final class TradeOfferController extends Controller
             return new FailureResource(['errors' => ['Ошибка при отклонении предложения обмена']]);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

@@ -18,7 +18,7 @@ final class BookTypeController extends Controller
         $bookTypeResourceCollection = BookTypeResource::collection($bookTypes);
         $data = ['bookTypes' => $bookTypeResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(BookTypeServiceInterface $bookTypeService, StoreBookTypeRequest $request): JsonResource
@@ -28,13 +28,13 @@ final class BookTypeController extends Controller
 
         if (!$bookType) {
             $errors = ['Ошибка при создании типа'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $bookTypeResource = new BookTypeResource($bookType);
         $data = ['bookType' => $bookTypeResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(BookTypeServiceInterface $bookTypeService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class BookTypeController extends Controller
 
         if (!$bookType) {
             $errors = ['Ошибка при получении типа'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $bookTypeResource = new BookTypeResource($bookType);
         $data = ['bookType' => $bookTypeResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(
@@ -61,19 +61,19 @@ final class BookTypeController extends Controller
 
         if (!$bookTypeService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении типа'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(BookTypeServiceInterface $bookTypeService, string $id): JsonResource
     {
         if (!$bookTypeService->delete($id)) {
             $errors = ['Ошибка при удалении типа'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

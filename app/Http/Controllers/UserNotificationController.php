@@ -16,16 +16,16 @@ final class UserNotificationController extends Controller
         $notificationResourceCollection = NotificationResource::collection($notifications);
         $data = ['notifications' => $notificationResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function readAll(NotificationServiceInterface $notificationService, string $user_id): JsonResource
     {
         if (!$notificationService->readAll($user_id)) {
             $errors = ['Ошибка при обновлении уведомлений'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

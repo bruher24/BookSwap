@@ -18,7 +18,7 @@ final class GenreController extends Controller
         $genreResourceCollection = GenreResource::collection($genres);
         $data = ['genres' => $genreResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(GenreServiceInterface $genreService, StoreGenreRequest $request): JsonResource
@@ -28,13 +28,13 @@ final class GenreController extends Controller
 
         if (!$genre) {
             $errors = ['Ошибка при создании жанра'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $genreResource = new GenreResource($genre);
         $data = ['genre' => $genreResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(GenreServiceInterface $genreService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class GenreController extends Controller
 
         if (!$genre) {
             $errors = ['Ошибка при получении жанра'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $genreResource = new GenreResource($genre);
         $data = ['genre' => $genreResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(GenreServiceInterface $genreService, UpdateGenreRequest $request, string $id): JsonResource
@@ -57,19 +57,19 @@ final class GenreController extends Controller
         $validated = $request->validated();
         if (!$genreService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении жанра'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(GenreServiceInterface $genreService, string $id): JsonResource
     {
         if (!$genreService->delete($id)) {
             $errors = ['Ошибка при удалении жанра'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

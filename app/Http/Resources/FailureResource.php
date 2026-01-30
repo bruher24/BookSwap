@@ -8,6 +8,11 @@ use Override;
 
 final class FailureResource extends JsonResource
 {
+    public function __construct(array $resource)
+    {
+        parent::__construct($resource);
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -17,7 +22,7 @@ final class FailureResource extends JsonResource
     public function toArray(Request $request): array
     {
         $statusCode = (int)($this['statusCode'] ?? 400);
-        $errors = (array)($this['errors'] ?? []);
+        $errors = parent::toArray($request);
 
         return [
             'statusCode' => $statusCode,

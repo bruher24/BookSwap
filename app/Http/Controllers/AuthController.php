@@ -24,7 +24,7 @@ final class AuthController extends Controller
 
         if (!$user) {
             $errors = ['Ошибка при регистрации'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $token = $authService->refreshToken($user->id);
@@ -34,7 +34,7 @@ final class AuthController extends Controller
             'token' => $token
         ];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function login(
@@ -46,14 +46,14 @@ final class AuthController extends Controller
 
         if (!$authService->login($validated)) {
             $errors = ['Ошибка аутентификации'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $token = $authService->refreshToken($validated['email']);
 
         if (empty($token)) {
             $errors = ['Ошибка получения токена'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $user = $userService->where('email', $validated['email'])->first();
@@ -73,12 +73,12 @@ final class AuthController extends Controller
 
         if (empty($token)) {
             $errors = ['Ошибка обновления токена'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $data = ['token' => $token];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function logout(AuthServiceInterface $authService, Request $request): JsonResource
@@ -87,9 +87,9 @@ final class AuthController extends Controller
 
         if (!$authService->logout($email)) {
             $errors = ['Ошибка при выходе из аккаунта'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

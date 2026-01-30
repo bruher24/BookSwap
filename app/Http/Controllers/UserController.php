@@ -17,7 +17,7 @@ final class UserController extends Controller
         $users = $userService->getAll();
         $data = ['users' => UserResource::collection($users)];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(UserServiceInterface $userService, StoreUserRequest $request): JsonResource
@@ -27,12 +27,12 @@ final class UserController extends Controller
 
         if (!$user) {
             $errors = ['Ошибка при создании пользователя'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $data = ['user' => new UserResource($user)];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(UserServiceInterface $userService, string $id): JsonResource
@@ -41,12 +41,12 @@ final class UserController extends Controller
 
         if (!$user) {
             $errors = ['Ошибка при получении пользователя'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $data = ['user' => new UserResource($user)];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(UserServiceInterface $userService, UpdateUserRequest $request, string $id): JsonResource
@@ -55,19 +55,19 @@ final class UserController extends Controller
 
         if (!$userService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении пользователя'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(UserServiceInterface $userService, string $id): JsonResource
     {
         if (!$userService->delete($id)) {
             $errors = ['Ошибка при удалении пользователя'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

@@ -18,7 +18,7 @@ final class ChatController extends Controller
         $chatResourceCollection = ChatResource::collection($chats);
         $data = ['chats' => $chatResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(ChatServiceInterface $chatService, StoreChatRequest $request): JsonResource
@@ -28,13 +28,13 @@ final class ChatController extends Controller
 
         if (!$chat) {
             $errors = ['Ошибка при создании чата'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $chatResource = new ChatResource($chat);
         $data = ['chat' => $chatResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(ChatServiceInterface $chatService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class ChatController extends Controller
 
         if (!$chat) {
             $errors = ['Ошибка при получении чата'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $chatResource = new ChatResource($chat);
         $data = ['chat' => $chatResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(ChatServiceInterface $chatService, UpdateChatRequest $request, string $id): JsonResource
@@ -58,19 +58,19 @@ final class ChatController extends Controller
 
         if (!$chatService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении чата'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(ChatServiceInterface $chatService, string $id): JsonResource
     {
         if (!$chatService->delete($id)) {
             $errors = ['Ошибка при удалении чата'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }

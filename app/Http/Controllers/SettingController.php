@@ -18,7 +18,7 @@ final class SettingController extends Controller
         $settingResourceCollection = SettingResource::collection($settings);
         $data = ['settings' => $settingResourceCollection];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function store(SettingServiceInterface $settingService, StoreSettingRequest $request): JsonResource
@@ -28,13 +28,13 @@ final class SettingController extends Controller
 
         if (!$setting) {
             $errors = ['Ошибка при создании настройки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $settingResource = new SettingResource($setting);
         $data = ['setting' => $settingResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function show(SettingServiceInterface $settingService, string $id): JsonResource
@@ -43,13 +43,13 @@ final class SettingController extends Controller
 
         if (!$setting) {
             $errors = ['Ошибка при получении настройки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
         $settingResource = new SettingResource($setting);
         $data = ['setting' => $settingResource];
 
-        return new SuccessResource(['data' => $data]);
+        return new SuccessResource($data);
     }
 
     public function update(
@@ -61,19 +61,19 @@ final class SettingController extends Controller
 
         if (!$settingService->update($id, $validated)) {
             $errors = ['Ошибка при обновлении настройки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 
     public function destroy(SettingServiceInterface $settingService, string $id): JsonResource
     {
         if (!$settingService->delete($id)) {
             $errors = ['Ошибка при удалении настройки'];
-            return new FailureResource(['errors' => $errors]);
+            return new FailureResource($errors);
         }
 
-        return new SuccessResource([]);
+        return new SuccessResource();
     }
 }
