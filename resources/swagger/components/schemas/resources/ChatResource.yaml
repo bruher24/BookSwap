@@ -15,6 +15,10 @@ properties:
           - title: second
             const: 2
       - type: 'null'
+  latest_read_id:
+    oneOf:
+      - type: string
+      - type: 'null'
   created_at:
     oneOf:
       - type: string

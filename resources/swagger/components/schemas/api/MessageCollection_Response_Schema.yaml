@@ -1,0 +1,9 @@
+MessageCollection_Response_Schema:
+allOf:
+  - $ref: 'Response_Schema.yaml'
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../../schemas/resources/MessageResource.yaml'

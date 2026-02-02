@@ -1,0 +1,9 @@
+description: Send message request payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/requests/SendMessageRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/SendMessageRequest_Example.yaml"

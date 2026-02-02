@@ -1,0 +1,6 @@
+name: query
+in: query
+required: true
+schema:
+  type: string
+  minLength: 3

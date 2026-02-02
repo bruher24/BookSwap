@@ -5,39 +5,17 @@ info:
 servers:
   - url: http://localhost/api/v1
 paths:
-  # TODO: сделать auth, поменять везде Example на _Example
+  # TODO: поменять везде Example на _Example
   /auth/register:
     post:
       operationId: auth.register
       tags:
         - Auth
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "components/schemas/requests/StoreUserRequest.yaml"
-            examples:
-              default:
-                $ref: "components/requestBodies/examples/StoreUserRequest_Example.yaml"
+        $ref: "components/requestBodies/StoreUserRequest_Body.yaml"
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    $ref: "components/schemas/resources/UserResource.yaml"
-                  token:
-                    type: string
-                required:
-                  - user
-                  - token
-              examples:
-                success:
-                  $ref: "components/responses/api/examples/UserResourceExample.yaml"
+          $ref: "components/responses/api/Login_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         422:
@@ -49,32 +27,10 @@ paths:
       tags:
         - Auth
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "components/schemas/Requests/AuthRequest.yaml"
-            examples:
-              default:
-                $ref: "components/examples/AuthRequest_Example.yaml"
+        $ref: "components/requestBodies/AuthRequest_Body.yaml"
       responses:
         200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    $ref: "components/schemas/Resources/UserResource.yaml"
-                  token:
-                    type: string
-                required:
-                  - user
-                  - token
-              examples:
-                success:
-                  $ref: "components/examples/LoginExample.yaml"
+          $ref: "components/responses/api/Login_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -88,37 +44,10 @@ paths:
       tags:
         - Auth
       requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-            examples:
-              default:
-                summary: RefreshRequestExample
-                value: {
-                  email: "john@doe.com"
-                }
+        $ref: "components/requestBodies/RefreshRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                required:
-                  - token
-              examples:
-                success:
-                  summary: RefreshExample
-                  value: {
-                    token: "1234567890"
-                  }
+          $ref: "components/responses/api/Refresh_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -130,19 +59,7 @@ paths:
       tags:
         - Auth
       requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-            examples:
-              default:
-                summary: LogoutRequestExample
-                value: {
-                  email: "john@doe.com"
-                }
+        $ref: "components/requestBodies/RefreshRequest_Body.yaml"
       responses:
         200:
           description: "OK"
@@ -177,11 +94,7 @@ paths:
 
   /authors/{author}:
     parameters:
-      - name: author
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/author.yaml"
     get:
       operationId: authors.show
       tags:
@@ -248,11 +161,7 @@ paths:
 
   /books/{book}:
     parameters:
-      - name: book
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/book.yaml"
     get:
       operationId: books.show
       tags:
@@ -319,11 +228,7 @@ paths:
 
   /booktypes/{booktype}:
     parameters:
-      - name: booktype
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/booktype.yaml"
     get:
       operationId: booktypes.show
       tags:
@@ -390,13 +295,26 @@ paths:
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
+  /chats/by_user/{user}:
+    parameters:
+      - $ref: "components/parameters/user.yaml"
+    get:
+      operationId: chats.by_user
+      tags:
+        - Chat
+      responses:
+        200:
+          $ref: "components/responses/api/ChatCollection_Response.yaml"
+        400:
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        404:
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+
   /chats/{chat}:
     parameters:
-      - name: chat
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/chat.yaml"
     get:
       operationId: chats.show
       tags:
@@ -439,6 +357,38 @@ paths:
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
+  /chats/{chat}/messages:
+    parameters:
+      - $ref: "components/parameters/chat.yaml"
+    get:
+      operationId: chats.messages.get
+      tags:
+        - Chat
+      responses:
+        200:
+          $ref: "components/responses/api/MessageCollection_Response.yaml"
+        400:
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        404:
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+    post:
+      operationId: chats.messages.send
+      tags:
+        - Chat
+      requestBody:
+        $ref: "components/requestBodies/SendMessageRequest_Body.yaml"
+      responses:
+        200:
+          $ref: "components/responses/api/Message_Response.yaml"
+        400:
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        404:
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+
   /covers:
     get:
       operationId: covers.index
@@ -465,11 +415,7 @@ paths:
 
   /covers/{cover}:
     parameters:
-      - name: cover
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/cover.yaml"
     get:
       operationId: covers.show
       tags:
@@ -538,11 +484,7 @@ paths:
 
   /trade_offers/{trade_offer}:
     parameters:
-      - name: trade_offer
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/trade_offer.yaml"
     get:
       operationId: trade_offers.show
       tags:
@@ -611,11 +553,7 @@ paths:
 
   /filters/{filter}:
     parameters:
-      - name: filter
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/filter.yaml"
     get:
       operationId: filters.show
       tags:
@@ -682,11 +620,7 @@ paths:
 
   /genres/{genre}:
     parameters:
-      - name: genre
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/genre.yaml"
     get:
       operationId: genres.show
       tags:
@@ -753,11 +687,7 @@ paths:
 
   /photos/{photo}:
     parameters:
-      - name: photo
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/photo.yaml"
     get:
       operationId: photos.show
       tags:
@@ -800,12 +730,7 @@ paths:
 
   /search:
     parameters:
-      - name: query
-        in: query
-        required: true
-        schema:
-          type: string
-          minLength: 3
+      - $ref: "components/parameters/query.yaml"
     get:
       operationId: search
       tags:
@@ -844,11 +769,7 @@ paths:
 
   /settings/{setting}:
     parameters:
-      - name: setting
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/setting.yaml"
     get:
       operationId: settings.show
       tags:
@@ -917,11 +838,7 @@ paths:
 
   /users/{user}:
     parameters:
-      - name: user
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/user.yaml"
     get:
       operationId: users.show
       tags:
@@ -962,150 +879,9 @@ paths:
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
-  /users/{user}/chats:
-    parameters:
-      - name: user
-        in: path
-        required: true
-        schema:
-          type: string
-    get:
-      operationId: users.chats.index
-      tags:
-        - UserChat
-      responses:
-        200:
-          $ref: "components/responses/api/ChatCollection_Response.yaml"
-        400:
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        401:
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        404:
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-
-  /users/{user}/chats/{recipient}/messages:
-    parameters:
-      - name: user
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: recipient
-        in: path
-        required: true
-        schema:
-          type: string
-    get:
-      operationId: users.chats.messages
-      tags:
-        - UserChat
-      responses:
-        200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  messages:
-                    type: string
-                  recipient:
-                    type: string
-                  is_blocked:
-                    type: string
-                required:
-                  - messages
-                  - recipient
-                  - is_blocked
-        400:
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        401:
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        404:
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    post:
-      operationId: users.chats.send
-      tags:
-        - UserChat
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                body:
-                  type: string
-      responses:
-        200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: object
-                required:
-                  - message
-        400:
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        401:
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        404:
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-
-  /users/{user}/chats/{chat}/messages/{message}:
-    parameters:
-      - name: user
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: chat
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: message
-        in: path
-        required: true
-        schema:
-          type: string
-    put:
-      operationId: users.chats.read
-      tags:
-        - UserChat
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                messages:
-                  type: string
-                  description:
-                  # TODO: сделать нормально
-      responses:
-        200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: string
-        400:
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        401:
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        404:
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-
   /users/{user}/favorites:
     parameters:
-      - name: user
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/user.yaml"
     get:
       operationId: users.favorites.index
       tags:
@@ -1122,16 +898,8 @@ paths:
 
   /users/{user}/favorites/{book}:
     parameters:
-      - name: user
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: book
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/user.yaml"
+      - $ref: "components/parameters/book.yaml"
     post:
       operationId: users.favorites.like
       tags:
@@ -1155,26 +923,16 @@ paths:
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
 
-  # TODO: добавить ресурс уведомления
   /users/{user}/notifications:
     parameters:
-      - name: user
-        in: path
-        required: true
-        description: The user ID
-        schema:
-          type: string
+      - $ref: "components/parameters/user.yaml"
     get:
       operationId: users.notifications.index
       tags:
         - UserNotification
       responses:
         200:
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                type: object
+          $ref: "components/responses/api/NotificationCollection_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -1184,19 +942,14 @@ paths:
 
   /users/{user}/settings:
     parameters:
-      - name: user
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/user.yaml"
     get:
       operationId: users.settings.index
       tags:
         - UserSetting
       responses:
         200:
-          description: "OK"
-          # TODO: сделать
+          $ref: "components/responses/api/SettingCollection_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -1206,28 +959,17 @@ paths:
 
   /users/{user}/settings/{setting}:
     parameters:
-      - name: user
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: setting
-        in: path
-        required: true
-        schema:
-          type: string
+      - $ref: "components/parameters/user.yaml"
+      - $ref: "components/parameters/setting.yaml"
     put:
       operationId: users.settings.update
       tags:
         - UserSetting
+      requestBody:
+        $ref: "components/requestBodies/UpdateUserSettingRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
-          # TODO: сделать
-          content:
-            application/json:
-              schema:
-                type: object
+          $ref: "components/responses/api/Setting_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:

@@ -1,0 +1,13 @@
+type: object
+properties:
+  id:
+    type: string
+  message:
+    type: string
+  date_created:
+    type: string
+required:
+  - id
+  - message
+  - date_created
+title: NotificationResource

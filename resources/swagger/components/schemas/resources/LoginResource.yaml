@@ -1,0 +1,10 @@
+type: object
+properties:
+  user:
+    $ref: "../resources/UserResource.yaml"
+  token:
+    type: string
+required:
+  - user
+  - token
+title: LoginResource

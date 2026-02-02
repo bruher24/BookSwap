@@ -1,0 +1,5 @@
+name: filter
+in: path
+required: true
+schema:
+  type: string

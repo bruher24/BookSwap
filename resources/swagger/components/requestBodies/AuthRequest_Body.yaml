@@ -1,0 +1,9 @@
+description: Auth request payload
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/requests/AuthRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/AuthRequest_Example.yaml"

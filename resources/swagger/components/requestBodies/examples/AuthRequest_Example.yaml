@@ -1,4 +1,4 @@
-summary: AuthRequestExample
+summary: AuthRequest_Example
 value: {
   email: "mega@user.com",
   password: "1234",

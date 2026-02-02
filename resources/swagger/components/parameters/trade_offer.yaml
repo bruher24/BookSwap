@@ -1,0 +1,5 @@
+name: trade_offer
+in: path
+required: true
+schema:
+  type: string

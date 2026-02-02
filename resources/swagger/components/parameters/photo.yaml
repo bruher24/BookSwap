@@ -1,0 +1,5 @@
+name: photo
+in: path
+required: true
+schema:
+  type: string

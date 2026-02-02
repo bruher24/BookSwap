@@ -1,0 +1,5 @@
+name: user
+in: path
+required: true
+schema:
+  type: string
