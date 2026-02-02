@@ -10,4 +10,4 @@ content:
         - message
     examples:
       default:
-        $ref: "examples/BadRequestExample.yaml"
+        $ref: "examples/BadRequest_Example.yaml"

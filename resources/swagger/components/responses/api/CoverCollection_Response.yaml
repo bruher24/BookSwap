@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/CoverCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/CoverResourceCollectionExample.yaml"
+        $ref: "examples/CoverResourceCollection_Example.yaml"

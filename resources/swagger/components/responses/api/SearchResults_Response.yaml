@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/SearchResults_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/SearchResultsResourceExample.yaml"
+        $ref: "examples/SearchResultsResource_Example.yaml"

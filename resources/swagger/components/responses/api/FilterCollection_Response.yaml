@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/FilterCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/FilterResourceCollectionExample.yaml"
+        $ref: "examples/FilterResourceCollection_Example.yaml"

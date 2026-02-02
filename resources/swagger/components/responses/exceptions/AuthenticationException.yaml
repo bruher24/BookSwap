@@ -11,4 +11,4 @@ content:
         - message
     examples:
       default:
-        $ref: "examples/AuthenticationExceptionExample.yaml"
+        $ref: "examples/AuthenticationException_Example.yaml"

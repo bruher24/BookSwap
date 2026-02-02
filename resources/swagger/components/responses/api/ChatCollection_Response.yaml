@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/ChatCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/ChatResourceCollectionExample.yaml"
+        $ref: "examples/ChatResourceCollection_Example.yaml"

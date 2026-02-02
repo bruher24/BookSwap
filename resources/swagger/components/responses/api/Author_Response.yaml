@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/Author_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/AuthorResourceExample.yaml"
+        $ref: "examples/AuthorResource_Example.yaml"

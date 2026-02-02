@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/BookTypeCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/BookTypeResourceCollectionExample.yaml"
+        $ref: "examples/BookTypeResourceCollection_Example.yaml"

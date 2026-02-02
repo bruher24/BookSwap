@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/Setting_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/SettingResourceExample.yaml"
+        $ref: "examples/SettingResource_Example.yaml"

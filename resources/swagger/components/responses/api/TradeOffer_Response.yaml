@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/TradeOffer_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/TradeOfferResourceExample.yaml"
+        $ref: "examples/TradeOfferResource_Example.yaml"

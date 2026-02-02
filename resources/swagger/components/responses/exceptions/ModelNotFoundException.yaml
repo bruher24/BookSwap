@@ -11,4 +11,4 @@ content:
         - message
     examples:
       default:
-        $ref: "examples/ModelNotFoundExceptionExample.yaml"
+        $ref: "examples/ModelNotFoundException_Example.yaml"
