@@ -4,4 +4,4 @@ allOf:
   - type: object
     properties:
       data:
-        $ref: "../resources/RefreshResource.yaml"
+        $ref: "../resources/LoginResource.yaml"

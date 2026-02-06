@@ -1,0 +1,4 @@
+summary: SendMessageRequest_Example
+value: {
+  body: "Example message body."
+}
