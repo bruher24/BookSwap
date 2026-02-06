@@ -1,4 +1,4 @@
-description: Send message request payload
+description: "Send message request payload"
 required: true
 content:
   application/json:

@@ -1,4 +1,4 @@
-description: TradeOffer update payload
+description: "TradeOffer update payload"
 required: true
 content:
   application/json:

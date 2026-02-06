@@ -1,4 +1,4 @@
-description: Refresh request payload
+description: "Refresh request payload"
 required: true
 content:
   application/json:

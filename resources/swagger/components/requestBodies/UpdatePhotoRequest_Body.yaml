@@ -1,4 +1,4 @@
-description: Photo update payload
+description: "Photo update payload"
 required: true
 content:
   application/json:

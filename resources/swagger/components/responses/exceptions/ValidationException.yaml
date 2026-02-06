@@ -1,4 +1,4 @@
-description: Validation error
+description: "Validation error"
 content:
   application/json:
     schema:
@@ -6,10 +6,10 @@ content:
       properties:
         message:
           type: string
-          description: Errors overview.
+          description: "Errors overview"
         errors:
           type: object
-          description: A detailed description of each field that failed validation.
+          description: "A detailed description of each field that failed validation"
           additionalProperties:
             type: array
             items:

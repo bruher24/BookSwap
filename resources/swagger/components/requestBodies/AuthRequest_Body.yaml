@@ -1,4 +1,4 @@
-description: Auth request payload
+description: "Auth request payload"
 required: true
 content:
   application/json:

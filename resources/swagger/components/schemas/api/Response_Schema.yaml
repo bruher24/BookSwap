@@ -9,4 +9,4 @@ ApiResponse_Schema:
       example: 200
     data:
       nullable: true
-      description: Generic payload container
+      description: "Generic payload container"

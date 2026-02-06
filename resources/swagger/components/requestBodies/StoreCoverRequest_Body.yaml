@@ -1,4 +1,4 @@
-description: Cover creation payload
+description: "Cover creation payload"
 required: true
 content:
   application/json:

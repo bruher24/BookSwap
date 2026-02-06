@@ -34,8 +34,6 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        422:
-          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /auth/refresh:
     post:
@@ -51,6 +49,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /auth/logout:
     post:
@@ -66,6 +66,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /authors:
     get:
@@ -88,6 +90,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -118,6 +122,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -133,6 +139,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /books:
     get:
@@ -155,6 +163,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -185,6 +195,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -200,6 +212,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /booktypes:
     get:
@@ -222,6 +236,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -252,6 +268,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -267,6 +285,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /chats:
     get:
@@ -278,6 +298,8 @@ paths:
           $ref: "components/responses/api/ChatCollection_Response.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
     post:
       operationId: chats.store
       tags:
@@ -291,6 +313,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -308,6 +332,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
@@ -325,6 +351,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
@@ -340,6 +368,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -355,6 +385,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /chats/{chat}/messages:
     parameters:
@@ -370,6 +402,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     post:
@@ -385,6 +419,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
@@ -409,6 +445,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -439,6 +477,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -454,6 +494,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /trade_offers:
     get:
@@ -465,6 +507,8 @@ paths:
           $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
     post:
       operationId: trade_offers.store
       tags:
@@ -478,6 +522,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -495,6 +541,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
@@ -510,6 +558,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -525,6 +575,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /filters:
     get:
@@ -547,6 +599,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -577,6 +631,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -592,6 +648,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /genres:
     get:
@@ -614,6 +672,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -644,6 +704,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -659,6 +721,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /photos:
     get:
@@ -681,6 +745,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -711,6 +777,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -726,6 +794,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /search:
     parameters:
@@ -763,6 +833,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -793,6 +865,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -808,6 +882,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /users:
     get:
@@ -819,6 +895,8 @@ paths:
           $ref: "components/responses/api/UserCollection_Response.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
     post:
       operationId: users.store
       tags:
@@ -832,6 +910,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -862,6 +942,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         422:
@@ -877,6 +959,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /users/{user}/favorites:
     parameters:
@@ -892,6 +976,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
@@ -910,6 +996,10 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        404:
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     delete:
       operationId: users.favorites.dislike
       tags:
@@ -921,6 +1011,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /users/{user}/notifications:
     parameters:
@@ -936,6 +1028,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
@@ -953,6 +1047,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
@@ -973,6 +1069,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 components:

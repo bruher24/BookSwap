@@ -1,4 +1,4 @@
-description: BookType creation payload
+description: "BookType creation payload"
 required: true
 content:
   application/json:

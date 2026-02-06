@@ -1,0 +1,4 @@
+summary: ForbiddenExample
+value: {
+  message: "Forbidden"
+}

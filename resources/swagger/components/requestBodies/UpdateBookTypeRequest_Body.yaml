@@ -1,4 +1,4 @@
-description: BookType update payload
+description: "BookType update payload"
 required: true
 content:
   application/json:

@@ -1,4 +1,4 @@
-description: Chat update payload
+description: "Chat update payload"
 required: true
 content:
   application/json:

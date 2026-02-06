@@ -1,4 +1,4 @@
-description: Cover update payload
+description: "Cover update payload"
 required: true
 content:
   application/json:

@@ -34,3 +34,4 @@ Thumbs.db
 /redisinsight
 composer.lock
 /coverage
+/swagger

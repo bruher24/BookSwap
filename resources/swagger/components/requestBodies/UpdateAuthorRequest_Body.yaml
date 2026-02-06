@@ -1,4 +1,4 @@
-description: Author update payload
+description: "Author update payload"
 required: true
 content:
   application/json:

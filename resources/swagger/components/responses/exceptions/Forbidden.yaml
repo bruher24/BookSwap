@@ -1,4 +1,4 @@
-description: "Bad request"
+description: "Forbidden"
 content:
   application/json:
     schema:
@@ -11,4 +11,4 @@ content:
         - message
     examples:
       default:
-        $ref: "examples/BadRequest_Example.yaml"
+        $ref: "examples/Forbidden_Example.yaml"

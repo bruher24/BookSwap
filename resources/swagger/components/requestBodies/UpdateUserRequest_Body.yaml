@@ -1,4 +1,4 @@
-description: User update payload
+description: "User update payload"
 required: true
 content:
   application/json:
