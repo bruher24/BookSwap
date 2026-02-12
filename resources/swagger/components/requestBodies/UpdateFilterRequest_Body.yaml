@@ -4,3 +4,7 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/UpdateFilterRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateFilterRequest_Example.yaml"
+

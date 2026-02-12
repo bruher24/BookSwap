@@ -1,4 +1,5 @@
 summary: SendMessageRequest_Example
 value: {
-  body: "Example message body."
+  body: "Example message body.",
+  sender_id: 1
 }

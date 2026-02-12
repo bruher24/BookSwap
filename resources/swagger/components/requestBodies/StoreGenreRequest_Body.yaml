@@ -4,3 +4,6 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/StoreGenreRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/StoreGenreRequest_Example.yaml"

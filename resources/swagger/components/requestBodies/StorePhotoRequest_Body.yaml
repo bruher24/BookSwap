@@ -4,3 +4,6 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/StorePhotoRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/StorePhotoRequest_Example.yaml"

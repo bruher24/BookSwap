@@ -4,3 +4,7 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/UpdatePhotoRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdatePhotoRequest_Example.yaml"
+

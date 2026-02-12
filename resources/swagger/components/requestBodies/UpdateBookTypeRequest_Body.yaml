@@ -4,3 +4,7 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/UpdateBookTypeRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateBookTypeRequest_Example.yaml"
+

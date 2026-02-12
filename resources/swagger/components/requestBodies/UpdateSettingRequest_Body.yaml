@@ -4,3 +4,7 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/UpdateSettingRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateSettingRequest_Example.yaml"
+

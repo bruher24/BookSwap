@@ -4,3 +4,7 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/UpdateCoverRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateCoverRequest_Example.yaml"
+

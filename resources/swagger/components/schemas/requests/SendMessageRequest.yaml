@@ -2,6 +2,9 @@ type: object
 properties:
   body:
     type: string
+  sender_id:
+    type: integer
 required:
   - body
+  - sender_id
 title: SendMessageRequest
