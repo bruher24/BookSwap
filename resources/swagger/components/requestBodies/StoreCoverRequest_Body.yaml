@@ -4,3 +4,6 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/StoreCoverRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/StoreCoverRequest_Example.yaml"

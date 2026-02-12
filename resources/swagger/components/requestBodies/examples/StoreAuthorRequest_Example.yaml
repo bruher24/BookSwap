@@ -1,0 +1,7 @@
+summary: StoreAuthorRequest_Example
+value: {
+  lastname: "Ivanov",
+  firstname: "Ivan",
+  patronymic: "Ivanovich",
+  birthdate: "1991-01-01"
+}

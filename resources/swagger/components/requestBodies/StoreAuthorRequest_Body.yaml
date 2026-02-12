@@ -4,3 +4,6 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/StoreAuthorRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/StoreAuthorRequest_Example.yaml"

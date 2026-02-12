@@ -4,3 +4,7 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/UpdateTradeOfferRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateTradeOfferRequest_Example.yaml"
+

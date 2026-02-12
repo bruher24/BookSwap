@@ -4,3 +4,6 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/StoreTradeOfferRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/StoreTradeOffetRequest_Example.yaml"

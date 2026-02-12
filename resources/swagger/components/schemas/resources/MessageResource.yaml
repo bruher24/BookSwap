@@ -1,13 +1,17 @@
 type: object
 properties:
   id:
-    type: string
+    type: integer
   body:
     type: string
-  date_created:
+  sender_id:
+    type: integer
+  created_at:
     type: string
+    format: date-time
 required:
   - id
   - body
-  - date_created
+  - sender_id
+  - created_at
 title: MessageResource

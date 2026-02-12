@@ -4,3 +4,7 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/UpdateGenreRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateGenreRequest_Example.yaml"
+

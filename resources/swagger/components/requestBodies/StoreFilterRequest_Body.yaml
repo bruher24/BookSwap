@@ -4,3 +4,6 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/StoreFilterRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/StoreFilterRequest_Example.yaml"

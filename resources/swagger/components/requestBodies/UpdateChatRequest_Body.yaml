@@ -4,3 +4,7 @@ content:
   application/json:
     schema:
       $ref: "../schemas/requests/UpdateChatRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateChatRequest_Example.yaml"
+
