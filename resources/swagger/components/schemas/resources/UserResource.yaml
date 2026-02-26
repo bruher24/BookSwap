@@ -31,13 +31,13 @@ properties:
         format: date-time
       - type: 'null'
   roles:
-    $ref: "../Models/Role.yaml"
+    $ref: "../models/Role.yaml"
   books:
-    $ref: "../Models/Book.yaml"
+    $ref: "../models/Book.yaml"
   phone:
-    $ref: "../Models/Phone.yaml"
+    $ref: "../models/Phone.yaml"
   photo:
-    $ref: "../Models/Photo.yaml"
+    $ref: "../models/Photo.yaml"
 required:
   - id
   - name
