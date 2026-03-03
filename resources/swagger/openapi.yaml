@@ -4,13 +4,11 @@ info:
   version: 0.0.1
 servers:
   - url: http://localhost/api/v1
-# BACKEND GAP:
-# Во многих контроллерах backend сейчас возвращает HTTP 200 с FailureResource/SuccessResource,
+# TODO: Во многих контроллерах backend сейчас возвращает HTTP 200 с FailureResource/SuccessResource,
 # где в payload есть поле `statusCode`, вместо реальных HTTP-кодов контракта (401/404/202 и др.).
 # Предлагаемое исправление backend: возвращать фактические HTTP-коды по контракту OpenAPI
 # и сохранить `statusCode` в теле только как дублирующее поле (или убрать его в v2).
-# BACKEND GAP:
-# Для части PUT endpoints backend пока возвращает пустой SuccessResource, тогда как контракт
+# TODO: Для части PUT endpoints backend пока возвращает пустой SuccessResource, тогда как контракт
 # требует вернуть обновлённый ресурс в `data`.
 # Предлагаемое исправление backend: после update возвращать актуальный ресурс по контракту.
 paths:
@@ -43,8 +41,7 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
-      # BACKEND GAP:
-      # AuthController::login() при неверных учетных данных сейчас возвращает FailureResource (HTTP 200, statusCode 400),
+      # TODO: AuthController::login() при неверных учетных данных сейчас возвращает FailureResource (HTTP 200, statusCode 400),
       # а не контрактный 401.
       # Предлагаемое исправление backend: отдавать HTTP 401 для auth-failure.
 
@@ -228,8 +225,7 @@ paths:
         403:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  # BACKEND GAP:
-  # В routes/api.php используется /book_types.
+  # TODO: В routes/api.php используется /book_types.
   # Предлагаемое исправление: добавить совместимый алиас /booktypes
   # или переименовать backend-роуты в формат спецификации.
   /booktypes:
@@ -258,8 +254,7 @@ paths:
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
-  # BACKEND GAP:
-  # В backend path-параметр называется {book_type}.
+  # TODO: В backend path-параметр называется {book_type}.
   # Предлагаемое исправление: поддержать {booktype} по контракту спецификации.
   /booktypes/{booktype}:
     parameters:
@@ -338,8 +333,7 @@ paths:
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
-  # BACKEND GAP:
-  # Этот endpoint отсутствует в routes/api.php.
+  # TODO: Этот endpoint отсутствует в routes/api.php.
   # Предлагаемое исправление: добавить GET /chats/by_user/{user}
   # или реализовать прокси к текущей логике /users/{user}/chats.
   /chats/by_user/{user}:
@@ -412,8 +406,7 @@ paths:
         403:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  # BACKEND GAP:
-  # По спецификации сообщения чата доступны через /chats/{chat}/messages,
+  # TODO: По спецификации сообщения чата доступны через /chats/{chat}/messages,
   # в backend сейчас реализованы только nested-маршруты /users/{user}/chats/{chat}/messages.
   # Предлагаемое исправление: добавить маршруты по контракту спецификации.
   /chats/{chat}/messages:
@@ -453,8 +446,7 @@ paths:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /covers:
-    # BACKEND GAP:
-    # По контракту endpoint публичный, но в backend Route::get('/covers') защищен auth + IsAdmin.
+    # TODO: По контракту endpoint публичный, но в backend Route::get('/covers') защищен auth + IsAdmin.
     # Предлагаемое исправление backend: сделать endpoint публичным по контракту
     # или вынести админскую версию в отдельный route/version.
     get:
@@ -761,8 +753,7 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /photos:
-    # BACKEND GAP:
-    # По контракту endpoint публичный, но в backend Route::get('/photos') защищен auth + IsAdmin.
+    # TODO: По контракту endpoint публичный, но в backend Route::get('/photos') защищен auth + IsAdmin.
     # Предлагаемое исправление backend: сделать endpoint публичным по контракту
     # или вынести админскую версию в отдельный route/version.
     get:
@@ -838,8 +829,7 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /search:
-    # BACKEND GAP:
-    # По контракту endpoint доступен без auth-ошибок, но backend требует auth:sanctum (глобальный middleware группы).
+    # TODO: По контракту endpoint доступен без auth-ошибок, но backend требует auth:sanctum (глобальный middleware группы).
     # Предлагаемое исправление backend: снять auth middleware для /search,
     # либо выделить приватный поиск в отдельный versioned endpoint.
     parameters:
@@ -857,8 +847,7 @@ paths:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /settings:
-    # BACKEND GAP:
-    # По контракту GET /settings публичный, но backend требует auth:sanctum.
+    # TODO: По контракту GET /settings публичный, но backend требует auth:sanctum.
     # Предлагаемое исправление backend: сделать endpoint публичным по контракту.
     get:
       operationId: settings.index
@@ -886,8 +875,7 @@ paths:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /settings/{setting}:
-    # BACKEND GAP:
-    # По контракту GET /settings/{setting} публичный, но backend требует auth:sanctum.
+    # TODO: По контракту GET /settings/{setting} публичный, но backend требует auth:sanctum.
     # Предлагаемое исправление backend: сделать endpoint публичным по контракту.
     parameters:
       - $ref: "components/parameters/setting.yaml"
@@ -1064,8 +1052,7 @@ paths:
         403:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  # BACKEND GAP:
-  # В backend есть дополнительный POST /users/{user}/notifications (readAll),
+  # TODO: В backend есть дополнительный POST /users/{user}/notifications (readAll),
   # который пока не описан в спецификации.
   # Предлагаемое исправление: добавить endpoint в следующей версии спецификации
   # либо убрать/закрыть его в backend.
@@ -1107,8 +1094,7 @@ paths:
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
-  # BACKEND GAP:
-  # В routes/api.php update реализован как PUT /users/{user}/settings (без {setting}).
+  # TODO: В routes/api.php update реализован как PUT /users/{user}/settings (без {setting}).
   # Предлагаемое исправление: привести backend к PUT /users/{user}/settings/{setting}
   # или версионировать изменение контракта.
   /users/{user}/settings/{setting}:
