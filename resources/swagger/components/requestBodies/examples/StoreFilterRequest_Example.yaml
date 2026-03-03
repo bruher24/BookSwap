@@ -1,0 +1,6 @@
+summary: StoreFilterRequest_Example
+value: {
+  name: "By genre",
+  by_fields: "genre",
+  is_active: true
+}

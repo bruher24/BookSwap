@@ -1,0 +1,7 @@
+summary: StoreTradeOfferRequest_Example
+value: {
+  sender_id: 1,
+  receiver_id: 2,
+  trade_offer_items: [1, 2],
+  date: "2026-03-03"
+}

@@ -1,0 +1,11 @@
+summary: StoreBookRequest_Example
+value: {
+  user_id: 1,
+  name: "New Book",
+  author_id: 1,
+  page_count: 280,
+  publishing_house: "Book House",
+  publication_year: "2023-01-01",
+  book_type: 2,
+  isbn: "1234567890123"
+}

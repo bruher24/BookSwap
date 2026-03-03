@@ -1,0 +1,5 @@
+summary: UpdateCoverRequest_Example
+value: {
+  cover_id: 1,
+  src: "binary-data"
+}

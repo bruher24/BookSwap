@@ -1,0 +1,5 @@
+summary: UpdatePhotoRequest_Example
+value: {
+  photo_id: 1,
+  src: "binary-data"
+}

@@ -6,4 +6,4 @@ content:
       $ref: "../schemas/requests/StoreTradeOfferRequest.yaml"
     examples:
       default:
-        $ref: "examples/StoreTradeOffetRequest_Example.yaml"
+        $ref: "examples/StoreTradeOfferRequest_Example.yaml"

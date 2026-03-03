@@ -1,0 +1,6 @@
+summary: StoreSettingRequest_Example
+value: {
+  name: "language",
+  label: "Language",
+  description: "Preferred locale"
+}

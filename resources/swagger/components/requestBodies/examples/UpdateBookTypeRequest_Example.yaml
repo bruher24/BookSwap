@@ -1,0 +1,5 @@
+summary: UpdateBookTypeRequest_Example
+value: {
+  book_type_id: 1,
+  name: "Hardcover"
+}

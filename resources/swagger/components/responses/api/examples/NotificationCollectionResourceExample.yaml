@@ -1,0 +1,12 @@
+summary: NotificationCollectionResourceExample
+value:
+  - {
+    id: "1",
+    message: "You have a new trade offer",
+    date_created: "2026-03-03 09:00:00"
+  }
+  - {
+    id: "2",
+    message: "Your message was read",
+    date_created: "2026-03-03 09:30:00"
+  }
