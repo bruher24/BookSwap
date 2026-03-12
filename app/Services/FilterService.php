@@ -27,4 +27,10 @@ final class FilterService extends Service implements FilterServiceInterface
     {
         return parent::get($id);
     }
+
+    #[Override]
+    public function update(string $id, array $data): Filter|false
+    {
+        return parent::update($id, $data);
+    }
 }

@@ -9,8 +9,9 @@ use App\Http\Resources\MessageResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\ChatServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Symfony\Component\HttpFoundation\Response;
 
 final class UserChatController extends Controller
 {
@@ -19,14 +20,14 @@ final class UserChatController extends Controller
         UserServiceInterface $userService,
         Request $request,
         string $user_id
-    ): JsonResource {
+    ): JsonResponse {
         // TODO: вынести логику в сервис
         $recipient_id = $request->input('recipient');
         $user = $userService->get($user_id);
 
         if (!$user) {
             $errors = ['Ошибка при получении пользователя'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
         }
 
         $chats = $userService->chats($user->id);
@@ -42,7 +43,7 @@ final class UserChatController extends Controller
                 'second_user_id' => $arr[1],
             ])) {
                 $errors = ['Ошибка при создании чата'];
-                return new FailureResource($errors);
+                return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
             }
 
             $user->refresh();
@@ -52,10 +53,10 @@ final class UserChatController extends Controller
         $chatResourceCollection = ChatResource::collection($chats);
         $data = ['chats' => $chatResourceCollection];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function messages(ChatServiceInterface $chatService, string $user_id, string $recipient_id): JsonResource
+    public function messages(ChatServiceInterface $chatService, string $user_id, string $recipient_id): JsonResponse
     {
         $chat = $chatService->byUsers($user_id, $recipient_id);
 
@@ -68,7 +69,7 @@ final class UserChatController extends Controller
 
         if (!$chat) {
             $errors = ['Ошибка при создании чата'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         $messages = $chatService->messages($chat->id);
@@ -78,22 +79,22 @@ final class UserChatController extends Controller
             'blocked_by' => $chat->blocked_by,
         ];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function unreadMessages(UserServiceInterface $userService, string $user_id): JsonResource
+    public function unreadMessages(UserServiceInterface $userService, string $user_id): JsonResponse
     {
         $messages = $userService->getUnreadMessages($user_id);
 
         if (!$messages) {
             $errors = ['Ошибка при получении сообщений'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         $messageResourceCollection = MessageResource::collection($messages);
         $data = ['messages' => $messageResourceCollection];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function send(
@@ -101,22 +102,22 @@ final class UserChatController extends Controller
         ChatServiceInterface $chatService,
         string $user_id,
         string $recipient_id
-    ): JsonResource {
+    ): JsonResponse {
         $body = $request->input('body');
         $message = $chatService->sendMessage($user_id, $recipient_id, $body);
         $messageResource = new MessageResource($message);
 
         if (!$message) {
             $errors = ['Ошибка при отправке сообщения'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         $data = ['message' => $messageResource];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function read(UserServiceInterface $userService, Request $request, string $userId): JsonResource
+    public function read(UserServiceInterface $userService, Request $request, string $userId): JsonResponse
     {
         // TODO: сделать нормально
         $messagesToRead = (array)$request->input('messages');
@@ -124,16 +125,16 @@ final class UserChatController extends Controller
 
         if (!$user) {
             $errors = ['Ошибка при получении пользователя'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
         }
 
         $checked = $userService->readMessages($user->id, $messagesToRead);
 
         if (!$checked) {
             $errors = ['Ошибка при прочтении сообщений'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        return new SuccessResource();
+        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
     }
 }

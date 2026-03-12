@@ -21,11 +21,9 @@ final class FailureResource extends JsonResource
     #[Override]
     public function toArray(Request $request): array
     {
-        $statusCode = (int)($this['statusCode'] ?? 400);
         $errors = parent::toArray($request);
 
         return [
-            'statusCode' => $statusCode,
             'errors' => $errors,
         ];
     }

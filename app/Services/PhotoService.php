@@ -53,14 +53,14 @@ final class PhotoService extends Service implements PhotoServiceInterface
     }
 
     #[Override]
-    public function update(string $id, array $data): bool
+    public function update(string $id, array $data): Photo|false
     {
         try {
-            $old_file = $this->get($id);
+            $oldFile = $this->get($id);
 
             // TODO: кидать ивент, чтобы удаление падало в очередь
-            if ($id !== Photo::BASE_PHOTO_ID && $old_file instanceof Photo) {
-                Storage::disk('public')->delete($old_file->src);
+            if ($id !== Photo::BASE_PHOTO_ID && $oldFile instanceof Photo) {
+                Storage::disk('public')->delete($oldFile->src);
             }
 
             // TODO: кидать ивент, чтобы создание падало в очередь
@@ -70,13 +70,13 @@ final class PhotoService extends Service implements PhotoServiceInterface
                 throw new Exception('Ошибка при сохранении файла');
             }
 
-            $cover = parent::update($id, ['src' => $path]);
+            $photo = parent::update($id, ['src' => $path]);
 
-            if (!$cover) {
+            if (!$photo) {
                 throw new Exception('Ошибка при создании фото');
             }
 
-            return true;
+            return $photo;
         } catch (Throwable $e) {
             Log::error($e);
             return false;

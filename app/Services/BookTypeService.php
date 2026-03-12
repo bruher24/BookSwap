@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\BookTypeServiceInterface;
 use App\Models\BookType;
+use Illuminate\Support\Facades\Log;
 use Override;
 
 final class BookTypeService extends Service implements BookTypeServiceInterface
@@ -26,5 +27,10 @@ final class BookTypeService extends Service implements BookTypeServiceInterface
     public function get(string $id): BookType|false
     {
         return parent::get($id);
+    }
+
+    public function update(string $id, array $data): BookType|false
+    {
+        return parent::update($id, $data);
     }
 }

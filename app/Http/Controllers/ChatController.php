@@ -8,69 +8,74 @@ use App\Http\Resources\ChatResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\ChatServiceInterface;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 final class ChatController extends Controller
 {
-    public function index(ChatServiceInterface $chatService): JsonResource
+    public function index(ChatServiceInterface $chatService): JsonResponse
     {
         $chats = $chatService->getAll();
         $chatResourceCollection = ChatResource::collection($chats);
         $data = ['chats' => $chatResourceCollection];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function store(ChatServiceInterface $chatService, StoreChatRequest $request): JsonResource
+    public function store(ChatServiceInterface $chatService, StoreChatRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $chat = $chatService->create($validated);
 
         if (!$chat) {
             $errors = ['Ошибка при создании чата'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         $chatResource = new ChatResource($chat);
         $data = ['chat' => $chatResource];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(ChatServiceInterface $chatService, string $id): JsonResource
+    public function show(ChatServiceInterface $chatService, string $id): JsonResponse
     {
         $chat = $chatService->get($id);
 
         if (!$chat) {
             $errors = ['Ошибка при получении чата'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
         }
 
         $chatResource = new ChatResource($chat);
         $data = ['chat' => $chatResource];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(ChatServiceInterface $chatService, UpdateChatRequest $request, string $id): JsonResource
+    public function update(ChatServiceInterface $chatService, UpdateChatRequest $request, string $id): JsonResponse
     {
         $validated = $request->validated();
 
-        if (!$chatService->update($id, $validated)) {
+        $chat = $chatService->update($id, $validated);
+        if (!$chat) {
             $errors = ['Ошибка при обновлении чата'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        return new SuccessResource();
+        $chatResource = new ChatResource($chat);
+        $data = ['chat' => $chatResource];
+
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(ChatServiceInterface $chatService, string $id): JsonResource
+    public function destroy(ChatServiceInterface $chatService, string $id): JsonResponse
     {
         if (!$chatService->delete($id)) {
             $errors = ['Ошибка при удалении чата'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        return new SuccessResource();
+        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 }

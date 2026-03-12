@@ -14,6 +14,9 @@ interface UserServiceInterface extends ServiceInterface
     #[Override]
     public function get(string $id): User|false;
 
+    #[Override]
+    public function update(string $id, array $data): User|false;
+
     public function chats(string $user_id): Collection;
 
     public function getUnreadMessages(string $user_id): Collection|false;

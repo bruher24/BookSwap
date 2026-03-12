@@ -7,11 +7,12 @@ use App\Http\Resources\SearchResultsResource;
 use App\Http\Resources\SuccessResource;
 use App\Models\Author;
 use App\Models\Book;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 final class SearchController extends Controller
 {
-    public function __invoke(SearchRequest $request): JsonResource
+    public function __invoke(SearchRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $query = (string)$validated['query'];
@@ -27,6 +28,6 @@ final class SearchController extends Controller
         ]);
         $data = ['search_results' => $searchResults];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

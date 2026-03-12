@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-final class TradeOfferCreated implements ShouldQueue
+final class TradeOfferDeleted implements ShouldQueue
 {
     use Dispatchable;
     use SerializesModels;

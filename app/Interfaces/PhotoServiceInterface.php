@@ -12,4 +12,7 @@ interface PhotoServiceInterface extends ServiceInterface
 
     #[Override]
     public function get(string $id): Photo|false;
+
+    #[Override]
+    public function update(string $id, array $data): Photo|false;
 }

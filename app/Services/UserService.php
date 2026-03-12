@@ -54,7 +54,7 @@ final class UserService extends Service implements UserServiceInterface
     }
 
     #[Override]
-    public function update(string $id, array $data): bool
+    public function update(string $id, array $data): User|false
     {
         DB::beginTransaction();
         try {
@@ -89,8 +89,9 @@ final class UserService extends Service implements UserServiceInterface
             }
 
             DB::commit();
-            UserUpdated::dispatch($user->refresh());
-            return true;
+            $user->refresh();
+            UserUpdated::dispatch($user);
+            return $user;
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());

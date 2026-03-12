@@ -27,4 +27,10 @@ final class MessageService extends Service implements MessageServiceInterface
     {
         return parent::get($id);
     }
+
+    #[Override]
+    public function update(string $id, array $data): Message|false
+    {
+        return parent::update($id, $data);
+    }
 }

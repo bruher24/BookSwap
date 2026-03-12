@@ -2,8 +2,7 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PrivateChannel;
+use App\Models\Author;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -15,18 +14,13 @@ final class AuthorCreated implements ShouldQueue
 
     public string $connection = 'redis';
 
-    public string $queue = 'events';
+    public string $queue = 'listeners';
 
     /**
      * Create a new event instance.
      */
     public function __construct(
-        public string $author
+        public Author $author
     ) {
-    }
-
-    public function broadcastOn(): Channel
-    {
-        return new PrivateChannel('test-channel');
     }
 }

@@ -85,4 +85,10 @@ final class TradeOfferService extends Service implements TradeOfferServiceInterf
             return false;
         }
     }
+
+    #[Override]
+    public function update(string $id, array $data): TradeOffer|false
+    {
+        return parent::update($id, $data);
+    }
 }

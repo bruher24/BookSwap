@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\SettingServiceInterface;
 use App\Models\Setting;
+use Illuminate\Database\Eloquent\Model;
 use Override;
 
 final class SettingService extends Service implements SettingServiceInterface
@@ -26,5 +27,11 @@ final class SettingService extends Service implements SettingServiceInterface
     public function get(string $id): Setting|false
     {
         return parent::get($id);
+    }
+
+    #[Override]
+    public function update(string $id, array $data): Setting|false
+    {
+        return parent::update($id, $data);
     }
 }

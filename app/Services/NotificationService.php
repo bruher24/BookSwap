@@ -40,4 +40,10 @@ final class NotificationService extends Service implements NotificationServiceIn
     {
         return !!Notification::where('user_id', $user_id)->update(['seen' => true]);
     }
+
+    #[Override]
+    public function update(string $id, array $data): Notification|false
+    {
+        return parent::update($id, $data);
+    }
 }

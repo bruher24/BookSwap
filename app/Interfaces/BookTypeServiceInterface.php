@@ -12,4 +12,7 @@ interface BookTypeServiceInterface extends ServiceInterface
 
     #[Override]
     public function get(string $id): BookType|false;
+
+    #[Override]
+    public function update(string $id, array $data): BookType|false;
 }

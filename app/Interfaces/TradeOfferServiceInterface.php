@@ -3,6 +3,7 @@
 namespace App\Interfaces;
 
 use App\Models\TradeOffer;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Override;
 
@@ -21,4 +22,7 @@ interface TradeOfferServiceInterface extends ServiceInterface
     public function accept(string $id): bool;
 
     public function reject(string $id): bool;
+
+    #[Override]
+    public function update(string $id, array $data): TradeOffer|false;
 }

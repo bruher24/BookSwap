@@ -53,13 +53,13 @@ final class CoverService extends Service implements CoverServiceInterface
     }
 
     #[Override]
-    public function update(string $id, array $data): bool
+    public function update(string $id, array $data): Cover|false
     {
         try {
             // TODO: кидать ивент, чтобы удаление падало в очередь
-            $old_file = $this->get($id);
-            if ($id !== Cover::BASE_COVER_ID && $old_file instanceof Cover) {
-                Storage::disk('public')->delete($old_file->src);
+            $oldFile = $this->get($id);
+            if ($id !== Cover::BASE_COVER_ID && $oldFile instanceof Cover) {
+                Storage::disk('public')->delete($oldFile->src);
             }
 
             // TODO: кидать ивент, чтобы создание падало в очередь
@@ -75,7 +75,7 @@ final class CoverService extends Service implements CoverServiceInterface
                 throw new Exception('Ошибка при создании обложки');
             }
 
-            return true;
+            return $cover;
         } catch (Throwable $e) {
             Log::error($e);
             return false;

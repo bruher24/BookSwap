@@ -5,6 +5,7 @@ namespace App\Interfaces;
 use App\Models\Chat;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Override;
 
 interface ChatServiceInterface extends ServiceInterface
@@ -20,4 +21,6 @@ interface ChatServiceInterface extends ServiceInterface
     public function messages(string $chat_id): Collection;
 
     public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false;
+
+    public function update(string $id, array $data): Chat|false;
 }

@@ -65,16 +65,9 @@ final class BookService extends Service implements BookServiceInterface
     }
 
     #[Override]
-    public function update(string $id, array $data): bool
+    public function update(string $id, array $data): Book|false
     {
-        $book = $this->get($id);
-        $updated = parent::update($id, $data);
-
-        if ($book instanceof Book && $updated) {
-            BookUpdated::dispatch($book);
-        }
-
-        return $updated;
+       return parent::update($id, $data);
     }
 
     #[Override]

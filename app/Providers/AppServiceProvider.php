@@ -17,7 +17,9 @@ use App\Interfaces\PhotoServiceInterface;
 use App\Interfaces\SettingServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Interfaces\UserSettingServiceInterface;
+use App\Models\Author;
 use App\Models\User;
+use App\Observers\AuthorObserver;
 use App\Services\AuthorService;
 use App\Services\AuthService;
 use App\Services\BookService;
@@ -79,6 +81,8 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         date_default_timezone_set('Europe/Samara');
+
+         Author::observe(AuthorObserver::class);
 
         RateLimiter::for('api', function (Request $request) {
             $user = $request->user();

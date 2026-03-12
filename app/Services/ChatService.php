@@ -118,4 +118,9 @@ final class ChatService extends Service implements ChatServiceInterface
             return false;
         }
     }
+
+    public function update(string $id, array $data): Chat|false
+    {
+        return parent::update($id, $data);
+    }
 }

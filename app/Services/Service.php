@@ -93,10 +93,10 @@ abstract class Service implements ServiceInterface
     }
 
     #[Override]
-    public function update(string $id, array $data): bool
+    public function update(string $id, array $data): Model|false
     {
-        DB::beginTransaction();
         try {
+            DB::beginTransaction();
             $object = $this->get($id);
 
             if (!$object instanceof Model) {
@@ -104,9 +104,9 @@ abstract class Service implements ServiceInterface
             }
 
             $object->updateOrFail($data);
-
             DB::commit();
-            return true;
+            $object->refresh();
+            return $object;
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());

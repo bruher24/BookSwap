@@ -25,11 +25,9 @@ final class SuccessResource extends JsonResource
     #[Override]
     public function toArray(Request $request): array
     {
-        $statusCode = (int)($this['statusCode'] ?? 200);
         $data = parent::toArray($request);
 
         return [
-            'statusCode' => $statusCode,
             'data' => $data,
         ];
     }

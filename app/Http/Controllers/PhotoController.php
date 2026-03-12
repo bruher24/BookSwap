@@ -8,69 +8,74 @@ use App\Http\Resources\PhotoResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\FailureResource;
 use App\Interfaces\PhotoServiceInterface;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 final class PhotoController extends Controller
 {
-    public function index(PhotoServiceInterface $photoService): JsonResource
+    public function index(PhotoServiceInterface $photoService): JsonResponse
     {
         $photos = $photoService->getAll();
         $photoResourceCollection = PhotoResource::collection($photos);
         $data = ['photos' => $photoResourceCollection];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function store(PhotoServiceInterface $photoService, StorePhotoRequest $request): JsonResource
+    public function store(PhotoServiceInterface $photoService, StorePhotoRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $photo = $photoService->create($validated);
 
         if (!$photo) {
             $errors = ['Ошибка при создании фото'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         $photoResource = new PhotoResource($photo);
         $data = ['photo' => $photoResource];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(PhotoServiceInterface $photoService, string $id): JsonResource
+    public function show(PhotoServiceInterface $photoService, string $id): JsonResponse
     {
         $photo = $photoService->get($id);
 
         if (!$photo) {
             $errors = ['Ошибка при получении фото'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
         }
 
         $photoResource = new PhotoResource($photo);
         $data = ['photo' => $photoResource];
 
-        return new SuccessResource($data);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(PhotoServiceInterface $photoService, UpdatePhotoRequest $request, string $id): JsonResource
+    public function update(PhotoServiceInterface $photoService, UpdatePhotoRequest $request, string $id): JsonResponse
     {
         $validated = $request->validated();
 
-        if (!$photoService->update($id, $validated)) {
+        $photo = $photoService->update($id, $validated);
+        if (!$photo) {
             $errors = ['Ошибка при обновлении фото'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        return new SuccessResource();
+        $photoResource = new PhotoResource($photo);
+        $data = ['photo' => $photoResource];
+
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(PhotoServiceInterface $photoService, string $id): JsonResource
+    public function destroy(PhotoServiceInterface $photoService, string $id): JsonResponse
     {
         if (!$photoService->delete($id)) {
             $errors = ['Ошибка при удалении фото'];
-            return new FailureResource($errors);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        return new SuccessResource();
+        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 }

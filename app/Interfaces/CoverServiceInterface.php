@@ -12,4 +12,7 @@ interface CoverServiceInterface extends ServiceInterface
 
     #[Override]
     public function get(string $id): Cover|false;
+
+    #[Override]
+    public function update(string $id, array $data): Cover|false;
 }

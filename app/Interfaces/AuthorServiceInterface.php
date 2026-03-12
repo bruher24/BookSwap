@@ -12,4 +12,7 @@ interface AuthorServiceInterface extends ServiceInterface
 
     #[Override]
     public function get(string $id): Author|false;
+
+    #[Override]
+    public function update(string $id, array $data): Author|false;
 }

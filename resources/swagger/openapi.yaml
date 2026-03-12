@@ -94,7 +94,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreAuthorRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/Author_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -167,7 +167,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreBookRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/Book_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -243,7 +243,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreBookTypeRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/BookType_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -322,7 +322,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreChatRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/Chat_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -463,7 +463,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreCoverRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/Cover_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -544,7 +544,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreTradeOfferRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/TradeOffer_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -621,7 +621,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreFilterRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/Filter_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -694,7 +694,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreGenreRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/Genre_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -770,7 +770,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StorePhotoRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/Photo_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -863,7 +863,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreSettingRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/Setting_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -942,7 +942,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/StoreUserRequest_Body.yaml"
       responses:
-        200:
+        201:
           $ref: "components/responses/api/User_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"

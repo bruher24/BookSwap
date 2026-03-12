@@ -30,4 +30,10 @@ final class GenreService extends Service implements GenreServiceInterface
     {
         return parent::get($id);
     }
+
+    #[Override]
+    public function update(string $id, array $data): Genre|false
+    {
+        return parent::update($id, $data);
+    }
 }
