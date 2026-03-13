@@ -1,4 +1,4 @@
-name: booktype
+name: book_type
 in: path
 required: true
 schema:

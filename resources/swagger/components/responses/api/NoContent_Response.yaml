@@ -1,0 +1,8 @@
+description: "No Content"
+content:
+  application/json:
+    schema:
+      type: 'null'
+    examples:
+      empty:
+        $ref: "examples/NoContent_Example.yaml"

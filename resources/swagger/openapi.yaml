@@ -134,7 +134,7 @@ paths:
         - Author
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -207,7 +207,7 @@ paths:
         - Book
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -281,7 +281,7 @@ paths:
         - BookType
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -381,7 +381,7 @@ paths:
         - Chat
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -497,7 +497,7 @@ paths:
         - Cover
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -546,7 +546,7 @@ paths:
         200:
           $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
         204:
-          description: "No Content"
+          $ref: "components/responses/api/NoContent_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -567,7 +567,7 @@ paths:
         200:
           $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
         204:
-          description: "No Content"
+          $ref: "components/responses/api/NoContent_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -620,7 +620,7 @@ paths:
         - TradeOffer
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -727,7 +727,7 @@ paths:
         - Filter
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -800,7 +800,7 @@ paths:
         - Genre
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -880,7 +880,7 @@ paths:
         - Photo
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -982,7 +982,7 @@ paths:
         - Setting
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -1059,7 +1059,7 @@ paths:
         - User
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -1111,7 +1111,7 @@ paths:
         - UserFavorites
       responses:
         202:
-          description: "Accepted"
+          $ref: "components/responses/api/Accepted_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
