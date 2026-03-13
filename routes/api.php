@@ -12,14 +12,12 @@ use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TradeOfferController;
-use App\Http\Controllers\UserChatController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFavoritesController;
 use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\UserSettingController;
 use App\Http\Middleware\BearerAuth;
 use App\Http\Middleware\IsAdmin;
-use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.')
@@ -86,12 +84,12 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
                 Route::post('/', 'store')->name('store')->middleware(BearerAuth::class);
                 Route::get('{trade_offer}', 'show')->name('show')->middleware(BearerAuth::class);
+                Route::put('{trade_offer}', 'update')->name('update')->middleware(BearerAuth::class);
+                Route::delete('{trade_offer}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
                 Route::get('by_sender/{sender}', 'bySender')->name('bySender')->middleware(BearerAuth::class);
                 Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver')->middleware(BearerAuth::class);
                 Route::patch('{trade_offer}/accept', 'accept')->name('accept')->middleware(BearerAuth::class);
                 Route::patch('{trade_offer}/reject', 'reject')->name('reject')->middleware(BearerAuth::class);
-                Route::put('{trade_offer}', 'update')->name('update')->middleware(BearerAuth::class);
-                Route::delete('{trade_offer}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
             });
 
         Route::prefix('filters')->name('filters.')->controller(FilterController::class)
@@ -121,6 +119,8 @@ Route::prefix('v1')->name('api.')
                 Route::delete('{photo}', 'destroy')->name('destroy');
             });
 
+        Route::get('search', SearchController::class)->name('search')->withoutMiddleware('auth:sanctum');
+
         Route::prefix('settings')->name('settings.')->controller(SettingController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -138,16 +138,6 @@ Route::prefix('v1')->name('api.')
                 Route::put('{user}', 'update')->name('update');
                 Route::delete('{user}', 'destroy')->name('destroy');
 
-                Route::prefix('{user}/chats')->name('chats.')
-                    ->controller(UserChatController::class)
-                    ->group(function () {
-                        Route::get('/', 'index')->name('index');
-                        Route::get('{chat}/messages', 'messages')->name('messages');
-                        Route::post('{chat}/messages', 'send')->name('send');
-                        Route::put('{chat}/messages/{message}', 'read')->name('read');
-                        Route::put('{chat}/messages', 'readMany')->name('readMany');
-                    });
-
                 Route::prefix('{user}/favorites')->name('favorites.')
                     ->controller(UserFavoritesController::class)
                     ->group(function () {
@@ -160,17 +150,15 @@ Route::prefix('v1')->name('api.')
                     ->controller(UserNotificationController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
-                        Route::post('/', 'readAll')->name('readAll');
                     });
 
                 Route::prefix('{user}/settings')->name('settings.')
                     ->controller(UserSettingController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
-                        Route::put('/', 'update')->name('update');
+                        Route::put('{setting}', 'update')->name('update');
                     });
             });
-        Route::get('search', SearchController::class)->name('search');
     });
 
 // dev only
@@ -181,6 +169,3 @@ Route::get('psalm', function () {
     }
     return response($html, 200)->header('Content-Type', 'text/html');
 });
-
-Scramble::registerUiRoute('docs');
-Scramble::registerJsonSpecificationRoute('docs.json');

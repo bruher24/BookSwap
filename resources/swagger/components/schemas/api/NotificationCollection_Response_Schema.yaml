@@ -4,6 +4,9 @@ allOf:
   - type: object
     properties:
       data:
-        type: array
-        items:
-          $ref: '../../schemas/resources/NotificationResource.yaml'
+        type: object
+        properties:
+          notifications:
+            type: array
+            items:
+              $ref: '../../schemas/resources/NotificationResource.yaml'

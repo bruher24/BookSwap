@@ -1,0 +1,5 @@
+name: sender
+in: path
+required: true
+schema:
+  type: string

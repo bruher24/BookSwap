@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferRequest;
-use App\Http\Resources\TradeOfferResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
+use App\Http\Resources\TradeOfferResource;
 use App\Interfaces\TradeOfferServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +16,11 @@ final class TradeOfferController extends Controller
     public function index(TradeOfferServiceInterface $tradeOfferService): JsonResponse
     {
         $tradeOffers = $tradeOfferService->getAll();
+        $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
         $data = ['tradeOffers' => $tradeOfferResourceCollection];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new SuccessResource($data))->response()->setStatusCode($statusCode);
     }
 
     public function store(TradeOfferServiceInterface $tradeOfferService, StoreTradeOfferRequest $request): JsonResponse
@@ -55,9 +56,10 @@ final class TradeOfferController extends Controller
 
     public function update(
         TradeOfferServiceInterface $tradeOfferService,
-        UpdateTradeOfferRequest $request,
-        string $id
-    ): JsonResponse {
+        UpdateTradeOfferRequest    $request,
+        string                     $id
+    ): JsonResponse
+    {
         $validated = $request->validated();
 
         $tradeOffer = $tradeOfferService->update($id, $validated);
@@ -87,7 +89,7 @@ final class TradeOfferController extends Controller
         $tradeOffers = $tradeOfferService->bySender($senderId);
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
-        $data = ['tradeOffers' => $tradeOfferResourceCollection, 'statusCode' => $statusCode];
+        $data = ['tradeOffers' => $tradeOfferResourceCollection];
 
         return (new SuccessResource($data))->response()->setStatusCode($statusCode);
     }
@@ -97,7 +99,7 @@ final class TradeOfferController extends Controller
         $tradeOffers = $tradeOfferService->byReceiver($receiverId);
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
-        $data = ['tradeOffers' => $tradeOfferResourceCollection, 'statusCode' => $statusCode];
+        $data = ['tradeOffers' => $tradeOfferResourceCollection];
 
         return (new SuccessResource($data))->response()->setStatusCode($statusCode);
     }
@@ -105,9 +107,8 @@ final class TradeOfferController extends Controller
     public function accept(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResponse
     {
         if (!$tradeOfferService->accept($id)) {
-            return (new FailureResource(['errors' => ['Ошибка при принятии предложения обмена']]))
-                ->response()
-                ->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $errors = ['Ошибка при принятии предложения обмена'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
@@ -116,9 +117,8 @@ final class TradeOfferController extends Controller
     public function reject(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResponse
     {
         if (!$tradeOfferService->reject($id)) {
-            return (new FailureResource(['errors' => ['Ошибка при отклонении предложения обмена']]))
-                ->response()
-                ->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $errors = ['Ошибка при отклонении предложения обмена'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);

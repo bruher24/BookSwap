@@ -4,6 +4,9 @@ allOf:
   - type: object
     properties:
       data:
-        type: array
-        items:
-          $ref: '../../schemas/resources/ChatResource.yaml'
+        type: object
+        properties:
+          chats:
+            type: array
+            items:
+              $ref: '../../schemas/resources/ChatResource.yaml'

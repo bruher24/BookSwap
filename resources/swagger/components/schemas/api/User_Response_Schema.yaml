@@ -4,4 +4,7 @@ allOf:
   - type: object
     properties:
       data:
-        $ref: '../../schemas/resources/UserResource.yaml'
+        type: object
+        properties:
+          user:
+            $ref: '../../schemas/resources/UserResource.yaml'

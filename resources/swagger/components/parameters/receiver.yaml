@@ -1,0 +1,5 @@
+name: receiver
+in: path
+required: true
+schema:
+  type: string

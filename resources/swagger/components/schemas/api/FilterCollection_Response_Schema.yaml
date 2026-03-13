@@ -4,6 +4,9 @@ allOf:
   - type: object
     properties:
       data:
-        type: array
-        items:
-          $ref: '../../schemas/resources/FilterResource.yaml'
+        type: object
+        properties:
+          filters:
+            type: array
+            items:
+              $ref: '../../schemas/resources/FilterResource.yaml'
