@@ -11,6 +11,7 @@ use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 final class AuthController extends Controller
@@ -29,7 +30,7 @@ final class AuthController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $token = $authService->refreshToken($user->id);
+        $token = $authService->refreshToken($user->email);
         $userResource = new UserResource($user);
         $data = [
             'user' => $userResource,

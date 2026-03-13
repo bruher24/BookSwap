@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Events\UserCreated;
-use App\Events\UserDeleted;
 use App\Events\UserUpdated;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Message;
@@ -30,21 +28,7 @@ final class UserService extends Service implements UserServiceInterface
     #[Override]
     public function create(array $data): User|false
     {
-        DB::beginTransaction();
-        try {
-            $user = parent::create($data);
-
-            if (!$user instanceof User) {
-                throw new Exception('Ошибка при создании пользователя');
-            }
-            DB::commit();
-            UserCreated::dispatch($user);
-            return $user->refresh();
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            return false;
-        }
+        return parent::create($data);
     }
 
     #[Override]
@@ -56,7 +40,6 @@ final class UserService extends Service implements UserServiceInterface
     #[Override]
     public function update(string $id, array $data): User|false
     {
-        DB::beginTransaction();
         try {
             $user = $this->get($id);
             if (!$user instanceof User) {
@@ -84,16 +67,8 @@ final class UserService extends Service implements UserServiceInterface
                 }
             }
 
-            if (!parent::update($id, $data)) {
-                throw new Exception('Ошибка при обновлении пользователя');
-            }
-
-            DB::commit();
-            $user->refresh();
-            UserUpdated::dispatch($user);
-            return $user;
+            return parent::update($id, $data);
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage());
             return false;
         }
@@ -104,8 +79,9 @@ final class UserService extends Service implements UserServiceInterface
     {
         try {
             $user = $this->get($user_id);
+
             if (!$user) {
-                throw new Exception();
+                throw new Exception('Пользователь не найден');
             }
 
             Log::debug('Cache check');
@@ -125,8 +101,9 @@ final class UserService extends Service implements UserServiceInterface
     {
         try {
             $user = $this->get($user_id);
+
             if (!$user) {
-                throw new Exception();
+                throw new Exception('Пользователь не найден');
             }
 
             $messages = $user->unreadMessages()->distinct()->get(['id', 'from_id']);
@@ -143,6 +120,7 @@ final class UserService extends Service implements UserServiceInterface
         DB::beginTransaction();
         try {
             $user = $this->get($user_id);
+
             if (!$user) {
                 throw new Exception('Пользователь не найден');
             }
