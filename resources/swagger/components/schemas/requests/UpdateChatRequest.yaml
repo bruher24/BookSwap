@@ -14,7 +14,6 @@ properties:
             const: 2
       - type: 'null'
 required:
-  - chat_id
   - first_user_id
   - second_user_id
 title: UpdateChatRequest

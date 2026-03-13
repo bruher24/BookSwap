@@ -1,6 +1,5 @@
 summary: UpdateSettingRequest_Example
 value: {
-  setting_id: 1,
   name: "theme",
   label: "UI Theme",
   description: "Application color theme"

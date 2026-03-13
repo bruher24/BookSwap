@@ -1,5 +1,4 @@
 summary: UpdateGenreRequest_Example
 value: {
-  genre_id: 1,
   name: "Science Fiction"
 }

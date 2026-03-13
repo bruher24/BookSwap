@@ -1,6 +1,5 @@
 summary: UpdateChatRequest_Example
 value: {
-  chat_id: 1,
   first_user_id: 1,
   second_user_id: 2,
   blocked_by: null

@@ -4,6 +4,5 @@ properties:
     type: string
     maxLength: 50
 required:
-  - book_type_id
   - name
 title: UpdateBookTypeRequest

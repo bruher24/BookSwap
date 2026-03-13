@@ -9,7 +9,6 @@ properties:
       - type: string
       - type: 'null'
 required:
-  - setting_id
   - name
   - label
 title: UpdateSettingRequest

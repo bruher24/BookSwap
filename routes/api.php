@@ -67,6 +67,9 @@ Route::prefix('v1')->name('api.')
                 Route::get('{chat}', 'show')->name('show')->middleware(BearerAuth::class);
                 Route::put('{chat}', 'update')->name('update')->middleware(BearerAuth::class);
                 Route::delete('{chat}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
+                Route::get('by_user/{user}', 'byUser')->name('byUser')->middleware(BearerAuth::class);
+                Route::get('{chat}/messages', 'messages')->name('messages')->middleware(BearerAuth::class);
+                Route::post('{chat}/messages', 'send')->name('send')->middleware(BearerAuth::class);
             });
 
         Route::prefix('covers')->name('covers.')->controller(CoverController::class)

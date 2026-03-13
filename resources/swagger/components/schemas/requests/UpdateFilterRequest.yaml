@@ -11,7 +11,6 @@ properties:
       - type: boolean
       - type: 'null'
 required:
-  - filter_id
   - name
   - by_fields
 title: UpdateFilterRequest

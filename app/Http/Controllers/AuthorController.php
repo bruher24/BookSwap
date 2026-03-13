@@ -19,9 +19,6 @@ final class AuthorController extends Controller
     {
         $authors = $authorService->getAll();
         $authorResourceCollection = AuthorResource::collection($authors);
-
-        Redis::publish('listeners', 'TEST MESSAGE FROM LARAVEL');
-        AuthorCreated::dispatch('TEST MSG');
         $data = ['authors' => $authorResourceCollection];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

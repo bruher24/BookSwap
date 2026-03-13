@@ -49,7 +49,7 @@ final class AuthController extends Controller
 
         if (!$authService->login($validated)) {
             $errors = ['Ошибка аутентификации'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
 
         $token = $authService->refreshToken($validated['email']);

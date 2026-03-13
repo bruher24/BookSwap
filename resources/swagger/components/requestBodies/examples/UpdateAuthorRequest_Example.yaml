@@ -1,6 +1,5 @@
 summary: UpdateAuthorRequest_Example
 value: {
-  author_id: 1,
   lastname: "Doe",
   firstname: "John",
   patronymic: "Petrovich",

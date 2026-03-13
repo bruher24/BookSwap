@@ -67,7 +67,6 @@ properties:
         maxLength: 13
       - type: 'null'
 required:
-  - book_id
   - user_id
   - page_count
   - book_type

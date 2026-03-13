@@ -23,19 +23,15 @@ final class BearerAuth
         // TODO: реализовать авторизацию по токену
         // найти юзера по токену, а дальше?
         if (!in_array($request->email, $abilities) || !in_array('admin', $abilities)) {
-            return response()->json(new FailureResource([
-                'errors' => ['Недостаточно прав'],
-                'statusCode' => Response::HTTP_FORBIDDEN
-            ]));
+            $errors = ['Недостаточно прав'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
         }
 
         // TODO: заглушка для тестов
         if (($request->email === 'admin@super.com' || $request->book == '2' || $request->chat == '2')
             && !in_array('super', $abilities)) {
-            return response()->json(new FailureResource([
-                'errors' => ['Недостаточно прав'],
-                'statusCode' => Response::HTTP_FORBIDDEN
-            ]));
+            $errors = ['Недостаточно прав'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
         }
 
         return $next($request);

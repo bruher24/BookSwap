@@ -4,13 +4,6 @@ info:
   version: 0.0.1
 servers:
   - url: http://localhost/api/v1
-# TODO: Во многих контроллерах backend сейчас возвращает HTTP 200 с FailureResource/SuccessResource,
-# где в payload есть поле `statusCode`, вместо реальных HTTP-кодов контракта (401/404/202 и др.).
-# Предлагаемое исправление backend: возвращать фактические HTTP-коды по контракту OpenAPI
-# и сохранить `statusCode` в теле только как дублирующее поле (или убрать его в v2).
-# TODO: Для части PUT endpoints backend пока возвращает пустой SuccessResource, тогда как контракт
-# требует вернуть обновлённый ресурс в `data`.
-# Предлагаемое исправление backend: после update возвращать актуальный ресурс по контракту.
 paths:
   /auth/register:
     post:
@@ -41,9 +34,6 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
-      # TODO: AuthController::login() при неверных учетных данных сейчас возвращает FailureResource (HTTP 200, statusCode 400),
-      # а не контрактный 401.
-      # Предлагаемое исправление backend: отдавать HTTP 401 для auth-failure.
 
   /auth/refresh:
     post:
@@ -225,19 +215,16 @@ paths:
         403:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  # TODO: В routes/api.php используется /book_types.
-  # Предлагаемое исправление: добавить совместимый алиас /booktypes
-  # или переименовать backend-роуты в формат спецификации.
-  /booktypes:
+  /book_types:
     get:
-      operationId: booktypes.index
+      operationId: book_types.index
       tags:
         - BookType
       responses:
         200:
           $ref: "components/responses/api/BookTypeCollection_Response.yaml"
     post:
-      operationId: booktypes.store
+      operationId: book_types.store
       tags:
         - BookType
       requestBody:
@@ -254,13 +241,12 @@ paths:
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
-  # TODO: В backend path-параметр называется {book_type}.
-  # Предлагаемое исправление: поддержать {booktype} по контракту спецификации.
-  /booktypes/{booktype}:
+
+  /book_types/{book_type}:
     parameters:
-      - $ref: "components/parameters/booktype.yaml"
+      - $ref: "components/parameters/book_type.yaml"
     get:
-      operationId: booktypes.show
+      operationId: book_types.show
       tags:
         - BookType
       responses:
@@ -271,7 +257,7 @@ paths:
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
-      operationId: booktypes.update
+      operationId: book_types.update
       tags:
         - BookType
       requestBody:
@@ -290,7 +276,7 @@ paths:
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
-      operationId: booktypes.destroy
+      operationId: book_types.destroy
       tags:
         - BookType
       responses:
@@ -333,14 +319,11 @@ paths:
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
-  # TODO: Этот endpoint отсутствует в routes/api.php.
-  # Предлагаемое исправление: добавить GET /chats/by_user/{user}
-  # или реализовать прокси к текущей логике /users/{user}/chats.
   /chats/by_user/{user}:
     parameters:
       - $ref: "components/parameters/user.yaml"
     get:
-      operationId: chats.by_user
+      operationId: chats.byUser
       tags:
         - Chat
       responses:
@@ -406,14 +389,11 @@ paths:
         403:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  # TODO: По спецификации сообщения чата доступны через /chats/{chat}/messages,
-  # в backend сейчас реализованы только nested-маршруты /users/{user}/chats/{chat}/messages.
-  # Предлагаемое исправление: добавить маршруты по контракту спецификации.
   /chats/{chat}/messages:
     parameters:
       - $ref: "components/parameters/chat.yaml"
     get:
-      operationId: chats.messages.get
+      operationId: chats.messages
       tags:
         - Chat
       responses:
@@ -428,7 +408,7 @@ paths:
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     post:
-      operationId: chats.messages.send
+      operationId: chats.send
       tags:
         - Chat
       requestBody:

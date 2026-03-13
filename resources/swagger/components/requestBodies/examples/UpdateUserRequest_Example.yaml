@@ -1,6 +1,5 @@
 summary: UpdateUserRequest_Example
 value: {
-  user_id: 1,
   name: "updated_user",
   email: "updated@user.com",
   old_password: "1234",

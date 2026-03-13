@@ -21,11 +21,10 @@ final class IsAdmin
         $abilities = (array)($token->abilities ?? []);
 
         if (!in_array('admin', $abilities)) {
-            return response()->json(new FailureResource([
-                'errors' => ['Недостаточно прав'],
-                'statusCode' => Response::HTTP_FORBIDDEN
-            ]));
+            $errors = ['Недостаточно прав'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
         }
+
         return $next($request);
     }
 }

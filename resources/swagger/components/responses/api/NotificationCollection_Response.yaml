@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/NotificationCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/NotificationCollectionResourceExample.yaml"
+        $ref: "examples/NotificationCollectionResource_Example.yaml"

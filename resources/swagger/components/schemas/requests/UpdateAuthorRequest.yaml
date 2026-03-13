@@ -16,7 +16,6 @@ properties:
       - type: string
       - type: 'null'
 required:
-  - author_id
   - lastname
   - firstname
 title: UpdateAuthorRequest

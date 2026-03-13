@@ -1,6 +1,5 @@
 summary: UpdateFilterRequest_Example
 value: {
-  filter_id: 1,
   name: "By year",
   by_fields: "publication_year",
   is_active: true

@@ -28,6 +28,4 @@ properties:
     oneOf:
       - type: string
       - type: 'null'
-required:
-  - user_id
 title: UpdateUserRequest

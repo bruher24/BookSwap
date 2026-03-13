@@ -5,6 +5,5 @@ properties:
     format: binary
     contentMediaType: application/octet-stream
 required:
-  - cover_id
   - src
 title: UpdateCoverRequest

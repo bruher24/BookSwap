@@ -5,4 +5,4 @@ content:
       $ref: "../../schemas/api/MessageCollection_Response_Schema.yaml"
     examples:
       success:
-        $ref: "examples/MessageCollectionResourceExample.yaml"
+        $ref: "examples/MessageResourceCollection_Example.yaml"
