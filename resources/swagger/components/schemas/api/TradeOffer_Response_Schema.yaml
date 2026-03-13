@@ -4,4 +4,7 @@ allOf:
   - type: object
     properties:
       data:
-        $ref: '../../schemas/resources/TradeOfferResource.yaml'
+        type: object
+        properties:
+          tradeOffer:
+            $ref: '../../schemas/resources/TradeOfferResource.yaml'

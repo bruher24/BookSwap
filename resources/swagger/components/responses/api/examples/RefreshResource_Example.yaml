@@ -1,4 +1,4 @@
 summary: RefreshResource_Example
-value: {
-  token: "1234567890"
-}
+value:
+  data:
+    token: "1234567890"

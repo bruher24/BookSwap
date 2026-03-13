@@ -4,6 +4,9 @@ allOf:
   - type: object
     properties:
       data:
-        type: array
-        items:
-          $ref: '../../schemas/resources/MessageResource.yaml'
+        type: object
+        properties:
+          messages:
+            type: array
+            items:
+              $ref: '../../schemas/resources/MessageResource.yaml'

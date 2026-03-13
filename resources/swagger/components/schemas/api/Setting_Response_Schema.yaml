@@ -4,4 +4,7 @@ allOf:
   - type: object
     properties:
       data:
-        $ref: '../../schemas/resources/SettingResource.yaml'
+        type: object
+        properties:
+          setting:
+            $ref: '../../schemas/resources/SettingResource.yaml'

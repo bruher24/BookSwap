@@ -4,6 +4,9 @@ allOf:
   - type: object
     properties:
       data:
-        type: array
-        items:
-          $ref: '../../schemas/resources/PhotoResource.yaml'
+        type: object
+        properties:
+          photos:
+            type: array
+            items:
+              $ref: '../../schemas/resources/PhotoResource.yaml'

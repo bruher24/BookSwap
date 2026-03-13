@@ -8,13 +8,13 @@ use App\Interfaces\BookServiceInterface;
 use App\Interfaces\BookTypeServiceInterface;
 use App\Interfaces\ChatServiceInterface;
 use App\Interfaces\CoverServiceInterface;
-use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\FilterServiceInterface;
 use App\Interfaces\GenreServiceInterface;
 use App\Interfaces\MessageServiceInterface;
 use App\Interfaces\NotificationServiceInterface;
 use App\Interfaces\PhotoServiceInterface;
 use App\Interfaces\SettingServiceInterface;
+use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Interfaces\UserSettingServiceInterface;
 use App\Models\Author;
@@ -26,18 +26,16 @@ use App\Services\BookService;
 use App\Services\BookTypeService;
 use App\Services\ChatService;
 use App\Services\CoverService;
-use App\Services\TradeOfferService;
 use App\Services\FilterService;
 use App\Services\GenreService;
 use App\Services\MessageService;
 use App\Services\NotificationService;
 use App\Services\PhotoService;
 use App\Services\SettingService;
+use App\Services\TradeOfferService;
 use App\Services\UserService;
 use App\Services\UserSettingService;
 use Dedoc\Scramble\Scramble;
-use Dedoc\Scramble\Support\Generator\OpenApi;
-use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobFailed;
@@ -82,7 +80,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         date_default_timezone_set('Europe/Samara');
 
-         Author::observe(AuthorObserver::class);
+        Author::observe(AuthorObserver::class);
 
         RateLimiter::for('api', function (Request $request) {
             $user = $request->user();
@@ -93,13 +91,6 @@ final class AppServiceProvider extends ServiceProvider
         Gate::define('viewApiDocs', function () {
             return false;
         });
-
-        Scramble::configure()
-            ->withDocumentTransformers(function (OpenApi $openApi) {
-                $openApi->secure(
-                    SecurityScheme::http('bearer')
-                );
-            });
 
         Queue::failing(function (JobFailed $event) {
             Log::error(

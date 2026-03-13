@@ -4,4 +4,7 @@ allOf:
   - type: object
     properties:
       data:
-        $ref: '../../schemas/resources/GenreResource.yaml'
+        type: object
+        properties:
+          genre:
+            $ref: '../../schemas/resources/GenreResource.yaml'

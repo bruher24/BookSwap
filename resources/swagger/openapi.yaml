@@ -61,7 +61,7 @@ paths:
         $ref: "components/requestBodies/RefreshRequest_Body.yaml"
       responses:
         200:
-          description: "OK"
+          $ref: "components/responses/api/Success_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -426,16 +426,20 @@ paths:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /covers:
-    # TODO: По контракту endpoint публичный, но в backend Route::get('/covers') защищен auth + IsAdmin.
-    # Предлагаемое исправление backend: сделать endpoint публичным по контракту
-    # или вынести админскую версию в отдельный route/version.
     get:
       operationId: covers.index
       tags:
         - Cover
+      description: "Требуется аутентификация и роль администратора (IsAdmin middleware)"
+      security:
+        - http: []
       responses:
         200:
           $ref: "components/responses/api/CoverCollection_Response.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
     post:
       operationId: covers.store
       tags:
@@ -501,10 +505,6 @@ paths:
         403:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  # BACKEND NOTE:
-  # Backend содержит дополнительные маршруты by_sender/by_receiver/accept/reject,
-  # которых нет в контракте. Рекомендуется либо убрать их из публичного API,
-  # либо описать как отдельные расширения (вне текущей версии контракта).
   /trade_offers:
     get:
       operationId: trade_offers.index
@@ -534,6 +534,48 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
         422:
           $ref: "components/responses/exceptions/ValidationException.yaml"
+
+  /trade_offers/by_sender/{sender}:
+    parameters:
+      - $ref: "components/parameters/sender.yaml"
+    get:
+      operationId: trade_offers.bySender
+      tags:
+        - TradeOffer
+      responses:
+        200:
+          $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
+        204:
+          description: "No Content"
+        400:
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        404:
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+
+  /trade_offers/by_receiver/{receiver}:
+    parameters:
+      - $ref: "components/parameters/receiver.yaml"
+    get:
+      operationId: trade_offers.byReceiver
+      tags:
+        - TradeOffer
+      responses:
+        200:
+          $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
+        204:
+          description: "No Content"
+        400:
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        404:
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /trade_offers/{trade_offer}:
     parameters:
@@ -579,6 +621,40 @@ paths:
       responses:
         202:
           description: "Accepted"
+        400:
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+
+  /trade_offers/{trade_offer}/accept:
+    parameters:
+      - $ref: "components/parameters/trade_offer.yaml"
+    patch:
+      operationId: trade_offers.accept
+      tags:
+        - TradeOffer
+      responses:
+        200:
+          $ref: "components/responses/api/Success_Response.yaml"
+        400:
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+
+  /trade_offers/{trade_offer}/reject:
+    parameters:
+      - $ref: "components/parameters/trade_offer.yaml"
+    patch:
+      operationId: trade_offers.reject
+      tags:
+        - TradeOffer
+      responses:
+        200:
+          $ref: "components/responses/api/Success_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -733,16 +809,20 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /photos:
-    # TODO: По контракту endpoint публичный, но в backend Route::get('/photos') защищен auth + IsAdmin.
-    # Предлагаемое исправление backend: сделать endpoint публичным по контракту
-    # или вынести админскую версию в отдельный route/version.
     get:
       operationId: photos.index
       tags:
         - Photo
+      description: "Требуется аутентификация и роль администратора (IsAdmin middleware)"
+      security:
+        - http: [ ]
       responses:
         200:
           $ref: "components/responses/api/PhotoCollection_Response.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
     post:
       operationId: photos.store
       tags:
@@ -809,9 +889,6 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /search:
-    # TODO: По контракту endpoint доступен без auth-ошибок, но backend требует auth:sanctum (глобальный middleware группы).
-    # Предлагаемое исправление backend: снять auth middleware для /search,
-    # либо выделить приватный поиск в отдельный versioned endpoint.
     parameters:
       - $ref: "components/parameters/query.yaml"
     get:
@@ -827,15 +904,20 @@ paths:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /settings:
-    # TODO: По контракту GET /settings публичный, но backend требует auth:sanctum.
-    # Предлагаемое исправление backend: сделать endpoint публичным по контракту.
     get:
       operationId: settings.index
       tags:
         - Setting
+      description: "Требуется аутентификация"
+      security:
+        - http: [ ]
       responses:
         200:
           $ref: "components/responses/api/SettingCollection_Response.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
     post:
       operationId: settings.store
       tags:
@@ -855,19 +937,24 @@ paths:
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /settings/{setting}:
-    # TODO: По контракту GET /settings/{setting} публичный, но backend требует auth:sanctum.
-    # Предлагаемое исправление backend: сделать endpoint публичным по контракту.
     parameters:
       - $ref: "components/parameters/setting.yaml"
     get:
       operationId: settings.show
       tags:
         - Setting
+      description: "Требуется аутентификация"
+      security:
+        - http: [ ]
       responses:
         200:
           $ref: "components/responses/api/Setting_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
+        401:
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        403:
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
     put:
@@ -1009,7 +1096,7 @@ paths:
         - UserFavorites
       responses:
         200:
-          description: "OK"
+          $ref: "components/responses/api/Success_Response.yaml"
         400:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         401:
@@ -1032,10 +1119,6 @@ paths:
         403:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  # TODO: В backend есть дополнительный POST /users/{user}/notifications (readAll),
-  # который пока не описан в спецификации.
-  # Предлагаемое исправление: добавить endpoint в следующей версии спецификации
-  # либо убрать/закрыть его в backend.
   /users/{user}/notifications:
     parameters:
       - $ref: "components/parameters/user.yaml"
@@ -1074,9 +1157,6 @@ paths:
         404:
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
-  # TODO: В routes/api.php update реализован как PUT /users/{user}/settings (без {setting}).
-  # Предлагаемое исправление: привести backend к PUT /users/{user}/settings/{setting}
-  # или версионировать изменение контракта.
   /users/{user}/settings/{setting}:
     parameters:
       - $ref: "components/parameters/user.yaml"

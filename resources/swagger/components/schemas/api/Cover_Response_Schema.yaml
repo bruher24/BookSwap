@@ -4,4 +4,7 @@ allOf:
   - type: object
     properties:
       data:
-        $ref: '../../schemas/resources/CoverResource.yaml'
+        type: object
+        properties:
+          cover:
+            $ref: '../../schemas/resources/CoverResource.yaml'

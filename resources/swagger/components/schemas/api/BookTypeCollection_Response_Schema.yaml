@@ -4,6 +4,9 @@ allOf:
   - type: object
     properties:
       data:
-        type: array
-        items:
-          $ref: '../../schemas/resources/BookTypeResource.yaml'
+        type: object
+        properties:
+          bookTypes:
+            type: array
+            items:
+              $ref: '../../schemas/resources/BookTypeResource.yaml'

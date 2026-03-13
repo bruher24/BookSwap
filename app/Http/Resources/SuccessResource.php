@@ -27,8 +27,10 @@ final class SuccessResource extends JsonResource
     {
         $data = parent::toArray($request);
 
-        return [
-            'data' => $data,
-        ];
+        if (count($data) > 0) {
+            return ['data' => $data];
+        }
+
+        return [];
     }
 }

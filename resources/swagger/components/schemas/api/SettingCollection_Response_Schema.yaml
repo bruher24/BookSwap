@@ -4,6 +4,9 @@ allOf:
   - type: object
     properties:
       data:
-        type: array
-        items:
-          $ref: '../../schemas/resources/SettingResource.yaml'
+        type: object
+        properties:
+          settings:
+            type: array
+            items:
+              $ref: '../../schemas/resources/SettingResource.yaml'
