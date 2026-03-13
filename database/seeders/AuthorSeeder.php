@@ -15,22 +15,26 @@ final class AuthorSeeder extends Seeder
                 'firstname' => 'Автор',
                 'patronymic' => 'Книгович',
                 'birthdate' => '1990-01-01',
+                'user_id' => 1,
             ],
             [
                 'lastname' => 'Пушкин',
                 'firstname' => 'Александр',
                 'patronymic' => 'Сергеевич',
                 'birthdate' => '1990-01-01',
+                'user_id' => 1,
             ],
             [
                 'lastname' => 'Лавкрафт',
                 'firstname' => 'Говард',
                 'birthdate' => '1990-01-01',
+                'user_id' => 1,
             ],
             [
                 'lastname' => 'Министерство',
                 'firstname' => 'Образования',
                 'birthdate' => '1991-01-01',
+                'user_id' => 1,
             ],
         ];
         collect($authors)->each(function ($author) {

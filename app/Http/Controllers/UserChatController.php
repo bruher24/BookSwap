@@ -119,16 +119,8 @@ final class UserChatController extends Controller
 
     public function read(UserServiceInterface $userService, Request $request, string $userId): JsonResponse
     {
-        // TODO: сделать нормально
         $messagesToRead = (array)$request->input('messages');
-        $user = $userService->get($userId);
-
-        if (!$user) {
-            $errors = ['Ошибка при получении пользователя'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
-
-        $checked = $userService->readMessages($user->id, $messagesToRead);
+        $checked = $userService->readMessages($userId, $messagesToRead);
 
         if (!$checked) {
             $errors = ['Ошибка при прочтении сообщений'];

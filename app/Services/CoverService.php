@@ -94,8 +94,9 @@ final class CoverService extends Service implements CoverServiceInterface
     {
         try {
             $file = $this->get($id);
+
             if (!$file instanceof Cover) {
-                throw new Exception('Файл не найден');
+                return true;
             }
 
             // TODO: жесткое удаление либо не удалять файл какое-то время

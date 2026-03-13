@@ -10,13 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        // TODO: добавить created_by или assigned_user_id
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
             $table->string('lastname', 100);
             $table->string('firstname', 100);
             $table->string('patronymic', 100)->nullable();
             $table->date('birthdate')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
 

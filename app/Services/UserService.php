@@ -100,18 +100,6 @@ final class UserService extends Service implements UserServiceInterface
     }
 
     #[Override]
-    public function delete(string $id): bool
-    {
-        $user = $this->get($id);
-
-        if ($user instanceof User) {
-            UserDeleted::dispatch($user);
-        }
-
-        return parent::delete($id);
-    }
-
-    #[Override]
     public function chats(string $user_id): Collection
     {
         try {
@@ -156,7 +144,7 @@ final class UserService extends Service implements UserServiceInterface
         try {
             $user = $this->get($user_id);
             if (!$user) {
-                throw new Exception();
+                throw new Exception('Пользователь не найден');
             }
 
             $messages = $user->unreadMessages()->whereIn('id', $messagesToRead)->get();

@@ -97,7 +97,7 @@ final class PhotoService extends Service implements PhotoServiceInterface
             $file = $this->get($id);
 
             if (!$file instanceof Photo) {
-                throw new Exception('Файл не найден');
+                return true;
             }
 
             // TODO: жесткое удаление либо не удалять файл какое-то время

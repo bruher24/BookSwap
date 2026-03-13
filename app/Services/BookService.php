@@ -35,7 +35,8 @@ final class BookService extends Service implements BookServiceInterface
         try {
             $data['cover_id'] = Cover::BASE_COVER_ID;
             if (isset($data['cover'])) {
-                // TODO: пускать ивент создания обложки
+                $coverService = new CoverService();
+                $coverService->create($data['cover']);
             }
 
             $book = parent::create($data);
@@ -68,18 +69,6 @@ final class BookService extends Service implements BookServiceInterface
     public function update(string $id, array $data): Book|false
     {
        return parent::update($id, $data);
-    }
-
-    #[Override]
-    public function delete(string $id): bool
-    {
-        $book = $this->get($id);
-
-        if ($book instanceof Book) {
-            BookDeleted::dispatch($book);
-        }
-
-        return parent::delete($id);
     }
 
     private function filterAuthorsData(array $data): array
