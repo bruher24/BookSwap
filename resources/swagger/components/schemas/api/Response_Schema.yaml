@@ -1,13 +1,7 @@
-ApiResponse_Schema:
-  type: object
-  required:
-    - data
-  properties:
-    data:
-      description: "Generic payload container"
-      oneOf:
-        - type: object
-          additionalProperties: true
-        - type: array
-          items: {}
-        - type: 'null'
+type: object
+required:
+  - data
+properties:
+  data:
+    description: "Generic payload container"
+    nullable: true
