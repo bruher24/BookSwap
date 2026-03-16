@@ -8,80 +8,32 @@ use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\TradeOfferResource;
 use App\Interfaces\TradeOfferServiceInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Override;
 use Symfony\Component\HttpFoundation\Response;
 
-final class TradeOfferController extends Controller
+final class TradeOfferController extends CrudController
 {
-    public function index(TradeOfferServiceInterface $tradeOfferService): JsonResponse
+    public function __construct(TradeOfferServiceInterface $tradeOfferService)
     {
-        $tradeOffers = $tradeOfferService->getAll();
-        $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
-        $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
-        $data = ['tradeOffers' => $tradeOfferResourceCollection];
+        $this->resourceClass = TradeOfferResource::class;
+        $this->resourceKey = 'tradeOffer';
+        $this->resourceCollectionKey = 'tradeOffers';
+        $this->storeRequestClass = StoreTradeOfferRequest::class;
+        $this->updateRequestClass = UpdateTradeOfferRequest::class;
+        $this->createErrorMessage = 'Ошибка при создании сделки';
+        $this->getErrorMessage = 'Ошибка при получении сделки';
+        $this->updateErrorMessage = 'Ошибка при обновлении сделки';
+        $this->deleteErrorMessage = 'Ошибка при удалении сделки';
 
-        return (new SuccessResource($data))->response()->setStatusCode($statusCode);
+        parent::__construct($tradeOfferService);
     }
 
-    public function store(TradeOfferServiceInterface $tradeOfferService, StoreTradeOfferRequest $request): JsonResponse
+    #[Override]
+    protected function indexStatusCode(Collection $items): int
     {
-        $validated = $request->validated();
-        $tradeOffer = $tradeOfferService->create($validated);
-
-        if (!$tradeOffer) {
-            $errors = ['Ошибка при создании сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        $tradeOfferResource = new TradeOfferResource($tradeOffer);
-        $data = ['tradeOffer' => $tradeOfferResource];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
-    }
-
-    public function show(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResponse
-    {
-        $tradeOffer = $tradeOfferService->get($id);
-
-        if (!$tradeOffer) {
-            $errors = ['Ошибка при получении сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
-
-        $tradeOfferResource = new TradeOfferResource($tradeOffer);
-        $data = ['tradeOffer' => $tradeOfferResource];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function update(
-        TradeOfferServiceInterface $tradeOfferService,
-        UpdateTradeOfferRequest    $request,
-        string                     $id
-    ): JsonResponse
-    {
-        $validated = $request->validated();
-        $tradeOffer = $tradeOfferService->update($id, $validated);
-
-        if (!$tradeOffer) {
-            $errors = ['Ошибка при обновлении сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        $tradeOfferResource = new TradeOfferResource($tradeOffer);
-        $data = ['tradeOffer' => $tradeOfferResource];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function destroy(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResponse
-    {
-        if (!$tradeOfferService->delete($id)) {
-            $errors = ['Ошибка при удалении сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $items->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
     }
 
     public function bySender(TradeOfferServiceInterface $tradeOfferService, string $senderId): JsonResponse
