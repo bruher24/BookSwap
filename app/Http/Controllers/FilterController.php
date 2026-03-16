@@ -60,8 +60,8 @@ final class FilterController extends Controller
     ): JsonResponse
     {
         $validated = $request->validated();
-
         $filter = $filterService->update($id, $validated);
+
         if (!$filter) {
             $errors = ['Ошибка при обновлении фильтра'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

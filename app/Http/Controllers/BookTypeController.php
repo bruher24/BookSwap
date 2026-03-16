@@ -60,8 +60,8 @@ final class BookTypeController extends Controller
     ): JsonResponse
     {
         $validated = $request->validated();
-
         $bookType = $bookTypeService->update($id, $validated);
+
         if (!$bookType) {
             $errors = ['Ошибка при обновлении типа'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

@@ -45,15 +45,20 @@ final class ChatService extends Service implements ChatServiceInterface
     }
 
     #[Override]
-    public function byUsers(string $user_id, string $recipient_id): Chat|false
+    public function update(string $id, array $data): Chat|false
+    {
+        return parent::update($id, $data);
+    }
+
+    public function byUser(string $userId): Chat|false
     {
         try {
-            $arr = [$user_id, $recipient_id];
-            sort($arr);
-            $chat = Chat::where('first_user_id', $arr[0])->where('second_user_id', $arr[1])->first();
+            $chat = Chat::where('first_user_id', $userId)->orWhere('second_user_id', $userId)->first();
+
             if (!$chat) {
                 throw new Exception('Ошибка при получении чата');
             }
+
             return $chat;
         } catch (Throwable $e) {
             Log::error($e->getMessage());
@@ -62,13 +67,15 @@ final class ChatService extends Service implements ChatServiceInterface
     }
 
     #[Override]
-    public function messages(string $chat_id): Collection
+    public function messages(string $chatId): Collection
     {
         try {
-            $chat = $this->get($chat_id);
+            $chat = $this->get($chatId);
+
             if (!$chat) {
                 throw new Exception('Чат не найден');
             }
+
             $messages = $chat->messages()->orderBy('created_at')->orderBy('id')->get();
             return $messages->groupBy(function (Message $item) {
                 return mb_substr($item->created_at, 0, 10);
@@ -80,11 +87,11 @@ final class ChatService extends Service implements ChatServiceInterface
     }
 
     #[Override]
-    public function sendMessage(string $user_id, string $recipient_id, string $body): Message|false
+    public function sendMessage(string $chatId, string $senderId, string $body): Message|false
     {
-        DB::beginTransaction();
         try {
-            $chat = $this->byUsers($user_id, $recipient_id);
+            DB::beginTransaction();
+            $chat = $this->get($chatId);
 
             if (!$chat instanceof Chat) {
                 throw new Exception('Ошибка получения чата');
@@ -92,8 +99,7 @@ final class ChatService extends Service implements ChatServiceInterface
 
             $message = new Message([
                 'chat_id' => $chat->id,
-                'from_id' => $user_id,
-                'to_id' => $recipient_id,
+                'sender_id' => $senderId,
                 'body' => $body,
             ]);
 
@@ -104,12 +110,7 @@ final class ChatService extends Service implements ChatServiceInterface
             }
 
             DB::commit();
-
             $message->refresh();
-
-            if ($message->to_id != $message->from_id) {
-                MessageSent::dispatch($message);
-            }
 
             return $message;
         } catch (Throwable $exception) {
@@ -117,10 +118,5 @@ final class ChatService extends Service implements ChatServiceInterface
             Log::error($exception->getMessage());
             return false;
         }
-    }
-
-    public function update(string $id, array $data): Chat|false
-    {
-        return parent::update($id, $data);
     }
 }

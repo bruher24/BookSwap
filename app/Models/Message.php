@@ -17,8 +17,7 @@ final class Message extends Model implements Cacheable
 
     public $fillable = [
         'chat_id',
-        'from_id',
-        'to_id',
+        'sender_id',
         'subject',
         'body',
         'seen'

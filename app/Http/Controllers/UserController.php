@@ -53,8 +53,8 @@ final class UserController extends Controller
     public function update(UserServiceInterface $userService, UpdateUserRequest $request, string $id): JsonResponse
     {
         $validated = $request->validated();
-
         $user = $userService->update($id, $validated);
+
         if (!$user) {
             $errors = ['Ошибка при обновлении пользователя'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

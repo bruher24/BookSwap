@@ -56,8 +56,8 @@ final class PhotoController extends Controller
     public function update(PhotoServiceInterface $photoService, UpdatePhotoRequest $request, string $id): JsonResponse
     {
         $validated = $request->validated();
-
         $photo = $photoService->update($id, $validated);
+
         if (!$photo) {
             $errors = ['Ошибка при обновлении фото'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

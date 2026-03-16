@@ -61,8 +61,8 @@ final class TradeOfferController extends Controller
     ): JsonResponse
     {
         $validated = $request->validated();
-
         $tradeOffer = $tradeOfferService->update($id, $validated);
+
         if (!$tradeOffer) {
             $errors = ['Ошибка при обновлении сделки'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

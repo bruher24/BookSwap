@@ -56,8 +56,8 @@ final class CoverController extends Controller
     public function update(CoverServiceInterface $coverService, UpdateCoverRequest $request, string $id): JsonResponse
     {
         $validated = $request->validated();
-
         $cover = $coverService->update($id, $validated);
+
         if (!$cover) {
             $errors = ['Ошибка при обновлении обложки'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

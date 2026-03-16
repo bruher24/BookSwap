@@ -59,8 +59,8 @@ final class SettingController extends Controller
         string $id
     ): JsonResponse {
         $validated = $request->validated();
-
         $setting = $settingService->update($id, $validated);
+
         if (!$setting) {
             $errors = ['Ошибка при обновлении настройки'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

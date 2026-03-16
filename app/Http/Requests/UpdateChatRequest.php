@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Override;
 
 final class UpdateChatRequest extends FormRequest
 {
@@ -16,6 +17,12 @@ final class UpdateChatRequest extends FormRequest
         return true;
     }
 
+    #[Override]
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['chat_id' => $this->route('chat')]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,7 +30,6 @@ final class UpdateChatRequest extends FormRequest
      */
     public function rules(): array
     {
-        request()->merge(['chat_id' => $this->route('chat')]);
         return [
             'chat_id' => [
                 'required',

@@ -1,9 +1,9 @@
 type: object
 properties:
-  body:
-    type: string
   sender_id:
     type: integer
+  body:
+    type: string
 required:
   - body
   - sender_id

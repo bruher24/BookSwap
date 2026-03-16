@@ -19,6 +19,7 @@ final class SearchController extends Controller
 
         $foundBooks = Book::search($query)->get();
         $foundAuthors = Author::search($query)->get();
+
         $total = $foundBooks->count() + $foundAuthors->count();
 
         $searchResults = new SearchResultsResource([
@@ -26,6 +27,7 @@ final class SearchController extends Controller
             'authors' => $foundAuthors,
             'total' => $total,
         ]);
+
         $data = ['search_results' => $searchResults];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

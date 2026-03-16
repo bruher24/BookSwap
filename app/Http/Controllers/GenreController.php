@@ -57,6 +57,7 @@ final class GenreController extends Controller
     {
         $validated = $request->validated();
         $genre = $genreService->update($id, $validated);
+
         if (!$genre) {
             $errors = ['Ошибка при обновлении жанра'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

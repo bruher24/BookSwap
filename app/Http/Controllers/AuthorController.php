@@ -63,6 +63,7 @@ final class AuthorController extends Controller
     {
         $validated = $request->validated();
         $author = $authorService->update($id, $validated);
+
         if (!$author) {
             $errors = ['Ошибка при обновлении автора'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
