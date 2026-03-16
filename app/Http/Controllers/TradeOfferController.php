@@ -36,9 +36,9 @@ final class TradeOfferController extends CrudController
         return $items->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
     }
 
-    public function bySender(TradeOfferServiceInterface $tradeOfferService, string $senderId): JsonResponse
+    public function bySender(string $senderId): JsonResponse
     {
-        $tradeOffers = $tradeOfferService->bySender($senderId);
+        $tradeOffers = $this->service->bySender($senderId);
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
         $data = ['tradeOffers' => $tradeOfferResourceCollection];
@@ -46,9 +46,9 @@ final class TradeOfferController extends CrudController
         return (new SuccessResource($data))->response()->setStatusCode($statusCode);
     }
 
-    public function byReceiver(TradeOfferServiceInterface $tradeOfferService, string $receiverId): JsonResponse
+    public function byReceiver(string $receiverId): JsonResponse
     {
-        $tradeOffers = $tradeOfferService->byReceiver($receiverId);
+        $tradeOffers = $this->service->byReceiver($receiverId);
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
         $data = ['tradeOffers' => $tradeOfferResourceCollection];
@@ -56,9 +56,9 @@ final class TradeOfferController extends CrudController
         return (new SuccessResource($data))->response()->setStatusCode($statusCode);
     }
 
-    public function accept(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResponse
+    public function accept(string $id): JsonResponse
     {
-        if (!$tradeOfferService->accept($id)) {
+        if (!$this->service->accept($id)) {
             $errors = ['Ошибка при принятии предложения обмена'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
@@ -66,9 +66,9 @@ final class TradeOfferController extends CrudController
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function reject(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResponse
+    public function reject(string $id): JsonResponse
     {
-        if (!$tradeOfferService->reject($id)) {
+        if (!$this->service->reject($id)) {
             $errors = ['Ошибка при отклонении предложения обмена'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
