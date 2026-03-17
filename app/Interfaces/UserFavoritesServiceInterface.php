@@ -2,13 +2,15 @@
 
 namespace App\Interfaces;
 
+use App\Models\Book;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 interface UserFavoritesServiceInterface
 {
-    public function favorites(string $user_id): Collection;
+    public function favorites(User $user): Collection;
 
-    public function addToFavorites(string $user_id, string $book_id): bool;
+    public function addToFavorites(User $user, Book $book): bool;
 
-    public function removeFromFavorites(string $user_id, string $book_id): bool;
+    public function removeFromFavorites(User $user, Book $book): bool;
 }

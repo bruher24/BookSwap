@@ -3,17 +3,19 @@
 namespace App\Interfaces;
 
 use App\Models\Message;
-use Illuminate\Database\Eloquent\Model;
-use Override;
+use Illuminate\Database\Eloquent\Collection;
 
-interface MessageServiceInterface extends ServiceInterface
+interface MessageServiceInterface
 {
-    #[Override]
     public function create(array $data): Message|false;
 
-    #[Override]
     public function get(string $id): Message|false;
 
-    #[Override]
-    public function update(string $id, array $data): Message|false;
+    public function getAll(): Collection;
+
+    public function where(string $field, string $value): Collection;
+
+    public function update(Message $message, array $data): Message|false;
+
+    public function delete(Message $message): bool;
 }

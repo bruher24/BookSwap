@@ -5,79 +5,116 @@ namespace App\Services;
 use App\Interfaces\CoverServiceInterface;
 use App\Models\Cover;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Override;
 use Throwable;
 
-final class CoverService extends Service implements CoverServiceInterface
+final class CoverService implements CoverServiceInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function __construct()
-    {
-        parent::__construct(Cover::class);
-    }
-
-    #[Override]
     public function create(array $data): Cover|false
     {
         try {
-            // TODO: кидать ивент, чтобы создание падало в очередь
+            DB::beginTransaction();
             $path = $this->storeFile($data['src']);
 
             if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
-            $cover = parent::create(['src' => $path]);
+            $cover = new Cover(['src' => $path]);
 
-            if (!$cover) {
-                throw new Exception('Ошибка при создании обложки');
+            if (!$cover->save()) {
+                throw new Exception("Ошибка при создании обложки");
             }
 
-            return $cover;
+            DB::commit();
+            return $cover->refresh();
         } catch (Throwable $e) {
-            Log::error($e);
+            DB::rollBack();
+            Log::error($e->getMessage());
             return false;
         }
     }
 
-    #[Override]
     public function get(string $id): Cover|false
     {
-        return parent::get($id);
+        try {
+            return Cover::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
-    public function update(string $id, array $data): Cover|false
+    public function getAll(): Collection
     {
         try {
-            // TODO: кидать ивент, чтобы удаление падало в очередь
-            $oldFile = $this->get($id);
-            if ($id !== Cover::BASE_COVER_ID && $oldFile instanceof Cover) {
-                Storage::disk('public')->delete($oldFile->src);
+            return Cache::remember(Cover::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Cover::CACHE_KEY);
+                return Cover::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return Cover::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function update(Cover $cover, array $data): Cover|false
+    {
+        try {
+            DB::beginTransaction();
+
+            // TODO: создание и удаление через очередь
+            if ($cover->id !== Cover::BASE_COVER_ID) {
+                Storage::disk('public')->delete($cover->src);
             }
 
-            // TODO: кидать ивент, чтобы создание падало в очередь
             $path = $this->storeFile($data['src']);
-
             if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
-            $cover = parent::update($id, ['src' => $path]);
+            $cover->updateOrFail(['src' => $path]);
+            DB::commit();
+            return $cover->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
 
-            if (!$cover) {
-                throw new Exception('Ошибка при создании обложки');
+    public function delete(Cover $cover): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            // TODO: удаление через очередь
+            if ($cover->id !== Cover::BASE_COVER_ID) {
+                Storage::disk('public')->delete($cover->src);
             }
 
-            return $cover;
+            $cover->delete();
+            DB::commit();
+            return true;
         } catch (Throwable $e) {
-            Log::error($e);
+            DB::rollBack();
+            Log::error($e->getMessage());
             return false;
         }
     }
@@ -87,32 +124,5 @@ final class CoverService extends Service implements CoverServiceInterface
         $uuid = Str::uuid()->toString();
         $fileType = $file->getClientOriginalExtension();
         return Storage::disk('public')->putFileAs('covers', $file, $uuid . "." . $fileType);
-    }
-
-    #[Override]
-    public function delete(string $id): bool
-    {
-        try {
-            $file = $this->get($id);
-
-            if (!$file instanceof Cover) {
-                return true;
-            }
-
-            // TODO: жесткое удаление либо не удалять файл какое-то время
-            if (!parent::delete($id)) {
-                throw new Exception('Ошибка при удалении файла');
-            }
-
-            // TODO: кидать ивент, чтобы падало в очередь
-            if ($id !== Cover::BASE_COVER_ID) {
-                Storage::disk('public')->delete($file->src);
-            }
-
-            return true;
-        } catch (Throwable $e) {
-            Log::error($e);
-            return false;
-        }
     }
 }

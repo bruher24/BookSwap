@@ -3,26 +3,29 @@
 namespace App\Interfaces;
 
 use App\Models\TradeOffer;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Override;
 
-interface TradeOfferServiceInterface extends ServiceInterface
+interface TradeOfferServiceInterface
 {
-    #[Override]
     public function create(array $data): TradeOffer|false;
 
-    #[Override]
     public function get(string $id): TradeOffer|false;
 
-    public function bySender(string $senderId): Collection;
+    public function getAll(): Collection;
 
-    public function byReceiver(string $receiverId): Collection;
+    public function where(string $field, string $value): Collection;
 
-    public function accept(string $id): bool;
+    public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false;
 
-    public function reject(string $id): bool;
+    public function delete(TradeOffer $tradeOffer): bool;
 
-    #[Override]
-    public function update(string $id, array $data): TradeOffer|false;
+    public function bySender(User $sender): Collection;
+
+    public function byReceiver(User $receiver): Collection;
+
+    public function accept(TradeOffer $tradeOffer): bool;
+
+    public function reject(TradeOffer $tradeOffer): bool;
 }

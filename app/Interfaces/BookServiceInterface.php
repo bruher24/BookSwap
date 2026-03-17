@@ -3,18 +3,21 @@
 namespace App\Interfaces;
 
 use App\Models\Book;
-use Override;
+use Illuminate\Database\Eloquent\Collection;
 
-interface BookServiceInterface extends ServiceInterface
+interface BookServiceInterface
 {
-    #[Override]
     public function create(array $data): Book|false;
 
-    #[Override]
     public function get(string $id): Book|false;
 
-    public function attach(string $book_id, array $authors): bool;
+    public function getAll(): Collection;
 
-    #[Override]
-    public function update(string $id, array $data): Book|false;
+    public function where(string $field, string $value): Collection;
+
+    public function update(Book $book, array $data): Book|false;
+
+    public function delete(Book $book): bool;
+
+    public function attach(Book $book, array $authors): bool;
 }

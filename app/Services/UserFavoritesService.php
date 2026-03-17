@@ -3,24 +3,24 @@
 namespace App\Services;
 
 use App\Interfaces\UserFavoritesServiceInterface;
+use App\Models\Book;
+use App\Models\User;
 use App\Models\UsersFavoriteBooks;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Override;
 use Throwable;
 
 final class UserFavoritesService implements UserFavoritesServiceInterface
 {
-    #[Override]
-    public function favorites(string $user_id): Collection
+    public function favorites(User $user): Collection
     {
         try {
-            return Cache::remember('favorites_' . $user_id, 600, function () use ($user_id) {
-                Log::debug('Stored in cache: ' . 'favorites_' . $user_id);
-                return UsersFavoriteBooks::where('user_id', $user_id)->get();
+            return Cache::remember('favorites_' . $user->id, 600, function () use ($user) {
+                Log::debug('Stored in cache: ' . 'favorites_' . $user->id);
+                return UsersFavoriteBooks::where('user_id', $user->id)->get();
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage());
@@ -28,14 +28,14 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
         }
     }
 
-    #[Override]
-    public function addToFavorites(string $user_id, string $book_id): bool
+    public function addToFavorites(User $user, Book $book): bool
     {
-        DB::beginTransaction();
         try {
+            DB::beginTransaction();
+
             $added = UsersFavoriteBooks::withTrashed()->updateOrCreate([
-                'user_id' => $user_id,
-                'book_id' => $book_id,
+                'user_id' => $user->id,
+                'book_id' => $book->id,
             ])->restore();
 
             if (!$added) {
@@ -51,12 +51,12 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
         }
     }
 
-    #[Override]
-    public function removeFromFavorites(string $user_id, string $book_id): bool
+    public function removeFromFavorites(User $user, Book $book): bool
     {
-        DB::beginTransaction();
         try {
-            $record = UsersFavoriteBooks::where('user_id', $user_id)->where('book_id', $book_id)->first();
+            DB::beginTransaction();
+
+            $record = UsersFavoriteBooks::where('user_id', $user->id)->where('book_id', $book->id)->first();
 
             if (!$record) {
                 throw new Exception('Книга не найдена в избранном');

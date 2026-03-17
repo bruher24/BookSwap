@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\AuthorCreated;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use App\Http\Resources\AuthorResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\AuthorServiceInterface;
+use App\Models\Author;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 final class AuthorController extends Controller
@@ -58,11 +58,13 @@ final class AuthorController extends Controller
     public function update(
         AuthorServiceInterface $authorService,
         UpdateAuthorRequest    $request,
-        string                 $id
+        Author                 $author
     ): JsonResponse
     {
+        Gate::authorize('update', $author);
+
         $validated = $request->validated();
-        $author = $authorService->update($id, $validated);
+        $author = $authorService->update($author, $validated);
 
         if (!$author) {
             $errors = ['Ошибка при обновлении автора'];
@@ -74,9 +76,11 @@ final class AuthorController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(AuthorServiceInterface $authorService, string $id): JsonResponse
+    public function destroy(AuthorServiceInterface $authorService, Author $author): JsonResponse
     {
-        if (!$authorService->delete($id)) {
+        Gate::authorize('delete', $author);
+
+        if (!$authorService->delete($author)) {
             $errors = ['Ошибка при удалении автора'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

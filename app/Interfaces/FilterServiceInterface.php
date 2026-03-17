@@ -3,17 +3,19 @@
 namespace App\Interfaces;
 
 use App\Models\Filter;
-use Illuminate\Database\Eloquent\Model;
-use Override;
+use Illuminate\Database\Eloquent\Collection;
 
-interface FilterServiceInterface extends ServiceInterface
+interface FilterServiceInterface
 {
-    #[Override]
     public function create(array $data): Filter|false;
 
-    #[Override]
     public function get(string $id): Filter|false;
 
-    #[Override]
-    public function update(string $id, array $data): Filter|false;
+    public function getAll(): Collection;
+
+    public function where(string $field, string $value): Collection;
+
+    public function update(Filter $filter, array $data): Filter|false;
+
+    public function delete(Filter $filter): bool;
 }

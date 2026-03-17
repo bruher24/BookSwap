@@ -3,16 +3,19 @@
 namespace App\Interfaces;
 
 use App\Models\Author;
-use Override;
+use Illuminate\Database\Eloquent\Collection;
 
-interface AuthorServiceInterface extends ServiceInterface
+interface AuthorServiceInterface
 {
-    #[Override]
     public function create(array $data): Author|false;
 
-    #[Override]
     public function get(string $id): Author|false;
 
-    #[Override]
-    public function update(string $id, array $data): Author|false;
+    public function getAll(): Collection;
+
+    public function where(string $field, string $value): Collection;
+
+    public function update(Author $author, array $data): Author|false;
+
+    public function delete(Author $author): bool;
 }

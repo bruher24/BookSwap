@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Events\UserUpdated;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Message;
 use App\Models\User;
@@ -12,40 +11,65 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Override;
 use Throwable;
 
-final class UserService extends Service implements UserServiceInterface
+final class UserService implements UserServiceInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function __construct()
-    {
-        parent::__construct(User::class);
-    }
-
-    #[Override]
     public function create(array $data): User|false
     {
-        return parent::create($data);
-    }
-
-    #[Override]
-    public function get(string $id): User|false
-    {
-        return parent::get($id);
-    }
-
-    #[Override]
-    public function update(string $id, array $data): User|false
-    {
         try {
-            $user = $this->get($id);
-            if (!$user instanceof User) {
-                throw new Exception('Пользователь не найден');
+            DB::beginTransaction();
+            $user = new User($data);
+
+            if (!$user->save()) {
+                throw new Exception("Ошибка при создании типа");
             }
 
+            DB::commit();
+            return $user->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function get(string $id): User|false
+    {
+        try {
+            return User::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function getAll(): Collection
+    {
+        try {
+            return Cache::remember(User::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . User::CACHE_KEY);
+                return User::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return User::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function update(User $user, array $data): User|false
+    {
+        try {
             if (isset($data['phone_number'])) {
                 $phoneNumber = str_replace(' ', '', $data['phone_number']);
                 if ($user->phone()->exists()) {
@@ -67,23 +91,34 @@ final class UserService extends Service implements UserServiceInterface
                 }
             }
 
-            return parent::update($id, $data);
+            if (!$user->update($data)) {
+                throw new Exception('Ошибка при обновлении пользователя');
+            }
+
+            return $user->refresh();
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return false;
         }
     }
 
-    #[Override]
-    public function chats(string $user_id): Collection
+    public function delete(User $user): bool
     {
         try {
-            $user = $this->get($user_id);
+            DB::beginTransaction();
+            $user->delete();
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
 
-            if (!$user) {
-                throw new Exception('Пользователь не найден');
-            }
-
+    public function chats(User $user): Collection
+    {
+        try {
             Log::debug('Cache check');
             return Cache::remember($user->id . '_chats', 60, function () use ($user) {
                 Log::debug('Stored in cache: ' . $user->id . '_chats');
@@ -95,17 +130,9 @@ final class UserService extends Service implements UserServiceInterface
         }
     }
 
-
-    #[Override]
-    public function getUnreadMessages(string $user_id): Collection|false
+    public function getUnreadMessages(User $user): Collection|false
     {
         try {
-            $user = $this->get($user_id);
-
-            if (!$user) {
-                throw new Exception('Пользователь не найден');
-            }
-
             $messages = $user->unreadMessages()->distinct()->get(['id', 'from_id']);
             return $messages->groupBy('chat_id');
         } catch (Throwable $e) {
@@ -114,17 +141,11 @@ final class UserService extends Service implements UserServiceInterface
         }
     }
 
-    #[Override]
-    public function readMessages(string $user_id, array $messagesToRead): bool
+    public function readMessages(User $user, array $messagesToRead): bool
     {
-        DB::beginTransaction();
+        // TODO: вебсокеты?
         try {
-            $user = $this->get($user_id);
-
-            if (!$user) {
-                throw new Exception('Пользователь не найден');
-            }
-
+            DB::beginTransaction();
             $messages = $user->unreadMessages()->whereIn('id', $messagesToRead)->get();
 
             $messages->each(function (Message $message) {

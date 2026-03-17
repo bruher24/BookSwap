@@ -4,34 +4,110 @@ namespace App\Services;
 
 use App\Interfaces\AuthorServiceInterface;
 use App\Models\Author;
-use Override;
+use Exception;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
-final class AuthorService extends Service implements AuthorServiceInterface
+final class AuthorService implements AuthorServiceInterface
 {
-    public function __construct()
+    protected array $ucFirstFields = [
+        'lastname',
+        'firstname',
+        'patronymic',
+    ];
+
+    private function formatData(array $data): array
     {
-        parent::__construct(Author::class);
-        $this->ucFirstFields = [
-            'lastname',
-            'firstname',
-            'patronymic',
-        ];
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 
-    #[Override]
     public function create(array $data): Author|false
     {
-        return parent::create($data);
+        $formattedData = $this->formatData($data);
+
+        try {
+            DB::beginTransaction();
+            $author = new Author($formattedData);
+
+            if (!$author->save()) {
+                throw new Exception("Ошибка при создании автора");
+            }
+
+            DB::commit();
+            return $author->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
     public function get(string $id): Author|false
     {
-        return parent::get($id);
+        try {
+            return Author::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    public function update(string $id, array $data): Author|false
+    public function getAll(): Collection
     {
-        return parent::update($id, $data);
+        try {
+            return Cache::remember(Author::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Author::CACHE_KEY);
+                return Author::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return Author::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function update(Author $author, array $data): Author|false
+    {
+        try {
+            DB::beginTransaction();
+            $author->updateOrFail($data);
+            DB::commit();
+            return $author->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function delete(Author $author): bool
+    {
+        try {
+            DB::beginTransaction();
+            $author->delete();
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 }

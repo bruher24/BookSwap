@@ -4,23 +4,26 @@ namespace App\Interfaces;
 
 use App\Models\Chat;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Override;
 
-interface ChatServiceInterface extends ServiceInterface
+interface ChatServiceInterface
 {
-    #[Override]
     public function create(array $data): Chat|false;
 
-    #[Override]
     public function get(string $id): Chat|false;
 
-    #[Override]
-    public function update(string $id, array $data): Chat|false;
+    public function getAll(): Collection;
 
-    public function byUser(string $userId): Chat|false;
+    public function where(string $field, string $value): Collection;
 
-    public function messages(string $chatId): Collection;
+    public function update(Chat $chat, array $data): Chat|false;
 
-    public function sendMessage(string $chatId, string $senderId, string $body): Message|false;
+    public function delete(Chat $chat): bool;
+
+    public function byUser(User $user): Chat|false;
+
+    public function messages(Chat $chat): Collection;
+
+    public function sendMessage(Chat $chat, User $sender, string $body): Message|false;
 }

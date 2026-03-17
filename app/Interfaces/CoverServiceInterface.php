@@ -3,16 +3,19 @@
 namespace App\Interfaces;
 
 use App\Models\Cover;
-use Override;
+use Illuminate\Database\Eloquent\Collection;
 
-interface CoverServiceInterface extends ServiceInterface
+interface CoverServiceInterface
 {
-    #[Override]
     public function create(array $data): Cover|false;
 
-    #[Override]
     public function get(string $id): Cover|false;
 
-    #[Override]
-    public function update(string $id, array $data): Cover|false;
+    public function getAll(): Collection;
+
+    public function where(string $field, string $value): Collection;
+
+    public function update(Cover $cover, array $data): Cover|false;
+
+    public function delete(Cover $cover): bool;
 }

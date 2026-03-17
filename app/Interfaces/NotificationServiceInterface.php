@@ -3,22 +3,25 @@
 namespace App\Interfaces;
 
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Override;
 
-interface NotificationServiceInterface extends ServiceInterface
+interface NotificationServiceInterface
 {
-    #[Override]
     public function create(array $data): Notification|false;
 
-    #[Override]
     public function get(string $id): Notification|false;
 
-    public function byUser(string $user_id): Collection;
+    public function getAll(): Collection;
 
-    public function readAll(string $user_id): bool;
+    public function where(string $field, string $value): Collection;
 
-    #[Override]
-    public function update(string $id, array $data): Notification|false;
+    public function update(Notification $notification, array $data): Notification|false;
+
+    public function delete(Notification $notification): bool;
+
+    public function byUser(User $user): Collection;
+
+    public function readAll(User $user): bool;
+
 }

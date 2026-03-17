@@ -4,33 +4,92 @@ namespace App\Services;
 
 use App\Interfaces\MessageServiceInterface;
 use App\Models\Message;
-use Override;
+use Exception;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
-final class MessageService extends Service implements MessageServiceInterface
+final class MessageService implements MessageServiceInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function __construct()
-    {
-        parent::__construct(Message::class);
-    }
-
-    #[Override]
     public function create(array $data): Message|false
     {
-        return parent::create($data);
+        try {
+            DB::beginTransaction();
+            $message = new Message($data);
+
+            if (!$message->save()) {
+                throw new Exception("Ошибка при создании типа");
+            }
+
+            DB::commit();
+            return $message->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
     public function get(string $id): Message|false
     {
-        return parent::get($id);
+        try {
+            return Message::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
-    public function update(string $id, array $data): Message|false
+    public function getAll(): Collection
     {
-        return parent::update($id, $data);
+        try {
+            return Cache::remember(Message::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Message::CACHE_KEY);
+                return Message::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return Message::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function update(Message $message, array $data): Message|false
+    {
+        try {
+            DB::beginTransaction();
+            $message->updateOrFail($data);
+            DB::commit();
+            return $message->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function delete(Message $message): bool
+    {
+        try {
+            DB::beginTransaction();
+            $message->delete();
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 }

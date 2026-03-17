@@ -2,73 +2,64 @@
 
 namespace App\Services;
 
-use App\Events\BookCreated;
-use App\Events\BookDeleted;
-use App\Events\BookUpdated;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\Cover;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Override;
 use Throwable;
 
-final class BookService extends Service implements BookServiceInterface
+final class BookService implements BookServiceInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod}
-     */
-    public function __construct()
+    protected array $ucFirstFields = [
+        'name',
+        'publishing_house',
+    ];
+
+    private function formatData(array $data): array
     {
-        parent::__construct(Book::class);
-        $this->ucFirstFields = [
-            'name',
-            'publishing_house',
-        ];
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 
-    #[Override]
     public function create(array $data): Book|false
     {
-        DB::beginTransaction();
         try {
+            DB::beginTransaction();
             $data['cover_id'] = Cover::BASE_COVER_ID;
+
             if (isset($data['cover'])) {
                 $coverService = new CoverService();
                 $coverService->create($data['cover']);
             }
 
-            $book = parent::create($data);
-            if (!$book) {
+            $formattedData = $this->formatData($data);
+            $book = new Book($formattedData);
+
+            if (!$book->save()) {
                 throw new Exception('Ошибка при создании книги');
             }
 
             $authors = $this->filterAuthorsData($data);
-            if (!empty($authors) && !$this->attach($book->id, $authors)) {
+
+            if (!empty($authors) && !$this->attach($book, $authors)) {
                 throw new Exception('Ошибка при добавлении авторов');
             }
 
             DB::commit();
-            BookCreated::dispatch($book);
-            return $book;
+            return $book->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
             return false;
         }
-    }
-
-    #[Override]
-    public function get(string $id): Book|false
-    {
-        return parent::get($id);
-    }
-
-    #[Override]
-    public function update(string $id, array $data): Book|false
-    {
-       return parent::update($id, $data);
     }
 
     private function filterAuthorsData(array $data): array
@@ -91,16 +82,9 @@ final class BookService extends Service implements BookServiceInterface
         return $authors;
     }
 
-    #[Override]
-    public function attach(string $book_id, array $authors): bool
+    public function attach(Book $book, array $authors): bool
     {
         try {
-            $book = $this->get($book_id);
-
-            if (!$book instanceof Book) {
-                throw new Exception('Ошибка получения книги');
-            }
-
             if (isset($authors['ids'])) {
                 $book->authors()->attach($authors['ids']);
             }
@@ -111,6 +95,67 @@ final class BookService extends Service implements BookServiceInterface
 
             return true;
         } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function get(string $id): Book|false
+    {
+        try {
+            return Book::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function getAll(): Collection
+    {
+        try {
+            return Cache::remember(Book::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Book::CACHE_KEY);
+                return Book::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return Book::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function update(Book $book, array $data): Book|false
+    {
+        try {
+            DB::beginTransaction();
+            $book->updateOrFail($data);
+            DB::commit();
+            return $book->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function delete(Book $book): bool
+    {
+        try {
+            DB::beginTransaction();
+            $book->delete();
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
             Log::error($e->getMessage());
             return false;
         }

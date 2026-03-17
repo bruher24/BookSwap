@@ -94,20 +94,14 @@ abstract class Service implements ServiceInterface
     }
 
     #[Override]
-    public function update(string $id, array $data): Model|false
+    public function update(Model $model, array $data): Model|false
     {
         try {
             DB::beginTransaction();
-            $object = $this->get($id);
-
-            if (!$object instanceof Model) {
-                throw new Exception('Ошибка получения модели');
-            }
-
-            $object->updateOrFail($data);
+            $model->updateOrFail($data);
             DB::commit();
-            $object->refresh();
-            return $object;
+            $model->refresh();
+            return $model;
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
@@ -116,18 +110,11 @@ abstract class Service implements ServiceInterface
     }
 
     #[Override]
-    public function delete(string $id): bool
+    public function delete(Model $model): bool
     {
-        DB::beginTransaction();
         try {
-            $object = $this->get($id);
-
-            if (!$object instanceof Model) {
-                return true;
-            }
-
-            $object->delete();
-
+            DB::beginTransaction();
+            $model->delete();
             DB::commit();
             return true;
         } catch (Throwable $e) {

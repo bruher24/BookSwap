@@ -4,46 +4,103 @@ namespace App\Services;
 
 use App\Interfaces\NotificationServiceInterface;
 use App\Models\Notification;
+use App\Models\User;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
-use Override;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
-final class NotificationService extends Service implements NotificationServiceInterface
+final class NotificationService implements NotificationServiceInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function __construct()
-    {
-        parent::__construct(Notification::class);
-    }
-
-    #[Override]
     public function create(array $data): Notification|false
     {
-        return parent::create($data);
+        try {
+            DB::beginTransaction();
+            $notification = new Notification($data);
+
+            if (!$notification->save()) {
+                throw new Exception("Ошибка при создании типа");
+            }
+
+            DB::commit();
+            return $notification->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
     public function get(string $id): Notification|false
     {
-        return parent::get($id);
+        try {
+            return Notification::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
-    public function byUser(string $user_id): Collection
+    public function getAll(): Collection
     {
-        return Notification::where('user_id', $user_id)->get();
+        try {
+            return Cache::remember(Notification::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Notification::CACHE_KEY);
+                return Notification::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
     }
 
-    #[Override]
-    public function readAll(string $user_id): bool
+    public function where(string $field, string $value): Collection
     {
-        return !!Notification::where('user_id', $user_id)->update(['seen' => true]);
+        try {
+            return Notification::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
     }
 
-    #[Override]
-    public function update(string $id, array $data): Notification|false
+    public function update(Notification $notification, array $data): Notification|false
     {
-        return parent::update($id, $data);
+        try {
+            DB::beginTransaction();
+            $notification->updateOrFail($data);
+            DB::commit();
+            return $notification->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function delete(Notification $notification): bool
+    {
+        try {
+            DB::beginTransaction();
+            $notification->delete();
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function byUser(User $user): Collection
+    {
+        return $this->where('user_id', $user->id);
+    }
+
+    public function readAll(User $user): bool
+    {
+        return !!Notification::where('user_id', $user->id)->update(['seen' => true]);
     }
 }

@@ -15,8 +15,8 @@ interface ServiceInterface
 
     public function where(string $field, string $value): Collection;
 
-    public function update(string $id, array $data): Model|false;
+    public function update(Model $model, array $data): Model|false;
 
-    public function delete(string $id): bool;
+    public function delete(Model $model): bool;
 
 }

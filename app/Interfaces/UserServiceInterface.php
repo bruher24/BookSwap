@@ -6,20 +6,23 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Override;
 
-interface UserServiceInterface extends ServiceInterface
+interface UserServiceInterface
 {
-    #[Override]
     public function create(array $data): User|false;
 
-    #[Override]
     public function get(string $id): User|false;
 
-    #[Override]
-    public function update(string $id, array $data): User|false;
+    public function getAll(): Collection;
 
-    public function chats(string $user_id): Collection;
+    public function where(string $field, string $value): Collection;
 
-    public function getUnreadMessages(string $user_id): Collection|false;
+    public function update(User $user, array $data): User|false;
 
-    public function readMessages(string $user_id, array $messagesToRead): bool;
+    public function delete(User $user): bool;
+
+    public function chats(User $user): Collection;
+
+    public function getUnreadMessages(User $user): Collection|false;
+
+    public function readMessages(User $user, array $messagesToRead): bool;
 }

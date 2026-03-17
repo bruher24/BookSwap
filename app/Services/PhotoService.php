@@ -5,80 +5,110 @@ namespace App\Services;
 use App\Interfaces\PhotoServiceInterface;
 use App\Models\Photo;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Override;
 use Throwable;
 
-final class PhotoService extends Service implements PhotoServiceInterface
+final class PhotoService implements PhotoServiceInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function __construct()
-    {
-        parent::__construct(Photo::class);
-    }
-
-    #[Override]
     public function create(array $data): Photo|false
     {
         try {
-            // TODO: кидать ивент, чтобы создание падало в очередь
+            DB::beginTransaction();
             $path = $this->storeFile($data['src']);
 
             if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
-            $cover = parent::create(['src' => $path]);
+            $photo = new Photo(['src' => $path]);
 
-            if (!$cover) {
-                throw new Exception('Ошибка при создании фото');
+            if (!$photo->save()) {
+                throw new Exception("Ошибка при создании фото");
             }
 
-            return $cover;
+            DB::commit();
+            return $photo->refresh();
         } catch (Throwable $e) {
-            Log::error($e);
+            DB::rollBack();
+            Log::error($e->getMessage());
             return false;
         }
     }
 
-    #[Override]
     public function get(string $id): Photo|false
     {
-        return parent::get($id);
+        try {
+            return Photo::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
-    public function update(string $id, array $data): Photo|false
+    public function getAll(): Collection
     {
         try {
-            $oldFile = $this->get($id);
+            return Cache::remember(Photo::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Photo::CACHE_KEY);
+                return Photo::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
 
-            // TODO: кидать ивент, чтобы удаление падало в очередь
-            if ($id !== Photo::BASE_PHOTO_ID && $oldFile instanceof Photo) {
-                Storage::disk('public')->delete($oldFile->src);
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return Photo::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function update(Photo $photo, array $data): Photo|false
+    {
+        try {
+            DB::beginTransaction();
+
+            // TODO: создание и удаление через очередь
+            if ($photo->id !== Photo::BASE_PHOTO_ID) {
+                Storage::disk('public')->delete($photo->src);
             }
 
-            // TODO: кидать ивент, чтобы создание падало в очередь
             $path = $this->storeFile($data['src']);
-
             if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
-            $photo = parent::update($id, ['src' => $path]);
-
-            if (!$photo) {
-                throw new Exception('Ошибка при создании фото');
-            }
-
-            return $photo;
+            $photo->updateOrFail(['src' => $path]);
+            DB::commit();
+            return $photo->refresh();
         } catch (Throwable $e) {
-            Log::error($e);
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function delete(Photo $photo): bool
+    {
+        try {
+            DB::beginTransaction();
+            $photo->delete();
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
             return false;
         }
     }
@@ -88,32 +118,5 @@ final class PhotoService extends Service implements PhotoServiceInterface
         $uuid = Str::uuid()->toString();
         $fileType = $file->getClientOriginalExtension();
         return Storage::disk('public')->putFileAs('avatars', $file, $uuid . "." . $fileType);
-    }
-
-    #[Override]
-    public function delete(string $id): bool
-    {
-        try {
-            $file = $this->get($id);
-
-            if (!$file instanceof Photo) {
-                return true;
-            }
-
-            // TODO: жесткое удаление либо не удалять файл какое-то время
-            if (!parent::delete($id)) {
-                throw new Exception('Ошибка при удалении файла');
-            }
-
-            // TODO: кидать ивент, чтобы падало в очередь
-            if ($id !== Photo::BASE_PHOTO_ID) {
-                Storage::disk('public')->delete($file->src);
-            }
-
-            return true;
-        } catch (Throwable $e) {
-            Log::error($e);
-            return false;
-        }
     }
 }

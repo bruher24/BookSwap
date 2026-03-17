@@ -4,36 +4,108 @@ namespace App\Services;
 
 use App\Interfaces\GenreServiceInterface;
 use App\Models\Genre;
-use Override;
+use Exception;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
-final class GenreService extends Service implements GenreServiceInterface
+final class GenreService implements GenreServiceInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function __construct()
+    private array $ucFirstFields = [
+        'name',
+    ];
+
+    private function formatData(array $data): array
     {
-        parent::__construct(Genre::class);
-        $this->ucFirstFields = [
-            'name',
-        ];
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 
-    #[Override]
     public function create(array $data): Genre|false
     {
-        return parent::create($data);
+        $formattedData = $this->formatData($data);
+
+        try {
+            DB::beginTransaction();
+            $genre = new Genre($formattedData);
+
+            if (!$genre->save()) {
+                throw new Exception("Ошибка при создании типа");
+            }
+
+            DB::commit();
+            return $genre->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
     public function get(string $id): Genre|false
     {
-        return parent::get($id);
+        try {
+            return Genre::findOrFail($id);
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 
-    #[Override]
-    public function update(string $id, array $data): Genre|false
+    public function getAll(): Collection
     {
-        return parent::update($id, $data);
+        try {
+            return Cache::remember(Genre::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Genre::CACHE_KEY);
+                return Genre::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return Genre::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function update(Genre $genre, array $data): Genre|false
+    {
+        try {
+            DB::beginTransaction();
+            $genre->updateOrFail($data);
+            DB::commit();
+            return $genre->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function delete(Genre $genre): bool
+    {
+        try {
+            DB::beginTransaction();
+            $genre->delete();
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 }

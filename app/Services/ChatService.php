@@ -2,58 +2,103 @@
 
 namespace App\Services;
 
-use App\Events\MessageSent;
 use App\Interfaces\ChatServiceInterface;
 use App\Models\Chat;
 use App\Models\Message;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Override;
 use Throwable;
 
-final class ChatService extends Service implements ChatServiceInterface
+final class ChatService implements ChatServiceInterface
 {
-    /**
-     * @psalm-suppress PossiblyUnusedMethod
-     */
-    public function __construct()
-    {
-        parent::__construct(Chat::class);
-    }
-
-    #[Override]
     public function create(array $data): Chat|false
     {
         try {
-            $sorted = [$data['first_user_id'], $data['second_user_id']];
-            sort($sorted);
-            $data['first_user_id'] = $sorted[0];
-            $data['second_user_id'] = $sorted[1];
-            return parent::create($data);
+            DB::beginTransaction();
+            $chat = new Chat($data);
+
+            if (!$chat->save()) {
+                throw new Exception("Ошибка при создании чата");
+            }
+
+            DB::commit();
+            return $chat->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function get(string $id): Chat|false
+    {
+        try {
+            return Chat::findOrFail($id);
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return false;
         }
     }
 
-    #[Override]
-    public function get(string $id): Chat|false
-    {
-        return parent::get($id);
-    }
-
-    #[Override]
-    public function update(string $id, array $data): Chat|false
-    {
-        return parent::update($id, $data);
-    }
-
-    public function byUser(string $userId): Chat|false
+    public function getAll(): Collection
     {
         try {
-            $chat = Chat::where('first_user_id', $userId)->orWhere('second_user_id', $userId)->first();
+            return Cache::remember(Chat::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Chat::CACHE_KEY);
+                return Chat::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function where(string $field, string $value): Collection
+    {
+        try {
+            return Chat::where($field, $value)->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return new Collection();
+        }
+    }
+
+    public function update(Chat $chat, array $data): Chat|false
+    {
+        try {
+            DB::beginTransaction();
+            $chat->updateOrFail($data);
+            DB::commit();
+            return $chat->refresh();
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function delete(Chat $chat): bool
+    {
+        try {
+            DB::beginTransaction();
+            $chat->delete();
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function byUser(User $user): Chat|false
+    {
+        try {
+            $chat = Chat::where('first_user_id', $user->id)->orWhere('second_user_id', $user->id)->first();
 
             if (!$chat) {
                 throw new Exception('Ошибка при получении чата');
@@ -66,16 +111,9 @@ final class ChatService extends Service implements ChatServiceInterface
         }
     }
 
-    #[Override]
-    public function messages(string $chatId): Collection
+    public function messages(Chat $chat): Collection
     {
         try {
-            $chat = $this->get($chatId);
-
-            if (!$chat) {
-                throw new Exception('Чат не найден');
-            }
-
             $messages = $chat->messages()->orderBy('created_at')->orderBy('id')->get();
             return $messages->groupBy(function (Message $item) {
                 return mb_substr($item->created_at, 0, 10);
@@ -86,32 +124,23 @@ final class ChatService extends Service implements ChatServiceInterface
         }
     }
 
-    #[Override]
-    public function sendMessage(string $chatId, string $senderId, string $body): Message|false
+    public function sendMessage(Chat $chat, User $sender, string $body): Message|false
     {
         try {
             DB::beginTransaction();
-            $chat = $this->get($chatId);
 
-            if (!$chat instanceof Chat) {
-                throw new Exception('Ошибка получения чата');
-            }
-
-            $message = new Message([
-                'chat_id' => $chat->id,
-                'sender_id' => $senderId,
+            $data = [
+                'sender_id' => $sender->id,
                 'body' => $body,
-            ]);
+            ];
 
-            $saved = $chat->messages()->save($message);
+            $message = $chat->messages()->create($data);
 
-            if (!$saved) {
+            if (!$message) {
                 throw new Exception('Ошибка при сохранении сообщения');
             }
 
             DB::commit();
-            $message->refresh();
-
             return $message;
         } catch (Throwable $exception) {
             DB::rollBack();
