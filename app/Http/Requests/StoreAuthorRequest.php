@@ -25,6 +25,11 @@ final class StoreAuthorRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => [
+                'required',
+                'integer',
+                Rule::exists('users', 'id'),
+            ],
             'lastname' => [
                 'required',
                 'string',

@@ -30,6 +30,7 @@ final class AuthService implements AuthServiceInterface
         ], $remember === true)) {
             return false;
         }
+
         return true;
     }
 
@@ -38,14 +39,18 @@ final class AuthService implements AuthServiceInterface
     {
         try {
             $user = $this->userService->where('email', $email)->first();
+
             if (!$user instanceof User) {
                 throw new Exception('Пользователь с указанным email не найден');
             }
+
             $user->tokens()->delete();
-            $abilities = [$email];
+            $abilities = ['user'];
+
             if ($user->isAdmin()) {
                 $abilities[] = 'admin';
             }
+
             return $user->createToken('api-token', $abilities, now()->addHours(2))->plainTextToken;
         } catch (Throwable $e) {
             Log::error($e->getMessage());
@@ -58,9 +63,11 @@ final class AuthService implements AuthServiceInterface
     {
         try {
             $user = $this->userService->where('email', $email)->first();
+
             if (!$user instanceof User) {
                 throw new Exception('Пользователь с указанным email не найден');
             }
+
             $user->tokens()->delete();
             return true;
         } catch (Throwable $e) {

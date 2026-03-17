@@ -28,8 +28,9 @@ abstract class Service implements ServiceInterface
     public function create(array $data): Model|false
     {
         $formattedData = $this->formatData($data);
-        DB::beginTransaction();
+
         try {
+            DB::beginTransaction();
             $object = new $this->modelClass($formattedData);
 
             if (!$object->save()) {

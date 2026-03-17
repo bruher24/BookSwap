@@ -27,8 +27,8 @@ Route::prefix('v1')->name('api.')
             ->group(function () {
                 Route::post('register', 'register')->name('register')->withoutMiddleware('auth:sanctum');
                 Route::post('login', 'login')->name('login')->withoutMiddleware('auth:sanctum');
-                Route::post('refresh', 'refresh')->name('refresh')->middleware(BearerAuth::class);
-                Route::post('logout', 'logout')->name('logout')->middleware(BearerAuth::class);
+                Route::post('refresh', 'refresh')->name('refresh');
+                Route::post('logout', 'logout')->name('logout');
             });
 
         Route::prefix('authors')->name('authors.')->controller(AuthorController::class)
@@ -45,8 +45,8 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{book}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{book}', 'update')->name('update')->middleware(BearerAuth::class);
-                Route::delete('{book}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
+                Route::put('{book}', 'update')->name('update');
+                Route::delete('{book}', 'destroy')->name('destroy');
             });
 
         Route::prefix('book_types')->name('book_types.')->controller(BookTypeController::class)
@@ -60,45 +60,45 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('chats')->name('chats.')->controller(ChatController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
+                Route::get('/', 'index')->name('index')->middleware('ability:admin');
                 Route::post('/', 'store')->name('store');
-                Route::get('{chat}', 'show')->name('show')->middleware(BearerAuth::class);
-                Route::put('{chat}', 'update')->name('update')->middleware(BearerAuth::class);
-                Route::delete('{chat}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
-                Route::get('by_user/{user}', 'byUser')->name('byUser')->middleware(BearerAuth::class);
-                Route::get('{chat}/messages', 'messages')->name('messages')->middleware(BearerAuth::class);
-                Route::post('{chat}/messages', 'send')->name('send')->middleware(BearerAuth::class);
+                Route::get('{chat}', 'show')->name('show');
+                Route::put('{chat}', 'update')->name('update');
+                Route::delete('{chat}', 'destroy')->name('destroy');
+                Route::get('by_user/{user}', 'byUser')->name('byUser');
+                Route::get('{chat}/messages', 'messages')->name('messages');
+                Route::post('{chat}/messages', 'send')->name('send');
             });
 
         Route::prefix('covers')->name('covers.')->controller(CoverController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
+                Route::get('/', 'index')->name('index')->middleware('ability:admin');
                 Route::post('/', 'store')->name('store');
                 Route::get('{cover}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{cover}', 'update')->name('update')->middleware(IsAdmin::class);
-                Route::delete('{cover}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
+                Route::put('{cover}', 'update')->name('update')->middleware('ability:admin');
+                Route::delete('{cover}', 'destroy')->name('destroy');
             });
 
         Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
-                Route::post('/', 'store')->name('store')->middleware(BearerAuth::class);
-                Route::get('{trade_offer}', 'show')->name('show')->middleware(BearerAuth::class);
-                Route::put('{trade_offer}', 'update')->name('update')->middleware(BearerAuth::class);
-                Route::delete('{trade_offer}', 'destroy')->name('destroy')->middleware(BearerAuth::class);
-                Route::get('by_sender/{sender}', 'bySender')->name('bySender')->middleware(BearerAuth::class);
-                Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver')->middleware(BearerAuth::class);
-                Route::patch('{trade_offer}/accept', 'accept')->name('accept')->middleware(BearerAuth::class);
-                Route::patch('{trade_offer}/reject', 'reject')->name('reject')->middleware(BearerAuth::class);
+                Route::get('/', 'index')->name('index')->middleware('ability:admin');
+                Route::post('/', 'store')->name('store');
+                Route::get('{trade_offer}', 'show')->name('show');
+                Route::put('{trade_offer}', 'update')->name('update');
+                Route::delete('{trade_offer}', 'destroy')->name('destroy');
+                Route::get('by_sender/{sender}', 'bySender')->name('bySender');
+                Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver');
+                Route::patch('{trade_offer}/accept', 'accept')->name('accept');
+                Route::patch('{trade_offer}/reject', 'reject')->name('reject');
             });
 
         Route::prefix('filters')->name('filters.')->controller(FilterController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
-                Route::post('/', 'store')->name('store')->middleware(IsAdmin::class);
+                Route::post('/', 'store')->name('store')->middleware('ability:admin');
                 Route::get('{filter}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{filter}', 'update')->name('update')->middleware(IsAdmin::class);
-                Route::delete('{filter}', 'destroy')->name('destroy')->middleware(IsAdmin::class);
+                Route::put('{filter}', 'update')->name('update')->middleware('ability:admin');
+                Route::delete('{filter}', 'destroy')->name('destroy')->middleware('ability:admin');
             });
 
         Route::prefix('genres')->name('genres.')->controller(GenreController::class)
@@ -112,10 +112,10 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('photos')->name('photos.')->controller(PhotoController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
+                Route::get('/', 'index')->name('index')->middleware('ability:admin');
                 Route::post('/', 'store')->name('store');
                 Route::get('{photo}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{photo}', 'update')->name('update')->middleware(IsAdmin::class);
+                Route::put('{photo}', 'update')->name('update')->middleware('ability:admin');
                 Route::delete('{photo}', 'destroy')->name('destroy');
             });
 
@@ -124,15 +124,15 @@ Route::prefix('v1')->name('api.')
         Route::prefix('settings')->name('settings.')->controller(SettingController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
-                Route::post('/', 'store')->name('store')->middleware(IsAdmin::class);
+                Route::post('/', 'store')->name('store')->middleware('ability:admin');
                 Route::get('{setting}', 'show')->name('show');
-                Route::put('{setting}', 'update')->name('update')->middleware(IsAdmin::class);
-                Route::delete('{setting}', 'destroy')->name('destroy')->middleware(IsAdmin::class);
+                Route::put('{setting}', 'update')->name('update')->middleware('ability:admin');
+                Route::delete('{setting}', 'destroy')->name('destroy')->middleware('ability:admin');
             });
 
         Route::prefix('users')->name('users.')->controller(UserController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware(IsAdmin::class);
+                Route::get('/', 'index')->name('index')->middleware('ability:admin');
                 Route::post('/', 'store')->name('store');
                 Route::get('{user}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
                 Route::put('{user}', 'update')->name('update');

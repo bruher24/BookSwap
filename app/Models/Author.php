@@ -22,6 +22,7 @@ final class Author extends Model implements Cacheable
     public const string CACHE_KEY = 'authors';
 
     public $fillable = [
+        'user_id',
         'lastname',
         'firstname',
         'patronymic',

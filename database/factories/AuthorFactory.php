@@ -22,6 +22,7 @@ final class AuthorFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => 9999,
             'lastname' => fake()->lastName(),
             'firstname' => fake()->firstName(),
             'patronymic' => fake()->lastName(),
