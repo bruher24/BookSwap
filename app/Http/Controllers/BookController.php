@@ -8,7 +8,9 @@ use App\Http\Resources\BookResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\BookServiceInterface;
+use App\Models\Book;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 final class BookController extends Controller
@@ -53,11 +55,12 @@ final class BookController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(UpdateBookRequest $request, BookServiceInterface $bookService, string $id): JsonResponse
+    public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book): JsonResponse
     {
+        Gate::authorize('update', $book);
         $validated = $request->validated();
 
-        $book = $bookService->update($id, $validated);
+        $book = $bookService->update($book, $validated);
         if (!$book) {
             $errors = ['Ошибка при обновлении книги'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
@@ -69,9 +72,11 @@ final class BookController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(BookServiceInterface $bookService, string $id): JsonResponse
+    public function destroy(BookServiceInterface $bookService, Book $book): JsonResponse
     {
-        if (!$bookService->delete($id)) {
+        Gate::authorize('delete', $book);
+
+        if (!$bookService->delete($book)) {
             $errors = ['Ошибка при удалении книги'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
