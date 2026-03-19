@@ -8,7 +8,10 @@ use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\TradeOfferResource;
 use App\Interfaces\TradeOfferServiceInterface;
+use App\Models\TradeOffer;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 final class TradeOfferController extends Controller
@@ -17,14 +20,15 @@ final class TradeOfferController extends Controller
     {
         $tradeOffers = $tradeOfferService->getAll();
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
-        $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
-        $data = ['tradeOffers' => $tradeOfferResourceCollection];
+        $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
         return (new SuccessResource($data))->response()->setStatusCode($statusCode);
     }
 
     public function store(TradeOfferServiceInterface $tradeOfferService, StoreTradeOfferRequest $request): JsonResponse
     {
+        Gate::authorize('create', TradeOffer::class);
+
         $validated = $request->validated();
         $tradeOffer = $tradeOfferService->create($validated);
 
@@ -33,50 +37,40 @@ final class TradeOfferController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $tradeOfferResource = new TradeOfferResource($tradeOffer);
-        $data = ['tradeOffer' => $tradeOfferResource];
+        $data = ['tradeOffer' => new TradeOfferResource($tradeOffer)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResponse
+    public function show(TradeOffer $tradeOffer): JsonResponse
     {
-        $tradeOffer = $tradeOfferService->get($id);
-
-        if (!$tradeOffer) {
-            $errors = ['Ошибка при получении сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
-
-        $tradeOfferResource = new TradeOfferResource($tradeOffer);
-        $data = ['tradeOffer' => $tradeOfferResource];
+        $data = ['tradeOffer' => new TradeOfferResource($tradeOffer)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(
-        TradeOfferServiceInterface $tradeOfferService,
-        UpdateTradeOfferRequest    $request,
-        string                     $id
-    ): JsonResponse
+    public function update(TradeOfferServiceInterface $tradeOfferService, UpdateTradeOfferRequest $request, TradeOffer $tradeOffer): JsonResponse
     {
+        Gate::authorize('update', $tradeOffer);
+
         $validated = $request->validated();
-        $tradeOffer = $tradeOfferService->update($id, $validated);
+        $tradeOffer = $tradeOfferService->update($tradeOffer, $validated);
 
         if (!$tradeOffer) {
             $errors = ['Ошибка при обновлении сделки'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $tradeOfferResource = new TradeOfferResource($tradeOffer);
-        $data = ['tradeOffer' => $tradeOfferResource];
+        $data = ['tradeOffer' => new TradeOfferResource($tradeOffer)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(TradeOfferServiceInterface $tradeOfferService, string $id): JsonResponse
+    public function destroy(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
     {
-        if (!$tradeOfferService->delete($id)) {
+        Gate::authorize('delete', $tradeOffer);
+
+        if (!$tradeOfferService->delete($tradeOffer)) {
             $errors = ['Ошибка при удалении сделки'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
@@ -84,29 +78,33 @@ final class TradeOfferController extends Controller
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
-    public function bySender(string $senderId): JsonResponse
+    public function bySender(TradeOfferServiceInterface $tradeOfferService, User $sender): JsonResponse
     {
-        $tradeOffers = $this->service->bySender($senderId);
+        Gate::authorize('bySender', $sender);
+
+        $tradeOffers = $tradeOfferService->bySender($sender);
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
-        $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
-        $data = ['tradeOffers' => $tradeOfferResourceCollection];
+        $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
         return (new SuccessResource($data))->response()->setStatusCode($statusCode);
     }
 
-    public function byReceiver(string $receiverId): JsonResponse
+    public function byReceiver(TradeOfferServiceInterface $tradeOfferService, User $receiver): JsonResponse
     {
-        $tradeOffers = $this->service->byReceiver($receiverId);
+        Gate::authorize('byReceiver', $receiver);
+
+        $tradeOffers = $tradeOfferService->byReceiver($receiver);
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
-        $tradeOfferResourceCollection = TradeOfferResource::collection($tradeOffers);
-        $data = ['tradeOffers' => $tradeOfferResourceCollection];
+        $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
         return (new SuccessResource($data))->response()->setStatusCode($statusCode);
     }
 
-    public function accept(string $id): JsonResponse
+    public function accept(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
     {
-        if (!$this->service->accept($id)) {
+        Gate::authorize('accept', $tradeOffer);
+
+        if (!$tradeOfferService->accept($tradeOffer)) {
             $errors = ['Ошибка при принятии предложения обмена'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
@@ -114,9 +112,11 @@ final class TradeOfferController extends Controller
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function reject(string $id): JsonResponse
+    public function reject(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
     {
-        if (!$this->service->reject($id)) {
+        Gate::authorize('reject', $tradeOffer);
+
+        if (!$tradeOfferService->reject($tradeOffer)) {
             $errors = ['Ошибка при отклонении предложения обмена'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

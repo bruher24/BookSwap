@@ -79,19 +79,6 @@ Route::prefix('v1')->name('api.')
                 Route::delete('{cover}', 'destroy')->name('destroy');
             });
 
-        Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
-            ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware('ability:admin');
-                Route::post('/', 'store')->name('store');
-                Route::get('{trade_offer}', 'show')->name('show');
-                Route::put('{trade_offer}', 'update')->name('update');
-                Route::delete('{trade_offer}', 'destroy')->name('destroy');
-                Route::get('by_sender/{sender}', 'bySender')->name('bySender');
-                Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver');
-                Route::patch('{trade_offer}/accept', 'accept')->name('accept');
-                Route::patch('{trade_offer}/reject', 'reject')->name('reject');
-            });
-
         Route::prefix('filters')->name('filters.')->controller(FilterController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
@@ -128,6 +115,19 @@ Route::prefix('v1')->name('api.')
                 Route::get('{setting}', 'show')->name('show');
                 Route::put('{setting}', 'update')->name('update')->middleware('ability:admin');
                 Route::delete('{setting}', 'destroy')->name('destroy')->middleware('ability:admin');
+            });
+
+        Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index')->middleware('ability:admin');
+                Route::post('/', 'store')->name('store');
+                Route::get('{trade_offer}', 'show')->name('show');
+                Route::put('{trade_offer}', 'update')->name('update');
+                Route::delete('{trade_offer}', 'destroy')->name('destroy');
+                Route::get('by_sender/{sender}', 'bySender')->name('bySender');
+                Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver');
+                Route::patch('{trade_offer}/accept', 'accept')->name('accept');
+                Route::patch('{trade_offer}/reject', 'reject')->name('reject');
             });
 
         Route::prefix('users')->name('users.')->controller(UserController::class)

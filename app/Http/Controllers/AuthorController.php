@@ -18,14 +18,15 @@ final class AuthorController extends Controller
     public function index(AuthorServiceInterface $authorService): JsonResponse
     {
         $authors = $authorService->getAll();
-        $authorResourceCollection = AuthorResource::collection($authors);
-        $data = ['authors' => $authorResourceCollection];
+        $data = ['authors' => AuthorResource::collection($authors)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(AuthorServiceInterface $authorService, StoreAuthorRequest $request): JsonResponse
     {
+        Gate::authorize('create', Author::class);
+
         $validated = $request->validated();
         $author = $authorService->create($validated);
 
@@ -34,32 +35,19 @@ final class AuthorController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $authorResource = new AuthorResource($author);
-        $data = ['author' => $authorResource];
+        $data = ['author' => new AuthorResource($author)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(AuthorServiceInterface $authorService, string $id): JsonResponse
+    public function show(Author $author): JsonResponse
     {
-        $author = $authorService->get($id);
-
-        if (!$author) {
-            $errors = ['Ошибка при получении автора'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
-
-        $authorResource = new AuthorResource($author);
-        $data = ['author' => $authorResource];
+        $data = ['author' => new AuthorResource($author)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(
-        AuthorServiceInterface $authorService,
-        UpdateAuthorRequest    $request,
-        Author                 $author
-    ): JsonResponse
+    public function update(AuthorServiceInterface $authorService, UpdateAuthorRequest $request, Author $author): JsonResponse
     {
         Gate::authorize('update', $author);
 
@@ -71,8 +59,7 @@ final class AuthorController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $authorResource = new AuthorResource($author);
-        $data = ['author' => $authorResource];
+        $data = ['author' => new AuthorResource($author)];
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 

@@ -17,10 +17,15 @@ final class UpdateTradeOfferRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Prepare the data for validation.
+     */
     #[Override]
     protected function prepareForValidation(): void
     {
-        $this->merge(['trade_offer_id' => $this->route('trade_offer')]);
+        $this->merge([
+            'trade_offer_id' => $this->route('trade_offer')->id,
+        ]);
     }
 
     /**

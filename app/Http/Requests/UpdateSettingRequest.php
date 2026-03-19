@@ -17,10 +17,15 @@ final class UpdateSettingRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Prepare the data for validation.
+     */
     #[Override]
     protected function prepareForValidation(): void
     {
-        $this->merge(['setting_id' => $this->route('setting')]);
+        $this->merge([
+            'setting_id' => $this->route('setting')->id,
+        ]);
     }
 
     /**

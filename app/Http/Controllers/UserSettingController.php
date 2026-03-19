@@ -6,34 +6,28 @@ use App\Http\Requests\UpdateSettingsValuesRequest;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SettingResource;
 use App\Http\Resources\SuccessResource;
-use App\Interfaces\UserServiceInterface;
 use App\Interfaces\UserSettingServiceInterface;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 final class UserSettingController extends Controller
 {
-    public function index(UserServiceInterface $userService, string $user_id): JsonResponse
+    public function index(User $user): JsonResponse
     {
-        $user = $userService->get($user_id);
+        Gate::authorize('settings', $user);
 
-        if (!$user instanceof User) {
-            $errors = ['Пользователь не найден'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
-
-        $settingResourceCollection = SettingResource::collection($user->settings()->get());
-        $data = ['settings' => $settingResourceCollection];
+        $userSettings = $user->settings()->get();
+        $data = ['settings' => SettingResource::collection($userSettings)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(
-        UserSettingServiceInterface $userSettingService,
-        UpdateSettingsValuesRequest $request,
-        string $user_id
-    ): JsonResponse {
+    public function update(UserSettingServiceInterface $userSettingService, UpdateSettingsValuesRequest $request, User $user): JsonResponse
+    {
+        Gate::authorize('settings', $user);
+
         $validated = $request->validated();
         $settingsData = $validated['settingsData'];
         $isValidSettingsData = $userSettingService->validateSettingsData($settingsData);
@@ -43,7 +37,7 @@ final class UserSettingController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$userSettingService->updateSettings($user_id, $settingsData)) {
+        if (!$userSettingService->updateSettings($user, $settingsData)) {
             $errors = ['Ошибка при обновлении настроек'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

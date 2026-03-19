@@ -17,10 +17,15 @@ final class UpdateChatRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Prepare the data for validation.
+     */
     #[Override]
     protected function prepareForValidation(): void
     {
-        $this->merge(['chat_id' => $this->route('chat')]);
+        $this->merge([
+            'chat_id' => $this->route('chat')->id,
+        ]);
     }
 
     /**

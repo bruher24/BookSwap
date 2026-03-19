@@ -17,10 +17,15 @@ final class UpdateCoverRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Prepare the data for validation.
+     */
     #[Override]
     protected function prepareForValidation(): void
     {
-        $this->merge(['cover_id' => $this->route('cover')]);
+        $this->merge([
+            'cover_id' => $this->route('cover')->id,
+        ]);
     }
 
     /**

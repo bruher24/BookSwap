@@ -6,6 +6,7 @@ use App\Models\Author;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Override;
 
 final class UpdateBookRequest extends FormRequest
 {
@@ -18,13 +19,23 @@ final class UpdateBookRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    #[Override]
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'book_id' => $this->route('book')->id,
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
-        request()->merge(['book_id' => $this->route('book')]);
         return [
             'book_id' => [
                 'required',

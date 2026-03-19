@@ -18,14 +18,15 @@ final class BookController extends Controller
     public function index(BookServiceInterface $bookService): JsonResponse
     {
         $books = $bookService->getAll();
-        $bookResourceCollection = BookResource::collection($books);
-        $data = ['books' => $bookResourceCollection];
+        $data = ['books' => BookResource::collection($books)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(StoreBookRequest $request, BookServiceInterface $bookService): JsonResponse
     {
+        Gate::authorize('create', Book::class);
+
         $validated = $request->validated();
         $book = $bookService->create($validated);
 
@@ -34,23 +35,14 @@ final class BookController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $bookResource = new BookResource($book);
-        $data = ['book' => $bookResource];
+        $data = ['book' => new BookResource($book)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(BookServiceInterface $bookService, string $id): JsonResponse
+    public function show(Book $book): JsonResponse
     {
-        $book = $bookService->get($id);
-
-        if (!$book) {
-            $errors = ['Ошибка при получении книги'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
-
-        $bookResource = new BookResource($book);
-        $data = ['book' => $bookResource];
+        $data = ['book' => new BookResource($book)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
@@ -66,8 +58,7 @@ final class BookController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $bookResource = new BookResource($book);
-        $data = ['book' => $bookResource];
+        $data = ['book' => new BookResource($book)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }

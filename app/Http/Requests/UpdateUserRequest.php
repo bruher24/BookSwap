@@ -24,7 +24,7 @@ final class UpdateUserRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'user_id' => $this->route('user'),
+            'user_id' => $this->route('user')->id,
         ]);
     }
 

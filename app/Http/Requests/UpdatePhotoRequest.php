@@ -17,10 +17,15 @@ final class UpdatePhotoRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Prepare the data for validation.
+     */
     #[Override]
     protected function prepareForValidation(): void
     {
-        $this->merge(['photo_id' => $this->route('photo')]);
+        $this->merge([
+            'photo_id' => $this->route('photo')->id,
+        ]);
     }
 
     /**

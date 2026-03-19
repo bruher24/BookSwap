@@ -11,16 +11,11 @@ use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 final class AuthController extends Controller
 {
-    public function register(
-        UserServiceInterface $userService,
-        AuthServiceInterface $authService,
-        StoreUserRequest     $request
-    ): JsonResponse
+    public function register(UserServiceInterface $userService, AuthServiceInterface $authService, StoreUserRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $user = $userService->create($validated);
@@ -31,20 +26,15 @@ final class AuthController extends Controller
         }
 
         $token = $authService->refreshToken($user->email);
-        $userResource = new UserResource($user);
         $data = [
-            'user' => $userResource,
+            'user' => new UserResource($user),
             'token' => $token
         ];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function login(
-        UserServiceInterface $userService,
-        AuthServiceInterface $authService,
-        AuthRequest          $request
-    ): JsonResponse
+    public function login(UserServiceInterface $userService, AuthServiceInterface $authService, AuthRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
@@ -61,9 +51,8 @@ final class AuthController extends Controller
         }
 
         $user = $userService->where('email', $validated['email'])->first();
-        $userResource = new UserResource($user);
         $data = [
-            'user' => $userResource,
+            'user' => new UserResource($user),
             'token' => $token
         ];
 
@@ -87,6 +76,7 @@ final class AuthController extends Controller
 
     public function logout(AuthServiceInterface $authService, Request $request): JsonResponse
     {
+        // TODO: добавить гейт
         $email = $request->input('email');
 
         if (!$authService->logout($email)) {

@@ -17,10 +17,15 @@ final class UpdateFilterRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Prepare the data for validation.
+     */
     #[Override]
     protected function prepareForValidation(): void
     {
-        $this->merge(['filter_id' => $this->route('filter')]);
+        $this->merge([
+            'filter_id' => $this->route('filter')->id,
+        ]);
     }
 
     /**

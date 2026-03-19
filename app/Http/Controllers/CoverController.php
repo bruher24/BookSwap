@@ -8,7 +8,9 @@ use App\Http\Resources\CoverResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\CoverServiceInterface;
+use App\Models\Cover;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CoverController extends Controller
@@ -16,14 +18,15 @@ final class CoverController extends Controller
     public function index(CoverServiceInterface $coverService): JsonResponse
     {
         $covers = $coverService->getAll();
-        $coverResourceCollection = CoverResource::collection($covers);
-        $data = ['covers' => $coverResourceCollection];
+        $data = ['covers' => CoverResource::collection($covers)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(CoverServiceInterface $coverService, StoreCoverRequest $request): JsonResponse
     {
+        Gate::authorize('create', Cover::class);
+
         $validated = $request->validated();
         $cover = $coverService->create($validated);
 
@@ -32,46 +35,40 @@ final class CoverController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $coverResource = new CoverResource($cover);
-        $data = ['cover' => $coverResource];
+        $data = ['cover' => new CoverResource($cover)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(CoverServiceInterface $coverService, string $id): JsonResponse
+    public function show(Cover $cover): JsonResponse
     {
-        $cover = $coverService->get($id);
-
-        if (!$cover) {
-            $errors = ['Ошибка при получении обложки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
-
-        $coverResource = new CoverResource($cover);
-        $data = ['cover' => $coverResource];
+        $data = ['cover' => new CoverResource($cover)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(CoverServiceInterface $coverService, UpdateCoverRequest $request, string $id): JsonResponse
+    public function update(CoverServiceInterface $coverService, UpdateCoverRequest $request, Cover $cover): JsonResponse
     {
+        Gate::authorize('update', $cover);
+
         $validated = $request->validated();
-        $cover = $coverService->update($id, $validated);
+        $cover = $coverService->update($cover, $validated);
 
         if (!$cover) {
             $errors = ['Ошибка при обновлении обложки'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $coverResource = new CoverResource($cover);
-        $data = ['cover' => $coverResource];
+        $data = ['cover' => new CoverResource($cover)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(CoverServiceInterface $coverService, string $id): JsonResponse
+    public function destroy(CoverServiceInterface $coverService, Cover $cover): JsonResponse
     {
-        if (!$coverService->delete($id)) {
+        Gate::authorize('delete', $cover);
+
+        if (!$coverService->delete($cover)) {
             $errors = ['Ошибка при удалении обложки'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

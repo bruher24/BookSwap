@@ -17,10 +17,15 @@ final class UpdateGenreRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Prepare the data for validation.
+     */
     #[Override]
     protected function prepareForValidation(): void
     {
-        $this->merge(['genre_id' => $this->route('genre')]);
+        $this->merge([
+            'genre_id' => $this->route('genre')->id,
+        ]);
     }
 
     /**

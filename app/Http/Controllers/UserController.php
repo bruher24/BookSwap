@@ -8,7 +8,9 @@ use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserResource;
 use App\Interfaces\UserServiceInterface;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 final class UserController extends Controller
@@ -23,6 +25,8 @@ final class UserController extends Controller
 
     public function store(UserServiceInterface $userService, StoreUserRequest $request): JsonResponse
     {
+        Gate::authorize('store', User::class);
+
         $validated = $request->validated();
         $user = $userService->create($validated);
 
@@ -36,24 +40,18 @@ final class UserController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(UserServiceInterface $userService, string $id): JsonResponse
+    public function show(User $user): JsonResponse
     {
-        $user = $userService->get($id);
-
-        if (!$user) {
-            $errors = ['Ошибка при получении пользователя'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
-
         $data = ['user' => new UserResource($user)];
-
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(UserServiceInterface $userService, UpdateUserRequest $request, string $id): JsonResponse
+    public function update(UserServiceInterface $userService, UpdateUserRequest $request, User $user): JsonResponse
     {
+        Gate::authorize('update', $user);
+
         $validated = $request->validated();
-        $user = $userService->update($id, $validated);
+        $user = $userService->update($user, $validated);
 
         if (!$user) {
             $errors = ['Ошибка при обновлении пользователя'];
@@ -65,9 +63,11 @@ final class UserController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(UserServiceInterface $userService, string $id): JsonResponse
+    public function destroy(UserServiceInterface $userService, User $user): JsonResponse
     {
-        if (!$userService->delete($id)) {
+        Gate::authorize('delete', $user);
+
+        if (!$userService->delete($user)) {
             $errors = ['Ошибка при удалении пользователя'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
