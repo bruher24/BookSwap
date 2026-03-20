@@ -11,7 +11,8 @@ final class CoverSeeder extends Seeder
     {
         $covers = [
             [
-                'src' => 'covers/cover.png'
+                'src' => 'covers/cover.png',
+                'user_id' => 1,
             ],
         ];
 

@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Filter;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Filter>
+ * @extends Factory<Filter>
  */
-class FilterFactory extends Factory
+final class FilterFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +18,9 @@ class FilterFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => 'Новинки',
-            'by_fields' => 'name,isbn',
-            'is_active' => true,
+            'name' => $this->faker->unique()->word(),
+            'by_fields' => $this->faker->word() . ',' . $this->faker->word(),
+            'is_active' => $this->faker->boolean(),
         ];
     }
 }

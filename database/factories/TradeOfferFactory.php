@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\TradeOffer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TradeOffer>
+ * @extends Factory<TradeOffer>
  */
 class TradeOfferFactory extends Factory
 {
@@ -17,7 +18,10 @@ class TradeOfferFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'sender_id' => $this->faker->numberBetween(1, 100),
+            'receiver_id' => $this->faker->numberBetween(1, 100),
+            'date' => $this->faker->dateTime(),
+            'accepted' => $this->faker->boolean(),
         ];
     }
 }
