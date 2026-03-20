@@ -17,8 +17,6 @@ final class FilterController extends Controller
 {
     public function index(FilterServiceInterface $filterService): JsonResponse
     {
-        Gate::authorize('viewAny', Filter::class);
-
         $filters = $filterService->getAll();
         $data = ['filters' => FilterResource::collection($filters)];
 
@@ -44,8 +42,6 @@ final class FilterController extends Controller
 
     public function show(Filter $filter): JsonResponse
     {
-        Gate::authorize('view', $filter);
-
         $data = ['filter' => new FilterResource($filter)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

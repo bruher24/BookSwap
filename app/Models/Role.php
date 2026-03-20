@@ -4,12 +4,16 @@ namespace App\Models;
 
 use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
+use Database\Factories\RoleFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Role extends Model implements Cacheable
 {
+    /** @use HasFactory<RoleFactory> */
+    use HasFactory;
     use SoftDeletes;
     use CacheInvalidation;
 

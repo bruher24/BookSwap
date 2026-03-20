@@ -4,12 +4,16 @@ namespace App\Models;
 
 use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
+use Database\Factories\ChatFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Chat extends Model implements Cacheable
 {
+    /** @use HasFactory<ChatFactory> */
+    use HasFactory;
     use SoftDeletes;
     use CacheInvalidation;
 

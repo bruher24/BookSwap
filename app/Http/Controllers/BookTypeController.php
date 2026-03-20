@@ -17,8 +17,6 @@ final class BookTypeController extends Controller
 {
     public function index(BookTypeServiceInterface $bookTypeService): JsonResponse
     {
-        Gate::authorize('viewAny', BookType::class);
-
         $bookTypes = $bookTypeService->getAll();
         $data = ['bookTypes' => BookTypeResource::collection($bookTypes)];
 
@@ -44,8 +42,6 @@ final class BookTypeController extends Controller
 
     public function show(BookType $bookType): JsonResponse
     {
-        Gate::authorize('view', $bookType);
-
         $data = ['bookType' => new BookTypeResource($bookType)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

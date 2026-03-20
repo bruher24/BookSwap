@@ -44,8 +44,6 @@ final class PhotoController extends Controller
 
     public function show(Photo $photo): JsonResponse
     {
-        Gate::authorize('view', $photo);
-
         $data = ['photo' => new PhotoResource($photo)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

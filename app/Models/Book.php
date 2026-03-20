@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
+use Database\Factories\BookFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,6 +14,8 @@ use Laravel\Scout\Searchable;
 
 final class Book extends Model implements Cacheable
 {
+    /** @use HasFactory<BookFactory> */
+    use HasFactory;
     use SoftDeletes;
     use Searchable;
     use CacheInvalidation;

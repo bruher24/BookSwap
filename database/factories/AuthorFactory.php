@@ -22,11 +22,11 @@ final class AuthorFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => 9999,
-            'lastname' => fake()->lastName(),
-            'firstname' => fake()->firstName(),
-            'patronymic' => fake()->lastName(),
-            'birthdate' => fake()->date(),
+            'user_id' => 1,
+            'lastname' => $this->faker->lastName(),
+            'firstname' => $this->faker->firstName(),
+            'patronymic' => $this->faker->lastName(),
+            'birthdate' => $this->faker->date(),
         ];
     }
 }

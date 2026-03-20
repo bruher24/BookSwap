@@ -18,7 +18,7 @@ final class TradeOfferController extends Controller
 {
     public function index(TradeOfferServiceInterface $tradeOfferService): JsonResponse
     {
-        Gate::authorize('view-any', TradeOffer::class);
+        Gate::authorize('viewAny', TradeOffer::class);
 
         $tradeOffers = $tradeOfferService->getAll();
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;

@@ -17,8 +17,6 @@ final class GenreController extends Controller
 {
     public function index(GenreServiceInterface $genreService): JsonResponse
     {
-        Gate::authorize('viewAny', Genre::class);
-
         $genres = $genreService->getAll();
         $data = ['genres' => GenreResource::collection($genres)];
 
@@ -44,8 +42,6 @@ final class GenreController extends Controller
 
     public function show(Genre $genre): JsonResponse
     {
-        Gate::authorize('view', $genre);
-
         $data = ['genre' => new GenreResource($genre)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

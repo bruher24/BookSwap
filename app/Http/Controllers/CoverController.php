@@ -44,8 +44,6 @@ final class CoverController extends Controller
 
     public function show(Cover $cover): JsonResponse
     {
-        Gate::authorize('view', $cover);
-
         $data = ['cover' => new CoverResource($cover)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

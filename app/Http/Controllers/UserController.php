@@ -17,7 +17,7 @@ final class UserController extends Controller
 {
     public function index(UserServiceInterface $userService): JsonResponse
     {
-        Gate::authorize('view-any', User::class);
+        Gate::authorize('viewAny', User::class);
 
         $users = $userService->getAll();
         $data = ['users' => UserResource::collection($users)];
