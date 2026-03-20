@@ -63,8 +63,14 @@ final class AuthorController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(AuthorServiceInterface $authorService, Author $author): JsonResponse
+    public function destroy(AuthorServiceInterface $authorService, string $authorId): JsonResponse
     {
+        $author = $authorService->get($authorId);
+
+        if (!$author) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $author);
 
         if (!$authorService->delete($author)) {
