@@ -20,6 +20,15 @@ final class Chat extends Model implements Cacheable
         'second_user_id',
     ];
 
+    public function isUserBelongs(User $user): bool
+    {
+        $chatUsers = [
+            $this->first_user_id,
+            $this->second_user_id
+        ];
+        return in_array($user->id, $chatUsers);
+    }
+
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);

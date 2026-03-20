@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 final class StoreCoverRequest extends FormRequest
 {
@@ -27,6 +28,12 @@ final class StoreCoverRequest extends FormRequest
                 'required',
                 'file',
                 'mimes:jpg,jpeg,png',
+            ],
+            'user_id' => [
+                'required',
+                'integer',
+                Rule::exists('users', 'id')
+                    ->withoutTrashed(),
             ],
         ];
     }

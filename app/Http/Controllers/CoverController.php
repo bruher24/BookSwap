@@ -17,6 +17,8 @@ final class CoverController extends Controller
 {
     public function index(CoverServiceInterface $coverService): JsonResponse
     {
+        Gate::authorize('viewAny', Cover::class);
+
         $covers = $coverService->getAll();
         $data = ['covers' => CoverResource::collection($covers)];
 
@@ -42,6 +44,8 @@ final class CoverController extends Controller
 
     public function show(Cover $cover): JsonResponse
     {
+        Gate::authorize('view', $cover);
+
         $data = ['cover' => new CoverResource($cover)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
@@ -64,8 +68,14 @@ final class CoverController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(CoverServiceInterface $coverService, Cover $cover): JsonResponse
+    public function destroy(CoverServiceInterface $coverService, string $coverId): JsonResponse
     {
+        $cover = $coverService->get($coverId);
+
+        if (!$cover) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $cover);
 
         if (!$coverService->delete($cover)) {

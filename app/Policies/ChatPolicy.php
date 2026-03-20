@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Author;
+use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
-class AuthorPolicy
+class ChatPolicy
 {
     public function before(User $user, string $ability): bool|null
     {
@@ -21,15 +20,17 @@ class AuthorPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return false;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Author $author): bool
+    public function view(User $user, Chat $chat): Response
     {
-        return true;
+        return $chat->isUserBelongs($user)
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
     }
 
     /**
@@ -37,7 +38,7 @@ class AuthorPolicy
      */
     public function create(User $user): Response
     {
-        return Auth::check()
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -45,9 +46,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Author $author): Response
+    public function update(User $user, Chat $chat): Response
     {
-        return $user->id === $author->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -55,9 +56,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Author $author): Response
+    public function delete(User $user, Chat $chat): Response
     {
-        return $user->id === $author->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -65,9 +66,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Author $author): Response
+    public function restore(User $user, Chat $chat): Response
     {
-        return $user->id === $author->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -75,7 +76,7 @@ class AuthorPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Author $author): Response
+    public function forceDelete(User $user, Chat $chat): Response
     {
         return $user->isAdmin()
             ? Response::allow()

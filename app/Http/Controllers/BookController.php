@@ -17,6 +17,8 @@ final class BookController extends Controller
 {
     public function index(BookServiceInterface $bookService): JsonResponse
     {
+        Gate::authorize('viewAny', Book::class);
+
         $books = $bookService->getAll();
         $data = ['books' => BookResource::collection($books)];
 
@@ -42,6 +44,8 @@ final class BookController extends Controller
 
     public function show(Book $book): JsonResponse
     {
+        Gate::authorize('view', $book);
+
         $data = ['book' => new BookResource($book)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
@@ -63,8 +67,14 @@ final class BookController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(BookServiceInterface $bookService, Book $book): JsonResponse
+    public function destroy(BookServiceInterface $bookService, string $bookId): JsonResponse
     {
+        $book = $bookService->get($bookId);
+
+        if (!$book) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $book);
 
         if (!$bookService->delete($book)) {

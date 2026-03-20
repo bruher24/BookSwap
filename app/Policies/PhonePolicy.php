@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Author;
+use App\Models\Phone;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
-class AuthorPolicy
+class PhonePolicy
 {
     public function before(User $user, string $ability): bool|null
     {
@@ -21,13 +21,13 @@ class AuthorPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return false;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Author $author): bool
+    public function view(User $user, Phone $phone): bool
     {
         return true;
     }
@@ -45,9 +45,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Author $author): Response
+    public function update(User $user, Phone $phone): Response
     {
-        return $user->id === $author->user_id
+        return $user->id === $phone->user_id
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -55,9 +55,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Author $author): Response
+    public function delete(User $user, Phone $phone): Response
     {
-        return $user->id === $author->user_id
+        return $user->id === $phone->user_id
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -65,9 +65,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Author $author): Response
+    public function restore(User $user, Phone $phone): Response
     {
-        return $user->id === $author->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -75,7 +75,7 @@ class AuthorPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Author $author): Response
+    public function forceDelete(User $user, Phone $phone): Response
     {
         return $user->isAdmin()
             ? Response::allow()

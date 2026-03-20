@@ -17,6 +17,8 @@ final class AuthorController extends Controller
 {
     public function index(AuthorServiceInterface $authorService): JsonResponse
     {
+        Gate::authorize('viewAny', Author::class);
+
         $authors = $authorService->getAll();
         $data = ['authors' => AuthorResource::collection($authors)];
 
@@ -42,6 +44,8 @@ final class AuthorController extends Controller
 
     public function show(Author $author): JsonResponse
     {
+        Gate::authorize('view', $author);
+
         $data = ['author' => new AuthorResource($author)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

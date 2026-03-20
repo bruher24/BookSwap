@@ -17,6 +17,8 @@ final class UserController extends Controller
 {
     public function index(UserServiceInterface $userService): JsonResponse
     {
+        Gate::authorize('view-any', User::class);
+
         $users = $userService->getAll();
         $data = ['users' => UserResource::collection($users)];
 
@@ -42,6 +44,8 @@ final class UserController extends Controller
 
     public function show(User $user): JsonResponse
     {
+        Gate::authorize('view', $user);
+
         $data = ['user' => new UserResource($user)];
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
@@ -63,8 +67,14 @@ final class UserController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(UserServiceInterface $userService, User $user): JsonResponse
+    public function destroy(UserServiceInterface $userService, string $userId): JsonResponse
     {
+        $user = $userService->get($userId);
+
+        if (!$user) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $user);
 
         if (!$userService->delete($user)) {

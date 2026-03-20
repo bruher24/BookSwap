@@ -17,6 +17,8 @@ final class PhotoController extends Controller
 {
     public function index(PhotoServiceInterface $photoService): JsonResponse
     {
+        Gate::authorize('viewAny', $photoService);
+
         $photos = $photoService->getAll();
         $data = ['photos' => PhotoResource::collection($photos)];
 
@@ -42,6 +44,8 @@ final class PhotoController extends Controller
 
     public function show(Photo $photo): JsonResponse
     {
+        Gate::authorize('view', $photo);
+
         $data = ['photo' => new PhotoResource($photo)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
@@ -64,8 +68,14 @@ final class PhotoController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(PhotoServiceInterface $photoService, Photo $photo): JsonResponse
+    public function destroy(PhotoServiceInterface $photoService, string $photoId): JsonResponse
     {
+        $photo = $photoService->get($photoId);
+
+        if (!$photo) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $photo);
 
         if (!$photoService->delete($photo)) {

@@ -17,6 +17,8 @@ final class FilterController extends Controller
 {
     public function index(FilterServiceInterface $filterService): JsonResponse
     {
+        Gate::authorize('viewAny', Filter::class);
+
         $filters = $filterService->getAll();
         $data = ['filters' => FilterResource::collection($filters)];
 
@@ -42,6 +44,8 @@ final class FilterController extends Controller
 
     public function show(Filter $filter): JsonResponse
     {
+        Gate::authorize('view', $filter);
+
         $data = ['filter' => new FilterResource($filter)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
@@ -64,8 +68,14 @@ final class FilterController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(FilterServiceInterface $filterService, Filter $filter): JsonResponse
+    public function destroy(FilterServiceInterface $filterService, string $filterId): JsonResponse
     {
+        $filter = $filterService->get($filterId);
+
+        if (!$filter) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $filter);
 
         if (!$filterService->delete($filter)) {

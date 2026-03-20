@@ -22,9 +22,13 @@ final class TradeOffer extends Model implements Cacheable
         'accepted'
     ];
 
-    public function tradeOfferItems(): HasMany
+    public function isUserBelongs(User $user): bool
     {
-        return $this->hasMany(TradeOfferItem::class);
+        $tradeOfferUsers = [
+            $this->sender_id,
+            $this->receiver_id
+        ];
+        return in_array($user->id, $tradeOfferUsers);
     }
 
     public function accept(): void
@@ -37,5 +41,10 @@ final class TradeOffer extends Model implements Cacheable
     {
         $this->accepted = false;
         $this->save();
+    }
+
+    public function tradeOfferItems(): HasMany
+    {
+        return $this->hasMany(TradeOfferItem::class);
     }
 }

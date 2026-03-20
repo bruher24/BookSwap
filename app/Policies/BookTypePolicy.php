@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Author;
+use App\Models\BookType;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
-class AuthorPolicy
+class BookTypePolicy
 {
     public function before(User $user, string $ability): bool|null
     {
@@ -27,7 +26,7 @@ class AuthorPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Author $author): bool
+    public function view(User $user, BookType $bookType): bool
     {
         return true;
     }
@@ -37,7 +36,7 @@ class AuthorPolicy
      */
     public function create(User $user): Response
     {
-        return Auth::check()
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -45,9 +44,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Author $author): Response
+    public function update(User $user, BookType $bookType): Response
     {
-        return $user->id === $author->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -55,9 +54,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Author $author): Response
+    public function delete(User $user, BookType $bookType): Response
     {
-        return $user->id === $author->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -65,9 +64,9 @@ class AuthorPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Author $author): Response
+    public function restore(User $user, BookType $bookType): Response
     {
-        return $user->id === $author->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -75,7 +74,7 @@ class AuthorPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Author $author): Response
+    public function forceDelete(User $user, BookType $bookType): Response
     {
         return $user->isAdmin()
             ? Response::allow()

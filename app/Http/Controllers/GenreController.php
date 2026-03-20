@@ -17,6 +17,8 @@ final class GenreController extends Controller
 {
     public function index(GenreServiceInterface $genreService): JsonResponse
     {
+        Gate::authorize('viewAny', Genre::class);
+
         $genres = $genreService->getAll();
         $data = ['genres' => GenreResource::collection($genres)];
 
@@ -42,6 +44,8 @@ final class GenreController extends Controller
 
     public function show(Genre $genre): JsonResponse
     {
+        Gate::authorize('view', $genre);
+
         $data = ['genre' => new GenreResource($genre)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
@@ -64,8 +68,14 @@ final class GenreController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(GenreServiceInterface $genreService, Genre $genre): JsonResponse
+    public function destroy(GenreServiceInterface $genreService, string $genreId): JsonResponse
     {
+        $genre = $genreService->get($genreId);
+
+        if (!$genre) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $genre);
 
         if (!$genreService->delete($genre)) {

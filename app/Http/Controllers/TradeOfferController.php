@@ -18,6 +18,8 @@ final class TradeOfferController extends Controller
 {
     public function index(TradeOfferServiceInterface $tradeOfferService): JsonResponse
     {
+        Gate::authorize('view-any', TradeOffer::class);
+
         $tradeOffers = $tradeOfferService->getAll();
         $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
@@ -44,6 +46,8 @@ final class TradeOfferController extends Controller
 
     public function show(TradeOffer $tradeOffer): JsonResponse
     {
+        Gate::authorize('view', $tradeOffer);
+
         $data = ['tradeOffer' => new TradeOfferResource($tradeOffer)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
@@ -102,7 +106,7 @@ final class TradeOfferController extends Controller
 
     public function accept(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
     {
-        Gate::authorize('accept', $tradeOffer);
+        Gate::authorize('answer', $tradeOffer);
 
         if (!$tradeOfferService->accept($tradeOffer)) {
             $errors = ['Ошибка при принятии предложения обмена'];
@@ -112,9 +116,15 @@ final class TradeOfferController extends Controller
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function reject(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
+    public function reject(TradeOfferServiceInterface $tradeOfferService, string $tradeOfferId): JsonResponse
     {
-        Gate::authorize('reject', $tradeOffer);
+        $tradeOffer = $tradeOfferService->get($tradeOfferId);
+
+        if (!$tradeOffer) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
+        Gate::authorize('answer', $tradeOffer);
 
         if (!$tradeOfferService->reject($tradeOffer)) {
             $errors = ['Ошибка при отклонении предложения обмена'];

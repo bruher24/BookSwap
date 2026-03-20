@@ -17,6 +17,8 @@ final class SettingController extends Controller
 {
     public function index(SettingServiceInterface $settingService): JsonResponse
     {
+        Gate::authorize('viewAny', Setting::class);
+
         $settings = $settingService->getAll();
         $data = ['settings' => SettingResource::collection($settings)];
 
@@ -42,6 +44,8 @@ final class SettingController extends Controller
 
     public function show(Setting $setting): JsonResponse
     {
+        Gate::authorize('view', $setting);
+
         $data = ['setting' => new SettingResource($setting)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
@@ -64,8 +68,14 @@ final class SettingController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(SettingServiceInterface $settingService, Setting $setting): JsonResponse
+    public function destroy(SettingServiceInterface $settingService, string $settingId): JsonResponse
     {
+        $setting = $settingService->get($settingId);
+
+        if (!$setting) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $setting);
 
         if (!$settingService->delete($setting)) {

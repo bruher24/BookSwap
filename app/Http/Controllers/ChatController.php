@@ -10,6 +10,7 @@ use App\Http\Resources\FailureResource;
 use App\Http\Resources\MessageResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\ChatServiceInterface;
+use App\Models\Book;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -20,6 +21,8 @@ final class ChatController extends Controller
 {
     public function index(ChatServiceInterface $chatService): JsonResponse
     {
+        Gate::authorize('viewAny', Book::class);
+
         $chats = $chatService->getAll();
         $data = ['chats' => ChatResource::collection($chats)];
 
@@ -45,7 +48,7 @@ final class ChatController extends Controller
 
     public function show(ChatServiceInterface $chatService, Chat $chat): JsonResponse
     {
-        Gate::authorize('show', $chat);
+        Gate::authorize('view', $chat);
 
         $data = ['chat' => new ChatResource($chat)];
 
@@ -69,8 +72,14 @@ final class ChatController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(ChatServiceInterface $chatService, Chat $chat): JsonResponse
+    public function destroy(ChatServiceInterface $chatService, string $chatId): JsonResponse
     {
+        $chat = $chatService->get($chatId);
+
+        if (!$chat) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $chat);
 
         if (!$chatService->delete($chat)) {

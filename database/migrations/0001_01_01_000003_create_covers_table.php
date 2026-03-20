@@ -12,9 +12,12 @@ return new class extends Migration {
     {
         Schema::create('covers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('src', 150)->unique()->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['id', 'user_id']);
         });
     }
 
