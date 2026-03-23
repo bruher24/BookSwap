@@ -30,7 +30,7 @@ final class StoreTradeOfferRequest extends FormRequest
                 'different:receiver_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
-                Rule::unique('deals', 'sender_id')
+                Rule::unique('trade_offers', 'sender_id')
                     ->where('receiver_id', request('receiver_id'))
                     ->withoutTrashed(),
             ],
@@ -40,7 +40,7 @@ final class StoreTradeOfferRequest extends FormRequest
                 'different:sender_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
-                Rule::unique('deals', 'receiver_id')
+                Rule::unique('trade_offers', 'receiver_id')
                     ->where('sender_id', request('sender_id'))
                     ->withoutTrashed(),
             ],

@@ -20,7 +20,7 @@ final class TradeOfferFactory extends Factory
         return [
             'sender_id' => $this->faker->numberBetween(1, 100),
             'receiver_id' => $this->faker->numberBetween(1, 100),
-            'date' => $this->faker->dateTime(),
+            'date' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
             'accepted' => $this->faker->boolean(),
         ];
     }

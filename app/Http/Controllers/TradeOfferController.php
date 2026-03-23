@@ -32,6 +32,7 @@ final class TradeOfferController extends Controller
         Gate::authorize('create', TradeOffer::class);
 
         $validated = $request->validated();
+        $validated['accepted'] = false;
         $tradeOffer = $tradeOfferService->create($validated);
 
         if (!$tradeOffer) {
