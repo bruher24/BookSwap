@@ -11,6 +11,16 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="new">
+            <file>tests/Feature/AuthorApiTest.php</file>
+            <file>tests/Feature/BookApiTest.php</file>
+            <file>tests/Feature/BookTypeApiTest.php</file>
+            <file>tests/Feature/ChatApiTest.php</file>
+            <file>tests/Feature/FilterApiTest.php</file>
+            <file>tests/Feature/GenreApiTest.php</file>
+            <file>tests/Feature/SettingApiTest.php</file>
+            <file>tests/Feature/UserApiTest.php</file>
+        </testsuite>
     </testsuites>
     <coverage>
         <report>
