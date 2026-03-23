@@ -18,7 +18,7 @@ final class FilterFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->word(),
+            'name' => $this->faker->unique()->words(2, true),
             'by_fields' => $this->faker->word() . ',' . $this->faker->word(),
             'is_active' => $this->faker->boolean(),
         ];

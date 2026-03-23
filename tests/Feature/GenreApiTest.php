@@ -76,14 +76,14 @@ final class GenreApiTest extends TestCase
 
     public function test_admin_can_create_genre(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->postJson('/api/v1/genres', $this->genreCreatePayload);
         $response->assertCreated();
     }
 
     public function test_validation_error_create_genre(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->postJson('/api/v1/genres', $this->genreWrongPayload);
         $response->assertStatus(422);
     }
@@ -97,21 +97,21 @@ final class GenreApiTest extends TestCase
 
     public function test_admin_can_update_genre(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->putJson("/api/v1/genres/{$this->genre->id}", $this->genreUpdatePayload);
         $response->assertOk();
     }
 
     public function test_validation_error_update_genre(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->putJson("/api/v1/genres/{$this->genre->id}", $this->genreWrongPayload);
         $response->assertStatus(422);
     }
 
     public function test_not_found_update_genre(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $newId = (int)$this->genre->id + 1;
         $response = $this->putJson("/api/v1/genres/$newId", $this->genreUpdatePayload);
         $response->assertNotFound();
@@ -126,14 +126,14 @@ final class GenreApiTest extends TestCase
 
     public function test_admin_can_delete_genre(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->deleteJson("/api/v1/genres/{$this->genre->id}");
         $response->assertAccepted();
     }
 
     public function test_not_found_delete_genre(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $newId = (int)$this->genre->id + 1;
         $response = $this->deleteJson("/api/v1/genres/$newId");
         $response->assertAccepted();

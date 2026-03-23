@@ -81,14 +81,14 @@ final class SettingApiTest extends TestCase
 
     public function test_admin_can_create_setting(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->postJson('/api/v1/settings', $this->settingCreatePayload);
         $response->assertCreated();
     }
 
     public function test_validation_error_create_setting(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->postJson('/api/v1/settings', $this->settingWrongPayload);
         $response->assertStatus(422);
     }
@@ -102,21 +102,21 @@ final class SettingApiTest extends TestCase
 
     public function test_admin_can_update_setting(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->putJson("/api/v1/settings/{$this->setting->id}", $this->settingUpdatePayload);
         $response->assertOk();
     }
 
     public function test_validation_error_update_setting(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->putJson("/api/v1/settings/{$this->setting->id}", $this->settingWrongPayload);
         $response->assertStatus(422);
     }
 
     public function test_not_found_update_setting(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $newId = (int)$this->setting->id + 1;
         $response = $this->putJson("/api/v1/settings/$newId", $this->settingUpdatePayload);
         $response->assertNotFound();
@@ -131,14 +131,14 @@ final class SettingApiTest extends TestCase
 
     public function test_admin_can_delete_setting(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $response = $this->deleteJson("/api/v1/settings/{$this->setting->id}");
         $response->assertAccepted();
     }
 
     public function test_not_found_delete_setting(): void
     {
-        Sanctum::actingAs($this->admin, ['admin']);
+        Sanctum::actingAs($this->admin);
         $newId = (int)$this->setting->id + 1;
         $response = $this->deleteJson("/api/v1/settings/$newId");
         $response->assertAccepted();
