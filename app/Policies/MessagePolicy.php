@@ -6,7 +6,7 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class MessagePolicy
+final class MessagePolicy
 {
     public function before(User $user, string $ability): bool|null
     {

@@ -6,7 +6,7 @@ use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class SettingPolicy
+final class SettingPolicy
 {
     public function before(User $user, string $ability): bool|null
     {

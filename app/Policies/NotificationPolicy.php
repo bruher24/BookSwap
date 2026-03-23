@@ -6,7 +6,7 @@ use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class NotificationPolicy
+final class NotificationPolicy
 {
     public function before(User $user, string $ability): bool|null
     {

@@ -26,7 +26,7 @@ final class AuthorFactory extends Factory
             'lastname' => $this->faker->lastName(),
             'firstname' => $this->faker->firstName(),
             'patronymic' => $this->faker->lastName(),
-            'birthdate' => $this->faker->date(),
+            'birthdate' => $this->faker->dateTimeBetween('-2000 years', '-14 years')->format('Y-m-d'),
         ];
     }
 }

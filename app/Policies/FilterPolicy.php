@@ -6,7 +6,7 @@ use App\Models\Filter;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class FilterPolicy
+final class FilterPolicy
 {
     public function before(User $user, string $ability): bool|null
     {

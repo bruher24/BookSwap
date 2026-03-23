@@ -27,7 +27,7 @@ final class UserController extends Controller
 
     public function store(UserServiceInterface $userService, StoreUserRequest $request): JsonResponse
     {
-        Gate::authorize('store', User::class);
+        Gate::authorize('create', User::class);
 
         $validated = $request->validated();
         $user = $userService->create($validated);

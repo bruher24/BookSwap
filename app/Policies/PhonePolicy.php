@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
-class PhonePolicy
+final class PhonePolicy
 {
     public function before(User $user, string $ability): bool|null
     {

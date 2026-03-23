@@ -21,7 +21,7 @@ interface ChatServiceInterface
 
     public function delete(Chat $chat): bool;
 
-    public function byUser(User $user): Chat|false;
+    public function byUser(User $user): Collection;
 
     public function messages(Chat $chat): Collection;
 

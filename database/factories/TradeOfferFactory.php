@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<TradeOffer>
  */
-class TradeOfferFactory extends Factory
+final class TradeOfferFactory extends Factory
 {
     /**
      * Define the model's default state.

@@ -10,7 +10,7 @@ use App\Http\Resources\FailureResource;
 use App\Http\Resources\MessageResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\ChatServiceInterface;
-use App\Models\Book;
+use App\Interfaces\UserServiceInterface;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -21,7 +21,7 @@ final class ChatController extends Controller
 {
     public function index(ChatServiceInterface $chatService): JsonResponse
     {
-        Gate::authorize('viewAny', Book::class);
+        Gate::authorize('viewAny', Chat::class);
 
         $chats = $chatService->getAll();
         $data = ['chats' => ChatResource::collection($chats)];
@@ -92,7 +92,7 @@ final class ChatController extends Controller
 
     public function byUser(ChatServiceInterface $chatService, User $user): JsonResponse
     {
-        Gate::authorize('byUser', $user);
+        Gate::authorize('chats', $user);
 
         $chats = $chatService->byUser($user);
         $data = ['chats' => ChatResource::collection($chats)];
@@ -110,12 +110,19 @@ final class ChatController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function send(ChatServiceInterface $chatService, SendMessageRequest $request, Chat $chat): JsonResponse
+    public function send(UserServiceInterface $userService, ChatServiceInterface $chatService, SendMessageRequest $request, Chat $chat): JsonResponse
     {
         Gate::authorize('send', $chat);
 
         $validated = $request->validated();
-        $message = $chatService->sendMessage($chat, $validated['sender_id'], $validated['body']);
+        $sender = $userService->get($validated['sender_id']);
+
+        if (!$sender) {
+            $errors = ['Отправитель не найден'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
+        }
+
+        $message = $chatService->sendMessage($chat, $sender, $validated['body']);
 
         if (!$message) {
             $errors = ['Ошибка при отправке сообщения'];

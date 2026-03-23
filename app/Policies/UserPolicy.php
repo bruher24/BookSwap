@@ -4,9 +4,8 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
-class UserPolicy
+final class UserPolicy
 {
     public function before(User $user, string $ability): bool|null
     {
@@ -34,9 +33,11 @@ class UserPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
-        return !Auth::check();
+        return $user->isAdmin()
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
     }
 
     /**
@@ -75,6 +76,13 @@ class UserPolicy
     public function forceDelete(User $user, User $target): Response
     {
         return $user->isAdmin()
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
+    }
+
+    public function chats(User $user, User $target): Response
+    {
+        return $user->is($target)
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

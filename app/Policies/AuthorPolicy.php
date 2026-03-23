@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
-class AuthorPolicy
+final class AuthorPolicy
 {
     public function before(User $user, string $ability): bool|null
     {

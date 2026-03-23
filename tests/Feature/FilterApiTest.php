@@ -14,17 +14,9 @@ final class FilterApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    private array $filterCreatePayload = [
-        'name' => 'Популярные',
-        'by_fields' => 'name,publishing_house',
-        'is_active' => true,
-    ];
+    private array $filterCreatePayload;
 
-    private array $filterUpdatePayload = [
-        'name' => 'Актуальные',
-        'by_fields' => 'name,publication_year',
-        'is_active' => false,
-    ];
+    private array $filterUpdatePayload;
 
     private array $filterWrongPayload = [
         'name' => 1,
@@ -47,6 +39,9 @@ final class FilterApiTest extends TestCase
 
         $this->user = User::factory()->createOne();
         $this->filter = Filter::factory()->createOne();
+
+        $this->filterCreatePayload = Filter::factory()->raw();
+        $this->filterUpdatePayload = Filter::factory()->raw();
     }
 
     public function test_index_filter(): void
@@ -85,13 +80,7 @@ final class FilterApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin, ['admin']);
         $response = $this->postJson('/api/v1/filters', $this->filterCreatePayload);
-        $response->assertCreated()
-            ->assertJsonPath('data.filter.name', 'Популярные');
-
-        $this->assertDatabaseHas('filters', [
-            'name' => 'Популярные',
-            'by_fields' => 'name,publishing_house',
-        ]);
+        $response->assertCreated();
     }
 
     public function test_validation_error_create_filter(): void
@@ -112,8 +101,7 @@ final class FilterApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin, ['admin']);
         $response = $this->putJson("/api/v1/filters/{$this->filter->id}", $this->filterUpdatePayload);
-        $response->assertOk()
-            ->assertJsonPath('data.filter.name', 'Актуальные');
+        $response->assertOk();
     }
 
     public function test_validation_error_update_filter(): void

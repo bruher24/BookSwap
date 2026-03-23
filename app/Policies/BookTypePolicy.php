@@ -6,7 +6,7 @@ use App\Models\BookType;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class BookTypePolicy
+final class BookTypePolicy
 {
     public function before(User $user, string $ability): bool|null
     {

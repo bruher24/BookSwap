@@ -95,19 +95,19 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
-    public function byUser(User $user): Chat|false
+    public function byUser(User $user): Collection
     {
         try {
-            $chat = Chat::where('first_user_id', $user->id)->orWhere('second_user_id', $user->id)->first();
+            $chats = Chat::where('first_user_id', $user->id)->orWhere('second_user_id', $user->id)->get();
 
-            if (!$chat) {
+            if (!$chats) {
                 throw new Exception('Ошибка при получении чата');
             }
 
-            return $chat;
+            return $chats;
         } catch (Throwable $e) {
             Log::error($e->getMessage());
-            return false;
+            return new Collection();
         }
     }
 

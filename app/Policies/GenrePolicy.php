@@ -6,7 +6,7 @@ use App\Models\Genre;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class GenrePolicy
+final class GenrePolicy
 {
     public function before(User $user, string $ability): bool|null
     {

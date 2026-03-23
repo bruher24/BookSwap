@@ -60,7 +60,7 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('chats')->name('chats.')->controller(ChatController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware('ability:admin');
+                Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{chat}', 'show')->name('show');
                 Route::put('{chat}', 'update')->name('update');
@@ -72,20 +72,20 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('covers')->name('covers.')->controller(CoverController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware('ability:admin');
+                Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{cover}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{cover}', 'update')->name('update')->middleware('ability:admin');
+                Route::put('{cover}', 'update')->name('update');
                 Route::delete('{cover}', 'destroy')->name('destroy');
             });
 
         Route::prefix('filters')->name('filters.')->controller(FilterController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
-                Route::post('/', 'store')->name('store')->middleware('ability:admin');
+                Route::post('/', 'store')->name('store');
                 Route::get('{filter}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{filter}', 'update')->name('update')->middleware('ability:admin');
-                Route::delete('{filter}', 'destroy')->name('destroy')->middleware('ability:admin');
+                Route::put('{filter}', 'update')->name('update');
+                Route::delete('{filter}', 'destroy')->name('destroy');
             });
 
         Route::prefix('genres')->name('genres.')->controller(GenreController::class)
@@ -99,10 +99,10 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('photos')->name('photos.')->controller(PhotoController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware('ability:admin');
+                Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{photo}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{photo}', 'update')->name('update')->middleware('ability:admin');
+                Route::put('{photo}', 'update')->name('update');
                 Route::delete('{photo}', 'destroy')->name('destroy');
             });
 
@@ -111,15 +111,15 @@ Route::prefix('v1')->name('api.')
         Route::prefix('settings')->name('settings.')->controller(SettingController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
-                Route::post('/', 'store')->name('store')->middleware('ability:admin');
+                Route::post('/', 'store')->name('store');
                 Route::get('{setting}', 'show')->name('show');
-                Route::put('{setting}', 'update')->name('update')->middleware('ability:admin');
-                Route::delete('{setting}', 'destroy')->name('destroy')->middleware('ability:admin');
+                Route::put('{setting}', 'update')->name('update');
+                Route::delete('{setting}', 'destroy')->name('destroy');
             });
 
         Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware('ability:admin');
+                Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{trade_offer}', 'show')->name('show');
                 Route::put('{trade_offer}', 'update')->name('update');
@@ -132,7 +132,7 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('users')->name('users.')->controller(UserController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware('ability:admin');
+                Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{user}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
                 Route::put('{user}', 'update')->name('update');

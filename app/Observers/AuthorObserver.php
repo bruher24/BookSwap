@@ -9,7 +9,7 @@ use App\Events\AuthorRestored;
 use App\Events\AuthorUpdated;
 use App\Models\Author;
 
-class AuthorObserver
+final class AuthorObserver
 {
     /**
      * Handle the Author "created" event.

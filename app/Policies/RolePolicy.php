@@ -6,7 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class RolePolicy
+final class RolePolicy
 {
     public function before(User $user, string $ability): bool|null
     {
