@@ -11,12 +11,14 @@ use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 final class AuthController extends Controller
 {
     public function register(UserServiceInterface $userService, AuthServiceInterface $authService, StoreUserRequest $request): JsonResponse
     {
+        Gate::authorize('register', );
         $validated = $request->validated();
         $user = $userService->create($validated);
 

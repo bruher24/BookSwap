@@ -16,8 +16,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFavoritesController;
 use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\UserSettingController;
-use App\Http\Middleware\BearerAuth;
-use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.')
