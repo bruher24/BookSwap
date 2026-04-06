@@ -18,7 +18,7 @@ final class CoverFactory extends Factory
     public function definition(): array
     {
         return [
-            'src' => $this->faker->imageUrl(),
+            'src' => 'covers/' . $this->faker->uuid() . '.jpg',
             'user_id' => 1,
         ];
     }

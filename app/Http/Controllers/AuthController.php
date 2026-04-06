@@ -11,6 +11,7 @@ use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,7 +19,11 @@ final class AuthController extends Controller
 {
     public function register(UserServiceInterface $userService, AuthServiceInterface $authService, StoreUserRequest $request): JsonResponse
     {
-        Gate::authorize('register', );
+        if (auth()->check()){
+            $errors = ['Аутентифицированный пользователь не может регистрироваться'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
+        }
+
         $validated = $request->validated();
         $user = $userService->create($validated);
 
@@ -38,6 +43,11 @@ final class AuthController extends Controller
 
     public function login(UserServiceInterface $userService, AuthServiceInterface $authService, AuthRequest $request): JsonResponse
     {
+        if (auth()->check()){
+            $errors = ['Аутентифицированный пользователь не может аутентифицироваться'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
+        }
+
         $validated = $request->validated();
 
         if (!$authService->login($validated)) {
@@ -61,9 +71,13 @@ final class AuthController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function refresh(AuthServiceInterface $authService, Request $request): JsonResponse
+    public function refresh(UserServiceInterface $userService, AuthServiceInterface $authService, Request $request): JsonResponse
     {
         $email = $request->input('email');
+        $user = $userService->where('email', $email)->first();
+
+        Gate::authorize('refresh', $user);
+
         $token = $authService->refreshToken($email);
 
         if (empty($token)) {
@@ -76,10 +90,12 @@ final class AuthController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function logout(AuthServiceInterface $authService, Request $request): JsonResponse
+    public function logout(UserServiceInterface $userService, AuthServiceInterface $authService, Request $request): JsonResponse
     {
-        // TODO: добавить гейт
         $email = $request->input('email');
+        $user = $userService->where('email', $email)->first();
+
+        Gate::authorize('logout', $user);
 
         if (!$authService->logout($email)) {
             $errors = ['Ошибка при выходе из аккаунта'];

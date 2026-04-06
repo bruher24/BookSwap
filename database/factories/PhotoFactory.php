@@ -18,8 +18,8 @@ final class PhotoFactory extends Factory
     public function definition(): array
     {
         return [
+            'src' => 'avatars/' . $this->faker->uuid() . '.jpg',
             'user_id' => 1,
-            'src' => $this->faker->unique()->imageUrl(150, 150),
         ];
     }
 }

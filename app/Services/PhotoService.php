@@ -26,7 +26,7 @@ final class PhotoService implements PhotoServiceInterface
                 throw new Exception('Ошибка при сохранении файла');
             }
 
-            $photo = new Photo(['src' => $path]);
+            $photo = new Photo(['src' => $path, 'user_id' => $data['user_id']]);
 
             if (!$photo->save()) {
                 throw new Exception("Ошибка при создании фото");

@@ -22,6 +22,7 @@ final class Cover extends Model implements Cacheable
 
     public $fillable = [
         'src',
+        'user_id'
     ];
 
     public function books(): HasMany

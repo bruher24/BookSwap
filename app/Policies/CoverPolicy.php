@@ -19,9 +19,11 @@ final class CoverPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user): Response
     {
-        return true;
+        return $user->isAdmin()
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
     }
 
     /**

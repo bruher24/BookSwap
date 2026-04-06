@@ -12,14 +12,16 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Override;
 use Tests\TestCase;
 
-class TradeOfferApiTest extends TestCase
+final class TradeOfferApiTest extends TestCase
 {
     use RefreshDatabase;
 
     private User $admin;
     private User $sender;
+    private User $anotherSender;
     private User $receiver;
     private User $other;
     private TradeOffer $tradeOffer;
@@ -27,6 +29,7 @@ class TradeOfferApiTest extends TestCase
     private array $tradeOfferUpdatePayload;
     private Collection $books;
 
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();
@@ -34,6 +37,7 @@ class TradeOfferApiTest extends TestCase
         $this->admin = User::factory()->unverified()->createOne();
         $adminRole = Role::factory()->create(['name' => 'admin']);
         $this->admin->roles()->attach($adminRole);
+
         $this->sender = User::factory()->unverified()->createOne();
         $this->receiver = User::factory()->unverified()->createOne();
         $this->other = User::factory()->unverified()->createOne();
@@ -43,22 +47,32 @@ class TradeOfferApiTest extends TestCase
             'receiver_id' => $this->receiver->id,
         ]);
 
-        $this->tradeOfferCreatePayload = TradeOffer::factory()->raw([
-            'sender_id' => $this->receiver->id,
-            'receiver_id' => $this->sender->id,
-        ]);
-        $this->tradeOfferUpdatePayload = TradeOffer::factory()->raw([
-            'sender_id' => $this->receiver->id,
-            'receiver_id' => $this->sender->id,
-        ]);
-
         $bookType = BookType::factory()->createOne();
-        $this->cover = Cover::factory()->createOne(['user_id' => $this->sender->id]);
+        $cover = Cover::factory()->createOne();
 
         $this->books = Book::factory()->count(3)->create([
             'user_id' => $this->sender->id,
             'book_type_id' => $bookType->id,
+            'cover_id' => $cover->id,
         ]);
+
+        $booksIds = $this->books->pluck('id')->all();
+
+        $this->anotherSender = User::factory()->unverified()->createOne();
+
+        $this->tradeOfferCreatePayload = TradeOffer::factory()->raw([
+            'sender_id' => $this->anotherSender->id,
+            'receiver_id' => $this->receiver->id,
+        ]);
+
+        $this->tradeOfferCreatePayload['trade_offer_items'] = $booksIds;
+
+        $this->tradeOfferUpdatePayload = TradeOffer::factory()->raw([
+            'sender_id' => $this->receiver->id,
+            'receiver_id' => $this->anotherSender->id,
+        ]);
+
+        $this->tradeOfferUpdatePayload['trade_offer_items'] = $booksIds;
     }
 
     public function test_user_cannot_index_tradeoffer(): void
@@ -77,14 +91,99 @@ class TradeOfferApiTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_can_create_tradeoffer(): void
+    public function test_user_can_get_sent_tradeoffer(): void
     {
         Sanctum::actingAs($this->sender);
 
-        $booksIds = $this->books->pluck('id')->all();
-        $payload = $this->tradeOfferCreatePayload;
-        $payload['trade_offer_items'] = $booksIds;
-        $response = $this->postJson('/api/v1/trade_offers', $payload);
+        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response->assertOk();
+    }
+
+    public function test_user_can_get_received_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->receiver);
+
+        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response->assertOk();
+    }
+
+     public function test_user_cannot_get_others_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->other);
+
+        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response->assertForbidden();
+    }
+
+    public function test_user_can_create_tradeoffer_as_sender(): void
+    {
+        Sanctum::actingAs($this->anotherSender);
+
+        $response = $this->postJson('/api/v1/trade_offers', $this->tradeOfferCreatePayload);
         $response->assertCreated();
+    }
+
+    public function test_user_cannot_create_tradeoffer_as_receiver(): void
+    {
+        Sanctum::actingAs($this->receiver);
+
+        $response = $this->postJson('/api/v1/trade_offers', $this->tradeOfferCreatePayload);
+        $response->assertForbidden();
+    }
+
+    public function test_user_can_update_sent_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->sender);
+
+        $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response->assertOk();
+    }
+
+    public function test_user_can_update_received_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->receiver);
+
+        $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response->assertOk();
+    }
+
+    public function test_user_cannot_update_others_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->other);
+
+        $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response->assertForbidden();
+    }
+
+     public function test_user_can_delete_owned_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->sender);
+
+        $response = $this->deleteJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response->assertAccepted();
+    }
+
+    public function test_user_can_delete_sent_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->sender);
+
+        $response = $this->deleteJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response->assertAccepted();
+    }
+
+    public function test_user_can_delete_received_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->receiver);
+
+        $response = $this->deleteJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response->assertAccepted();
+    }
+
+    public function test_user_cannot_delete_others_tradeoffer(): void
+    {
+        Sanctum::actingAs($this->other);
+
+        $response = $this->deleteJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response->assertForbidden();
     }
 }

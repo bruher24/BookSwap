@@ -17,7 +17,7 @@ final class PhotoController extends Controller
 {
     public function index(PhotoServiceInterface $photoService): JsonResponse
     {
-        Gate::authorize('viewAny', $photoService);
+        Gate::authorize('viewAny', Photo::class);
 
         $photos = $photoService->getAll();
         $data = ['photos' => PhotoResource::collection($photos)];

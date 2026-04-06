@@ -18,11 +18,9 @@ final class ChatPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): Response
+    public function viewAny(User $user): bool
     {
-        return $user->isAdmin()
-            ? Response::allow()
-            : Response::deny('Недостаточно прав');
+        return false;
     }
 
     /**

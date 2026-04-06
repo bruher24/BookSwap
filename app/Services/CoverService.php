@@ -26,7 +26,7 @@ final class CoverService implements CoverServiceInterface
                 throw new Exception('Ошибка при сохранении файла');
             }
 
-            $cover = new Cover(['src' => $path]);
+            $cover = new Cover(['src' => $path, 'user_id' => $data['user_id']]);
 
             if (!$cover->save()) {
                 throw new Exception("Ошибка при создании обложки");

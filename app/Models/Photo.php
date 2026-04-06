@@ -22,6 +22,7 @@ final class Photo extends Model implements Cacheable
 
     public $fillable = [
         'src',
+        'user_id'
     ];
 
     public function users(): HasMany

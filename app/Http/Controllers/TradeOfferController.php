@@ -33,6 +33,13 @@ final class TradeOfferController extends Controller
 
         $validated = $request->validated();
         $validated['accepted'] = false;
+
+        // TODO: вынести в политику
+        if ($validated['sender_id'] !== request()->user()->id) {
+            $errors = ['sender_id' => ['Поле sender_id должно соответствовать идентификатору текущего пользователя']];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
+        }
+
         $tradeOffer = $tradeOfferService->create($validated);
 
         if (!$tradeOffer) {
