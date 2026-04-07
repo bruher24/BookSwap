@@ -30,8 +30,9 @@ final class UserSettingController extends Controller
         Gate::authorize('settings', $user);
 
         $validated = $request->validated();
+        $updated = $userSettingService->updateSetting($user, $setting, $validated['value']);
 
-        if (!$userSettingService->updateSetting($user, $setting, $validated['value'])) {
+        if (!$updated) {
             $errors = ['Ошибка при обновлении настроек'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

@@ -7,5 +7,5 @@ use App\Models\User;
 
 interface UserSettingServiceInterface
 {
-    public function updateSetting(User $user, Setting $setting, string $value): bool;
+    public function updateSetting(User $user, Setting $setting, string $value): Setting|false;
 }

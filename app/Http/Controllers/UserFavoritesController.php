@@ -45,6 +45,6 @@ final class UserFavoritesController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
+        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 }

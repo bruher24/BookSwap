@@ -17,6 +17,8 @@ paths:
           $ref: "components/responses/api/Login_Response.yaml"
         "400":
           $ref: "components/responses/exceptions/BadRequest.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
         "422":
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -34,6 +36,8 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "401":
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /auth/refresh:
     post:
@@ -414,7 +418,7 @@ paths:
       requestBody:
         $ref: "components/requestBodies/SendMessageRequest_Body.yaml"
       responses:
-        "200":
+        "201":
           $ref: "components/responses/api/Message_Response.yaml"
         "400":
           $ref: "components/responses/exceptions/BadRequest.yaml"
@@ -432,7 +436,7 @@ paths:
         - Cover
       description: "Требуется аутентификация и роль администратора (IsAdmin middleware)"
       security:
-        - http: []
+        - http: [ ]
       responses:
         "200":
           $ref: "components/responses/api/CoverCollection_Response.yaml"
@@ -513,6 +517,8 @@ paths:
       responses:
         "200":
           $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
+        "204":
+          $ref: "components/responses/api/NoContent_Response.yaml"
         "401":
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
@@ -627,6 +633,8 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /trade_offers/{trade_offer}/accept:
     parameters:
@@ -644,6 +652,8 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /trade_offers/{trade_offer}/reject:
     parameters:
@@ -655,12 +665,16 @@ paths:
       responses:
         "200":
           $ref: "components/responses/api/Success_Response.yaml"
+        "202":
+          $ref: "components/responses/api/Accepted_Response.yaml"
         "400":
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "401":
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /filters:
     get:
@@ -1178,6 +1192,8 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 components:
   securitySchemes:
     http:
