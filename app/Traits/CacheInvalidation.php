@@ -17,28 +17,16 @@ trait CacheInvalidation
         static::saved(function (Cacheable $model) {
             Cache::forget($model::CACHE_KEY);
             Log::debug('Forgot: ' . $model::CACHE_KEY);
-            if ($model instanceof Chat) {
-                Cache::forget($model->first_user_id . '_chats');
-                Log::debug('Forgot: ' . $model->first_user_id . '_chats');
-            }
         });
 
         static::deleted(function (Cacheable $model) {
             Cache::forget($model::CACHE_KEY);
             Log::debug('Forgot: ' . $model::CACHE_KEY);
-            if ($model instanceof Chat) {
-                Cache::forget($model->first_user_id . '_chats');
-                Log::debug('Forgot: ' . $model->first_user_id . '_chats');
-            }
         });
 
         static::restored(function (Cacheable $model) {
             Cache::forget($model::CACHE_KEY);
             Log::debug('Forgot: ' . $model::CACHE_KEY);
-            if ($model instanceof Chat) {
-                Cache::forget($model->first_user_id . '_chats');
-                Log::debug('Forgot: ' . $model->first_user_id . '_chats');
-            }
         });
     }
 }

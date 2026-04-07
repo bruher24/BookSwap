@@ -46,7 +46,7 @@ final class ChatController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function show(ChatServiceInterface $chatService, Chat $chat): JsonResponse
+    public function show(Chat $chat): JsonResponse
     {
         Gate::authorize('view', $chat);
 

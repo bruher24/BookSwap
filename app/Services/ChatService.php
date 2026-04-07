@@ -47,10 +47,7 @@ final class ChatService implements ChatServiceInterface
     public function getAll(): Collection
     {
         try {
-            return Cache::remember(Chat::CACHE_KEY, 600, function (): Collection {
-                Log::debug('Stored in cache: ' . Chat::CACHE_KEY);
-                return Chat::all();
-            });
+            return Chat::all();
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return new Collection();
@@ -73,6 +70,10 @@ final class ChatService implements ChatServiceInterface
             DB::beginTransaction();
             $chat->updateOrFail($data);
             DB::commit();
+
+            Cache::forget('chats_' . $chat->first_user_id);
+            Cache::forget('chats_' . $chat->second_user_id);
+
             return $chat->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
@@ -87,6 +88,10 @@ final class ChatService implements ChatServiceInterface
             DB::beginTransaction();
             $chat->delete();
             DB::commit();
+
+            Cache::forget('chats_' . $chat->first_user_id);
+            Cache::forget('chats_' . $chat->second_user_id);
+
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
@@ -104,7 +109,11 @@ final class ChatService implements ChatServiceInterface
                 throw new Exception('Ошибка при получении чата');
             }
 
-            return $chats;
+            return Cache::remember('chats_' . $user->id, 600, function () use ($user, $chats): Collection {
+                Log::debug('Stored in cache: ' . 'chats_' . $user->id);
+                return $chats;
+            });
+
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return new Collection();
@@ -115,9 +124,15 @@ final class ChatService implements ChatServiceInterface
     {
         try {
             $messages = $chat->messages()->orderBy('created_at')->orderBy('id')->get();
-            return $messages->groupBy(function (Message $item) {
+            $sortedMessages = $messages->groupBy(function (Message $item) {
                 return mb_substr($item->created_at, 0, 10);
             });
+
+            return Cache::remember('messages_' . $chat->id, 600, function () use ($chat, $sortedMessages): Collection {
+                Log::debug('Stored in cache: ' . 'messages_' . $chat->id);
+                return $sortedMessages;
+            });
+
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return new Collection();
@@ -141,6 +156,9 @@ final class ChatService implements ChatServiceInterface
             }
 
             DB::commit();
+
+            Cache::forget('messages_' . $chat->id);
+
             return $message;
         } catch (Throwable $exception) {
             DB::rollBack();

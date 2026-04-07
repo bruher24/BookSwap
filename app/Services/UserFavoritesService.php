@@ -44,6 +44,7 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
             }
 
             DB::commit();
+            Cache::forget('favorites_' . $user->id);
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
@@ -68,6 +69,7 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
             }
 
             DB::commit();
+            Cache::forget('favorites_' . $user->id);
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
