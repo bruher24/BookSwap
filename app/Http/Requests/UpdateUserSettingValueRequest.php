@@ -4,15 +4,26 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Override;
 
-final class UpdateSettingsValuesRequest extends FormRequest
+final class UpdateUserSettingValueRequest extends FormRequest
 {
+    private array $values;
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
         return true;
+    }
+
+    #[Override]
+    public function prepareForValidation(): void
+    {
+        $setting = $this->route('setting');
+        $this->values = $setting?->available_values ?? [];
     }
 
     /**
@@ -23,11 +34,11 @@ final class UpdateSettingsValuesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'settingsData' => [
+            'value' => [
                 'required',
-                'array',
-                'min:1',
-            ],
+                'string',
+                Rule::in(array_map('strval', $this->values)),
+            ]
         ];
     }
 }

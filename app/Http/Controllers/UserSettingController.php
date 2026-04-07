@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateSettingsValuesRequest;
+use App\Http\Requests\UpdateUserSettingValueRequest;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SettingResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\UserSettingServiceInterface;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
@@ -24,20 +25,13 @@ final class UserSettingController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(UserSettingServiceInterface $userSettingService, UpdateSettingsValuesRequest $request, User $user): JsonResponse
+    public function update(UserSettingServiceInterface $userSettingService, UpdateUserSettingValueRequest $request, User $user, Setting $setting): JsonResponse
     {
         Gate::authorize('settings', $user);
 
         $validated = $request->validated();
-        $settingsData = $validated['settingsData'];
-        $isValidSettingsData = $userSettingService->validateSettingsData($settingsData);
 
-        if (!$isValidSettingsData) {
-            $errors = ['Некорректные входные данные'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        if (!$userSettingService->updateSettings($user, $settingsData)) {
+        if (!$userSettingService->updateSetting($user, $setting, $validated['value'])) {
             $errors = ['Ошибка при обновлении настроек'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

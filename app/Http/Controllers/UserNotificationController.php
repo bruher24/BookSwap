@@ -22,16 +22,4 @@ final class UserNotificationController extends Controller
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
-
-    public function readAll(NotificationServiceInterface $notificationService, User $user): JsonResponse
-    {
-        Gate::authorize('notifications', $user);
-
-        if (!$notificationService->readAll($user)) {
-            $errors = ['Ошибка при обновлении уведомлений'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
-    }
 }
