@@ -20,7 +20,8 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
         try {
             return Cache::remember('favorites_' . $user->id, 600, function () use ($user) {
                 Log::debug('Stored in cache: ' . 'favorites_' . $user->id);
-                return UsersFavoriteBooks::where('user_id', $user->id)->get();
+                $bookIds = UsersFavoriteBooks::where('user_id', $user->id)->pluck('book_id');
+                return Book::whereIn('id', $bookIds)->get();
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage());

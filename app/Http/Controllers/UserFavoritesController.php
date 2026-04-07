@@ -19,7 +19,7 @@ final class UserFavoritesController extends Controller
         Gate::authorize('favorites', $user);
 
         $favorites = $userFavoritesService->favorites($user);
-        $data = ['favorites' => BookResource::collection($favorites)];
+        $data = ['books' => BookResource::collection($favorites)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }

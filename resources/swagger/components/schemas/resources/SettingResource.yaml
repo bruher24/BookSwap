@@ -10,6 +10,10 @@ properties:
     oneOf:
       - type: string
       - type: 'null'
+  available_values:
+    type: array
+    items:
+      type: string
   created_at:
     oneOf:
       - type: string
@@ -30,6 +34,7 @@ required:
   - name
   - label
   - description
+  - available_values
   - created_at
   - updated_at
   - deleted_at

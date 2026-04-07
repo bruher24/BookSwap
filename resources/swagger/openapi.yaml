@@ -4,12 +4,15 @@ info:
   version: 0.0.1
 servers:
   - url: http://localhost/api/v1
+security:
+  - http: [ ]
 paths:
   /auth/register:
     post:
       operationId: auth.register
       tags:
         - Auth
+      security: [ ]
       requestBody:
         $ref: "components/requestBodies/StoreUserRequest_Body.yaml"
       responses:
@@ -27,6 +30,7 @@ paths:
       operationId: auth.login
       tags:
         - Auth
+      security: [ ]
       requestBody:
         $ref: "components/requestBodies/AuthRequest_Body.yaml"
       responses:
@@ -78,6 +82,7 @@ paths:
       operationId: authors.index
       tags:
         - Author
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/AuthorCollection_Response.yaml"
@@ -106,6 +111,7 @@ paths:
       operationId: authors.show
       tags:
         - Author
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/Author_Response.yaml"
@@ -128,8 +134,6 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
         "422":
           $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
@@ -151,6 +155,7 @@ paths:
       operationId: books.index
       tags:
         - Book
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/BookCollection_Response.yaml"
@@ -179,6 +184,7 @@ paths:
       operationId: books.show
       tags:
         - Book
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/Book_Response.yaml"
@@ -224,6 +230,7 @@ paths:
       operationId: book_types.index
       tags:
         - BookType
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/BookTypeCollection_Response.yaml"
@@ -253,6 +260,7 @@ paths:
       operationId: book_types.show
       tags:
         - BookType
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/BookType_Response.yaml"
@@ -469,6 +477,7 @@ paths:
       operationId: covers.show
       tags:
         - Cover
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/Cover_Response.yaml"
@@ -681,6 +690,7 @@ paths:
       operationId: filters.index
       tags:
         - Filter
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/FilterCollection_Response.yaml"
@@ -709,6 +719,7 @@ paths:
       operationId: filters.show
       tags:
         - Filter
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/Filter_Response.yaml"
@@ -754,6 +765,7 @@ paths:
       operationId: genres.index
       tags:
         - Genre
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/GenreCollection_Response.yaml"
@@ -782,6 +794,7 @@ paths:
       operationId: genres.show
       tags:
         - Genre
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/Genre_Response.yaml"
@@ -862,6 +875,7 @@ paths:
       operationId: photos.show
       tags:
         - Photo
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/Photo_Response.yaml"
@@ -909,6 +923,7 @@ paths:
       operationId: search
       tags:
         - Search
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/SearchResults_Response.yaml"
@@ -1041,6 +1056,7 @@ paths:
       operationId: users.show
       tags:
         - User
+      security: [ ]
       responses:
         "200":
           $ref: "components/responses/api/User_Response.yaml"
@@ -1132,6 +1148,8 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /users/{user}/notifications:
     parameters:

@@ -37,6 +37,8 @@ final class UserSettingController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
+        $data = ['setting' => new SettingResource($setting)];
+
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 }
