@@ -55,7 +55,7 @@ final class UpdateBookRequest extends FormRequest
                 'max:100',
             ],
             'author_id' => [
-                'required_without_all:authorLastName,authorFirstname',
+                'required_without_all:authorLastname,authorFirstname',
                 'nullable',
                 'integer',
                 Rule::exists('authors', 'id')

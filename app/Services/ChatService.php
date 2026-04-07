@@ -105,8 +105,8 @@ final class ChatService implements ChatServiceInterface
         try {
             $chats = Chat::where('first_user_id', $user->id)->orWhere('second_user_id', $user->id)->get();
 
-            if (!$chats) {
-                throw new Exception('Ошибка при получении чата');
+            if ($chats->isEmpty()) {
+                throw new Exception('Ошибка при получении чатов');
             }
 
             return Cache::remember('chats_' . $user->id, 600, function () use ($user, $chats): Collection {
@@ -151,7 +151,7 @@ final class ChatService implements ChatServiceInterface
 
             $message = $chat->messages()->create($data);
 
-            if (!$message) {
+            if (!$message instanceof Message) {
                 throw new Exception('Ошибка при сохранении сообщения');
             }
 

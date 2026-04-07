@@ -115,49 +115,4 @@ final class UserService implements UserServiceInterface
             return false;
         }
     }
-
-    public function chats(User $user): Collection
-    {
-        try {
-            Log::debug('Cache check');
-            return Cache::remember($user->id . '_chats', 60, function () use ($user) {
-                Log::debug('Stored in cache: ' . $user->id . '_chats');
-                return $user->chats()->get();
-            });
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return new Collection();
-        }
-    }
-
-    public function getUnreadMessages(User $user): Collection|false
-    {
-        try {
-            $messages = $user->unreadMessages()->distinct()->get(['id', 'from_id']);
-            return $messages->groupBy('chat_id');
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
-
-    public function readMessages(User $user, array $messagesToRead): bool
-    {
-        // TODO: вебсокеты?
-        try {
-            DB::beginTransaction();
-            $messages = $user->unreadMessages()->whereIn('id', $messagesToRead)->get();
-
-            $messages->each(function (Message $message) {
-                $message->updateOrFail(['seen' => true]);
-            });
-
-            DB::commit();
-            return true;
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
 }

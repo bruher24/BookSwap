@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Cover;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -21,9 +22,7 @@ final class CoverApiTest extends TestCase
     private User $other;
     private Cover $cover;
     private UploadedFile $coverFile;
-
     private array $coverCreatePayload;
-    private array $coverUpdatePayload;
 
     #[Override]
     public function setUp(): void
@@ -39,11 +38,9 @@ final class CoverApiTest extends TestCase
 
         $this->cover = Cover::factory()->createOne(['user_id' => $this->owner->id]);
 
-        Storage::fake('public');
         $this->coverFile = UploadedFile::fake()->image('cover.jpg');
 
         $this->coverCreatePayload = Cover::factory()->raw();
-        $this->coverUpdatePayload = Cover::factory()->raw();
     }
 
     public function test_user_cannot_index_cover(): void
@@ -90,6 +87,7 @@ final class CoverApiTest extends TestCase
 
     public function test_user_can_create_cover(): void
     {
+        Storage::fake('public');
         Sanctum::actingAs($this->owner);
 
         $payload = [
@@ -104,7 +102,9 @@ final class CoverApiTest extends TestCase
             'user_id' => $this->owner->id,
         ]);
 
-        Storage::disk('public')->assertExists($response->json('data.cover.src'));
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+        $disk->assertExists($response->json('data.cover.src'));
     }
 
     public function test_validation_error_create_cover(): void

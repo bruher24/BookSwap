@@ -49,11 +49,13 @@ final class TradeOfferApiTest extends TestCase
         $bookType = BookType::factory()->createOne();
         $cover = Cover::factory()->createOne();
 
-        $this->books = Book::factory()->count(3)->create([
+        /** @var Collection<int, Book> $books*/
+        $books = Book::factory()->count(3)->create([
             'user_id' => $this->sender->id,
             'book_type_id' => $bookType->id,
             'cover_id' => $cover->id,
         ]);
+        $this->books = $books;
 
         $booksIds = $this->books->pluck('id')->all();
 

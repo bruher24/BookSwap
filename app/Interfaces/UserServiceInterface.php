@@ -18,10 +18,4 @@ interface UserServiceInterface
     public function update(User $user, array $data): User|false;
 
     public function delete(User $user): bool;
-
-    public function chats(User $user): Collection;
-
-    public function getUnreadMessages(User $user): Collection|false;
-
-    public function readMessages(User $user, array $messagesToRead): bool;
 }

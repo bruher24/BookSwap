@@ -9,6 +9,7 @@ use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserResource;
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -75,6 +76,11 @@ final class AuthController extends Controller
         $email = $request->input('email');
         $user = $userService->where('email', $email)->first();
 
+        if (!$user instanceof User) {
+            $errors = ['Ошибка обновления токена'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
         Gate::authorize('refresh', $user);
 
         $token = $authService->refreshToken($email);
@@ -93,6 +99,11 @@ final class AuthController extends Controller
     {
         $email = $request->input('email');
         $user = $userService->where('email', $email)->first();
+
+        if (!$user instanceof User) {
+            $errors = ['Ошибка обновления токена'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
 
         Gate::authorize('logout', $user);
 

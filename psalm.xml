@@ -103,6 +103,8 @@
         <UnusedClass>
             <errorLevel type="suppress">
                 <directory name="app/Listeners"/>
+                <directory name="app/Policies"/>
+                <directory name="database/factories"/>
             </errorLevel>
         </UnusedClass>
         <UndefinedThisPropertyAssignment>

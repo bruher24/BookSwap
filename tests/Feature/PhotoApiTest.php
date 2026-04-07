@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Photo;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -21,9 +22,7 @@ final class PhotoApiTest extends TestCase
     private User $other;
     private Photo $photo;
     private UploadedFile $photoFile;
-
     private array $photoCreatePayload;
-    private array $photoUpdatePayload;
 
     #[Override]
     public function setUp(): void
@@ -43,7 +42,6 @@ final class PhotoApiTest extends TestCase
         $this->photoFile = UploadedFile::fake()->image('photo.jpg');
 
         $this->photoCreatePayload = Photo::factory()->raw();
-        $this->photoUpdatePayload = Photo::factory()->raw();
     }
 
     public function test_user_cannot_index_photo(): void
@@ -90,6 +88,7 @@ final class PhotoApiTest extends TestCase
 
     public function test_user_can_create_photo(): void
     {
+        Storage::fake('public');
         Sanctum::actingAs($this->owner);
 
         $payload = [
@@ -104,7 +103,9 @@ final class PhotoApiTest extends TestCase
             'user_id' => $this->owner->id,
         ]);
 
-        Storage::disk('public')->assertExists($response->json('data.photo.src'));
+        /** @var FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+        $disk->assertExists($response->json('data.photo.src'));
     }
 
     public function test_validation_error_create_photo(): void

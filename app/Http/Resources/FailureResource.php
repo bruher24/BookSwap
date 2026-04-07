@@ -22,11 +22,6 @@ final class FailureResource extends JsonResource
     public function toArray(Request $request): array
     {
         $errors = parent::toArray($request);
-
-        if (count($errors) > 0) {
-            return ['errors' => $errors];
-        }
-
-        return [];
+        return ['errors' => $errors];
     }
 }

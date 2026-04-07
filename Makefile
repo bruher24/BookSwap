@@ -25,7 +25,7 @@ logs:
 	docker compose exec -it app tail -f storage/logs/laravel.log
 
 psalm:
-	docker compose run --rm psalm psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > psalm-report.html
+	docker compose exec app ./vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > psalm-report.html
 
 clear:
 	docker compose exec app php artisan optimize:clear

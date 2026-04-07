@@ -37,10 +37,11 @@ final class BookService implements BookServiceInterface
             if (isset($data['cover'])) {
                 $coverService = new CoverService();
                 $cover = $coverService->create($data['cover']);
+                $data['cover_id'] = $cover ? $cover->id : Cover::BASE_COVER_ID;
+                unset($data['cover']);
             }
 
             $formattedData = $this->formatData($data);
-            $formattedData['cover_id'] = isset($cover) ? $cover->id : Cover::BASE_COVER_ID;
             $book = new Book($formattedData);
 
             if (!$book->save()) {

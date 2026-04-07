@@ -16,7 +16,6 @@ final class ChatApiTest extends TestCase
 
     private User $admin;
     private User $firstUser;
-    private User $secondUser;
     private User $other;
     private Chat $chat;
     private array $firstChatPayload;
@@ -32,20 +31,18 @@ final class ChatApiTest extends TestCase
         $this->admin->roles()->attach($adminRole);
 
         $this->firstUser = User::factory()->createOne();
-        $this->secondUser = User::factory()->createOne();
-        $this->thirdUser = User::factory()->createOne();
-        $this->fourthUser = User::factory()->createOne();
-        $this->fifthUser = User::factory()->createOne();
-        $this->sixthUser = User::factory()->createOne();
+        $secondUser = User::factory()->createOne();
+        $thirdUser = User::factory()->createOne();
+        $fourthUser = User::factory()->createOne();
         $this->other = User::factory()->createOne();
 
         $this->firstChatPayload = [
             'first_user_id' => $this->firstUser->id,
-            'second_user_id' => $this->secondUser->id,
+            'second_user_id' => $secondUser->id,
         ];
         $this->secondChatPayload = [
-            'first_user_id' => $this->thirdUser->id,
-            'second_user_id' => $this->fourthUser->id,
+            'first_user_id' => $thirdUser->id,
+            'second_user_id' => $fourthUser->id,
         ];
         $this->chat = Chat::factory()->createOne($this->firstChatPayload);
 

@@ -18,9 +18,6 @@ final class UserApiTest extends TestCase
     private User $target;
     private array $userCreatePayload;
     private array $userUpdatePayload;
-    private array $userWrongPayload = [
-
-    ];
 
     #[Override]
     public function setUp(): void

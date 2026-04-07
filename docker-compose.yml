@@ -36,15 +36,6 @@ services:
         networks:
             - app-network
 
-    psalm:
-        image: ghcr.io/danog/psalm:latest
-        container_name: app-psalm
-        volumes:
-            - .:/app
-        working_dir: /app
-        networks:
-            - app-network
-
     postgres:
         image: postgres:latest
         container_name: app-postgres
