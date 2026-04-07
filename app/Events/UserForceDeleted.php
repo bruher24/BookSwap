@@ -21,6 +21,7 @@ final class UserForceDeleted implements ShouldQueue
      */
     public function __construct(
         public User $user
-    ) {
+    )
+    {
     }
 }

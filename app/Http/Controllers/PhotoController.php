@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePhotoRequest;
 use App\Http\Requests\UpdatePhotoRequest;
+use App\Http\Resources\FailureResource;
 use App\Http\Resources\PhotoResource;
 use App\Http\Resources\SuccessResource;
-use App\Http\Resources\FailureResource;
 use App\Interfaces\PhotoServiceInterface;
 use App\Models\Photo;
 use Illuminate\Http\JsonResponse;

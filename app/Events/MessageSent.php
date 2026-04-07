@@ -30,7 +30,8 @@ final class MessageSent implements ShouldBroadcast
      */
     public function __construct(
         Message $message
-    ) {
+    )
+    {
         $this->broadcastVia('reverb');
         $this->message = $message;
     }

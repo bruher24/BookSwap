@@ -21,6 +21,7 @@ final class BookForceDeleted implements ShouldQueue
      */
     public function __construct(
         public Book $book
-    ) {
+    )
+    {
     }
 }

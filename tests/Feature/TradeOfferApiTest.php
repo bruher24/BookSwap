@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookType;
 use App\Models\Cover;
@@ -107,7 +106,7 @@ final class TradeOfferApiTest extends TestCase
         $response->assertOk();
     }
 
-     public function test_user_cannot_get_others_tradeoffer(): void
+    public function test_user_cannot_get_others_tradeoffer(): void
     {
         Sanctum::actingAs($this->other);
 
@@ -155,7 +154,7 @@ final class TradeOfferApiTest extends TestCase
         $response->assertForbidden();
     }
 
-     public function test_user_can_delete_owned_tradeoffer(): void
+    public function test_user_can_delete_owned_tradeoffer(): void
     {
         Sanctum::actingAs($this->sender);
 

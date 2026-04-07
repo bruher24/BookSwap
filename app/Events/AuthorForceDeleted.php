@@ -21,6 +21,7 @@ final class AuthorForceDeleted implements ShouldQueue
      */
     public function __construct(
         public Author $author
-    ) {
+    )
+    {
     }
 }

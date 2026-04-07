@@ -21,6 +21,7 @@ final class TradeOfferDeleted implements ShouldQueue
      */
     public function __construct(
         public TradeOffer $tradeOffer
-    ) {
+    )
+    {
     }
 }

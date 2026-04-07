@@ -21,6 +21,7 @@ final class BookRestored implements ShouldQueue
      */
     public function __construct(
         public Book $book
-    ) {
+    )
+    {
     }
 }

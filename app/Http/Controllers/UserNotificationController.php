@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\FailureResource;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\NotificationServiceInterface;

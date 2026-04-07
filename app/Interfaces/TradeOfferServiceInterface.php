@@ -5,7 +5,6 @@ namespace App\Interfaces;
 use App\Models\TradeOffer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Override;
 
 interface TradeOfferServiceInterface
 {

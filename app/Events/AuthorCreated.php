@@ -21,6 +21,7 @@ final class AuthorCreated implements ShouldQueue
      */
     public function __construct(
         public Author $author
-    ) {
+    )
+    {
     }
 }

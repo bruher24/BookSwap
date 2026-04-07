@@ -11,7 +11,6 @@ use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +18,7 @@ final class AuthController extends Controller
 {
     public function register(UserServiceInterface $userService, AuthServiceInterface $authService, StoreUserRequest $request): JsonResponse
     {
-        if (auth()->check()){
+        if (auth()->check()) {
             $errors = ['Аутентифицированный пользователь не может регистрироваться'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
         }
@@ -43,7 +42,7 @@ final class AuthController extends Controller
 
     public function login(UserServiceInterface $userService, AuthServiceInterface $authService, AuthRequest $request): JsonResponse
     {
-        if (auth()->check()){
+        if (auth()->check()) {
             $errors = ['Аутентифицированный пользователь не может аутентифицироваться'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
         }

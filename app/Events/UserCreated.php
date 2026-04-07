@@ -21,6 +21,7 @@ final class UserCreated implements ShouldQueue
      */
     public function __construct(
         public User $user
-    ) {
+    )
+    {
     }
 }

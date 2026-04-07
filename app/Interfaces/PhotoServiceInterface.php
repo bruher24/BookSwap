@@ -4,7 +4,6 @@ namespace App\Interfaces;
 
 use App\Models\Photo;
 use Illuminate\Database\Eloquent\Collection;
-use Override;
 
 interface PhotoServiceInterface
 {

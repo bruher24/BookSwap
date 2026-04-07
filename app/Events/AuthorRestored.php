@@ -21,6 +21,7 @@ final class AuthorRestored implements ShouldQueue
      */
     public function __construct(
         public Author $author
-    ) {
+    )
+    {
     }
 }
