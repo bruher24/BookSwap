@@ -35,8 +35,12 @@ final class BookService implements BookServiceInterface
             DB::beginTransaction();
 
             if (isset($data['cover'])) {
-                $coverService = new CoverService();
-                $cover = $coverService->create($data['cover']);
+                $coverData = [
+                    'user_id' => $data['user_id'],
+                    'src' => $data['cover']->getPathname(),
+                ];
+
+                $cover = (new CoverService())->create($coverData);
                 $data['cover_id'] = $cover ? $cover->id : Cover::BASE_COVER_ID;
                 unset($data['cover']);
             } else {
@@ -142,7 +146,12 @@ final class BookService implements BookServiceInterface
             DB::beginTransaction();
 
             if (isset($data['cover'])) {
-                $cover = (new CoverService())->create($data['cover']);
+                $coverData = [
+                    'user_id' => $data['user_id'],
+                    'src' => $data['cover']->getPathname(),
+                ];
+
+                $cover = (new CoverService())->create($coverData);
                 $data['cover_id'] = $cover ? $cover->id : Cover::BASE_COVER_ID;
                 unset($data['cover']);
             }

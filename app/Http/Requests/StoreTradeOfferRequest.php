@@ -47,7 +47,12 @@ final class StoreTradeOfferRequest extends FormRequest
             'trade_offer_items' => [
                 'required',
                 'array',
-                Rule::exists('books', 'id'),
+            ],
+            'trade_offer_items.*' => [
+                'required',
+                'integer',
+                Rule::exists('books', 'id')
+                    ->withoutTrashed(),
             ],
         ];
     }

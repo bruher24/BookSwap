@@ -7,7 +7,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Override;
 
 final class UpdateTradeOfferRequest extends FormRequest
 {
@@ -30,7 +29,12 @@ final class UpdateTradeOfferRequest extends FormRequest
             'trade_offer_items' => [
                 'required',
                 'array',
-                Rule::exists('books', 'id'),
+            ],
+            'trade_offer_items.*' => [
+                'required',
+                'integer',
+                Rule::exists('books', 'id')
+                    ->withoutTrashed(),
             ],
             'status' => [new Enum(TradeOfferStatus::class)],
         ];

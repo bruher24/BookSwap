@@ -23,10 +23,9 @@ final class TradeOfferController extends Controller
         Gate::authorize('viewAny', TradeOffer::class);
 
         $tradeOffers = $tradeOfferService->getAll();
-        $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
-        return (new SuccessResource($data))->response()->setStatusCode($statusCode);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(TradeOfferServiceInterface $tradeOfferService, StoreTradeOfferRequest $request): JsonResponse

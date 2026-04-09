@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->foreignId('book_id')->constrained('books')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['author_id', 'book_id']);
         });
     }
 
