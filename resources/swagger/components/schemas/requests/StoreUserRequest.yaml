@@ -13,10 +13,6 @@ properties:
       - type: 'null'
   password:
     type: string
-  photo_id:
-    oneOf:
-      - type: integer
-      - type: 'null'
   remember_token:
     oneOf:
       - type: string

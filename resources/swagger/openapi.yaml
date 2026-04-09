@@ -526,8 +526,6 @@ paths:
       responses:
         "200":
           $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
-        "204":
-          $ref: "components/responses/api/NoContent_Response.yaml"
         "401":
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
@@ -560,8 +558,6 @@ paths:
       responses:
         "200":
           $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
-        "204":
-          $ref: "components/responses/api/NoContent_Response.yaml"
         "400":
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "401":
@@ -581,8 +577,6 @@ paths:
       responses:
         "200":
           $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
-        "204":
-          $ref: "components/responses/api/NoContent_Response.yaml"
         "400":
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "401":
@@ -636,6 +630,25 @@ paths:
       responses:
         "202":
           $ref: "components/responses/api/Accepted_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+
+  /trade_offers/{trade_offer}/items:
+    parameters:
+      - $ref: "components/parameters/trade_offer.yaml"
+    get:
+      operationId: trade_offers.items
+      tags:
+        - TradeOffer
+      responses:
+        "200":
+          $ref: "components/responses/api/BookCollection_Response.yaml"
         "400":
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "401":

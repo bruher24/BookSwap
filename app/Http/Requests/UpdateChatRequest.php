@@ -36,12 +36,6 @@ final class UpdateChatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'chat_id' => [
-                'required',
-                'integer',
-                Rule::exists('chats', 'id')
-                    ->withoutTrashed(),
-            ],
             'first_user_id' => [
                 'required',
                 'integer',

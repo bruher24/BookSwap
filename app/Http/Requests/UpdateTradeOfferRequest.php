@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TradeOfferStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Override;
 
 final class UpdateTradeOfferRequest extends FormRequest
@@ -18,17 +20,6 @@ final class UpdateTradeOfferRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
-     */
-    #[Override]
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'trade_offer_id' => $this->route('trade_offer')->id,
-        ]);
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array|string>
@@ -36,36 +27,12 @@ final class UpdateTradeOfferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'trade_offer_id' => [
-                'required',
-                'integer',
-                Rule::exists('trade_offers', 'id')
-                    ->withoutTrashed(),
-            ],
-            'sender_id' => [
-                'required',
-                'integer',
-                'different:receiver_id',
-                Rule::exists('users', 'id')
-                    ->withoutTrashed(),
-            ],
-            'receiver_id' => [
-                'required',
-                'integer',
-                'different:sender_id',
-                Rule::exists('users', 'id')
-                    ->withoutTrashed(),
-            ],
             'trade_offer_items' => [
                 'required',
                 'array',
                 Rule::exists('books', 'id'),
             ],
-            'date' => [
-                'required',
-                'string',
-                Rule::date()->beforeOrEqual(now()),
-            ],
+            'status' => [new Enum(TradeOfferStatus::class)],
         ];
     }
 }

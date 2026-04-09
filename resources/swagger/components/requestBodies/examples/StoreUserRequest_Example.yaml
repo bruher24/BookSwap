@@ -4,6 +4,5 @@ value: {
   email: "mega@user.com",
   email_verified_at: null,
   password: "1234",
-  photo_id: null,
   remember_token: null
 }

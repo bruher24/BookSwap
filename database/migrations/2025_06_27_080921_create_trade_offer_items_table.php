@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('trade_offer_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('trade_offer_id')->constrained('trade_offers')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('book_id')->constrained('books')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('trade_offer_id')->constrained('trade_offers')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('book_id')->constrained('books')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
         });

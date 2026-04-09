@@ -20,6 +20,8 @@ interface TradeOfferServiceInterface
 
     public function delete(TradeOffer $tradeOffer): bool;
 
+    public function items(TradeOffer $tradeOffer): Collection;
+
     public function bySender(User $sender): Collection;
 
     public function byReceiver(User $receiver): Collection;

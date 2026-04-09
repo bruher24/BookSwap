@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\TradeOfferStatus;
 use App\Interfaces\TradeOfferServiceInterface;
+use App\Models\Book;
 use App\Models\TradeOffer;
 use App\Models\User;
 use Exception;
@@ -18,10 +20,17 @@ final class TradeOfferService implements TradeOfferServiceInterface
     {
         try {
             DB::beginTransaction();
+
+            $data['status'] = TradeOfferStatus::Pending;
+
             $tradeOffer = new TradeOffer($data);
 
             if (!$tradeOffer->save()) {
                 throw new Exception("Ошибка при создании типа");
+            }
+
+            foreach ($data['trade_offer_items'] as $itemData) {
+                $tradeOffer->items()->create(['book_id' => $itemData]);
             }
 
             DB::commit();
@@ -71,6 +80,13 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             DB::beginTransaction();
             $tradeOffer->updateOrFail($data);
+
+            $tradeOffer->items()->delete();
+
+            foreach ($data['trade_offer_items'] as $itemData) {
+                $tradeOffer->items()->create(['book_id' => $itemData]);
+            }
+
             DB::commit();
             return $tradeOffer->refresh();
         } catch (Throwable $e) {
@@ -94,6 +110,13 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    public function items(TradeOffer $tradeOffer): Collection
+    {
+        $bookIds = $tradeOffer->items()->pluck('book_id')->toArray();
+
+        return Book::whereIn('id', $bookIds)->get();
+    }
+
     public function bySender(User $sender): Collection
     {
         return $this->where('sender_id', $sender->id);
@@ -107,8 +130,8 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function accept(TradeOffer $tradeOffer): bool
     {
         try {
-            $tradeOffer->accept();
-            return true;
+            $tradeOffer->status = TradeOfferStatus::Accepted;
+            return $tradeOffer->saveOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return false;
@@ -118,8 +141,8 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function reject(TradeOffer $tradeOffer): bool
     {
         try {
-            $tradeOffer->reject();
-            return true;
+            $tradeOffer->status = TradeOfferStatus::Rejected;
+            return $tradeOffer->saveOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return false;

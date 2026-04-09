@@ -6,6 +6,6 @@ value: {
   page_count: 280,
   publishing_house: "Book House",
   publication_year: "2023-01-01",
-  book_type: 2,
+  book_type_id: 2,
   isbn: "1234567890123"
 }

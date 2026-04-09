@@ -1,7 +1,5 @@
 type: object
 properties:
-  user_id:
-    type: integer
   name:
     oneOf:
       - type: string
@@ -37,7 +35,7 @@ properties:
   authorBirthdate:
     oneOf:
       - type: string
-        format: date-time
+        format: date
       - type: 'null'
   page_count:
     type: integer
@@ -58,7 +56,7 @@ properties:
       - type: string
         format: date
       - type: 'null'
-  book_type:
+  book_type_id:
     type: integer
   isbn:
     oneOf:
@@ -67,7 +65,6 @@ properties:
         maxLength: 13
       - type: 'null'
 required:
-  - user_id
   - page_count
-  - book_type
+  - book_type_id
 title: UpdateBookRequest

@@ -122,6 +122,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('{trade_offer}', 'show')->name('show');
                 Route::put('{trade_offer}', 'update')->name('update');
                 Route::delete('{trade_offer}', 'destroy')->name('destroy');
+                Route::get('{trade_offer}/items', 'items')->name('items');
                 Route::get('by_sender/{sender}', 'bySender')->name('bySender');
                 Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver');
                 Route::patch('{trade_offer}/accept', 'accept')->name('accept');

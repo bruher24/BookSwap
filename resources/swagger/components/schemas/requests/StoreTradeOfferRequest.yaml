@@ -8,11 +8,8 @@ properties:
     type: array
     items:
       type: integer
-  date:
-    type: string
 required:
   - sender_id
   - receiver_id
   - trade_offer_items
-  - date
 title: StoreTradeOfferRequest

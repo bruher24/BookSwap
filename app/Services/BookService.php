@@ -39,6 +39,8 @@ final class BookService implements BookServiceInterface
                 $cover = $coverService->create($data['cover']);
                 $data['cover_id'] = $cover ? $cover->id : Cover::BASE_COVER_ID;
                 unset($data['cover']);
+            } else {
+                $data['cover_id'] = Cover::BASE_COVER_ID;
             }
 
             $formattedData = $this->formatData($data);
@@ -138,7 +140,22 @@ final class BookService implements BookServiceInterface
     {
         try {
             DB::beginTransaction();
-            $book->updateOrFail($data);
+
+            if (isset($data['cover'])) {
+                $cover = (new CoverService())->create($data['cover']);
+                $data['cover_id'] = $cover ? $cover->id : Cover::BASE_COVER_ID;
+                unset($data['cover']);
+            }
+
+            $formattedData = $this->formatData($data);
+            $book->updateOrFail($formattedData);
+
+            $authors = $this->filterAuthorsData($data);
+
+            if (!empty($authors) && !$this->attach($book, $authors)) {
+                throw new Exception('Ошибка при добавлении авторов');
+            }
+
             DB::commit();
             return $book->refresh();
         } catch (Throwable $e) {

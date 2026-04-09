@@ -8,16 +8,8 @@ properties:
     type: integer
   blocked_by:
     oneOf:
-      - type: integer
-        oneOf:
-          - title: first
-            const: 1
-          - title: second
-            const: 2
-      - type: 'null'
-  latest_read_id:
-    oneOf:
       - type: string
+        enum: [ 'first', 'second' ]
       - type: 'null'
   created_at:
     oneOf:
@@ -38,7 +30,7 @@ required:
   - id
   - first_user_id
   - second_user_id
-  - is_blocked
+  - blocked_by
   - created_at
   - updated_at
   - deleted_at

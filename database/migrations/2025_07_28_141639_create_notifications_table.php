@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('subject');
             $table->text('body');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->boolean('seen')->default(false);
             $table->timestamps();
             $table->softDeletes();

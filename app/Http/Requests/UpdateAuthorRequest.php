@@ -37,12 +37,6 @@ final class UpdateAuthorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'author_id' => [
-                'required',
-                'integer',
-                Rule::exists('authors', 'id')
-                    ->withoutTrashed(),
-            ],
             'user_id' => [
                 'required',
                 'integer',

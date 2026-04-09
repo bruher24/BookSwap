@@ -18,17 +18,6 @@ final class UpdateCoverRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
-     */
-    #[Override]
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'cover_id' => $this->route('cover')->id,
-        ]);
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, ValidationRule|array|string>
@@ -36,12 +25,6 @@ final class UpdateCoverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cover_id' => [
-                'required',
-                'integer',
-                Rule::exists('covers', 'id')
-                    ->withoutTrashed(),
-            ],
             'src' => [
                 'required',
                 'file',

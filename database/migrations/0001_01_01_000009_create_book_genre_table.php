@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('book_genre', function (Blueprint $table) {
-            $table->foreignId('book_id')->constrained('books')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('genre_id')->constrained('genres')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('book_id')->constrained('books')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('genre_id')->constrained('genres')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
         });

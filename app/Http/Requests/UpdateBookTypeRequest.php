@@ -36,12 +36,6 @@ final class UpdateBookTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_type_id' => [
-                'required',
-                'integer',
-                Rule::exists('book_types', 'id')
-                    ->withoutTrashed(),
-            ],
             'name' => [
                 'required',
                 'string',

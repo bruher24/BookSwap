@@ -90,4 +90,18 @@ final class TradeOfferPolicy
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
+
+    public function bySender(User $user, User $sender): Response
+    {
+        return $user->id === $sender->id
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
+    }
+
+    public function byReceiver(User $user, User $receiver): Response
+    {
+        return $user->id === $receiver->id
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
+    }
 }

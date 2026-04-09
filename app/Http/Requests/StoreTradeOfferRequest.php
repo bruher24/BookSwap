@@ -49,11 +49,6 @@ final class StoreTradeOfferRequest extends FormRequest
                 'array',
                 Rule::exists('books', 'id'),
             ],
-            'date' => [
-                'required',
-                'string',
-                Rule::date()->beforeOrEqual(now()),
-            ],
         ];
     }
 }

@@ -90,9 +90,9 @@ final class ChatPolicy
             : Response::deny('Недостаточно прав');
     }
 
-    public function send(User $user, Chat $chat): Response
+    public function send(User $user, Chat $chat, int $senderId): Response
     {
-        return $chat->isUserBelongs($user)
+        return $chat->isUserBelongs($user) && $user->id === $senderId
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

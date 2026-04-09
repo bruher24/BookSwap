@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TradeOfferStatus;
 use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
 use Database\Factories\TradeOfferFactory;
@@ -22,8 +23,11 @@ final class TradeOffer extends Model implements Cacheable
     public $fillable = [
         'sender_id',
         'receiver_id',
-        'date',
-        'accepted'
+        'status'
+    ];
+
+    protected $casts = [
+        'status' => TradeOfferStatus::class,
     ];
 
     public function isUserBelongs(User $user): bool
@@ -35,19 +39,7 @@ final class TradeOffer extends Model implements Cacheable
         return in_array($user->id, $tradeOfferUsers);
     }
 
-    public function accept(): void
-    {
-        $this->accepted = true;
-        $this->save();
-    }
-
-    public function reject(): void
-    {
-        $this->accepted = false;
-        $this->save();
-    }
-
-    public function tradeOfferItems(): HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(TradeOfferItem::class);
     }

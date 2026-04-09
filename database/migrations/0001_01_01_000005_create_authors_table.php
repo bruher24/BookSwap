@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('firstname', 100);
             $table->string('patronymic', 100)->nullable();
             $table->date('birthdate')->nullable();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
 

@@ -36,12 +36,6 @@ final class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => [
-                'required',
-                'integer',
-                Rule::exists('users', 'id')
-                    ->withoutTrashed(),
-            ],
             'name' => [
                 'nullable',
                 'string',

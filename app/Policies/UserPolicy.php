@@ -25,7 +25,7 @@ final class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $target): bool
+    public function view(?User $user, User $target): bool
     {
         return true;
     }

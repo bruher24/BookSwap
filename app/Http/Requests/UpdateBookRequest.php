@@ -37,18 +37,6 @@ final class UpdateBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_id' => [
-                'required',
-                'integer',
-                Rule::exists('books', 'id')
-                    ->withoutTrashed(),
-            ],
-            'user_id' => [
-                'required',
-                'integer',
-                Rule::exists('users', 'id')
-                    ->withoutTrashed(),
-            ],
             'name' => [
                 'nullable',
                 'string',
@@ -93,8 +81,7 @@ final class UpdateBookRequest extends FormRequest
             'authorBirthdate' => [
                 'nullable',
                 'date',
-                Rule::date()
-                    ->beforeOrEqual(today()->subYears(16)),
+                Rule::date()->beforeOrEqual(today()->subYears(14)),
             ],
             'page_count' => 'required|integer|min:1',
             'cover' => [

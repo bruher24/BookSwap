@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('covers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('src', 150)->unique()->nullable();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('src', 150)->nullable()->unique();
             $table->timestamps();
             $table->softDeletes();
 

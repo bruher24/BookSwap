@@ -12,10 +12,9 @@ return new class extends Migration {
     {
         Schema::create('trade_offers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sender_id')->constrained('users')->onDelete('set null')->onUpdate('cascade');
-            $table->foreignId('receiver_id')->constrained('users')->onDelete('set null')->onUpdate('cascade');
-            $table->dateTime('date')->default(null);
-            $table->boolean('accepted')->default(null);
+            $table->foreignId('sender_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('receiver_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
+            $table->string('status', 100)->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });

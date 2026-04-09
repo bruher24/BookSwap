@@ -7,6 +7,7 @@ use App\Http\Requests\StoreChatRequest;
 use App\Http\Requests\UpdateChatRequest;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\FailureResource;
+use App\Http\Resources\MessageCollectionResource;
 use App\Http\Resources\MessageResource;
 use App\Http\Resources\SuccessResource;
 use App\Interfaces\ChatServiceInterface;
@@ -105,14 +106,14 @@ final class ChatController extends Controller
         Gate::authorize('messages', $chat);
 
         $messages = $chatService->messages($chat);
-        $data = ['messages' => MessageResource::collection($messages)];
+        $data = ['messages' => new MessageCollectionResource($messages)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function send(UserServiceInterface $userService, ChatServiceInterface $chatService, SendMessageRequest $request, Chat $chat): JsonResponse
     {
-        Gate::authorize('send', $chat);
+        Gate::authorize('send', [$chat, $request->input('sender_id')]);
 
         $validated = $request->validated();
         $sender = $userService->get($validated['sender_id']);

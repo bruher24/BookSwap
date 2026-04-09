@@ -1,0 +1,7 @@
+type: object
+title: MessageCollectionResource
+description: "Ключи — даты (YYYY-MM-DD), значения — массив сообщений за этот день"
+additionalProperties:
+  type: array
+  items:
+    $ref: './MessageResource.yaml'

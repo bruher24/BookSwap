@@ -36,12 +36,6 @@ final class UpdateFilterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'filter_id' => [
-                'required',
-                'integer',
-                Rule::exists('filters', 'id')
-                    ->withoutTrashed(),
-            ],
             'name' => [
                 'required',
                 'string',

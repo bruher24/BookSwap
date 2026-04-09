@@ -2,12 +2,31 @@ type: object
 properties:
   id:
     type: string
-  message:
+  subject:
     type: string
-  date_created:
+  body:
     type: string
+  user_id:
+    type: integer
+  seen:
+    type: boolean
+  created_at:
+    type: 'string'
+    format: date-time
+  updated_at:
+    oneOf:
+      - type: 'string'
+        format: date-time
+      - type: 'null'
+  deleted_at:
+    oneOf:
+      - type: 'string'
+        format: date-time
+      - type: 'null'
 required:
   - id
-  - message
-  - date_created
+  - subject
+  - body
+  - user_id
+  - seen
 title: NotificationResource

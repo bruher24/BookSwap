@@ -36,12 +36,6 @@ final class UpdateGenreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'genre_id' => [
-                'required',
-                'integer',
-                Rule::exists('genres', 'id')
-                    ->withoutTrashed(),
-            ],
             'name' => [
                 'required',
                 'string',

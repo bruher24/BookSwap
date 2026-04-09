@@ -25,7 +25,7 @@ final class BookController extends Controller
 
     public function store(StoreBookRequest $request, BookServiceInterface $bookService): JsonResponse
     {
-        Gate::authorize('create', Book::class);
+        Gate::authorize('create', [Book::class, $request->input('user_id')]);
 
         $validated = $request->validated();
         $book = $bookService->create($validated);
@@ -50,9 +50,10 @@ final class BookController extends Controller
     public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book): JsonResponse
     {
         Gate::authorize('update', $book);
-        $validated = $request->validated();
 
+        $validated = $request->validated();
         $book = $bookService->update($book, $validated);
+
         if (!$book) {
             $errors = ['Ошибка при обновлении книги'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);

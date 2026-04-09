@@ -123,16 +123,13 @@ final class ChatService implements ChatServiceInterface
     public function messages(Chat $chat): Collection
     {
         try {
-            $messages = $chat->messages()->orderBy('created_at')->orderBy('id')->get();
-            $sortedMessages = $messages->groupBy(function (Message $item) {
-                return mb_substr($item->created_at, 0, 10);
-            });
-
-            return Cache::remember('messages_' . $chat->id, 600, function () use ($chat, $sortedMessages): Collection {
+            return Cache::remember('messages_' . $chat->id, 600, function () use ($chat): Collection {
                 Log::debug('Stored in cache: ' . 'messages_' . $chat->id);
-                return $sortedMessages;
+                return $chat->messages()
+                    ->orderBy('created_at')
+                    ->orderBy('id')
+                    ->get();
             });
-
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return new Collection();

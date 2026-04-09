@@ -1,7 +1,5 @@
 summary: UpdateTradeOfferRequest_Example
 value: {
-  seller_id: 1,
-  buyer_id: 2,
-  trade_offer_items: [3, 4],
-  date: "2026-03-03"
+  trade_offer_items: [ 3, 4 ],
+  status: "accepted"
 }

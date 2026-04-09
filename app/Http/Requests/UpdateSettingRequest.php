@@ -36,12 +36,6 @@ final class UpdateSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'setting_id' => [
-                'required',
-                'integer',
-                Rule::exists('settings', 'id')
-                    ->withoutTrashed(),
-            ],
             'name' => [
                 'required',
                 'string',

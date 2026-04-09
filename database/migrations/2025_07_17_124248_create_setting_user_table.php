@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('setting_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('setting_id')->constrained('settings')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('setting_id')->constrained('settings')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('value');
             $table->timestamps();
             $table->softDeletes();

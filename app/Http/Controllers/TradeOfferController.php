@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferRequest;
+use App\Http\Resources\BookResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\TradeOfferResource;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Models\TradeOffer;
 use App\Models\User;
+use App\Services\TradeOfferService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,15 +92,24 @@ final class TradeOfferController extends Controller
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
+    public function items(TradeOfferService $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
+    {
+        Gate::authorize('view', $tradeOffer);
+
+        $items = $tradeOfferService->items($tradeOffer);
+        $data = ['items' => BookResource::collection($items)];
+
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+    }
+
     public function bySender(TradeOfferServiceInterface $tradeOfferService, User $sender): JsonResponse
     {
         Gate::authorize('bySender', $sender);
 
         $tradeOffers = $tradeOfferService->bySender($sender);
-        $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
-        return (new SuccessResource($data))->response()->setStatusCode($statusCode);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function byReceiver(TradeOfferServiceInterface $tradeOfferService, User $receiver): JsonResponse
@@ -106,10 +117,9 @@ final class TradeOfferController extends Controller
         Gate::authorize('byReceiver', $receiver);
 
         $tradeOffers = $tradeOfferService->byReceiver($receiver);
-        $statusCode = $tradeOffers->isEmpty() ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
-        return (new SuccessResource($data))->response()->setStatusCode($statusCode);
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function accept(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
