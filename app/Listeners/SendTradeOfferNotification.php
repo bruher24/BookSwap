@@ -7,28 +7,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 final class SendTradeOfferNotification implements ShouldQueue
 {
+    public string $queue = 'listeners';
+
     /**
      * Create the event listener.
      */
     public function __construct()
     {
         //
-    }
-
-    /**
-     * Get the name of the listener's queue connection.
-     */
-    public function viaConnection(): string
-    {
-        return 'redis';
-    }
-
-    /**
-     * Get the name of the listener's queue.
-     */
-    public function viaQueue(): string
-    {
-        return 'listeners';
     }
 
     /**

@@ -4,9 +4,12 @@ namespace App\Listeners;
 
 use App\Events\UserCreated;
 use App\Models\Role;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-final class AttachUserRole
+final class AttachUserRole implements ShouldQueue
 {
+    public string $queue = 'listeners';
+
     /**
      * Create the event listener.
      */

@@ -20,6 +20,7 @@ use App\Interfaces\UserSettingServiceInterface;
 use App\Models\Author;
 use App\Models\User;
 use App\Observers\AuthorObserver;
+use App\Observers\UserObserver;
 use App\Services\AuthorService;
 use App\Services\AuthService;
 use App\Services\BookService;
@@ -81,6 +82,7 @@ final class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Europe/Samara');
 
         Author::observe(AuthorObserver::class);
+        User::observe(UserObserver::class);
 
         RateLimiter::for('api', function (Request $request) {
             $user = $request->user();

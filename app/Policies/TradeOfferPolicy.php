@@ -37,9 +37,9 @@ final class TradeOfferPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(User $user, int $senderId): Response
     {
-        return Auth::check()
+        return Auth::check() && $user->id === $senderId
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Mail;
 
 final class SendEmailVerification implements ShouldQueue
 {
+    public string $queue = 'listeners';
+
     /**
      * Create the event listener.
      */
@@ -18,28 +20,11 @@ final class SendEmailVerification implements ShouldQueue
     }
 
     /**
-     * Get the name of the listener's queue connection.
-     */
-    public function viaConnection(): string
-    {
-        return 'redis';
-    }
-
-    /**
-     * Get the name of the listener's queue.
-     */
-    public function viaQueue(): string
-    {
-        return 'listeners';
-    }
-
-    /**
      * Handle the event.
      */
     public function handle(UserCreated $event): void
     {
         $mail = (new EmailVerification($event->user))
-            ->onConnection('redis')
             ->onQueue('mail');
 
         Mail::to($event->user)->queue($mail);

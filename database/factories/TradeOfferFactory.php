@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\TradeOfferStatus;
 use App\Models\TradeOffer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,8 +21,7 @@ final class TradeOfferFactory extends Factory
         return [
             'sender_id' => $this->faker->numberBetween(1, 100),
             'receiver_id' => $this->faker->numberBetween(1, 100),
-            'date' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
-            'accepted' => $this->faker->boolean(),
+            'status' => $this->faker->randomElement(TradeOfferStatus::cases())->value,
         ];
     }
 }
