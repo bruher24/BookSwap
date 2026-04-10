@@ -5,21 +5,9 @@ build:
 	docker compose exec app php artisan key:generate
 	docker compose down
 
-run:
-	docker compose up -d
-
 fill:
 	docker compose exec app php artisan migrate:fresh
 	docker compose exec app php artisan db:seed
-
-stop:
-	docker compose down
-
-bash:
-	docker compose exec -it app bash
-
-red:
-	docker compose exec -it redis redis-cli -h app-redis -a root
 
 logs:
 	docker compose exec -it app tail -f storage/logs/laravel.log
@@ -42,5 +30,7 @@ index-models:
 	docker compose exec app php artisan scout:import 'App\Models\Author'
 	docker compose exec app php artisan scout:import 'App\Models\Book'
 
+# requires openapi-spec-validator to be installed
+# pip install openapi-spec-validator
 test-api:
 	openapi-spec-validator --errors all --schema 3.1  resources/swagger/openapi.yaml
