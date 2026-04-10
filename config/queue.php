@@ -70,7 +70,7 @@ return [
             'queue' => 'default',
             'retry_after' => (int)env('REDIS_QUEUE_RETRY_AFTER', 90),
             'block_for' => null,
-            'after_commit' => true,
+            'after_commit' => false,
         ],
     ],
 
