@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\TradeOfferCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-final class SendTradeOfferNotification implements ShouldQueue
+final class SendTradeOfferCreatedNotification implements ShouldQueue
 {
     public string $queue = 'listeners';
 
@@ -19,7 +19,6 @@ final class SendTradeOfferNotification implements ShouldQueue
 
     /**
      * Handle the event.
-     * @psalm-suppress UnusedParam
      */
     public function handle(TradeOfferCreated $event): void
     {

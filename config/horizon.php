@@ -202,7 +202,7 @@ return [
         'production' => [
             'listeners-supervisor' => [
                 'queue' => ['listeners'],
-                'maxProcesses' => 3,
+                'maxProcesses' => 2,
                 'balance' => 'auto',
                 'autoScalingStrategy' => 'time',
                 'maxTime' => 0,
@@ -214,7 +214,7 @@ return [
             ],
             'scout-supervisor' => [
                 'queue' => ['scout'],
-                'maxProcesses' => 2,
+                'maxProcesses' => 1,
                 'balance' => 'auto',
                 'autoScalingStrategy' => 'time',
                 'maxTime' => 0,
@@ -226,7 +226,7 @@ return [
             ],
             'mail-supervisor' => [
                 'queue' => ['mail'],
-                'maxProcesses' => 5,
+                'maxProcesses' => 2,
                 'balance' => 'auto',
                 'autoScalingStrategy' => 'time',
                 'maxTime' => 0,

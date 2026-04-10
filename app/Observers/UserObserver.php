@@ -3,9 +3,13 @@
 namespace App\Observers;
 
 use App\Events\UserCreated;
+use App\Events\UserDeleted;
+use App\Events\UserForceDeleted;
+use App\Events\UserRestored;
+use App\Events\UserUpdated;
 use App\Models\User;
 
-class UserObserver
+final class UserObserver
 {
     /**
      * Handle the User "created" event.
@@ -20,7 +24,7 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
+        UserUpdated::dispatch($user);
     }
 
     /**
@@ -28,7 +32,7 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        //
+        UserDeleted::dispatch($user);
     }
 
     /**
@@ -36,7 +40,7 @@ class UserObserver
      */
     public function restored(User $user): void
     {
-        //
+        UserRestored::dispatch($user);
     }
 
     /**
@@ -44,6 +48,6 @@ class UserObserver
      */
     public function forceDeleted(User $user): void
     {
-        //
+        UserForceDeleted::dispatch($user);
     }
 }
