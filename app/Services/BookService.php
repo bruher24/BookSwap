@@ -159,7 +159,8 @@ final class BookService implements BookServiceInterface
             $formattedData = $this->formatData($data);
             $book->updateOrFail($formattedData);
 
-            $authors = $this->filterAuthorsData($data);
+            // TODO: старые авторы не удаляются, возникают дубли и 400
+            // $authors = $this->filterAuthorsData($data);
 
             if (!empty($authors) && !$this->attach($book, $authors)) {
                 throw new Exception('Ошибка при добавлении авторов');

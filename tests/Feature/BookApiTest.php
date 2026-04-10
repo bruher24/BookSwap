@@ -54,13 +54,13 @@ final class BookApiTest extends TestCase
         ]);
         $this->book->authors()->attach($this->author);
 
+        $this->bookCreatePayload = Book::factory()->raw();
+        $this->bookUpdatePayload = Book::factory()->raw();
+
         $this->bookCreatePayload['author_id'] = $this->author->id;
         $this->bookCreatePayload['book_type_id'] = $this->bookType->id;
         $this->bookUpdatePayload['author_id'] = $this->author->id;
         $this->bookUpdatePayload['book_type_id'] = $this->bookType->id;
-
-        $this->bookCreatePayload = Book::factory()->raw();
-        $this->bookUpdatePayload = Book::factory()->raw();
     }
 
     public function test_index_book(): void
@@ -108,7 +108,6 @@ final class BookApiTest extends TestCase
     public function test_user_cannot_update_others_book(): void
     {
         Sanctum::actingAs($this->other);
-        $this->bookUpdatePayload['user_id'] = $this->other->id;
         $this->bookUpdatePayload['author_id'] = $this->author->id;
 
         $response = $this->putJson("/api/v1/books/{$this->book->id}", $this->bookUpdatePayload);
@@ -118,7 +117,6 @@ final class BookApiTest extends TestCase
     public function test_user_can_update_owned_book(): void
     {
         Sanctum::actingAs($this->owner);
-        $this->bookUpdatePayload['user_id'] = $this->owner->id;
         $this->bookUpdatePayload['author_id'] = $this->author->id;
 
         $response = $this->putJson("/api/v1/books/{$this->book->id}", $this->bookUpdatePayload);
@@ -135,7 +133,6 @@ final class BookApiTest extends TestCase
     public function test_not_found_update_book(): void
     {
         Sanctum::actingAs($this->owner);
-        $this->bookUpdatePayload['user_id'] = $this->owner->id;
         $newId = (int)$this->book->id + 1;
 
         $response = $this->putJson("/api/v1/books/$newId", $this->bookUpdatePayload);

@@ -87,7 +87,7 @@ final class UserFavoritesApiTest extends TestCase
         Sanctum::actingAs($this->user);
 
         $response = $this->deleteJson("/api/v1/users/{$this->user->id}/favorites/{$this->favoriteBook->id}");
-        $response->assertOk();
+        $response->assertAccepted();
     }
 
     public function test_user_cannot_dislike_book_for_other_user(): void

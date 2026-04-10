@@ -23,7 +23,6 @@ final class BookFactory extends Factory
             'publication_year' => $this->faker->year(),
             'isbn' => $this->faker->isbn13(),
             'page_count' => $this->faker->numberBetween(50, 1000),
-            'user_id' => 1,
             'book_type_id' => 1,
             'cover_id' => 1,
         ];
