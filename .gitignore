@@ -35,3 +35,4 @@ Thumbs.db
 composer.lock
 /coverage
 /swagger
+/.kilo
