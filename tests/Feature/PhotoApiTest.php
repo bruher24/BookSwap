@@ -29,6 +29,8 @@ final class PhotoApiTest extends TestCase
     {
         parent::setUp();
 
+        Storage::fake('public');
+
         $this->admin = User::factory()->unverified()->createOne();
         $role = Role::factory()->createOne(['name' => 'admin']);
         $this->admin->roles()->attach($role);
@@ -38,7 +40,6 @@ final class PhotoApiTest extends TestCase
 
         $this->photo = Photo::factory()->createOne(['user_id' => $this->owner->id]);
 
-        Storage::fake('public');
         $this->photoFile = UploadedFile::fake()->image('photo.jpg');
 
         $this->photoCreatePayload = Photo::factory()->raw();
@@ -88,7 +89,6 @@ final class PhotoApiTest extends TestCase
 
     public function test_user_can_create_photo(): void
     {
-        Storage::fake('public');
         Sanctum::actingAs($this->owner);
 
         $payload = [

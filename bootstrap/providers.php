@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\HorizonServiceProvider::class,
+    env('APP_ENV') !== 'testing' ? App\Providers\HorizonServiceProvider::class : null,
 ];

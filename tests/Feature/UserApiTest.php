@@ -89,7 +89,7 @@ final class UserApiTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_user_can_delete_user(): void
+    public function test_user_can_delete_itself(): void
     {
         Sanctum::actingAs($this->user);
 

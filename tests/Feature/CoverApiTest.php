@@ -29,6 +29,8 @@ final class CoverApiTest extends TestCase
     {
         parent::setUp();
 
+        Storage::fake('public');
+
         $this->admin = User::factory()->unverified()->createOne();
         $role = Role::factory()->createOne(['name' => 'admin']);
         $this->admin->roles()->attach($role);
@@ -87,7 +89,6 @@ final class CoverApiTest extends TestCase
 
     public function test_user_can_create_cover(): void
     {
-        Storage::fake('public');
         Sanctum::actingAs($this->owner);
 
         $payload = [
