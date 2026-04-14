@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\CoverServiceInterface;
+use App\Jobs\DeleteFileJob;
 use App\Models\Cover;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -79,17 +80,19 @@ final class CoverService implements CoverServiceInterface
         try {
             DB::beginTransaction();
 
-            // TODO: создание и удаление через очередь
-            if ($cover->id !== Cover::BASE_COVER_ID) {
-                Storage::disk('public')->delete($cover->src);
-            }
-
             $path = $this->storeFile($data['src']);
             if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
+            $oldPath = $cover->src;
+
             $cover->updateOrFail(['src' => $path]);
+
+            if ($cover->id !== Cover::BASE_COVER_ID) {
+                DeleteFileJob::dispatch($oldPath)->afterCommit();
+            }
+
             DB::commit();
             return $cover->refresh();
         } catch (Throwable $e) {
@@ -104,12 +107,14 @@ final class CoverService implements CoverServiceInterface
         try {
             DB::beginTransaction();
 
-            // TODO: удаление через очередь
-            if ($cover->id !== Cover::BASE_COVER_ID) {
-                Storage::disk('public')->delete($cover->src);
-            }
+            $oldPath = $cover->src;
 
             $cover->delete();
+
+            if ($cover->id !== Cover::BASE_COVER_ID) {
+                DeleteFileJob::dispatch($oldPath)->afterCommit();
+            }
+
             DB::commit();
             return true;
         } catch (Throwable $e) {

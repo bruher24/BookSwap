@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\PhotoServiceInterface;
+use App\Jobs\DeleteFileJob;
 use App\Models\Photo;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -79,17 +80,19 @@ final class PhotoService implements PhotoServiceInterface
         try {
             DB::beginTransaction();
 
-            // TODO: создание и удаление через очередь
-            if ($photo->id !== Photo::BASE_PHOTO_ID) {
-                Storage::disk('public')->delete($photo->src);
-            }
-
             $path = $this->storeFile($data['src']);
             if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }
 
+            $oldPath = $photo->src;
+
             $photo->updateOrFail(['src' => $path]);
+
+            if ($photo->id !== Photo::BASE_PHOTO_ID) {
+                DeleteFileJob::dispatch($oldPath)->afterCommit();
+            }
+
             DB::commit();
             return $photo->refresh();
         } catch (Throwable $e) {
@@ -103,7 +106,15 @@ final class PhotoService implements PhotoServiceInterface
     {
         try {
             DB::beginTransaction();
+
+            $oldPath = $photo->src;
+
             $photo->delete();
+
+            if ($photo->id !== Photo::BASE_PHOTO_ID) {
+                DeleteFileJob::dispatch($oldPath)->afterCommit();
+            }
+
             DB::commit();
             return true;
         } catch (Throwable $e) {
