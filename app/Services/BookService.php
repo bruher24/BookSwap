@@ -107,6 +107,17 @@ final class BookService implements BookServiceInterface
         }
     }
 
+    private function detach(Book $book, array $authors = []): bool
+    {
+        try {
+            $book->authors()->detach(!empty($authors) ? $authors : null);
+            return true;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
     public function get(string $id): Book|false
     {
         try {
@@ -159,11 +170,12 @@ final class BookService implements BookServiceInterface
             $formattedData = $this->formatData($data);
             $book->updateOrFail($formattedData);
 
-            // TODO: старые авторы не удаляются, возникают дубли и 400
-            // $authors = $this->filterAuthorsData($data);
+            $authors = $this->filterAuthorsData($data);
 
-            if (!empty($authors) && !$this->attach($book, $authors)) {
-                throw new Exception('Ошибка при добавлении авторов');
+            if (!empty($authors)) {
+                if (!$this->detach($book) || !$this->attach($book, $authors)) {
+                    throw new Exception('Ошибка при добавлении авторов');
+                }
             }
 
             DB::commit();

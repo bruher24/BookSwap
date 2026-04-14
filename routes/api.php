@@ -159,12 +159,3 @@ Route::prefix('v1')->name('api.')
                     });
             });
     });
-
-// dev only
-Route::get('psalm', function () {
-    $html = file_get_contents(__DIR__ . '/../psalm-report.html');
-    if ($html === false) {
-        $html = '';
-    }
-    return response($html, 200)->header('Content-Type', 'text/html');
-});
