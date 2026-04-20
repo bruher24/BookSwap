@@ -95,7 +95,7 @@ final class TradeOfferController extends Controller
 
     public function bySender(TradeOfferServiceInterface $tradeOfferService, User $sender): JsonResponse
     {
-        Gate::authorize('bySender', $sender);
+        Gate::authorize('bySender', [TradeOffer::class, $sender]);
 
         $tradeOffers = $tradeOfferService->bySender($sender);
         $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
@@ -105,7 +105,7 @@ final class TradeOfferController extends Controller
 
     public function byReceiver(TradeOfferServiceInterface $tradeOfferService, User $receiver): JsonResponse
     {
-        Gate::authorize('byReceiver', $receiver);
+        Gate::authorize('byReceiver', [TradeOffer::class, $receiver]);
 
         $tradeOffers = $tradeOfferService->byReceiver($receiver);
         $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];

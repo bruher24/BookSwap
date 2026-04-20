@@ -32,9 +32,10 @@ final class ChatController extends Controller
 
     public function store(ChatServiceInterface $chatService, StoreChatRequest $request): JsonResponse
     {
-        Gate::authorize('create', Chat::class);
-
         $validated = $request->validated();
+
+        Gate::authorize('create', [Chat::class, $validated]);
+
         $chat = $chatService->create($validated);
 
         if (!$chat) {

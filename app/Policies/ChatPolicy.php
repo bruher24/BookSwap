@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 final class ChatPolicy
 {
@@ -36,9 +37,14 @@ final class ChatPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(User $user, array $data): Response
     {
-        return $user->isAdmin()
+        $chatUsers = [
+            $data['first_user_id'],
+            $data['second_user_id'],
+        ];
+
+        return Auth::check() && in_array($user->id, $chatUsers)
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

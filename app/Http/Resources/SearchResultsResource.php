@@ -17,9 +17,9 @@ final class SearchResultsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'books' => BookResource::collection($this->get('books')),
-            'authors' => AuthorResource::collection($this->get('authors')),
-            'total' => (int)$this->get('total')
+            'books' => BookResource::collection($this['books']),
+            'authors' => AuthorResource::collection($this['authors']),
+            'total' => (int)$this['total']
         ];
     }
 }
