@@ -42,9 +42,9 @@ final class EmailVerification extends Mailable
      */
     public function content(): Content
     {
-        // TODO: добавить текстовую версию и локализацию
         return new Content(
             view: 'mail.verifyYourEmail',
+            text: 'mail.verifyYourEmail_text'
         );
     }
 
