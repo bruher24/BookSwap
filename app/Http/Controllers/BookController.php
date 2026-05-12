@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
+use App\Http\Requests\WhereBookRequest;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
@@ -80,5 +81,15 @@ final class BookController extends Controller
         }
 
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+    }
+
+    public function where(WhereBookRequest $request, BookServiceInterface $bookService): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $books = $bookService->where($validated);
+        $data = ['books' => BookResource::collection($books)];
+
+        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

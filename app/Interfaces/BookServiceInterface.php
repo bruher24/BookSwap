@@ -13,7 +13,7 @@ interface BookServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
+    public function where(array $filters): Collection;
 
     public function update(Book $book, array $data): Book|false;
 

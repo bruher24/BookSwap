@@ -26,6 +26,10 @@ final class FilterSeeder extends Seeder
                 'name' => 'Тип',
                 'by_fields' => 'book_type_id',
             ],
+            [
+                'name' => 'Название',
+                'by_fields' => 'name',
+            ]
         ];
 
         collect($filters)->each(function ($filter) {

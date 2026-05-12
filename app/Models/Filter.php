@@ -21,6 +21,6 @@ final class Filter extends Model implements Cacheable
     public $fillable = [
         'name',
         'by_fields',
-        'disabled',
+        'is_active',
     ];
 }

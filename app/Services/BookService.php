@@ -6,6 +6,7 @@ use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\Cover;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -141,10 +142,45 @@ final class BookService implements BookServiceInterface
         }
     }
 
-    public function where(string $field, string $value): Collection
+    public function where(array $filters): Collection
     {
         try {
-            return Book::where($field, $value)->get();
+            return Cache::remember(Book::CACHE_KEY . '_query', 600, function () use ($filters): Collection {
+                Log::debug("Stored in cache: " . Book::CACHE_KEY . "_query");
+
+                $query = Book::query()
+                    ->where('is_available', '1')
+                    ->when(!empty($filters['name']), function (Builder $q) use ($filters) {
+                        $q->where('name', 'like', '%' . $filters['name'] . '%');
+                    })
+                    ->when(!empty($filters['publishing_house']), function (Builder $q) use ($filters) {
+                        $q->whereIn('publishing_house', $filters['publishing_house']);
+                    })
+                    ->when(!empty($filters['publication_year']), function (Builder $q) use ($filters) {
+                        $q->whereIn('publication_year', $filters['publication_year']);
+                    })
+                    ->when(!empty($filters['page_count']), function (Builder $q) use ($filters) {
+                        $q->whereBetween('page_count', [$filters['page_count'][0], $filters['page_count'][1]]);
+                    })
+                    ->when(!empty($filters['book_type_id']), function (Builder $q) use ($filters) {
+                        $q->whereIn('book_type_id', $filters['book_type_id']);
+                    })
+                    ->when(!empty($filters['author_id']), function (Builder $q) use ($filters) {
+                        $q->whereHas('authors', function (Builder $authorQ) use ($filters) {
+                            $authorQ->whereIn('authors.id', $filters['author_id']);
+                        });
+                    })
+                    ->when(!empty($filters['genre_id']), function (Builder $q) use ($filters) {
+                        $q->whereHas('genres', function (Builder $genreQ) use ($filters) {
+                            $genreQ->whereIn('genres.id', $filters['genre_id']);
+                        });
+                    });
+
+
+                Log::debug($query->toRawSql());
+
+                return $query->get();
+            });
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return new Collection();

@@ -42,6 +42,7 @@ Route::prefix('v1')->name('api.')
             ->group(function () {
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
+                Route::get('where', 'where')->name('where')->withoutMiddleware('auth:sanctum');
                 Route::get('{book}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
                 Route::put('{book}', 'update')->name('update');
                 Route::delete('{book}', 'destroy')->name('destroy');
