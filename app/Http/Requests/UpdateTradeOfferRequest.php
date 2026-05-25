@@ -30,6 +30,7 @@ final class UpdateTradeOfferRequest extends FormRequest
                 'required',
                 'array',
             ],
+            // TODO: сделать отдельные коллекции для отправителя и получателя
             'trade_offer_items.*' => [
                 'required',
                 'integer',

@@ -81,7 +81,7 @@ final class StoreBookRequest extends FormRequest
             'cover' => [
                 'nullable',
                 'file',
-                'mimes:jpeg,png,pd',
+                'mimes:jpeg,png',
                 'max:2048'
             ],
             'publishing_house' => 'nullable|string',

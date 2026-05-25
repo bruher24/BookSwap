@@ -75,6 +75,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    // TODO: запретить менять статус сделки
     public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false
     {
         try {
@@ -127,6 +128,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         return $this->where('receiver_id', $receiver->id);
     }
 
+    // TODO: нужно менять не только статус сделки, но и доступность и владельца книг
     public function accept(TradeOffer $tradeOffer): bool
     {
         try {
@@ -138,6 +140,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    // TODO: нужно менять не только статус сделки, но и доступность и владельца книг
     public function reject(TradeOffer $tradeOffer): bool
     {
         try {

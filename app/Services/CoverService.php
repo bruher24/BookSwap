@@ -21,7 +21,7 @@ final class CoverService implements CoverServiceInterface
     {
         try {
             DB::beginTransaction();
-            $path = $this->storeFile($data['src']);
+            $path = $this->storeFile($data['file']);
 
             if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
@@ -80,7 +80,7 @@ final class CoverService implements CoverServiceInterface
         try {
             DB::beginTransaction();
 
-            $path = $this->storeFile($data['src']);
+            $path = $this->storeFile($data['file']);
             if ($path === false) {
                 throw new Exception('Ошибка при сохранении файла');
             }

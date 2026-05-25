@@ -48,6 +48,7 @@ final class StoreTradeOfferRequest extends FormRequest
                 'required',
                 'array',
             ],
+            // TODO: сделать отдельные коллекции для отправителя и получателя
             'trade_offer_items.*' => [
                 'required',
                 'integer',

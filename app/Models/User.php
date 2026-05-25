@@ -109,6 +109,7 @@ final class User extends Authenticatable implements Cacheable
         return $this->belongsToMany(Setting::class)->withPivot('value')->withTimestamps();
     }
 
+    // TODO: сделать нормально
     public function chats(): HasMany
     {
         $chatsAsFirst = $this->hasMany(Chat::class, 'first_user_id');

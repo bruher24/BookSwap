@@ -38,7 +38,7 @@ final class BookService implements BookServiceInterface
             if (isset($data['cover'])) {
                 $coverData = [
                     'user_id' => $data['user_id'],
-                    'src' => $data['cover']->getPathname(),
+                    'file' => $data['cover'],
                 ];
 
                 $cover = (new CoverService())->create($coverData);
@@ -145,8 +145,11 @@ final class BookService implements BookServiceInterface
     public function where(array $filters): Collection
     {
         try {
-            return Cache::remember(Book::CACHE_KEY . '_query', 600, function () use ($filters): Collection {
-                Log::debug("Stored in cache: " . Book::CACHE_KEY . "_query");
+            ksort($filters);
+            $cacheKey = Book::CACHE_KEY . http_build_query($filters);
+
+            return Cache::remember($cacheKey, 600, function () use ($filters, $cacheKey): Collection {
+                Log::debug("Stored in cache: " . $cacheKey);
 
                 $query = Book::query()
                     ->where('is_available', '1')
@@ -195,7 +198,7 @@ final class BookService implements BookServiceInterface
             if (isset($data['cover'])) {
                 $coverData = [
                     'user_id' => $data['user_id'],
-                    'src' => $data['cover']->getPathname(),
+                    'file' => $data['cover'],
                 ];
 
                 $cover = (new CoverService())->create($coverData);

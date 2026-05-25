@@ -81,6 +81,7 @@ final class AppServiceProvider extends ServiceProvider
     {
         date_default_timezone_set('Europe/Samara');
 
+        // TODO: написать и подключить обсерверы для остальных моделей
         Author::observe(AuthorObserver::class);
         User::observe(UserObserver::class);
 

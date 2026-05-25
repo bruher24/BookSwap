@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+// TODO: закрыть доступ
+
 Route::get('coverage', function () {
     $html = file_get_contents(__DIR__ . '/../coverage/index.html');
     if ($html === false) {
