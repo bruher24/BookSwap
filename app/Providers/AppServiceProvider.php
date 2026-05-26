@@ -36,11 +36,9 @@ use App\Services\SettingService;
 use App\Services\TradeOfferService;
 use App\Services\UserService;
 use App\Services\UserSettingService;
-use Dedoc\Scramble\Scramble;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
@@ -70,8 +68,6 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(SettingServiceInterface::class, SettingService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(UserSettingServiceInterface::class, UserSettingService::class);
-
-        Scramble::ignoreDefaultRoutes();
     }
 
     /**
