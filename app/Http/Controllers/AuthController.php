@@ -11,6 +11,7 @@ use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -113,5 +114,20 @@ final class AuthController extends Controller
         }
 
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function verifyEmail(Request $request, AuthServiceInterface $authService): RedirectResponse
+    {
+        $userId = $request->route('userId') ?? null;
+
+        if (!$request->hasValidSignature() || !isset($userId)) {
+            abort(Response::HTTP_BAD_REQUEST);
+        }
+
+        if (!$authService->verifyEmail($userId)) {
+            return response()->redirectTo('failure frontend page or redirect to home with event provided');
+        }
+
+        return response()->redirectTo('success frontend page or redirect to home with event provided');
     }
 }

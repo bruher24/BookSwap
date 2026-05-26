@@ -27,6 +27,7 @@ Route::prefix('v1')->name('api.')
                 Route::post('login', 'login')->name('login')->withoutMiddleware('auth:sanctum');
                 Route::post('refresh', 'refresh')->name('refresh');
                 Route::post('logout', 'logout')->name('logout');
+                Route::get('verify_email/{userId}', 'verifyEmail')->name('verifyEmail')->withoutMiddleware('auth:sanctum');
             });
 
         Route::prefix('authors')->name('authors.')->controller(AuthorController::class)

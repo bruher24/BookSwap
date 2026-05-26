@@ -2,15 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-// TODO: закрыть доступ
-
 Route::get('coverage', function () {
     $html = file_get_contents(__DIR__ . '/../coverage/index.html');
     if ($html === false) {
         $html = 'All good!';
     }
     return response($html, 200)->header('Content-Type', 'text/html');
-});
+})->middleware('can:viewSwaggerUI');
 
 Route::get('psalm', function () {
     $html = file_get_contents(__DIR__ . '/../psalm-report.html');
@@ -18,4 +16,4 @@ Route::get('psalm', function () {
         $html = '';
     }
     return response($html, 200)->header('Content-Type', 'text/html');
-});
+})->middleware('can:viewSwaggerUI');

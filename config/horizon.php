@@ -201,6 +201,7 @@ return [
     'environments' => [
         'production' => [
             'listeners-supervisor' => [
+                'connection' => 'redis',
                 'queue' => ['listeners'],
                 'maxProcesses' => 2,
                 'balance' => 'auto',
@@ -213,6 +214,7 @@ return [
                 'nice' => 0,
             ],
             'scout-supervisor' => [
+                'connection' => 'redis',
                 'queue' => ['scout'],
                 'maxProcesses' => 1,
                 'balance' => 'auto',
@@ -225,6 +227,7 @@ return [
                 'nice' => 0,
             ],
             'mail-supervisor' => [
+                'connection' => 'redis',
                 'queue' => ['mail'],
                 'maxProcesses' => 2,
                 'balance' => 'auto',
@@ -237,6 +240,7 @@ return [
                 'nice' => 0,
             ],
             'default-supervisor' => [
+                'connection' => 'redis',
                 'queue' => ['default'],
                 'maxProcesses' => 1,
                 'balance' => 'auto',
@@ -252,6 +256,7 @@ return [
 
         'local' => [
             'listeners-supervisor' => [
+                'connection' => 'redis',
                 'queue' => ['listeners'],
                 'maxProcesses' => 3,
                 'balance' => 'auto',
@@ -264,6 +269,7 @@ return [
                 'nice' => 0,
             ],
             'scout-supervisor' => [
+                'connection' => 'redis',
                 'queue' => ['scout'],
                 'maxProcesses' => 2,
                 'balance' => 'auto',
@@ -276,6 +282,7 @@ return [
                 'nice' => 0,
             ],
             'mail-supervisor' => [
+                'connection' => 'redis',
                 'queue' => ['mail'],
                 'maxProcesses' => 5,
                 'balance' => 'auto',
@@ -288,6 +295,7 @@ return [
                 'nice' => 0,
             ],
             'default-supervisor' => [
+                'connection' => 'redis',
                 'queue' => ['default'],
                 'maxProcesses' => 1,
                 'balance' => 'auto',

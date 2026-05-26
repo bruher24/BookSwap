@@ -9,4 +9,6 @@ interface AuthServiceInterface
     public function refreshToken(string $email): string;
 
     public function logout(string $email): bool;
+
+    public function verifyEmail(string $userId): bool;
 }

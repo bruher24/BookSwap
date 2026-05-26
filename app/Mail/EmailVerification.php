@@ -20,8 +20,7 @@ final class EmailVerification extends Mailable
      */
     public function __construct(
         public User $user
-    )
-    {
+    ) {
         //
     }
 

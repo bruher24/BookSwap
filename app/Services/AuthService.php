@@ -75,4 +75,25 @@ final class AuthService implements AuthServiceInterface
             return false;
         }
     }
+
+    public function verifyEmail(string $userId,): bool
+    {
+        try {
+            $user = $this->userService->get($userId);
+
+            if (!$user instanceof User) {
+                throw new Exception('Пользователь с указанным email не найден');
+            }
+
+            if ($user->hasVerifiedEmail()) {
+                return true;
+            }
+
+            $user->markEmailAsVerified();
+            return true;
+        } catch (Throwable $e) {
+            Log::error($e);
+            return false;
+        }
+    }
 }

@@ -91,10 +91,6 @@ final class AppServiceProvider extends ServiceProvider
             return Limit::perSecond(10)->by($limitBy);
         });
 
-        Gate::define('viewApiDocs', function () {
-            return false;
-        });
-
         Queue::failing(function (JobFailed $event) {
             Log::error(
                 "Queue: " . $event->job->getQueue()
