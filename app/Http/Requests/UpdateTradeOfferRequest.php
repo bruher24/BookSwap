@@ -37,7 +37,6 @@ final class UpdateTradeOfferRequest extends FormRequest
                 Rule::exists('books', 'id')
                     ->withoutTrashed(),
             ],
-            'status' => [new Enum(TradeOfferStatus::class)],
         ];
     }
 }

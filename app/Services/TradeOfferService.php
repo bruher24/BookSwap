@@ -75,11 +75,15 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
-    // TODO: запретить менять статус сделки
     public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false
     {
         try {
             DB::beginTransaction();
+
+            if (isset($data['status'])) {
+                unset($data['status']);
+            }
+
             $tradeOffer->updateOrFail($data);
 
             $tradeOffer->items()->delete();
