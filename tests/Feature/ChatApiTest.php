@@ -11,7 +11,6 @@ use Override;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
-// TODO: обновить под новую логику чатов
 final class ChatApiTest extends TestCase
 {
     use RefreshDatabase;
