@@ -18,8 +18,12 @@ use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Interfaces\UserSettingServiceInterface;
 use App\Models\Author;
+use App\Models\Book;
+use App\Models\TradeOffer;
 use App\Models\User;
 use App\Observers\AuthorObserver;
+use App\Observers\BookObserver;
+use App\Observers\TradeOfferObserver;
 use App\Observers\UserObserver;
 use App\Services\AuthorService;
 use App\Services\AuthService;
@@ -77,8 +81,9 @@ final class AppServiceProvider extends ServiceProvider
     {
         date_default_timezone_set('Europe/Samara');
 
-        // TODO: написать и подключить обсерверы для остальных моделей
         Author::observe(AuthorObserver::class);
+        Book::observe(BookObserver::class);
+        TradeOffer::observe(TradeOfferObserver::class);
         User::observe(UserObserver::class);
 
         RateLimiter::for('api', function (Request $request) {
