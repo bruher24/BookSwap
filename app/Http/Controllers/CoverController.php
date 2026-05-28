@@ -49,23 +49,6 @@ final class CoverController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function update(CoverServiceInterface $coverService, UpdateCoverRequest $request, Cover $cover): JsonResponse
-    {
-        Gate::authorize('update', $cover);
-
-        $validated = $request->validated();
-        $cover = $coverService->update($cover, $validated);
-
-        if (!$cover) {
-            $errors = ['Ошибка при обновлении обложки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        $data = ['cover' => new CoverResource($cover)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
-    }
-
     public function destroy(CoverServiceInterface $coverService, string $coverId): JsonResponse
     {
         $cover = $coverService->get($coverId);

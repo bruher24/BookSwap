@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Override;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 // TODO: обновить под новую логику чатов
@@ -34,18 +35,20 @@ final class ChatApiTest extends TestCase
         $this->firstUser = User::factory()->createOne();
         $secondUser = User::factory()->createOne();
         $thirdUser = User::factory()->createOne();
-        $fourthUser = User::factory()->createOne();
         $this->other = User::factory()->createOne();
 
         $this->firstChatPayload = [
             'first_user_id' => $this->firstUser->id,
             'second_user_id' => $secondUser->id,
         ];
+
+        $this->chat = Chat::factory()->createOne(['pair_key' => $this->firstUser->id . ':' . $secondUser->id]);
+        $this->chat->users()->attach([$this->firstUser->id, $secondUser->id]);
+
         $this->secondChatPayload = [
-            'first_user_id' => $thirdUser->id,
-            'second_user_id' => $fourthUser->id,
+            'first_user_id' => $this->other->id,
+            'second_user_id' => $thirdUser->id,
         ];
-        $this->chat = Chat::factory()->createOne($this->firstChatPayload);
 
         $this->messagePayload = [
             'sender_id' => $this->firstUser->id,
@@ -53,28 +56,12 @@ final class ChatApiTest extends TestCase
         ];
     }
 
-    public function test_admin_can_index_chat(): void
-    {
-        Sanctum::actingAs($this->admin);
-
-        $response = $this->getJson('/api/v1/chats');
-        $response->assertOk();
-    }
-
-    public function test_user_cannot_index_chat(): void
-    {
-        Sanctum::actingAs($this->other);
-
-        $response = $this->getJson('/api/v1/chats');
-        $response->assertForbidden();
-    }
-
-    public function test_user_cannot_create_chat(): void
+    public function test_user_can_create_chat(): void
     {
         Sanctum::actingAs($this->other);
 
         $response = $this->postJson('/api/v1/chats', $this->secondChatPayload);
-        $response->assertForbidden();
+        $response->assertCreated();
     }
 
     public function test_admin_can_create_chat(): void
@@ -90,7 +77,7 @@ final class ChatApiTest extends TestCase
         Sanctum::actingAs($this->admin);
 
         $response = $this->postJson('/api/v1/chats', $this->firstChatPayload);
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
     }
 
     public function test_admin_can_get_any_chat(): void
@@ -115,39 +102,6 @@ final class ChatApiTest extends TestCase
 
         $response = $this->getJson('/api/v1/chats/' . $this->chat->id);
         $response->assertForbidden();
-    }
-
-    public function test_user_cannot_update_owned_chat(): void
-    {
-        Sanctum::actingAs($this->firstUser);
-
-        $payload = $this->firstChatPayload;
-        $payload['blocked_by'] = 'first';
-
-        $response = $this->putJson('/api/v1/chats/' . $this->chat->id, $payload);
-        $response->assertForbidden();
-    }
-
-    public function test_user_cannot_update_others_chat(): void
-    {
-        Sanctum::actingAs($this->other);
-
-        $payload = $this->firstChatPayload;
-        $payload['blocked_by'] = 'second';
-
-        $response = $this->putJson('/api/v1/chats/' . $this->chat->id, $payload);
-        $response->assertForbidden();
-    }
-
-    public function test_admin_can_update_any_chat(): void
-    {
-        Sanctum::actingAs($this->admin);
-
-        $payload = $this->firstChatPayload;
-        $payload['blocked_by'] = 'second';
-
-        $response = $this->putJson('/api/v1/chats/' . $this->chat->id, $payload);
-        $response->assertOk();
     }
 
     public function test_user_cannot_delete_owned_chat(): void
@@ -219,6 +173,21 @@ final class ChatApiTest extends TestCase
         Sanctum::actingAs($this->other);
 
         $response = $this->postJson("/api/v1/chats/{$this->chat->id}/messages", $this->messagePayload);
+        $response->assertForbidden();
+    }
+
+    public function test_user_can_block_owned_chat(): void
+    {
+        Sanctum::actingAs($this->firstUser);
+
+        $response = $this->patchJson("/api/v1/chats/{$this->chat->id}/block");
+        $response->assertAccepted();
+    }
+
+    public function test_user_cannot_block_others_chat(): void
+    {
+        Sanctum::actingAs($this->other);
+        $response = $this->patchJson("/api/v1/chats/{$this->chat->id}/block");
         $response->assertForbidden();
     }
 }

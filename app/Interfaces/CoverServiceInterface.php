@@ -15,7 +15,5 @@ interface CoverServiceInterface
 
     public function where(string $field, string $value): Collection;
 
-    public function update(Cover $cover, array $data): Cover|false;
-
     public function delete(Cover $cover): bool;
 }

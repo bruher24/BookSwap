@@ -75,33 +75,6 @@ final class CoverService implements CoverServiceInterface
         }
     }
 
-    public function update(Cover $cover, array $data): Cover|false
-    {
-        try {
-            DB::beginTransaction();
-
-            $path = $this->storeFile($data['file']);
-            if ($path === false) {
-                throw new Exception('Ошибка при сохранении файла');
-            }
-
-            $oldPath = $cover->src;
-
-            $cover->updateOrFail(['src' => $path]);
-
-            if ($cover->id !== Cover::BASE_COVER_ID) {
-                DeleteFileJob::dispatch($oldPath)->afterCommit();
-            }
-
-            DB::commit();
-            return $cover->refresh();
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage());
-            return false;
-        }
-    }
-
     public function delete(Cover $cover): bool
     {
         try {

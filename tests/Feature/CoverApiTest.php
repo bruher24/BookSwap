@@ -92,7 +92,7 @@ final class CoverApiTest extends TestCase
         Sanctum::actingAs($this->owner);
 
         $payload = [
-            'src' => $this->coverFile,
+            'file' => $this->coverFile,
             'user_id' => $this->owner->id,
         ];
 
@@ -113,51 +113,11 @@ final class CoverApiTest extends TestCase
         Sanctum::actingAs($this->owner);
 
         $payload = [
-            'src' => 2,
+            'file' => 2,
             'user_id' => '-1235',
         ];
 
         $response = $this->postJson('/api/v1/covers', $payload);
-        $response->assertStatus(422);
-    }
-
-    public function test_user_cannot_update_others_cover(): void
-    {
-        Sanctum::actingAs($this->other);
-
-        $response = $this->putJson('/api/v1/covers/' . $this->cover->id, [
-            'src' => $this->coverFile,
-        ]);
-        $response->assertForbidden();
-    }
-
-    public function test_user_can_update_owned_cover(): void
-    {
-        Sanctum::actingAs($this->owner);
-
-        $response = $this->putJson('/api/v1/covers/' . $this->cover->id, [
-            'src' => $this->coverFile,
-        ]);
-        $response->assertOk();
-    }
-
-    public function test_not_found_update_cover(): void
-    {
-        Sanctum::actingAs($this->owner);
-
-        $response = $this->putJson('/api/v1/covers/9999', [
-            'src' => $this->coverFile,
-        ]);
-        $response->assertNotFound();
-    }
-
-    public function test_validation_error_update_cover(): void
-    {
-        Sanctum::actingAs($this->owner);
-
-        $response = $this->putJson('/api/v1/covers/' . $this->cover->id, [
-            'src' => 'file.png',
-        ]);
         $response->assertStatus(422);
     }
 

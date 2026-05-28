@@ -24,7 +24,7 @@ final class StoreCoverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'src' => [
+            'file' => [
                 'required',
                 'file',
                 'mimes:jpg,jpeg,png',
