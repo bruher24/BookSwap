@@ -26,12 +26,23 @@ final class UpdateTradeOfferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'trade_offer_items' => [
+            'sender_items' => [
                 'required',
                 'array',
+                'min:1',
             ],
-            // TODO: сделать отдельные коллекции для отправителя и получателя
-            'trade_offer_items.*' => [
+            'sender_items.*' => [
+                'required',
+                'integer',
+                Rule::exists('books', 'id')
+                    ->withoutTrashed(),
+            ],
+            'receiver_items' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'receiver_items.*' => [
                 'required',
                 'integer',
                 Rule::exists('books', 'id')

@@ -31,6 +31,7 @@ final class Book extends Model implements Cacheable
         'page_count',
         'book_type_id',
         'cover_id',
+        'is_available'
     ];
 
     public function searchableAs(): string

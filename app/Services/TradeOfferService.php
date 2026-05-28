@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\TradeOfferStatus;
 use App\Interfaces\TradeOfferServiceInterface;
+use App\Interfaces\UserServiceInterface;
 use App\Models\Book;
 use App\Models\TradeOffer;
 use App\Models\User;
@@ -16,6 +17,10 @@ use Throwable;
 
 final class TradeOfferService implements TradeOfferServiceInterface
 {
+    public function __construct()
+    {
+    }
+
     public function create(array $data): TradeOffer|false
     {
         try {
@@ -37,7 +42,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
             return $tradeOffer->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -47,7 +52,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             return TradeOffer::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -60,7 +65,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
                 return TradeOffer::all();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -70,7 +75,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             return TradeOffer::where($field, $value)->get();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -80,23 +85,52 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             DB::beginTransaction();
 
-            if (isset($data['status'])) {
-                unset($data['status']);
+            if ($tradeOffer->status !== TradeOfferStatus::Pending) {
+                throw new Exception("Можно изменять только сделки со статусом 'Ожидает'");
             }
 
-            $tradeOffer->updateOrFail($data);
+            unset($data['status']);
+
+            $senderItems = array_unique($data['sender_items'] ?? []);
+            $senderBooks = Book::where('user_id', $tradeOffer->sender_id)
+                ->whereIn('id', $senderItems)
+                ->where('is_available', true);
+            $senderBooksCount = $senderBooks->count();
+
+            if ($senderBooksCount !== count($senderItems)) {
+                throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
+            }
+
+            $receiverItems = array_unique($data['receiver_items'] ?? []);
+            $receiverBooks = Book::where('user_id', $tradeOffer->receiver_id)
+                ->whereIn('id', $receiverItems)
+                ->where('is_available', true);
+            $receiverBooksCount = $receiverBooks->count();
+
+            if ($receiverBooksCount !== count($receiverItems)) {
+                throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
+            }
+
+
+            $tradeOfferItems = array_merge($senderItems, $receiverItems);
 
             $tradeOffer->items()->delete();
 
-            foreach ($data['trade_offer_items'] as $itemData) {
-                $tradeOffer->items()->create(['book_id' => $itemData]);
-            }
+            $tradeOffer->items()->createMany(
+                array_map(
+                    fn ($bookId) => ['book_id' => $bookId],
+                    $tradeOfferItems
+                )
+            );
+
+            $senderBooks->update(['is_available' => false]);
+            $receiverBooks->update(['is_available' => false]);
 
             DB::commit();
             return $tradeOffer->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -110,7 +144,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -139,7 +173,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
             $tradeOffer->status = TradeOfferStatus::Accepted;
             return $tradeOffer->saveOrFail();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -151,7 +185,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
             $tradeOffer->status = TradeOfferStatus::Rejected;
             return $tradeOffer->saveOrFail();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

@@ -16,11 +16,8 @@ use Throwable;
 
 final class ChatService implements ChatServiceInterface
 {
-    private UserServiceInterface $userService;
-
-    public function __construct(UserServiceInterface $userService)
+    public function __construct(private readonly UserServiceInterface $userService)
     {
-        $this->userService = $userService;
     }
 
     public function create(array $data): Chat|false

@@ -44,12 +44,21 @@ final class StoreTradeOfferRequest extends FormRequest
                     ->where('sender_id', request('sender_id'))
                     ->withoutTrashed(),
             ],
-            'trade_offer_items' => [
+            'sender_items' => [
                 'required',
                 'array',
             ],
-            // TODO: сделать отдельные коллекции для отправителя и получателя
-            'trade_offer_items.*' => [
+            'sender_items.*' => [
+                'required',
+                'integer',
+                Rule::exists('books', 'id')
+                    ->withoutTrashed(),
+            ],
+            'receiver_items' => [
+                'required',
+                'array',
+            ],
+            'receiver_items.*' => [
                 'required',
                 'integer',
                 Rule::exists('books', 'id')
