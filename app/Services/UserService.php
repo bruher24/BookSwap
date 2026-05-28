@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Interfaces\UserServiceInterface;
-use App\Models\Message;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;

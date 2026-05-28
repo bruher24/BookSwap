@@ -76,7 +76,7 @@ final class AuthService implements AuthServiceInterface
         }
     }
 
-    public function verifyEmail(string $userId,): bool
+    public function verifyEmail(string $userId): bool
     {
         try {
             $user = $this->userService->get($userId);

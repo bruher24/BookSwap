@@ -30,8 +30,8 @@ final class Setting extends Model implements Cacheable
     protected function availableValues(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => explode(',', $value),
-            set: fn(array $value) => implode(',', $value),
+            get: fn (string $value) => explode(',', $value),
+            set: fn (array $value) => implode(',', $value),
         );
     }
 

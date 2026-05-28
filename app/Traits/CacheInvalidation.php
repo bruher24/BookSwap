@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Interfaces\Cacheable;
-use App\Models\Chat;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 

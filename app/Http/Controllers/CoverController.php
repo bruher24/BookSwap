@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCoverRequest;
-use App\Http\Requests\UpdateCoverRequest;
 use App\Http\Resources\CoverResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
