@@ -7,6 +7,7 @@ use App\Traits\CacheInvalidation;
 use Database\Factories\ChatFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -20,17 +21,21 @@ final class Chat extends Model implements Cacheable
     public const string CACHE_KEY = 'chats';
 
     public $fillable = [
-        'first_user_id',
-        'second_user_id',
+        'pair_key'
     ];
 
     public function isUserBelongs(User $user): bool
     {
-        $chatUsers = [
-            $this->first_user_id,
-            $this->second_user_id
-        ];
-        return in_array($user->id, $chatUsers);
+        return $this->users()
+            ->where('user_id', $user->id)
+            ->withoutTrashed()
+            ->exists();
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)
+            ->withTimestamps();
     }
 
     public function messages(): HasMany

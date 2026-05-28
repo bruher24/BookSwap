@@ -12,13 +12,9 @@ return new class extends Migration {
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('first_user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('second_user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->enum('blocked_by', ['first', 'second'])->nullable();
+            $table->string('pair_key')->unique();
             $table->timestamps();
             $table->softDeletes();
-
-            $table->unique(['first_user_id', 'second_user_id', 'deleted_at']);
         });
     }
 

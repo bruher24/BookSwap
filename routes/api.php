@@ -60,11 +60,10 @@ Route::prefix('v1')->name('api.')
 
         Route::prefix('chats')->name('chats.')->controller(ChatController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{chat}', 'show')->name('show');
-                Route::put('{chat}', 'update')->name('update');
                 Route::delete('{chat}', 'destroy')->name('destroy');
+                Route::patch('{chat}/block', 'block')->name('block');
                 Route::get('by_user/{user}', 'byUser')->name('byUser');
                 Route::get('{chat}/messages', 'messages')->name('messages');
                 Route::post('{chat}/messages', 'send')->name('send');

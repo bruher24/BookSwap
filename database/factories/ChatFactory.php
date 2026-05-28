@@ -18,9 +18,7 @@ final class ChatFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_user_id' => $this->faker->numberBetween(1, 100),
-            'second_user_id' => $this->faker->numberBetween(1, 100),
-            'blocked_by' => null,
-        ];
+            'pair_key' => '1:2',
+            ];
     }
 }

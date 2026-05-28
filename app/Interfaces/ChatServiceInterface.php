@@ -13,11 +13,7 @@ interface ChatServiceInterface
 
     public function get(string $id): Chat|false;
 
-    public function getAll(): Collection;
-
     public function where(string $field, string $value): Collection;
-
-    public function update(Chat $chat, array $data): Chat|false;
 
     public function delete(Chat $chat): bool;
 
@@ -26,4 +22,6 @@ interface ChatServiceInterface
     public function messages(Chat $chat): Collection;
 
     public function sendMessage(Chat $chat, User $sender, string $body): Message|false;
+
+    public function block(Chat $chat, User $user): bool;
 }

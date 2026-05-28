@@ -102,4 +102,11 @@ final class ChatPolicy
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
+
+    public function block(User $user, Chat $chat): Response
+    {
+        return $chat->isUserBelongs($user)
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
+    }
 }

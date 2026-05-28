@@ -10,6 +10,7 @@ use Laravel\Sanctum\Sanctum;
 use Override;
 use Tests\TestCase;
 
+// TODO: обновить под новую логику чатов
 final class ChatApiTest extends TestCase
 {
     use RefreshDatabase;

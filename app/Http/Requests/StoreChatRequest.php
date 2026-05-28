@@ -30,12 +30,6 @@ final class StoreChatRequest extends FormRequest
                 'different:second_user_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
-                Rule::unique('chats', 'first_user_id')
-                    ->where('second_user_id', request('second_user_id'))
-                    ->withoutTrashed(),
-                Rule::unique('chats', 'second_user_id')
-                    ->where('first_user_id', request('second_user_id'))
-                    ->withoutTrashed(),
             ],
             'second_user_id' => [
                 'required',
@@ -43,17 +37,6 @@ final class StoreChatRequest extends FormRequest
                 'different:first_user_id',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
-                Rule::unique('chats', 'second_user_id')
-                    ->where('first_user_id', request('first_user_id'))
-                    ->withoutTrashed(),
-                Rule::unique('chats', 'first_user_id')
-                    ->where('second_user_id', request('first_user_id'))
-                    ->withoutTrashed(),
-            ],
-            'blocked_by' => [
-                'nullable',
-                'string',
-                'in:first,second',
             ],
         ];
     }

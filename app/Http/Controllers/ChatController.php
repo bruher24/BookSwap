@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SendMessageRequest;
 use App\Http\Requests\StoreChatRequest;
-use App\Http\Requests\UpdateChatRequest;
 use App\Http\Resources\ChatResource;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\MessageCollectionResource;
@@ -15,21 +14,12 @@ use App\Interfaces\UserServiceInterface;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ChatController extends Controller
 {
-    public function index(ChatServiceInterface $chatService): JsonResponse
-    {
-        Gate::authorize('viewAny', Chat::class);
-
-        $chats = $chatService->getAll();
-        $data = ['chats' => ChatResource::collection($chats)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
-    }
-
     public function store(ChatServiceInterface $chatService, StoreChatRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -51,23 +41,6 @@ final class ChatController extends Controller
     public function show(Chat $chat): JsonResponse
     {
         Gate::authorize('view', $chat);
-
-        $data = ['chat' => new ChatResource($chat)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function update(ChatServiceInterface $chatService, UpdateChatRequest $request, Chat $chat): JsonResponse
-    {
-        Gate::authorize('update', $chat);
-
-        $validated = $request->validated();
-        $chat = $chatService->update($chat, $validated);
-
-        if (!$chat) {
-            $errors = ['Ошибка при обновлении чата'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
 
         $data = ['chat' => new ChatResource($chat)];
 
@@ -134,5 +107,17 @@ final class ChatController extends Controller
         $data = ['message' => new MessageResource($message)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+    }
+
+    public function block(Request $request, ChatServiceInterface $chatService, Chat $chat): JsonResponse
+    {
+        Gate::authorize('block', $chat);
+
+        if (!$chatService->block($chat, $request->user())) {
+            $errors = ['Ошибка при блокировке чата'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
+        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 }

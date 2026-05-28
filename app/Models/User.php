@@ -106,19 +106,21 @@ final class User extends Authenticatable implements Cacheable
 
     public function settings(): BelongsToMany
     {
-        return $this->belongsToMany(Setting::class)->withPivot('value')->withTimestamps();
+        return $this->belongsToMany(Setting::class)
+            ->withPivot('value')
+            ->withTimestamps();
     }
 
-    // TODO: сделать нормально
-    public function chats(): HasMany
+    public function chats(): BelongsToMany
     {
-        $chatsAsFirst = $this->hasMany(Chat::class, 'first_user_id');
-        $chatsAsSecond = $this->hasMany(Chat::class, 'second_user_id');
-        return $chatsAsFirst->union($chatsAsSecond);
+        return $this->belongsToMany(Chat::class)
+            ->withPivot(['has_blocked_the_chat', 'last_read_message_id'])
+            ->withTimestamps();
     }
 
     public function notifications(): HasMany
     {
-        return $this->hasMany(Notification::class)->where('seen', false);
+        return $this->hasMany(Notification::class)
+            ->where('seen', false);
     }
 }
