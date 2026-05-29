@@ -93,7 +93,7 @@ final class TradeOfferPolicy
 
     public function reject(User $user, TradeOffer $tradeOffer): Response
     {
-        return in_array($user->id, [$tradeOffer->receiver_id, $tradeOffer->sender_id])
+        return $tradeOffer->isUserBelongs($user)
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

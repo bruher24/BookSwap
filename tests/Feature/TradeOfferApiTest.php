@@ -20,6 +20,7 @@ final class TradeOfferApiTest extends TestCase
     private User $admin;
     private User $sender;
     private User $anotherSender;
+    private User $anotherReceiver;
     private User $receiver;
     private User $other;
     private TradeOffer $tradeOffer;
@@ -40,7 +41,7 @@ final class TradeOfferApiTest extends TestCase
         $this->receiver = User::factory()->unverified()->createOne();
         $this->other = User::factory()->unverified()->createOne();
         $this->anotherSender = User::factory()->unverified()->createOne();
-        $anotherReceiver = User::factory()->unverified()->createOne();
+        $this->anotherReceiver = User::factory()->unverified()->createOne();
 
         $this->tradeOffer = TradeOffer::factory()->createOne([
             'sender_id' => $this->sender->id,
@@ -76,9 +77,9 @@ final class TradeOfferApiTest extends TestCase
         $this->tradeOfferAsSenderCreatePayload['receiver_items'] = $receiverBooksIds;
 
         // As receiver creation
-        $this->tradeOfferAsSenderCreatePayload = TradeOffer::factory()->raw([
+        $this->tradeOfferAsReceiverCreatePayload = TradeOffer::factory()->raw([
             'sender_id' => $this->sender->id,
-            'receiver_id' => $anotherReceiver->id,
+            'receiver_id' => $this->anotherReceiver->id,
         ]);
 
         $bookType = BookType::factory()->createOne();
@@ -93,15 +94,15 @@ final class TradeOfferApiTest extends TestCase
         $senderBooksIds = $senderBooks->pluck('id')->all();
 
         $receiverBooks = Book::factory()->count(3)->create([
-            'user_id' => $anotherReceiver->id,
+            'user_id' => $this->anotherReceiver->id,
             'book_type_id' => $bookType->id,
             'cover_id' => $cover->id,
         ]);
 
         $receiverBooksIds = $receiverBooks->pluck('id')->all();
 
-        $this->tradeOfferAsSenderCreatePayload['sender_items'] = $senderBooksIds;
-        $this->tradeOfferAsSenderCreatePayload['receiver_items'] = $receiverBooksIds;
+        $this->tradeOfferAsReceiverCreatePayload['sender_items'] = $senderBooksIds;
+        $this->tradeOfferAsReceiverCreatePayload['receiver_items'] = $receiverBooksIds;
 
         // updating
         $senderBooks = Book::factory()->count(3)->create([
@@ -174,12 +175,12 @@ final class TradeOfferApiTest extends TestCase
         $response->assertCreated();
     }
 
-    public function test_user_can_create_trade_offer_as_receiver(): void
+    public function test_user_cannot_create_trade_offer_as_receiver(): void
     {
-        Sanctum::actingAs($this->receiver);
+        Sanctum::actingAs($this->anotherReceiver);
 
         $response = $this->postJson('/api/v1/trade_offers', $this->tradeOfferAsReceiverCreatePayload);
-        $response->assertCreated();
+        $response->assertForbidden();
     }
 
     public function test_user_can_update_trade_offer_as_sender(): void
@@ -275,7 +276,7 @@ final class TradeOfferApiTest extends TestCase
         Sanctum::actingAs($this->other);
 
         $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}/items");
-        $response->assertOk();
+        $response->assertForbidden();
     }
 
     public function test_user_can_get_by_sender_trade_offers(): void
@@ -286,12 +287,12 @@ final class TradeOfferApiTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_cannot_get_by_sender_trade_offers(): void
+    public function test_user_cannot_get_others_by_sender_trade_offers(): void
     {
         Sanctum::actingAs($this->other);
 
         $response = $this->getJson("/api/v1/trade_offers/by_receiver/{$this->receiver->id}");
-        $response->assertOk();
+        $response->assertForbidden();
     }
 
     public function test_user_can_get_by_receiver_trade_offers(): void
@@ -302,11 +303,13 @@ final class TradeOfferApiTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_user_cannot_get_by_receiver_trade_offers(): void
+    public function test_user_cannot_get_others_by_receiver_trade_offers(): void
     {
         Sanctum::actingAs($this->other);
 
         $response = $this->getJson("/api/v1/trade_offers/by_receiver/{$this->receiver->id}");
-        $response->assertOk();
+        $response->assertForbidden();
     }
 }
+
+// TODO: исправить тесты, которые срут ошибки в лог

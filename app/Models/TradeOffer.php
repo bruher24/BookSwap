@@ -32,11 +32,10 @@ final class TradeOffer extends Model implements Cacheable
 
     public function isUserBelongs(User $user): bool
     {
-        $tradeOfferUsers = [
+        return in_array($user->id, [
             $this->sender_id,
             $this->receiver_id
-        ];
-        return in_array($user->id, $tradeOfferUsers);
+        ]);
     }
 
     public function books(): HasMany
