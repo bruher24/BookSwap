@@ -32,8 +32,6 @@ final class BookApiTest extends TestCase
     private User $owner;
     private User $other;
     private Author $author;
-    private BookType $bookType;
-    private Cover $cover;
     private Book $book;
 
     #[Override]
@@ -45,12 +43,12 @@ final class BookApiTest extends TestCase
         $this->other = User::factory()->createOne();
 
         $this->author = Author::factory()->createOne(['user_id' => $this->owner->id]);
-        $this->bookType = BookType::factory()->createOne();
-        $this->cover = Cover::factory()->createOne(['user_id' => $this->owner->id]);
+        $bookType = BookType::factory()->createOne();
+        $cover = Cover::factory()->createOne(['user_id' => $this->owner->id]);
         $this->book = Book::factory()->createOne([
             'user_id' => $this->owner->id,
-            'book_type_id' => $this->bookType->id,
-            'cover_id' => $this->cover->id,
+            'book_type_id' => $bookType->id,
+            'cover_id' => $cover->id,
         ]);
         $this->book->authors()->attach($this->author);
 
@@ -58,9 +56,9 @@ final class BookApiTest extends TestCase
         $this->bookUpdatePayload = Book::factory()->raw();
 
         $this->bookCreatePayload['author_id'] = $this->author->id;
-        $this->bookCreatePayload['book_type_id'] = $this->bookType->id;
+        $this->bookCreatePayload['book_type_id'] = $bookType->id;
         $this->bookUpdatePayload['author_id'] = $this->author->id;
-        $this->bookUpdatePayload['book_type_id'] = $this->bookType->id;
+        $this->bookUpdatePayload['book_type_id'] = $bookType->id;
     }
 
     public function test_index_book(): void
@@ -77,7 +75,7 @@ final class BookApiTest extends TestCase
 
     public function test_not_found_get_book(): void
     {
-        $newId = (int)$this->book->id + 1;
+        $newId = $this->book->id + 1;
         $response = $this->getJson("/api/v1/books/$newId");
         $response->assertNotFound();
     }
@@ -133,7 +131,7 @@ final class BookApiTest extends TestCase
     public function test_not_found_update_book(): void
     {
         Sanctum::actingAs($this->owner);
-        $newId = (int)$this->book->id + 1;
+        $newId = $this->book->id + 1;
 
         $response = $this->putJson("/api/v1/books/$newId", $this->bookUpdatePayload);
         $response->assertNotFound();
@@ -156,7 +154,7 @@ final class BookApiTest extends TestCase
     public function test_not_found_delete_book(): void
     {
         Sanctum::actingAs($this->owner);
-        $newId = (int)$this->book->id + 1;
+        $newId = $this->book->id + 1;
         $response = $this->deleteJson("/api/v1/books/$newId");
         $response->assertAccepted();
     }

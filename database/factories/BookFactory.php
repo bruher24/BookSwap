@@ -25,6 +25,7 @@ final class BookFactory extends Factory
             'page_count' => $this->faker->numberBetween(50, 1000),
             'book_type_id' => 1,
             'cover_id' => 1,
+            'trade_offer_id' => null,
         ];
     }
 }

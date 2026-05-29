@@ -21,7 +21,7 @@ final class TradeOfferFactory extends Factory
         return [
             'sender_id' => $this->faker->numberBetween(1, 100),
             'receiver_id' => $this->faker->numberBetween(1, 100),
-            'status' => $this->faker->randomElement(TradeOfferStatus::cases())->value,
+            'status' => TradeOfferStatus::Pending,
         ];
     }
 }

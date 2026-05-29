@@ -22,7 +22,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
             DB::beginTransaction();
 
             $data['status'] = TradeOfferStatus::Pending;
-            $tradeOffer = new TradeOffer($data);
+            $tradeOffer = TradeOffer::create($data);
             $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
             DB::commit();
             return $tradeOffer->refresh();
@@ -147,9 +147,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
 
     public function items(TradeOffer $tradeOffer): Collection
     {
-        $bookIds = $tradeOffer->items()->pluck('book_id')->toArray();
-
-        return Book::whereIn('id', $bookIds)->get();
+        return $tradeOffer->books()->withoutTrashed()->get();
     }
 
     public function bySender(User $sender): Collection

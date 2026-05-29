@@ -115,7 +115,7 @@ final class TradeOfferController extends Controller
 
     public function accept(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
     {
-        Gate::authorize('answer', $tradeOffer);
+        Gate::authorize('accept', $tradeOffer);
 
         if (!$tradeOfferService->accept($tradeOffer)) {
             $errors = ['Ошибка при принятии предложения обмена'];
@@ -133,7 +133,7 @@ final class TradeOfferController extends Controller
             return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
         }
 
-        Gate::authorize('answer', $tradeOffer);
+        Gate::authorize('reject', $tradeOffer);
 
         if (!$tradeOfferService->reject($tradeOffer)) {
             $errors = ['Ошибка при отклонении предложения обмена'];

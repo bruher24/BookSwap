@@ -84,9 +84,16 @@ final class TradeOfferPolicy
             : Response::deny('Недостаточно прав');
     }
 
-    public function answer(User $user, TradeOffer $tradeOffer): Response
+    public function accept(User $user, TradeOffer $tradeOffer): Response
     {
         return $user->id === $tradeOffer->receiver_id
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
+    }
+
+    public function reject(User $user, TradeOffer $tradeOffer): Response
+    {
+        return in_array($user->id, [$tradeOffer->receiver_id, $tradeOffer->sender_id])
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
