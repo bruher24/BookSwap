@@ -21,6 +21,7 @@ return new class () extends Migration {
             $table->unsignedInteger('page_count');
             $table->foreignId('book_type_id')->nullable()->constrained('book_types')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('cover_id')->nullable()->constrained('covers')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('trade_offer_id')->nullable()->constrained('trade_offers')->nullOnDelete()->cascadeOnUpdate();
             $table->timestamps();
             $table->softDeletes();
         });

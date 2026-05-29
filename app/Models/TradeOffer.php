@@ -39,8 +39,8 @@ final class TradeOffer extends Model implements Cacheable
         return in_array($user->id, $tradeOfferUsers);
     }
 
-    public function items(): HasMany
+    public function books(): HasMany
     {
-        return $this->hasMany(TradeOfferItem::class);
+        return $this->hasMany(Book::class);
     }
 }

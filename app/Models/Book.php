@@ -31,7 +31,8 @@ final class Book extends Model implements Cacheable
         'page_count',
         'book_type_id',
         'cover_id',
-        'is_available'
+        'is_available',
+        'trade_offer_id',
     ];
 
     public function searchableAs(): string
@@ -72,5 +73,10 @@ final class Book extends Model implements Cacheable
     public function book_type(): BelongsTo
     {
         return $this->belongsTo(BookType::class);
+    }
+
+    public function trade_offer(): BelongsTo
+    {
+        return $this->belongsTo(TradeOffer::class);
     }
 }

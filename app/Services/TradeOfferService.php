@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Enums\TradeOfferStatus;
 use App\Interfaces\TradeOfferServiceInterface;
-use App\Interfaces\UserServiceInterface;
 use App\Models\Book;
 use App\Models\TradeOffer;
 use App\Models\User;
@@ -17,27 +16,14 @@ use Throwable;
 
 final class TradeOfferService implements TradeOfferServiceInterface
 {
-    public function __construct()
-    {
-    }
-
     public function create(array $data): TradeOffer|false
     {
         try {
             DB::beginTransaction();
 
             $data['status'] = TradeOfferStatus::Pending;
-
             $tradeOffer = new TradeOffer($data);
-
-            if (!$tradeOffer->save()) {
-                throw new Exception("Ошибка при создании типа");
-            }
-
-            foreach ($data['trade_offer_items'] as $itemData) {
-                $tradeOffer->items()->create(['book_id' => $itemData]);
-            }
-
+            $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
             DB::commit();
             return $tradeOffer->refresh();
         } catch (Throwable $e) {
@@ -45,6 +31,52 @@ final class TradeOfferService implements TradeOfferServiceInterface
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function attachBooksToTradeOffer(TradeOffer $tradeOffer, array $senderItems = [], array $receiverItems = []): void
+    {
+        $senderItems = array_values(array_unique($senderItems));
+
+        $senderBooks = Book::where('user_id', $tradeOffer->sender_id)
+            ->whereIn('id', $senderItems)
+            ->where('is_available', true)
+            ->withoutTrashed()
+            ->lockForUpdate();
+
+        $senderBooksCount = $senderBooks->count();
+
+        if ($senderBooksCount !== count($senderItems)) {
+            throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
+        }
+
+        $receiverItems = array_values(array_unique($receiverItems));
+
+        $receiverBooks = Book::where('user_id', $tradeOffer->receiver_id)
+            ->whereIn('id', $receiverItems)
+            ->where('is_available', true)
+            ->withoutTrashed()
+            ->lockForUpdate();
+
+        $receiverBooksCount = $receiverBooks->count();
+
+        if ($receiverBooksCount !== count($receiverItems)) {
+            throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
+        }
+
+        Book::where('trade_offer_id', $tradeOffer->id)
+            ->update([
+                'trade_offer_id' => null,
+                'is_available' => true
+            ]);
+
+        Book::whereIn('id', array_merge($senderItems, $receiverItems))
+            ->update([
+                'trade_offer_id' => $tradeOffer->id,
+                'is_available' => false
+            ]);
     }
 
     public function get(string $id): TradeOffer|false
@@ -89,43 +121,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
                 throw new Exception("Можно изменять только сделки со статусом 'Ожидает'");
             }
 
-            unset($data['status']);
-
-            $senderItems = array_unique($data['sender_items'] ?? []);
-            $senderBooks = Book::where('user_id', $tradeOffer->sender_id)
-                ->whereIn('id', $senderItems)
-                ->where('is_available', true);
-            $senderBooksCount = $senderBooks->count();
-
-            if ($senderBooksCount !== count($senderItems)) {
-                throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
-            }
-
-            $receiverItems = array_unique($data['receiver_items'] ?? []);
-            $receiverBooks = Book::where('user_id', $tradeOffer->receiver_id)
-                ->whereIn('id', $receiverItems)
-                ->where('is_available', true);
-            $receiverBooksCount = $receiverBooks->count();
-
-            if ($receiverBooksCount !== count($receiverItems)) {
-                throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
-            }
-
-
-            $tradeOfferItems = array_merge($senderItems, $receiverItems);
-
-            $tradeOffer->items()->delete();
-
-            $tradeOffer->items()->createMany(
-                array_map(
-                    fn ($bookId) => ['book_id' => $bookId],
-                    $tradeOfferItems
-                )
-            );
-
-            $senderBooks->update(['is_available' => false]);
-            $receiverBooks->update(['is_available' => false]);
-
+            $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
             DB::commit();
             return $tradeOffer->refresh();
         } catch (Throwable $e) {
@@ -166,11 +162,16 @@ final class TradeOfferService implements TradeOfferServiceInterface
         return $this->where('receiver_id', $receiver->id);
     }
 
-    // TODO: нужно менять не только статус сделки, но и доступность и владельца книг
     public function accept(TradeOffer $tradeOffer): bool
     {
         try {
             $tradeOffer->status = TradeOfferStatus::Accepted;
+
+            foreach ($tradeOffer->books()->get() as $book) {
+                $newOwnerId = $book->user_id === $tradeOffer->sender_id ? $tradeOffer->receiver_id : $tradeOffer->sender_id;
+                $book->update(['user_id' => $newOwnerId, 'is_available' => true]);
+            }
+
             return $tradeOffer->saveOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
@@ -178,11 +179,15 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
-    // TODO: нужно менять не только статус сделки, но и доступность и владельца книг
     public function reject(TradeOffer $tradeOffer): bool
     {
         try {
             $tradeOffer->status = TradeOfferStatus::Rejected;
+
+            foreach ($tradeOffer->books()->get() as $book) {
+                $book->update(['is_available' => true]);
+            }
+
             return $tradeOffer->saveOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
