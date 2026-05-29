@@ -43,7 +43,7 @@ final class FilterService implements FilterServiceInterface
             return $filter->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -53,7 +53,7 @@ final class FilterService implements FilterServiceInterface
         try {
             return Filter::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -66,7 +66,7 @@ final class FilterService implements FilterServiceInterface
                 return Filter::all();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -76,7 +76,7 @@ final class FilterService implements FilterServiceInterface
         try {
             return Filter::where($field, $value)->get();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -90,7 +90,7 @@ final class FilterService implements FilterServiceInterface
             return $filter->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -104,7 +104,7 @@ final class FilterService implements FilterServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

@@ -37,7 +37,7 @@ final class CoverService implements CoverServiceInterface
             return $cover->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -47,7 +47,7 @@ final class CoverService implements CoverServiceInterface
         try {
             return Cover::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -60,7 +60,7 @@ final class CoverService implements CoverServiceInterface
                 return Cover::all();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -70,7 +70,7 @@ final class CoverService implements CoverServiceInterface
         try {
             return Cover::where($field, $value)->get();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -92,7 +92,7 @@ final class CoverService implements CoverServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

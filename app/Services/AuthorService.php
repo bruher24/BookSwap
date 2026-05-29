@@ -45,7 +45,7 @@ final class AuthorService implements AuthorServiceInterface
             return $author->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -55,7 +55,7 @@ final class AuthorService implements AuthorServiceInterface
         try {
             return Author::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -68,7 +68,7 @@ final class AuthorService implements AuthorServiceInterface
                 return Author::all();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -78,7 +78,7 @@ final class AuthorService implements AuthorServiceInterface
         try {
             return Author::where($field, $value)->get();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -92,7 +92,7 @@ final class AuthorService implements AuthorServiceInterface
             return $author->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -106,7 +106,7 @@ final class AuthorService implements AuthorServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

@@ -37,7 +37,7 @@ final class PhotoService implements PhotoServiceInterface
             return $photo->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -47,7 +47,7 @@ final class PhotoService implements PhotoServiceInterface
         try {
             return Photo::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -60,7 +60,7 @@ final class PhotoService implements PhotoServiceInterface
                 return Photo::all();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -70,7 +70,7 @@ final class PhotoService implements PhotoServiceInterface
         try {
             return Photo::where($field, $value)->get();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -97,7 +97,7 @@ final class PhotoService implements PhotoServiceInterface
             return $photo->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -119,7 +119,7 @@ final class PhotoService implements PhotoServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

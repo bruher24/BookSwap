@@ -50,7 +50,7 @@ final class ChatService implements ChatServiceInterface
             return $chat->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -60,7 +60,7 @@ final class ChatService implements ChatServiceInterface
         try {
             return Chat::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -70,7 +70,7 @@ final class ChatService implements ChatServiceInterface
         try {
             return Chat::where($field, $value)->withoutTrashed()->get();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -85,7 +85,7 @@ final class ChatService implements ChatServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -103,7 +103,7 @@ final class ChatService implements ChatServiceInterface
             });
 
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -119,7 +119,7 @@ final class ChatService implements ChatServiceInterface
                     ->get();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -145,9 +145,9 @@ final class ChatService implements ChatServiceInterface
             Cache::forget('messages_' . $chat->id);
 
             return $message;
-        } catch (Throwable $exception) {
+        } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($exception->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -165,7 +165,7 @@ final class ChatService implements ChatServiceInterface
             $this->invalidateUserChatsCache($chat);
             return true;
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             DB::rollBack();
             return false;
         }

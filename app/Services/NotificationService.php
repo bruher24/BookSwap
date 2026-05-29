@@ -28,7 +28,7 @@ final class NotificationService implements NotificationServiceInterface
             return $notification->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -38,7 +38,7 @@ final class NotificationService implements NotificationServiceInterface
         try {
             return Notification::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -51,7 +51,7 @@ final class NotificationService implements NotificationServiceInterface
                 return Notification::all();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -61,7 +61,7 @@ final class NotificationService implements NotificationServiceInterface
         try {
             return Notification::where($field, $value)->get();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -75,7 +75,7 @@ final class NotificationService implements NotificationServiceInterface
             return $notification->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -89,7 +89,7 @@ final class NotificationService implements NotificationServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
