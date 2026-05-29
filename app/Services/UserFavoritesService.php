@@ -24,7 +24,7 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
                 return Book::whereIn('id', $bookIds)->get();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -48,7 +48,7 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -73,7 +73,7 @@ final class UserFavoritesService implements UserFavoritesServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

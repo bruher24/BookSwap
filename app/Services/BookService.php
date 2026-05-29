@@ -65,7 +65,7 @@ final class BookService implements BookServiceInterface
             return $book->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -103,7 +103,7 @@ final class BookService implements BookServiceInterface
 
             return true;
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -114,7 +114,7 @@ final class BookService implements BookServiceInterface
             $book->authors()->detach(!empty($authors) ? $authors : null);
             return true;
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -124,7 +124,7 @@ final class BookService implements BookServiceInterface
         try {
             return Book::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -137,7 +137,7 @@ final class BookService implements BookServiceInterface
                 return Book::all();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -185,7 +185,7 @@ final class BookService implements BookServiceInterface
                 return $query->get();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -221,7 +221,7 @@ final class BookService implements BookServiceInterface
             return $book->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -235,7 +235,7 @@ final class BookService implements BookServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

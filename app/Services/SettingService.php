@@ -27,7 +27,7 @@ final class SettingService implements SettingServiceInterface
             return $setting->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -37,7 +37,7 @@ final class SettingService implements SettingServiceInterface
         try {
             return Setting::findOrFail($id);
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -50,7 +50,7 @@ final class SettingService implements SettingServiceInterface
                 return Setting::all();
             });
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -60,7 +60,7 @@ final class SettingService implements SettingServiceInterface
         try {
             return Setting::where($field, $value)->get();
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
         }
     }
@@ -74,7 +74,7 @@ final class SettingService implements SettingServiceInterface
             return $setting->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -88,7 +88,7 @@ final class SettingService implements SettingServiceInterface
             return true;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

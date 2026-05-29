@@ -53,7 +53,7 @@ final class AuthService implements AuthServiceInterface
 
             return $user->createToken('api-token', $abilities, now()->addHours(2))->plainTextToken;
         } catch (Throwable $e) {
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return '';
         }
     }
@@ -71,7 +71,7 @@ final class AuthService implements AuthServiceInterface
             $user->tokens()->delete();
             return true;
         } catch (Throwable $e) {
-            Log::error($e);
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
@@ -92,7 +92,7 @@ final class AuthService implements AuthServiceInterface
             $user->markEmailAsVerified();
             return true;
         } catch (Throwable $e) {
-            Log::error($e);
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

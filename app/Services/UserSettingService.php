@@ -36,7 +36,7 @@ final class UserSettingService implements UserSettingServiceInterface
             return $updated;
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error($e->getMessage());
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
