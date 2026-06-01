@@ -1,6 +1,11 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use App\Providers\HorizonServiceProvider;
+use App\Providers\SwaggerUiServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    env('APP_ENV') !== 'testing' ? App\Providers\HorizonServiceProvider::class : null,
+    AppServiceProvider::class,
+    SwaggerUiServiceProvider::class,
+    env('APP_ENV') !== 'testing' ? HorizonServiceProvider::class : null,
 ];
