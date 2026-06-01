@@ -18,6 +18,8 @@ use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\UserSettingController;
 use Illuminate\Support\Facades\Route;
 
+// TODO: перейти от токена к cookie auth
+
 Route::prefix('v1')->name('api.')
     ->middleware(['auth:sanctum', 'throttle:api'])
     ->group(function () {
