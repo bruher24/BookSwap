@@ -4,11 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
 use Override;
 use Tests\TestCase;
 
-// TODO: обновить тесты
 final class AuthApiTest extends TestCase
 {
     use RefreshDatabase;
@@ -43,23 +43,30 @@ final class AuthApiTest extends TestCase
         $this->otherUser = User::factory()->unverified()->createOne();
     }
 
+    private function spaPostJson(string $uri, array $data = []): TestResponse
+    {
+        return $this
+            ->withHeader('Origin', 'http://localhost:5173')
+            ->postJson($uri, $data);
+    }
+
     public function test_user_cannot_register(): void
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->postJson('/api/v1/auth/register', $this->registerPayload);
+        $response = $this->spaPostJson('/api/v1/auth/register', $this->registerPayload);
         $response->assertStatus(403);
     }
 
     public function test_guest_can_register(): void
     {
-        $response = $this->postJson('/api/v1/auth/register', $this->registerPayload);
+        $response = $this->spaPostJson('/api/v1/auth/register', $this->registerPayload);
         $response->assertStatus(200);
     }
 
     public function test_guest_cannot_register_double(): void
     {
-        $response = $this->postJson('/api/v1/auth/register', $this->registerPayload);
+        $response = $this->spaPostJson('/api/v1/auth/register', $this->registerPayload);
         $response->assertStatus(200);
     }
 
@@ -67,57 +74,27 @@ final class AuthApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->postJson('/api/v1/auth/login', $this->loginPayload);
+        $response = $this->spaPostJson('/api/v1/auth/login', $this->loginPayload);
         $response->assertStatus(403);
     }
 
     public function test_guest_can_login(): void
     {
-        $response = $this->postJson('/api/v1/auth/login', $this->loginPayload);
+        $response = $this->spaPostJson('/api/v1/auth/login', $this->loginPayload);
         $response->assertStatus(200);
-    }
-
-    public function test_guest_cannot_refresh_token(): void
-    {
-        $response = $this->postJson('/api/v1/auth/refresh', ['email' => $this->user->email]);
-        $response->assertStatus(401);
-    }
-
-    public function test_user_can_refresh_token_own(): void
-    {
-        Sanctum::actingAs($this->user);
-
-        $response = $this->postJson('/api/v1/auth/refresh', ['email' => $this->user->email]);
-        $response->assertStatus(200);
-    }
-
-    public function test_user_cannot_refresh_token_others(): void
-    {
-        Sanctum::actingAs($this->otherUser);
-
-        $response = $this->postJson('/api/v1/auth/refresh', ['email' => $this->user->email]);
-        $response->assertStatus(403);
     }
 
     public function test_guest_cannot_logout(): void
     {
-        $response = $this->postJson('/api/v1/auth/logout', ['email' => $this->otherUser->email]);
+        $response = $this->spaPostJson('/api/v1/auth/logout');
         $response->assertStatus(401);
     }
 
-    public function test_user_cannot_logout_others(): void
-    {
-        Sanctum::actingAs($this->otherUser);
-
-        $response = $this->postJson('/api/v1/auth/logout', ['email' => $this->user->email]);
-        $response->assertStatus(403);
-    }
-
-    public function test_user_can_logout_own(): void
+    public function test_user_can_logout(): void
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->postJson('/api/v1/auth/logout', ['email' => $this->user->email]);
+        $response = $this->spaPostJson('/api/v1/auth/logout');
         $response->assertStatus(200);
     }
 }
