@@ -311,5 +311,3 @@ final class TradeOfferApiTest extends TestCase
         $response->assertForbidden();
     }
 }
-
-// TODO: исправить тесты, которые срут ошибки в лог

@@ -8,8 +8,7 @@ Route::get('coverage', function () {
         $html = 'All good!';
     }
     return response($html, 200)->header('Content-Type', 'text/html');
-    // TODO: сделать рабочую авторизацию
-}); //->middleware('can:viewSwaggerUI');
+})->middleware('can:viewSwaggerUI');
 
 Route::get('psalm', function () {
     $html = file_get_contents(__DIR__ . '/../psalm-report.html');
@@ -17,5 +16,4 @@ Route::get('psalm', function () {
         $html = '';
     }
     return response($html, 200)->header('Content-Type', 'text/html');
-    // TODO: сделать рабочую авторизацию
-}); //->middleware('can:viewSwaggerUI');
+})->middleware('can:viewSwaggerUI');

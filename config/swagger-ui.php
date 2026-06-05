@@ -29,7 +29,10 @@ return [
              * The middleware that is applied to the route.
              */
             'middleware' => [
-                //'web',
+                'web',
+                // TODO: включить, когда появится фронт
+//                'auth:sanctum',
+//                'can:viewSwaggerUI'
                 //EnsureUserIsAuthorized::class,
             ],
 

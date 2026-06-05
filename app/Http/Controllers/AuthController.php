@@ -9,18 +9,17 @@ use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserResource;
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 final class AuthController extends Controller
 {
-    public function register(UserServiceInterface $userService, AuthServiceInterface $authService, StoreUserRequest $request): JsonResponse
+    public function register(UserServiceInterface $userService, StoreUserRequest $request): JsonResponse
     {
-        if (auth()->check()) {
+        if (Auth::check()) {
             $errors = ['Аутентифицированный пользователь не может регистрироваться'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
         }
@@ -33,85 +32,50 @@ final class AuthController extends Controller
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $token = $authService->refreshToken($user->email);
+        Auth::login($user);
+        $request->session()->regenerate();
         $data = [
-            'user' => new UserResource($user),
-            'token' => $token
+            'user' => new UserResource($user)
         ];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function login(UserServiceInterface $userService, AuthServiceInterface $authService, AuthRequest $request): JsonResponse
+    public function login(AuthRequest $request): JsonResponse
     {
-        if (auth()->check()) {
-            $errors = ['Аутентифицированный пользователь не может аутентифицироваться'];
+        if (Auth::check()) {
+            $errors = ['Пользователь уже аутентифицирован'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
         }
 
         $validated = $request->validated();
+        $remember = $validated['remember'] ?? false;
+        unset($validated['remember']);
 
-        if (!$authService->login($validated)) {
-            $errors = ['Ошибка аутентификации'];
+        if (!Auth::attempt($validated, $remember)) {
+            $errors = ['Неправильный логин или пароль'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_UNAUTHORIZED);
         }
 
-        $token = $authService->refreshToken($validated['email']);
-
-        if (empty($token)) {
-            $errors = ['Ошибка получения токена'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        $user = $userService->where('email', $validated['email'])->first();
+        $request->session()->regenerate();
+        $user = Auth::user();
         $data = [
-            'user' => new UserResource($user),
-            'token' => $token
+            'user' => new UserResource($user)
         ];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function refresh(UserServiceInterface $userService, AuthServiceInterface $authService, Request $request): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-        $email = $request->input('email');
-        $user = $userService->where('email', $email)->first();
-
-        if (!$user instanceof User) {
-            $errors = ['Ошибка обновления токена'];
+        if (!Auth::check()) {
+            $errors = ['Гость не может выйти'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        Gate::authorize('refresh', $user);
-
-        $token = $authService->refreshToken($email);
-
-        if (empty($token)) {
-            $errors = ['Ошибка обновления токена'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        $data = ['token' => $token];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function logout(UserServiceInterface $userService, AuthServiceInterface $authService, Request $request): JsonResponse
-    {
-        $email = $request->input('email');
-        $user = $userService->where('email', $email)->first();
-
-        if (!$user instanceof User) {
-            $errors = ['Ошибка обновления токена'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
-        Gate::authorize('logout', $user);
-
-        if (!$authService->logout($email)) {
-            $errors = ['Ошибка при выходе из аккаунта'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
     }
@@ -124,10 +88,11 @@ final class AuthController extends Controller
             abort(Response::HTTP_BAD_REQUEST);
         }
 
+        // TODO: заменить на реальные страницы фронта
         if (!$authService->verifyEmail($userId)) {
-            return response()->redirectTo('failure frontend page or redirect to home with event provided');
+            return response()->redirectTo('http://localhost:5173/failure');
         }
 
-        return response()->redirectTo('success frontend page or redirect to home with event provided');
+        return response()->redirectTo('http://localhost:5173/success');
     }
 }

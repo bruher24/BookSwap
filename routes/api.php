@@ -18,8 +18,6 @@ use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\UserSettingController;
 use Illuminate\Support\Facades\Route;
 
-// TODO: перейти от токена к cookie auth
-
 Route::prefix('v1')->name('api.')
     ->middleware(['auth:sanctum', 'throttle:api'])
     ->group(function () {
@@ -27,7 +25,6 @@ Route::prefix('v1')->name('api.')
             ->group(function () {
                 Route::post('register', 'register')->name('register')->withoutMiddleware('auth:sanctum');
                 Route::post('login', 'login')->name('login')->withoutMiddleware('auth:sanctum');
-                Route::post('refresh', 'refresh')->name('refresh');
                 Route::post('logout', 'logout')->name('logout');
                 Route::get('verify_email/{userId}', 'verifyEmail')->name('verifyEmail')->withoutMiddleware('auth:sanctum');
             });

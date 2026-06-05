@@ -20,10 +20,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->statefulApi();
         $middleware->alias([
             'abilities' => CheckAbilities::class,
             'ability' => CheckForAnyAbility::class,
         ]);
+        $middleware->redirectGuestsTo('http://localhost:5173/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {

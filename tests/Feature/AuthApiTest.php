@@ -8,6 +8,7 @@ use Laravel\Sanctum\Sanctum;
 use Override;
 use Tests\TestCase;
 
+// TODO: обновить тесты
 final class AuthApiTest extends TestCase
 {
     use RefreshDatabase;
