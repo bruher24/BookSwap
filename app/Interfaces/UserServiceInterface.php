@@ -18,4 +18,6 @@ interface UserServiceInterface
     public function update(User $user, array $data): User|false;
 
     public function delete(User $user): bool;
+
+    public function rate(User $user, User $rater, int $rate): bool;
 }

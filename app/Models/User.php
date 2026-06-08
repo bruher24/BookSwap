@@ -32,7 +32,8 @@ final class User extends Authenticatable implements Cacheable
         'name',
         'email',
         'password',
-        'city'
+        'city',
+        'rating'
     ];
 
     protected $hidden = [
@@ -123,5 +124,10 @@ final class User extends Authenticatable implements Cacheable
     {
         return $this->hasMany(Notification::class)
             ->where('seen', false);
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use Auth;
 use Illuminate\Auth\Access\Response;
 
 final class UserPolicy
@@ -118,6 +119,13 @@ final class UserPolicy
     public function settings(User $user, User $target): Response
     {
         return $user->is($target)
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
+    }
+
+    public function rate(User $user, User $target): Response
+    {
+        return Auth::check() && $user->isNot($target)
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

@@ -17,8 +17,7 @@ return new class () extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('city', 50)->nullable();
-            // TODO: реализовать рейтинг пользователя
-            $table->double('rating')->default(0);
+            $table->decimal('rating', 3, 2)->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

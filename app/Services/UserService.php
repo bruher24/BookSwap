@@ -114,4 +114,27 @@ final class UserService implements UserServiceInterface
             return false;
         }
     }
+
+    public function rate(User $user, User $rater, int $rate): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            $user->ratings()->updateOrCreate(
+                ['rater_id' => $rater->id],
+                ['rate' => $rate]
+            );
+
+            $user->updateOrFail([
+                'rating' => $user->ratings()->avg('rate') ?? 0
+            ]);
+
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage(), ['exception' => $e]);
+            return false;
+        }
+    }
 }

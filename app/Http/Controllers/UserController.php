@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RateUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\FailureResource;
@@ -83,5 +84,19 @@ final class UserController extends Controller
         }
 
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+    }
+
+    public function rate(RateUserRequest $request, UserServiceInterface $userService, User $user): JsonResponse
+    {
+        Gate::authorize('rate', $user);
+
+        $validated = $request->validated();
+
+        if ($userService->rate($user, $request->user(), (int)$validated['rate'])) {
+            $errors = ['Ошибка при оценке пользователя'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
+        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
     }
 }

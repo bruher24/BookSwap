@@ -137,6 +137,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('{user}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
                 Route::put('{user}', 'update')->name('update');
                 Route::delete('{user}', 'destroy')->name('destroy');
+                Route::put('{user}/rate', 'rate')->name('rate');
 
                 Route::prefix('{user}/favorites')->name('favorites.')
                     ->controller(UserFavoritesController::class)
