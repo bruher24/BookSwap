@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\BookCondition;
 use App\Models\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,6 +24,7 @@ final class BookFactory extends Factory
             'publication_year' => $this->faker->year(),
             'isbn' => $this->faker->isbn13(),
             'page_count' => $this->faker->numberBetween(50, 1000),
+            'condition' => $this->faker->randomElement(BookCondition::cases()),
             'book_type_id' => 1,
             'cover_id' => 1,
             'trade_offer_id' => null,

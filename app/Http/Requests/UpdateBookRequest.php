@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\BookCondition;
 use App\Models\Author;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -84,6 +85,10 @@ final class UpdateBookRequest extends FormRequest
                 Rule::date()->beforeOrEqual(today()->subYears(14)),
             ],
             'page_count' => 'required|integer|min:1',
+            'condition' => [
+                'string',
+                Rule::in(BookCondition::cases()),
+            ],
             'cover' => [
                 'nullable',
                 'file',

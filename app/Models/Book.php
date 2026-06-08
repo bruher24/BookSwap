@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BookCondition;
 use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
 use Database\Factories\BookFactory;
@@ -29,10 +30,15 @@ final class Book extends Model implements Cacheable
         'publication_year',
         'isbn',
         'page_count',
+        'condition',
         'book_type_id',
         'cover_id',
         'is_available',
         'trade_offer_id',
+    ];
+
+    protected $casts = [
+        'condition' => BookCondition::class,
     ];
 
     public function searchableAs(): string

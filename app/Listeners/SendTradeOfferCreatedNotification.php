@@ -3,7 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\TradeOfferCreated;
+use App\Mail\TradeOfferReceived;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
 final class SendTradeOfferCreatedNotification implements ShouldQueue
 {
@@ -22,6 +24,9 @@ final class SendTradeOfferCreatedNotification implements ShouldQueue
      */
     public function handle(TradeOfferCreated $event): void
     {
-        //
+        $mail = (new TradeOfferReceived($event->tradeOffer, $event->receiver))
+            ->onQueue('mail');
+
+        Mail::to($event->receiver)->queue($mail);
     }
 }

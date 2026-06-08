@@ -15,7 +15,8 @@ final class TradeOfferUpdated
      * Create a new event instance.
      */
     public function __construct(
-        public TradeOffer $tradeOffer
+        public TradeOffer $tradeOffer,
+        public string $newStatus
     ) {
     }
 }

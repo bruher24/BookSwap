@@ -24,7 +24,9 @@ final class TradeOfferObserver
      */
     public function updated(TradeOffer $tradeOffer): void
     {
-        TradeOfferUpdated::dispatch($tradeOffer);
+        if ($tradeOffer->isDirty('status')) {
+            TradeOfferUpdated::dispatch($tradeOffer, $tradeOffer->status);
+        }
     }
 
     /**

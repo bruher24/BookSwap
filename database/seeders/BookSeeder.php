@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\BookCondition;
 use App\Models\Book;
 use App\Models\Cover;
 use Illuminate\Database\Seeder;
@@ -18,6 +19,7 @@ final class BookSeeder extends Seeder
                 'publication_year' => '2020',
                 'isbn' => str_repeat('1', 13),
                 'page_count' => 300,
+                'condition' => BookCondition::Good
             ],
             [
                 'user_id' => 2,
@@ -26,6 +28,7 @@ final class BookSeeder extends Seeder
                 'publication_year' => '2021',
                 'isbn' => str_repeat('2', 13),
                 'page_count' => 400,
+                'condition' => BookCondition::Normal
             ],
             [
                 'user_id' => 1,
@@ -34,6 +37,7 @@ final class BookSeeder extends Seeder
                 'publication_year' => '2022',
                 'isbn' => str_repeat('3', 13),
                 'page_count' => 666,
+                'condition' => BookCondition::Perfect
             ],
             [
                 'user_id' => 1,
@@ -42,6 +46,7 @@ final class BookSeeder extends Seeder
                 'publication_year' => '1978',
                 'isbn' => str_repeat('4', 13),
                 'page_count' => 3,
+                'condition' => BookCondition::Terrible
             ],
         ];
         $id = 1;

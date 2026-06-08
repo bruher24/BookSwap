@@ -51,6 +51,11 @@ final class StoreUserRequest extends FormRequest
                 'string',
                 'max:100',
             ],
+            'city' => [
+                'string',
+                'nullable',
+                'max:50',
+            ]
         ];
     }
 }

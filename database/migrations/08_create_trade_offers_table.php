@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TradeOfferStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ return new class () extends Migration {
             $table->id();
             $table->foreignId('sender_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('receiver_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
-            $table->string('status', 100)->default('pending');
+            $table->enum('status', TradeOfferStatus::cases())->default(TradeOfferStatus::Pending->value);
             $table->timestamps();
             $table->softDeletes();
         });

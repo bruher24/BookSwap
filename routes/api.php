@@ -127,6 +127,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver');
                 Route::patch('{trade_offer}/accept', 'accept')->name('accept');
                 Route::patch('{trade_offer}/reject', 'reject')->name('reject');
+                Route::patch('{trade_offer}/finish', 'finish')->name('finish');
             });
 
         Route::prefix('users')->name('users.')->controller(UserController::class)

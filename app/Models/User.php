@@ -32,6 +32,7 @@ final class User extends Authenticatable implements Cacheable
         'name',
         'email',
         'password',
+        'city'
     ];
 
     protected $hidden = [

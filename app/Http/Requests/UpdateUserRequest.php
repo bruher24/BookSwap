@@ -77,6 +77,11 @@ final class UpdateUserRequest extends FormRequest
                 Rule::unique('phones', 'number')
                     ->whereNot('user_id', $this->input('user_id')),
             ],
+            'city' => [
+                'string',
+                'nullable',
+                'max:50'
+            ]
         ];
     }
 }

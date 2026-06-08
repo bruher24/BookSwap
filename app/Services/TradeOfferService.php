@@ -118,7 +118,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
             DB::beginTransaction();
 
             if ($tradeOffer->status !== TradeOfferStatus::Pending) {
-                throw new Exception("Можно изменять только сделки со статусом 'Ожидает'");
+                throw new Exception('Можно изменять только сделки со статусом "' . TradeOfferStatus::Pending->label() . '"');
             }
 
             $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
@@ -165,11 +165,6 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             $tradeOffer->status = TradeOfferStatus::Accepted;
 
-            foreach ($tradeOffer->books()->get() as $book) {
-                $newOwnerId = $book->user_id === $tradeOffer->sender_id ? $tradeOffer->receiver_id : $tradeOffer->sender_id;
-                $book->update(['user_id' => $newOwnerId, 'is_available' => true]);
-            }
-
             return $tradeOffer->saveOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
@@ -191,5 +186,38 @@ final class TradeOfferService implements TradeOfferServiceInterface
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
+    }
+
+    public function finish(TradeOffer $tradeOffer): bool
+    {
+        try {
+            $tradeOffer->status = TradeOfferStatus::Finished;
+
+            foreach ($tradeOffer->books()->get() as $book) {
+                $newOwnerId = $book->user_id === $tradeOffer->sender_id ? $tradeOffer->receiver_id : $tradeOffer->sender_id;
+                $book->update(['user_id' => $newOwnerId, 'is_available' => true]);
+            }
+
+            return $tradeOffer->saveOrFail();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+            return false;
+        }
+    }
+
+    public function tradeHistory(User $user): \Illuminate\Support\Collection
+    {
+        $history = TradeOffer::query()
+            ->where('sender_id', $user->id)
+            ->orWhere('receiver_id', $user->id)
+            ->withoutTrashed()
+            ->get();
+
+        return collect([
+            TradeOfferStatus::Pending->value => $history->where('status', TradeOfferStatus::Pending),
+            TradeOfferStatus::Accepted->value => $history->where('status', TradeOfferStatus::Accepted),
+            TradeOfferStatus::Rejected->value => $history->where('status', TradeOfferStatus::Rejected),
+            TradeOfferStatus::Finished->value => $history->where('status', TradeOfferStatus::Finished),
+        ]);
     }
 }

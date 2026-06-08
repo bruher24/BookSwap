@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\BookCondition;
 use App\Models\Author;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -83,6 +84,10 @@ final class StoreBookRequest extends FormRequest
                 'file',
                 'mimes:jpeg,png',
                 'max:2048'
+            ],
+            'condition' => [
+                'string',
+                Rule::in(BookCondition::cases()),
             ],
             'publishing_house' => 'nullable|string',
             'publication_year' => [
