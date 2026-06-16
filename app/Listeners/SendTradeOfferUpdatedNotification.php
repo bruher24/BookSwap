@@ -2,9 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Enums\TradeOfferStatus;
 use App\Events\TradeOfferUpdated;
+use App\Mail\TradeOfferStatusUpdated;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
 final class SendTradeOfferUpdatedNotification implements ShouldQueue
 {
@@ -23,16 +24,9 @@ final class SendTradeOfferUpdatedNotification implements ShouldQueue
      */
     public function handle(TradeOfferUpdated $event): void
     {
-        switch ($event->newStatus) {
-            case TradeOfferStatus::Accepted:
-                // TODO: отправить уведомление о принятии
-                break;
-            case TradeOfferStatus::Rejected:
-                // TODO: отправить уведомление об отклонении
-                break;
-            case TradeOfferStatus::Finished:
-                // TODO: отправить уведомление о завершении
-                break;
-        }
+        $mail = (new TradeOfferStatusUpdated($event->tradeOffer, $event->receiver))
+            ->onQueue('mail');
+
+        Mail::to($event->receiver)->queue($mail);
     }
 }

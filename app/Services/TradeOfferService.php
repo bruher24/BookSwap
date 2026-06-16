@@ -163,9 +163,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function accept(TradeOffer $tradeOffer): bool
     {
         try {
-            $tradeOffer->status = TradeOfferStatus::Accepted;
-
-            return $tradeOffer->saveOrFail();
+            return $tradeOffer->updateOrFail(['status' => TradeOfferStatus::Accepted]);
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -175,13 +173,15 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function reject(TradeOffer $tradeOffer): bool
     {
         try {
-            $tradeOffer->status = TradeOfferStatus::Rejected;
+            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Rejected])) {
+                foreach ($tradeOffer->books()->get() as $book) {
+                    $book->update(['is_available' => true]);
+                }
 
-            foreach ($tradeOffer->books()->get() as $book) {
-                $book->update(['is_available' => true]);
+                return true;
             }
 
-            return $tradeOffer->saveOrFail();
+            return false;
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -191,14 +191,16 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function finish(TradeOffer $tradeOffer): bool
     {
         try {
-            $tradeOffer->status = TradeOfferStatus::Finished;
+            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Finished])) {
+                foreach ($tradeOffer->books()->get() as $book) {
+                    $newOwnerId = $book->user_id === $tradeOffer->sender_id ? $tradeOffer->receiver_id : $tradeOffer->sender_id;
+                    $book->update(['user_id' => $newOwnerId, 'is_available' => true]);
+                }
 
-            foreach ($tradeOffer->books()->get() as $book) {
-                $newOwnerId = $book->user_id === $tradeOffer->sender_id ? $tradeOffer->receiver_id : $tradeOffer->sender_id;
-                $book->update(['user_id' => $newOwnerId, 'is_available' => true]);
+                return true;
             }
 
-            return $tradeOffer->saveOrFail();
+            return false;
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;

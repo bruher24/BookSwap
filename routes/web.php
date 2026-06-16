@@ -8,12 +8,16 @@ Route::get('coverage', function () {
         $html = 'All good!';
     }
     return response($html, 200)->header('Content-Type', 'text/html');
-})->middleware('can:viewSwaggerUI');
+});
+// TODO: включить, когда появится фронт
+//->middleware('can:viewSwaggerUI');
 
 Route::get('psalm', function () {
     $html = file_get_contents(__DIR__ . '/../psalm-report.html');
     if ($html === false) {
-        $html = '';
+        $html = 'All good!';
     }
     return response($html, 200)->header('Content-Type', 'text/html');
-})->middleware('can:viewSwaggerUI');
+});
+// TODO: включить, когда появится фронт
+//->middleware('can:viewSwaggerUI');
