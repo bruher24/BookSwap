@@ -77,7 +77,7 @@ final class UserApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->putJson("/api/v1/users/{$this->user->id}", $this->userUpdatePayload);
+        $response = $this->patchJson("/api/v1/users/{$this->user->id}", $this->userUpdatePayload);
         $response->assertOk();
     }
 
@@ -85,7 +85,7 @@ final class UserApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->putJson("/api/v1/users/{$this->target->id}", $this->userUpdatePayload);
+        $response = $this->patchJson("/api/v1/users/{$this->target->id}", $this->userUpdatePayload);
         $response->assertForbidden();
     }
 
@@ -109,7 +109,7 @@ final class UserApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->putJson("/api/v1/users/{$this->target->id}/rate", [
+        $response = $this->patchJson("/api/v1/users/{$this->target->id}/rate", [
             'rate' => 5,
         ]);
 
@@ -126,7 +126,7 @@ final class UserApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->putJson("/api/v1/users/{$this->user->id}/rate", [
+        $response = $this->patchJson("/api/v1/users/{$this->user->id}/rate", [
             'rate' => 5,
         ]);
 
@@ -137,7 +137,7 @@ final class UserApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->putJson("/api/v1/users/{$this->target->id}/rate", [
+        $response = $this->patchJson("/api/v1/users/{$this->target->id}/rate", [
             'rate' => 6,
         ]);
 

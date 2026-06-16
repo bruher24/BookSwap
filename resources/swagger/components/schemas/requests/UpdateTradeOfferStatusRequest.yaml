@@ -1,0 +1,11 @@
+type: object
+properties:
+  status:
+    type: string
+    enum:
+      - accepted
+      - rejected
+      - finished
+required:
+  - status
+title: UpdateTradeOfferStatusRequest

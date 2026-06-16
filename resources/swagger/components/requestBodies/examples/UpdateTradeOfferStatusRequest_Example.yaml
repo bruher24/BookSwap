@@ -1,0 +1,4 @@
+summary: UpdateTradeOfferStatusRequest_Example
+value: {
+  status: "accepted"
+}

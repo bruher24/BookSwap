@@ -1,0 +1,10 @@
+description: "TradeOffer status update payload"
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/requests/UpdateTradeOfferStatusRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateTradeOfferStatusRequest_Example.yaml"
+

@@ -34,7 +34,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{author}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{author}', 'update')->name('update');
+                Route::patch('{author}', 'update')->name('update');
                 Route::delete('{author}', 'destroy')->name('destroy');
             });
 
@@ -44,7 +44,7 @@ Route::prefix('v1')->name('api.')
                 Route::post('/', 'store')->name('store');
                 Route::get('where', 'where')->name('where')->withoutMiddleware('auth:sanctum');
                 Route::get('{book}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{book}', 'update')->name('update');
+                Route::patch('{book}', 'update')->name('update');
                 Route::delete('{book}', 'destroy')->name('destroy');
             });
 
@@ -53,7 +53,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{book_type}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{book_type}', 'update')->name('update');
+                Route::patch('{book_type}', 'update')->name('update');
                 Route::delete('{book_type}', 'destroy')->name('destroy');
             });
 
@@ -81,7 +81,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{filter}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{filter}', 'update')->name('update');
+                Route::patch('{filter}', 'update')->name('update');
                 Route::delete('{filter}', 'destroy')->name('destroy');
             });
 
@@ -90,7 +90,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store');
                 Route::get('{genre}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{genre}', 'update')->name('update');
+                Route::patch('{genre}', 'update')->name('update');
                 Route::delete('{genre}', 'destroy')->name('destroy');
             });
 
@@ -109,7 +109,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{setting}', 'show')->name('show');
-                Route::put('{setting}', 'update')->name('update');
+                Route::patch('{setting}', 'update')->name('update');
                 Route::delete('{setting}', 'destroy')->name('destroy');
             });
 
@@ -118,14 +118,12 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{trade_offer}', 'show')->name('show');
-                Route::put('{trade_offer}', 'update')->name('update');
+                Route::patch('{trade_offer}', 'update')->name('update');
                 Route::delete('{trade_offer}', 'destroy')->name('destroy');
                 Route::get('{trade_offer}/items', 'items')->name('items');
                 Route::get('by_sender/{sender}', 'bySender')->name('bySender');
                 Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver');
-                Route::patch('{trade_offer}/accept', 'accept')->name('accept');
-                Route::patch('{trade_offer}/reject', 'reject')->name('reject');
-                Route::patch('{trade_offer}/finish', 'finish')->name('finish');
+                Route::patch('{trade_offer}/update_status', 'updateStatus')->name('updateStatus');
             });
 
         Route::prefix('users')->name('users.')->controller(UserController::class)
@@ -133,9 +131,9 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{user}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{user}', 'update')->name('update');
+                Route::patch('{user}', 'update')->name('update');
                 Route::delete('{user}', 'destroy')->name('destroy');
-                Route::put('{user}/rate', 'rate')->name('rate');
+                Route::patch('{user}/rate', 'rate')->name('rate');
 
                 Route::prefix('{user}/favorites')->name('favorites.')
                     ->controller(UserFavoritesController::class)
@@ -155,7 +153,7 @@ Route::prefix('v1')->name('api.')
                     ->controller(UserSettingController::class)
                     ->group(function () {
                         Route::get('/', 'index')->name('index');
-                        Route::put('{setting}', 'update')->name('update');
+                        Route::patch('{setting}', 'update')->name('update');
                     });
             });
     });

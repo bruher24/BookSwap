@@ -93,21 +93,21 @@ final class FilterApiTest extends TestCase
     public function test_user_cannot_update_filter(): void
     {
         Sanctum::actingAs($this->user);
-        $response = $this->putJson("/api/v1/filters/{$this->filter->id}", $this->filterUpdatePayload);
+        $response = $this->patchJson("/api/v1/filters/{$this->filter->id}", $this->filterUpdatePayload);
         $response->assertForbidden();
     }
 
     public function test_admin_can_update_filter(): void
     {
         Sanctum::actingAs($this->admin);
-        $response = $this->putJson("/api/v1/filters/{$this->filter->id}", $this->filterUpdatePayload);
+        $response = $this->patchJson("/api/v1/filters/{$this->filter->id}", $this->filterUpdatePayload);
         $response->assertOk();
     }
 
     public function test_validation_error_update_filter(): void
     {
         Sanctum::actingAs($this->admin);
-        $response = $this->putJson("/api/v1/filters/{$this->filter->id}", $this->filterWrongPayload);
+        $response = $this->patchJson("/api/v1/filters/{$this->filter->id}", $this->filterWrongPayload);
         $response->assertStatus(422);
     }
 
@@ -115,7 +115,7 @@ final class FilterApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin);
         $newId = (int)$this->filter->id + 1;
-        $response = $this->putJson("/api/v1/filters/$newId", $this->filterUpdatePayload);
+        $response = $this->patchJson("/api/v1/filters/$newId", $this->filterUpdatePayload);
         $response->assertNotFound();
     }
 

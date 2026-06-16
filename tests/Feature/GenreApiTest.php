@@ -91,21 +91,21 @@ final class GenreApiTest extends TestCase
     public function test_user_cannot_update_genre(): void
     {
         Sanctum::actingAs($this->user);
-        $response = $this->putJson("/api/v1/genres/{$this->genre->id}", $this->genreUpdatePayload);
+        $response = $this->patchJson("/api/v1/genres/{$this->genre->id}", $this->genreUpdatePayload);
         $response->assertForbidden();
     }
 
     public function test_admin_can_update_genre(): void
     {
         Sanctum::actingAs($this->admin);
-        $response = $this->putJson("/api/v1/genres/{$this->genre->id}", $this->genreUpdatePayload);
+        $response = $this->patchJson("/api/v1/genres/{$this->genre->id}", $this->genreUpdatePayload);
         $response->assertOk();
     }
 
     public function test_validation_error_update_genre(): void
     {
         Sanctum::actingAs($this->admin);
-        $response = $this->putJson("/api/v1/genres/{$this->genre->id}", $this->genreWrongPayload);
+        $response = $this->patchJson("/api/v1/genres/{$this->genre->id}", $this->genreWrongPayload);
         $response->assertStatus(422);
     }
 
@@ -113,7 +113,7 @@ final class GenreApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin);
         $newId = (int)$this->genre->id + 1;
-        $response = $this->putJson("/api/v1/genres/$newId", $this->genreUpdatePayload);
+        $response = $this->patchJson("/api/v1/genres/$newId", $this->genreUpdatePayload);
         $response->assertNotFound();
     }
 

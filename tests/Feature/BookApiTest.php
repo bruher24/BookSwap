@@ -116,7 +116,7 @@ final class BookApiTest extends TestCase
         Sanctum::actingAs($this->other);
         $this->bookUpdatePayload['author_id'] = $this->author->id;
 
-        $response = $this->putJson("/api/v1/books/{$this->book->id}", $this->bookUpdatePayload);
+        $response = $this->patchJson("/api/v1/books/{$this->book->id}", $this->bookUpdatePayload);
         $response->assertForbidden();
     }
 
@@ -125,14 +125,14 @@ final class BookApiTest extends TestCase
         Sanctum::actingAs($this->owner);
         $this->bookUpdatePayload['author_id'] = $this->author->id;
 
-        $response = $this->putJson("/api/v1/books/{$this->book->id}", $this->bookUpdatePayload);
+        $response = $this->patchJson("/api/v1/books/{$this->book->id}", $this->bookUpdatePayload);
         $response->assertOk();
     }
 
     public function test_validation_error_update_book(): void
     {
         Sanctum::actingAs($this->owner);
-        $response = $this->putJson("/api/v1/books/{$this->book->id}", $this->bookWrongPayload);
+        $response = $this->patchJson("/api/v1/books/{$this->book->id}", $this->bookWrongPayload);
         $response->assertStatus(422);
     }
 
@@ -141,7 +141,7 @@ final class BookApiTest extends TestCase
         Sanctum::actingAs($this->owner);
         $newId = $this->book->id + 1;
 
-        $response = $this->putJson("/api/v1/books/$newId", $this->bookUpdatePayload);
+        $response = $this->patchJson("/api/v1/books/$newId", $this->bookUpdatePayload);
         $response->assertNotFound();
     }
 

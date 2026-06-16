@@ -86,7 +86,7 @@ final class AuthorApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
         $this->authorUpdatePayload['user_id'] = $this->other->id;
-        $response = $this->putJson("/api/v1/authors/{$this->author->id}", $this->authorUpdatePayload);
+        $response = $this->patchJson("/api/v1/authors/{$this->author->id}", $this->authorUpdatePayload);
         $response->assertForbidden();
     }
 
@@ -95,14 +95,14 @@ final class AuthorApiTest extends TestCase
         Sanctum::actingAs($this->owner);
 
         $this->authorUpdatePayload['user_id'] = $this->owner->id;
-        $response = $this->putJson("/api/v1/authors/{$this->author->id}", $this->authorUpdatePayload);
+        $response = $this->patchJson("/api/v1/authors/{$this->author->id}", $this->authorUpdatePayload);
         $response->assertOk();
     }
 
     public function test_validation_error_update_author(): void
     {
         Sanctum::actingAs($this->owner);
-        $response = $this->putJson("/api/v1/authors/{$this->author->id}", $this->authorWrongPayload);
+        $response = $this->patchJson("/api/v1/authors/{$this->author->id}", $this->authorWrongPayload);
         $response->assertStatus(422);
     }
 
@@ -112,7 +112,7 @@ final class AuthorApiTest extends TestCase
 
         $this->authorUpdatePayload['user_id'] = $this->owner->id;
         $newId = (int)$this->author->id + 1;
-        $response = $this->putJson("/api/v1/authors/$newId", $this->authorUpdatePayload);
+        $response = $this->patchJson("/api/v1/authors/$newId", $this->authorUpdatePayload);
         $response->assertNotFound();
     }
 

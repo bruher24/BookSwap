@@ -227,7 +227,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertOk();
 
         foreach (array_merge($this->tradeOfferSenderBookIds, $this->tradeOfferReceiverBookIds) as $bookId) {
@@ -254,7 +254,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertOk();
     }
 
@@ -262,7 +262,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertForbidden();
     }
 
@@ -271,15 +271,17 @@ final class TradeOfferApiTest extends TestCase
         Sanctum::actingAs($this->sender);
         $this->tradeOffer->update(['status' => TradeOfferStatus::Accepted]);
 
-        $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertBadRequest();
     }
 
-    public function test_user_can_accept_trade_offer_as_receiver(): void
+    public function test_user_can_update_status_to_accepted_as_receiver(): void
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/accept");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Accepted->value,
+        ]);
         $response->assertOk();
 
         $this->assertDatabaseHas('trade_offers', [
@@ -288,27 +290,33 @@ final class TradeOfferApiTest extends TestCase
         ]);
     }
 
-    public function test_user_cannot_accept_trade_offer_as_sender(): void
+    public function test_user_cannot_update_status_to_accepted_as_sender(): void
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/accept");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Accepted->value,
+        ]);
         $response->assertForbidden();
     }
 
-    public function test_user_cannot_accept_others_trade_offer(): void
+    public function test_user_cannot_update_others_trade_offer_status_to_accepted(): void
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/accept");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Accepted->value,
+        ]);
         $response->assertForbidden();
     }
 
-    public function test_user_can_reject_trade_offer_as_receiver(): void
+    public function test_user_can_update_status_to_rejected_as_receiver(): void
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/reject");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Rejected->value,
+        ]);
         $response->assertOk();
 
         $this->assertDatabaseHas('trade_offers', [
@@ -324,35 +332,43 @@ final class TradeOfferApiTest extends TestCase
         }
     }
 
-    public function test_user_can_reject_trade_offer_as_sender(): void
+    public function test_user_can_update_status_to_rejected_as_sender(): void
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/reject");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Rejected->value,
+        ]);
         $response->assertOk();
     }
 
-    public function test_user_cannot_reject_others_trade_offer(): void
+    public function test_user_cannot_update_others_trade_offer_status_to_rejected(): void
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/reject");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Rejected->value,
+        ]);
         $response->assertForbidden();
     }
 
-    public function test_user_can_reject_missing_trade_offer(): void
+    public function test_user_cannot_update_missing_trade_offer_status(): void
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson('/api/v1/trade_offers/999999/reject');
-        $response->assertAccepted();
+        $response = $this->patchJson('/api/v1/trade_offers/999999/update_status', [
+            'status' => TradeOfferStatus::Rejected->value,
+        ]);
+        $response->assertNotFound();
     }
 
-    public function test_user_can_finish_trade_offer_as_sender(): void
+    public function test_user_can_update_status_to_finished_as_sender(): void
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/finish");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Finished->value,
+        ]);
         $response->assertOk();
 
         $this->assertDatabaseHas('trade_offers', [
@@ -377,20 +393,34 @@ final class TradeOfferApiTest extends TestCase
         }
     }
 
-    public function test_user_cannot_finish_trade_offer_as_receiver(): void
+    public function test_user_cannot_update_status_to_finished_as_receiver(): void
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/finish");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Finished->value,
+        ]);
         $response->assertForbidden();
     }
 
-    public function test_user_cannot_finish_others_trade_offer(): void
+    public function test_user_cannot_update_others_trade_offer_status_to_finished(): void
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/finish");
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Finished->value,
+        ]);
         $response->assertForbidden();
+    }
+
+    public function test_update_status_requires_valid_status(): void
+    {
+        Sanctum::actingAs($this->sender);
+
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+            'status' => TradeOfferStatus::Pending->value,
+        ]);
+        $response->assertUnprocessable();
     }
 
     public function test_user_can_get_items_of_trade_offer_as_sender(): void

@@ -96,21 +96,21 @@ final class SettingApiTest extends TestCase
     public function test_user_cannot_update_setting(): void
     {
         Sanctum::actingAs($this->user);
-        $response = $this->putJson("/api/v1/settings/{$this->setting->id}", $this->settingUpdatePayload);
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}", $this->settingUpdatePayload);
         $response->assertForbidden();
     }
 
     public function test_admin_can_update_setting(): void
     {
         Sanctum::actingAs($this->admin);
-        $response = $this->putJson("/api/v1/settings/{$this->setting->id}", $this->settingUpdatePayload);
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}", $this->settingUpdatePayload);
         $response->assertOk();
     }
 
     public function test_validation_error_update_setting(): void
     {
         Sanctum::actingAs($this->admin);
-        $response = $this->putJson("/api/v1/settings/{$this->setting->id}", $this->settingWrongPayload);
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}", $this->settingWrongPayload);
         $response->assertStatus(422);
     }
 
@@ -118,7 +118,7 @@ final class SettingApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin);
         $newId = (int)$this->setting->id + 1;
-        $response = $this->putJson("/api/v1/settings/$newId", $this->settingUpdatePayload);
+        $response = $this->patchJson("/api/v1/settings/$newId", $this->settingUpdatePayload);
         $response->assertNotFound();
     }
 

@@ -128,7 +128,7 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
+    patch:
       operationId: authors.update
       tags:
         - Author
@@ -263,7 +263,7 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
+    patch:
       operationId: books.update
       tags:
         - Book
@@ -339,7 +339,7 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
+    patch:
       operationId: book_types.update
       tags:
         - BookType
@@ -645,7 +645,7 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
+    patch:
       operationId: trade_offers.update
       tags:
         - TradeOffer
@@ -699,13 +699,15 @@ paths:
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
-  /trade_offers/{trade_offer}/accept:
+  /trade_offers/{trade_offer}/update_status:
     parameters:
       - $ref: "components/parameters/trade_offer.yaml"
     patch:
-      operationId: trade_offers.accept
+      operationId: trade_offers.updateStatus
       tags:
         - TradeOffer
+      requestBody:
+        $ref: "components/requestBodies/UpdateTradeOfferStatusRequest_Body.yaml"
       responses:
         "200":
           $ref: "components/responses/api/Success_Response.yaml"
@@ -717,44 +719,8 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-
-  /trade_offers/{trade_offer}/reject:
-    parameters:
-      - $ref: "components/parameters/trade_offer.yaml"
-    patch:
-      operationId: trade_offers.reject
-      tags:
-        - TradeOffer
-      responses:
-        "200":
-          $ref: "components/responses/api/Success_Response.yaml"
-        "202":
-          $ref: "components/responses/api/Accepted_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-
-  /trade_offers/{trade_offer}/finish:
-    parameters:
-      - $ref: "components/parameters/trade_offer.yaml"
-    patch:
-      operationId: trade_offers.finish
-      tags:
-        - TradeOffer
-      responses:
-        "200":
-          $ref: "components/responses/api/Success_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /filters:
     get:
@@ -798,7 +764,7 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
+    patch:
       operationId: filters.update
       tags:
         - Filter
@@ -873,7 +839,7 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
+    patch:
       operationId: genres.update
       tags:
         - Genre
@@ -1038,7 +1004,7 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
+    patch:
       operationId: settings.update
       tags:
         - Setting
@@ -1116,7 +1082,7 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
+    patch:
       operationId: users.update
       tags:
         - User
@@ -1152,7 +1118,7 @@ paths:
   /users/{user}/rate:
     parameters:
       - $ref: "components/parameters/user.yaml"
-    put:
+    patch:
       operationId: users.rate
       tags:
         - User
@@ -1268,7 +1234,7 @@ paths:
     parameters:
       - $ref: "components/parameters/user.yaml"
       - $ref: "components/parameters/setting.yaml"
-    put:
+    patch:
       operationId: users.settings.update
       tags:
         - UserSetting
