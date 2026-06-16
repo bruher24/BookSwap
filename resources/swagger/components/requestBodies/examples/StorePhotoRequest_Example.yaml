@@ -1,4 +1,5 @@
 summary: StorePhotoRequest_Example
 value: {
-  src: "binary-data"
+  src: "binary-data",
+  user_id: 1
 }

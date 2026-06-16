@@ -1,7 +1,7 @@
 description: "Cover creation payload"
 required: true
 content:
-  application/json:
+  multipart/form-data:
     schema:
       $ref: "../schemas/requests/StoreCoverRequest.yaml"
     examples:

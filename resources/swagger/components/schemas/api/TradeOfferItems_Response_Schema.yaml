@@ -1,0 +1,12 @@
+ApiResponse_Schema_TradeOfferItems:
+allOf:
+  - $ref: 'Response_Schema.yaml'
+  - type: object
+    properties:
+      data:
+        type: object
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '../../schemas/resources/BookResource.yaml'

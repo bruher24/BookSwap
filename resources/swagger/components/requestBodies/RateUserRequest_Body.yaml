@@ -1,0 +1,9 @@
+description: "User rating payload"
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/requests/RateUserRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/RateUserRequest_Example.yaml"

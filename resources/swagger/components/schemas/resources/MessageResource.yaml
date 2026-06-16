@@ -4,14 +4,37 @@ properties:
     type: integer
   body:
     type: string
-  sender_id:
+  chat_id:
     type: integer
+  sender_id:
+    oneOf:
+      - type: integer
+      - type: 'null'
+  subject:
+    oneOf:
+      - type: string
+      - type: 'null'
+  seen:
+    type: boolean
   created_at:
     type: string
     format: date-time
+  updated_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
+  deleted_at:
+    oneOf:
+      - type: string
+        format: date-time
+      - type: 'null'
 required:
   - id
+  - chat_id
   - body
   - sender_id
+  - subject
+  - seen
   - created_at
 title: MessageResource

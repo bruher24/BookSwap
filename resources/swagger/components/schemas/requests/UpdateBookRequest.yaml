@@ -40,6 +40,14 @@ properties:
   page_count:
     type: integer
     minimum: 1
+  condition:
+    type: string
+    enum:
+      - perfect
+      - good
+      - normal
+      - bad
+      - terrible
   cover:
     oneOf:
       - type: string

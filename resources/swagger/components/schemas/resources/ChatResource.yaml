@@ -2,15 +2,8 @@ type: object
 properties:
   id:
     type: integer
-  first_user_id:
-    type: integer
-  second_user_id:
-    type: integer
-  blocked_by:
-    oneOf:
-      - type: string
-        enum: [ 'first', 'second' ]
-      - type: 'null'
+  pair_key:
+    type: string
   created_at:
     oneOf:
       - type: string
@@ -28,9 +21,7 @@ properties:
       - type: 'null'
 required:
   - id
-  - first_user_id
-  - second_user_id
-  - blocked_by
+  - pair_key
   - created_at
   - updated_at
   - deleted_at

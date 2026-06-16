@@ -8,6 +8,11 @@ properties:
     type: integer
   status:
     type: string
+    enum:
+      - pending
+      - accepted
+      - rejected
+      - finished
   created_at:
     oneOf:
       - type: string

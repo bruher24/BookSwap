@@ -1,4 +1,5 @@
 summary: StoreCoverRequest_Example
 value: {
-  src: "binary-data"
+  file: "binary-data",
+  user_id: 1
 }

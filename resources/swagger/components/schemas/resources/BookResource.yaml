@@ -6,6 +6,8 @@ properties:
     type: integer
   name:
     type: string
+  is_available:
+    type: boolean
   publishing_house:
     oneOf:
       - type: string
@@ -20,10 +22,24 @@ properties:
       - type: 'null'
   page_count:
     type: integer
+  condition:
+    type: string
+    enum:
+      - perfect
+      - good
+      - normal
+      - bad
+      - terrible
   book_type_id:
     type: integer
   cover_id:
-    type: integer
+    oneOf:
+      - type: integer
+      - type: 'null'
+  trade_offer_id:
+    oneOf:
+      - type: integer
+      - type: 'null'
   created_at:
     oneOf:
       - type: string
@@ -43,9 +59,12 @@ required:
   - id
   - user_id
   - name
+  - is_available
   - page_count
+  - condition
   - book_type_id
   - cover_id
+  - trade_offer_id
   - created_at
   - updated_at
   - deleted_at

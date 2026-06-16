@@ -43,30 +43,11 @@ paths:
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  /auth/refresh:
-    post:
-      operationId: auth.refresh
-      tags:
-        - Auth
-      requestBody:
-        $ref: "components/requestBodies/RefreshRequest_Body.yaml"
-      responses:
-        "200":
-          $ref: "components/responses/api/Refresh_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-
   /auth/logout:
     post:
       operationId: auth.logout
       tags:
         - Auth
-      requestBody:
-        $ref: "components/requestBodies/RefreshRequest_Body.yaml"
       responses:
         "200":
           $ref: "components/responses/api/Success_Response.yaml"
@@ -76,6 +57,34 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+
+  /auth/verify_email/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: expires
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: signature
+        in: query
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: auth.verifyEmail
+      tags:
+        - Auth
+      security: [ ]
+      responses:
+        "302":
+          description: "Redirects to frontend success or failure page"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
 
   /authors:
     get:
@@ -174,6 +183,68 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
+
+  /books/where:
+    get:
+      operationId: books.where
+      tags:
+        - Book
+      security: [ ]
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: publishing_house[]
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: publication_year[]
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: page_count[]
+          in: query
+          required: false
+          schema:
+            type: array
+            minItems: 2
+            maxItems: 2
+            items:
+              type: string
+        - name: book_type_id[]
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: author_id[]
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: genre_id[]
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          $ref: "components/responses/api/BookCollection_Response.yaml"
         "422":
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
@@ -302,17 +373,6 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
   /chats:
-    get:
-      operationId: chats.index
-      tags:
-        - Chat
-      responses:
-        "200":
-          $ref: "components/responses/api/ChatCollection_Response.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
     post:
       operationId: chats.store
       tags:
@@ -368,25 +428,6 @@ paths:
           $ref: "components/responses/exceptions/Forbidden.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
-      operationId: chats.update
-      tags:
-        - Chat
-      requestBody:
-        $ref: "components/requestBodies/UpdateChatRequest_Body.yaml"
-      responses:
-        "200":
-          $ref: "components/responses/api/Chat_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-        "422":
-          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: chats.destroy
       tags:
@@ -400,6 +441,25 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+
+  /chats/{chat}/block:
+    parameters:
+      - $ref: "components/parameters/chat.yaml"
+    patch:
+      operationId: chats.block
+      tags:
+        - Chat
+      responses:
+        "202":
+          $ref: "components/responses/api/Accepted_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
 
   /chats/{chat}/messages:
     parameters:
@@ -485,25 +545,6 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
-      operationId: covers.update
-      tags:
-        - Cover
-      requestBody:
-        $ref: "components/requestBodies/UpdateCoverRequest_Body.yaml"
-      responses:
-        "200":
-          $ref: "components/responses/api/Cover_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-        "422":
-          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: covers.destroy
       tags:
@@ -648,7 +689,7 @@ paths:
         - TradeOffer
       responses:
         "200":
-          $ref: "components/responses/api/BookCollection_Response.yaml"
+          $ref: "components/responses/api/TradeOfferItems_Response.yaml"
         "400":
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "401":
@@ -689,6 +730,23 @@ paths:
           $ref: "components/responses/api/Success_Response.yaml"
         "202":
           $ref: "components/responses/api/Accepted_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+
+  /trade_offers/{trade_offer}/finish:
+    parameters:
+      - $ref: "components/parameters/trade_offer.yaml"
+    patch:
+      operationId: trade_offers.finish
+      tags:
+        - TradeOffer
+      responses:
+        "200":
+          $ref: "components/responses/api/Success_Response.yaml"
         "400":
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "401":
@@ -896,25 +954,6 @@ paths:
           $ref: "components/responses/exceptions/BadRequest.yaml"
         "404":
           $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    put:
-      operationId: photos.update
-      tags:
-        - Photo
-      requestBody:
-        $ref: "components/requestBodies/UpdatePhotoRequest_Body.yaml"
-      responses:
-        "200":
-          $ref: "components/responses/api/Photo_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-        "422":
-          $ref: "components/responses/exceptions/ValidationException.yaml"
     delete:
       operationId: photos.destroy
       tags:
@@ -1109,6 +1148,29 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+
+  /users/{user}/rate:
+    parameters:
+      - $ref: "components/parameters/user.yaml"
+    put:
+      operationId: users.rate
+      tags:
+        - User
+      requestBody:
+        $ref: "components/requestBodies/RateUserRequest_Body.yaml"
+      responses:
+        "200":
+          $ref: "components/responses/api/Success_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /users/{user}/favorites:
     parameters:

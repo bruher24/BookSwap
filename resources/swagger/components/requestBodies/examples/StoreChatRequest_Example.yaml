@@ -1,6 +1,5 @@
 summary: StoreChatRequest_Example
 value: {
   first_user_id: 1,
-  second_user_id: 2,
-  blocked_by: null
+  second_user_id: 2
 }

@@ -92,7 +92,7 @@ final class UserController extends Controller
 
         $validated = $request->validated();
 
-        if ($userService->rate($user, $request->user(), (int)$validated['rate'])) {
+        if (!$userService->rate($user, $request->user(), (int)$validated['rate'])) {
             $errors = ['Ошибка при оценке пользователя'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

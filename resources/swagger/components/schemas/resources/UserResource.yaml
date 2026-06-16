@@ -6,6 +6,22 @@ properties:
     type: 'string'
   email:
     type: 'string'
+  city:
+    oneOf:
+      - type: 'string'
+      - type: 'null'
+  rating:
+    oneOf:
+      - type: 'number'
+      - type: 'string'
+  mainRole:
+    oneOf:
+      - type: 'integer'
+      - type: 'null'
+  registeredDiff:
+    oneOf:
+      - type: 'string'
+      - type: 'null'
   email_verified_at:
     oneOf:
       - type: 'string'
@@ -46,6 +62,10 @@ required:
   - id
   - name
   - email
+  - city
+  - rating
+  - mainRole
+  - registeredDiff
   - email_verified_at
   - created_at
   - updated_at

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\TradeOfferStatus;
 use App\Models\Book;
 use App\Models\BookType;
 use App\Models\Cover;
@@ -27,6 +28,8 @@ final class TradeOfferApiTest extends TestCase
     private array $tradeOfferAsSenderCreatePayload;
     private array $tradeOfferAsReceiverCreatePayload;
     private array $tradeOfferUpdatePayload;
+    private array $tradeOfferSenderBookIds;
+    private array $tradeOfferReceiverBookIds;
 
     #[Override]
     public function setUp(): void
@@ -48,14 +51,30 @@ final class TradeOfferApiTest extends TestCase
             'receiver_id' => $this->receiver->id,
         ]);
 
+        $bookType = BookType::factory()->createOne();
+        $cover = Cover::factory()->createOne();
+
+        $this->tradeOfferSenderBookIds = Book::factory()->count(3)->create([
+            'user_id' => $this->sender->id,
+            'book_type_id' => $bookType->id,
+            'cover_id' => $cover->id,
+            'trade_offer_id' => $this->tradeOffer->id,
+            'is_available' => false,
+        ])->pluck('id')->all();
+
+        $this->tradeOfferReceiverBookIds = Book::factory()->count(3)->create([
+            'user_id' => $this->receiver->id,
+            'book_type_id' => $bookType->id,
+            'cover_id' => $cover->id,
+            'trade_offer_id' => $this->tradeOffer->id,
+            'is_available' => false,
+        ])->pluck('id')->all();
+
         // As sender creation
         $this->tradeOfferAsSenderCreatePayload = TradeOffer::factory()->raw([
             'sender_id' => $this->anotherSender->id,
             'receiver_id' => $this->receiver->id,
         ]);
-
-        $bookType = BookType::factory()->createOne();
-        $cover = Cover::factory()->createOne();
 
         $senderBooks = Book::factory()->count(3)->create([
             'user_id' => $this->anotherSender->id,
@@ -173,6 +192,27 @@ final class TradeOfferApiTest extends TestCase
 
         $response = $this->postJson('/api/v1/trade_offers', $this->tradeOfferAsSenderCreatePayload);
         $response->assertCreated();
+
+        $tradeOfferId = $response->json('data.tradeOffer.id');
+
+        $response->assertJsonPath('data.tradeOffer.status', TradeOfferStatus::Pending->value);
+        $this->assertDatabaseHas('trade_offers', [
+            'id' => $tradeOfferId,
+            'sender_id' => $this->anotherSender->id,
+            'receiver_id' => $this->receiver->id,
+            'status' => TradeOfferStatus::Pending->value,
+        ]);
+
+        foreach (array_merge(
+            $this->tradeOfferAsSenderCreatePayload['sender_items'],
+            $this->tradeOfferAsSenderCreatePayload['receiver_items']
+        ) as $bookId) {
+            $this->assertDatabaseHas('books', [
+                'id' => $bookId,
+                'trade_offer_id' => $tradeOfferId,
+                'is_available' => false,
+            ]);
+        }
     }
 
     public function test_user_cannot_create_trade_offer_as_receiver(): void
@@ -189,6 +229,25 @@ final class TradeOfferApiTest extends TestCase
 
         $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertOk();
+
+        foreach (array_merge($this->tradeOfferSenderBookIds, $this->tradeOfferReceiverBookIds) as $bookId) {
+            $this->assertDatabaseHas('books', [
+                'id' => $bookId,
+                'trade_offer_id' => null,
+                'is_available' => true,
+            ]);
+        }
+
+        foreach (array_merge(
+            $this->tradeOfferUpdatePayload['sender_items'],
+            $this->tradeOfferUpdatePayload['receiver_items']
+        ) as $bookId) {
+            $this->assertDatabaseHas('books', [
+                'id' => $bookId,
+                'trade_offer_id' => $this->tradeOffer->id,
+                'is_available' => false,
+            ]);
+        }
     }
 
     public function test_user_can_update_trade_offer_as_receiver(): void
@@ -207,12 +266,26 @@ final class TradeOfferApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_user_cannot_update_non_pending_trade_offer(): void
+    {
+        Sanctum::actingAs($this->sender);
+        $this->tradeOffer->update(['status' => TradeOfferStatus::Accepted]);
+
+        $response = $this->putJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response->assertBadRequest();
+    }
+
     public function test_user_can_accept_trade_offer_as_receiver(): void
     {
         Sanctum::actingAs($this->receiver);
 
         $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/accept");
         $response->assertOk();
+
+        $this->assertDatabaseHas('trade_offers', [
+            'id' => $this->tradeOffer->id,
+            'status' => TradeOfferStatus::Accepted->value,
+        ]);
     }
 
     public function test_user_cannot_accept_trade_offer_as_sender(): void
@@ -237,6 +310,18 @@ final class TradeOfferApiTest extends TestCase
 
         $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/reject");
         $response->assertOk();
+
+        $this->assertDatabaseHas('trade_offers', [
+            'id' => $this->tradeOffer->id,
+            'status' => TradeOfferStatus::Rejected->value,
+        ]);
+
+        foreach (array_merge($this->tradeOfferSenderBookIds, $this->tradeOfferReceiverBookIds) as $bookId) {
+            $this->assertDatabaseHas('books', [
+                'id' => $bookId,
+                'is_available' => true,
+            ]);
+        }
     }
 
     public function test_user_can_reject_trade_offer_as_sender(): void
@@ -255,12 +340,66 @@ final class TradeOfferApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_user_can_reject_missing_trade_offer(): void
+    {
+        Sanctum::actingAs($this->sender);
+
+        $response = $this->patchJson('/api/v1/trade_offers/999999/reject');
+        $response->assertAccepted();
+    }
+
+    public function test_user_can_finish_trade_offer_as_sender(): void
+    {
+        Sanctum::actingAs($this->sender);
+
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/finish");
+        $response->assertOk();
+
+        $this->assertDatabaseHas('trade_offers', [
+            'id' => $this->tradeOffer->id,
+            'status' => TradeOfferStatus::Finished->value,
+        ]);
+
+        foreach ($this->tradeOfferSenderBookIds as $bookId) {
+            $this->assertDatabaseHas('books', [
+                'id' => $bookId,
+                'user_id' => $this->receiver->id,
+                'is_available' => true,
+            ]);
+        }
+
+        foreach ($this->tradeOfferReceiverBookIds as $bookId) {
+            $this->assertDatabaseHas('books', [
+                'id' => $bookId,
+                'user_id' => $this->sender->id,
+                'is_available' => true,
+            ]);
+        }
+    }
+
+    public function test_user_cannot_finish_trade_offer_as_receiver(): void
+    {
+        Sanctum::actingAs($this->receiver);
+
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/finish");
+        $response->assertForbidden();
+    }
+
+    public function test_user_cannot_finish_others_trade_offer(): void
+    {
+        Sanctum::actingAs($this->other);
+
+        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/finish");
+        $response->assertForbidden();
+    }
+
     public function test_user_can_get_items_of_trade_offer_as_sender(): void
     {
         Sanctum::actingAs($this->sender);
 
         $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}/items");
         $response->assertOk();
+        $response->assertJsonCount(6, 'data.items');
     }
 
     public function test_user_can_get_items_of_trade_offer_as_receiver(): void
@@ -291,7 +430,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->getJson("/api/v1/trade_offers/by_receiver/{$this->receiver->id}");
+        $response = $this->getJson("/api/v1/trade_offers/by_sender/{$this->sender->id}");
         $response->assertForbidden();
     }
 

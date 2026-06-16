@@ -3,7 +3,9 @@ properties:
   src:
     type: string
     format: binary
-    contentMediaType: application/octet-stream
+  user_id:
+    type: integer
 required:
   - src
+  - user_id
 title: StorePhotoRequest

@@ -1,9 +1,11 @@
 type: object
 properties:
-  src:
+  file:
     type: string
     format: binary
-    contentMediaType: application/octet-stream
+  user_id:
+    type: integer
 required:
-  - src
+  - file
+  - user_id
 title: StoreCoverRequest

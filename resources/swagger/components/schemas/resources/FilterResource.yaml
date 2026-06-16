@@ -6,8 +6,8 @@ properties:
     type: string
   by_fields:
     type: string
-  disabled:
-    type: string
+  is_active:
+    type: boolean
   created_at:
     oneOf:
       - type: string
@@ -27,7 +27,7 @@ required:
   - id
   - name
   - by_fields
-  - disabled
+  - is_active
   - created_at
   - updated_at
   - deleted_at

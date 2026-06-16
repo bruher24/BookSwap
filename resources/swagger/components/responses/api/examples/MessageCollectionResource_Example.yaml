@@ -4,15 +4,30 @@ value:
     messages:
       "2026-03-03":
         - id: 1
+          chat_id: 1
           body: "Hi, is this book available?"
           sender_id: 1
+          subject: null
+          seen: false
           created_at: "2026-03-03 10:00:00"
+          updated_at: "2026-03-03 10:00:00"
+          deleted_at: null
         - id: 2
+          chat_id: 1
           body: "Yes, still available."
           sender_id: 2
+          subject: null
+          seen: false
           created_at: "2026-03-03 10:01:00"
+          updated_at: "2026-03-03 10:01:00"
+          deleted_at: null
       "2026-03-04":
         - id: 3
+          chat_id: 1
           body: "New day message"
           sender_id: 1
+          subject: null
+          seen: false
           created_at: "2026-03-04 09:15:00"
+          updated_at: "2026-03-04 09:15:00"
+          deleted_at: null

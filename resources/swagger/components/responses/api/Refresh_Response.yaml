@@ -1,8 +1,0 @@
-description: "OK"
-content:
-  application/json:
-    schema:
-      $ref: "../../schemas/api/Refresh_Response_Schema.yaml"
-    examples:
-      success:
-        $ref: "examples/RefreshResource_Example.yaml"

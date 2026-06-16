@@ -13,6 +13,11 @@ properties:
       - type: 'null'
   password:
     type: string
+  city:
+    oneOf:
+      - type: string
+        maxLength: 50
+      - type: 'null'
   remember_token:
     oneOf:
       - type: string

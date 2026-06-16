@@ -28,4 +28,9 @@ properties:
     oneOf:
       - type: string
       - type: 'null'
+  city:
+    oneOf:
+      - type: string
+        maxLength: 50
+      - type: 'null'
 title: UpdateUserRequest

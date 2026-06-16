@@ -1,5 +1,5 @@
 summary: UpdateTradeOfferRequest_Example
 value: {
-  trade_offer_items: [ 3, 4 ],
-  status: "accepted"
+  sender_items: [ 5, 6 ],
+  receiver_items: [ 7, 8 ]
 }

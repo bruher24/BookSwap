@@ -2,6 +2,8 @@ type: object
 properties:
   id:
     type: integer
+  user_id:
+    type: integer
   lastname:
     type: string
   firstname:
@@ -31,6 +33,7 @@ properties:
       - type: 'null'
 required:
   - id
+  - user_id
   - lastname
   - firstname
   - patronymic

@@ -8,6 +8,12 @@ properties:
     oneOf:
       - type: string
       - type: 'null'
+  available_values:
+    oneOf:
+      - type: array
+        items:
+          type: string
+      - type: 'null'
 required:
   - name
   - label

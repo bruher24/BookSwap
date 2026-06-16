@@ -121,46 +121,6 @@ final class PhotoApiTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_user_cannot_update_others_photo(): void
-    {
-        Sanctum::actingAs($this->other);
-
-        $response = $this->putJson('/api/v1/photos/' . $this->photo->id, [
-            'src' => $this->photoFile,
-        ]);
-        $response->assertForbidden();
-    }
-
-    public function test_user_can_update_owned_photo(): void
-    {
-        Sanctum::actingAs($this->owner);
-
-        $response = $this->putJson('/api/v1/photos/' . $this->photo->id, [
-            'src' => $this->photoFile,
-        ]);
-        $response->assertOk();
-    }
-
-    public function test_not_found_update_photo(): void
-    {
-        Sanctum::actingAs($this->owner);
-
-        $response = $this->putJson('/api/v1/photos/9999', [
-            'src' => $this->photoFile,
-        ]);
-        $response->assertNotFound();
-    }
-
-    public function test_validation_error_update_photo(): void
-    {
-        Sanctum::actingAs($this->owner);
-
-        $response = $this->putJson('/api/v1/photos/' . $this->photo->id, [
-            'src' => 'file.png',
-        ]);
-        $response->assertStatus(422);
-    }
-
     public function test_user_cannot_delete_others_photo(): void
     {
         Sanctum::actingAs($this->other);

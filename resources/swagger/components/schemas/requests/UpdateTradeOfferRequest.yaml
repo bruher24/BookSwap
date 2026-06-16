@@ -1,12 +1,16 @@
 type: object
 properties:
-  trade_offer_items:
+  sender_items:
     type: array
+    minItems: 1
     items:
       type: integer
-  status:
-    type: string
+  receiver_items:
+    type: array
+    minItems: 1
+    items:
+      type: integer
 required:
-  - trade_offer_items
-  - status
+  - sender_items
+  - receiver_items
 title: UpdateTradeOfferRequest

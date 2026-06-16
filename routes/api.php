@@ -73,7 +73,6 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{cover}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{cover}', 'update')->name('update');
                 Route::delete('{cover}', 'destroy')->name('destroy');
             });
 
@@ -100,7 +99,6 @@ Route::prefix('v1')->name('api.')
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('{photo}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::put('{photo}', 'update')->name('update');
                 Route::delete('{photo}', 'destroy')->name('destroy');
             });
 

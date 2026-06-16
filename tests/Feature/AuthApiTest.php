@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
 use Override;
@@ -96,5 +97,26 @@ final class AuthApiTest extends TestCase
 
         $response = $this->spaPostJson('/api/v1/auth/logout');
         $response->assertStatus(200);
+    }
+
+    public function test_user_can_verify_email_with_signed_url(): void
+    {
+        $url = URL::temporarySignedRoute(
+            'api.auth.verifyEmail',
+            now()->addMinute(),
+            ['userId' => $this->user->id]
+        );
+
+        $response = $this->get($url);
+
+        $response->assertRedirect('http://localhost:5173/success');
+        $this->assertTrue($this->user->refresh()->hasVerifiedEmail());
+    }
+
+    public function test_verify_email_requires_valid_signature(): void
+    {
+        $response = $this->get("/api/v1/auth/verify_email/{$this->user->id}");
+
+        $response->assertBadRequest();
     }
 }

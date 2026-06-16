@@ -104,4 +104,43 @@ final class UserApiTest extends TestCase
         $response = $this->deleteJson("/api/v1/users/{$this->target->id}");
         $response->assertForbidden();
     }
+
+    public function test_user_can_rate_another_user(): void
+    {
+        Sanctum::actingAs($this->user);
+
+        $response = $this->putJson("/api/v1/users/{$this->target->id}/rate", [
+            'rate' => 5,
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('ratings', [
+            'user_id' => $this->target->id,
+            'rater_id' => $this->user->id,
+            'rate' => 5,
+        ]);
+        $this->assertEquals(5.0, (float)$this->target->refresh()->rating);
+    }
+
+    public function test_user_cannot_rate_itself(): void
+    {
+        Sanctum::actingAs($this->user);
+
+        $response = $this->putJson("/api/v1/users/{$this->user->id}/rate", [
+            'rate' => 5,
+        ]);
+
+        $response->assertForbidden();
+    }
+
+    public function test_rate_requires_valid_value(): void
+    {
+        Sanctum::actingAs($this->user);
+
+        $response = $this->putJson("/api/v1/users/{$this->target->id}/rate", [
+            'rate' => 6,
+        ]);
+
+        $response->assertStatus(422);
+    }
 }

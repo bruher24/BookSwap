@@ -4,12 +4,17 @@ properties:
     type: integer
   receiver_id:
     type: integer
-  trade_offer_items:
+  sender_items:
+    type: array
+    items:
+      type: integer
+  receiver_items:
     type: array
     items:
       type: integer
 required:
   - sender_id
   - receiver_id
-  - trade_offer_items
+  - sender_items
+  - receiver_items
 title: StoreTradeOfferRequest
