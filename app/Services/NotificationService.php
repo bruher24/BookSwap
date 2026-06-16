@@ -59,7 +59,9 @@ final class NotificationService implements NotificationServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Notification::where($field, $value)->get();
+            return Notification::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
@@ -94,9 +96,27 @@ final class NotificationService implements NotificationServiceInterface
         }
     }
 
+    public function read(Notification $notification): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            if (!$notification->updateOrFail(['seen' => true])) {
+                throw new Exception('Ошибка при прочтении уведомления');
+            }
+
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage(), ['exception' => $e]);
+            return false;
+        }
+    }
+
     public function byUser(User $user): Collection
     {
-        return $this->where('user_id', $user->id);
+        return $this->where('user_id', (string)$user->id);
     }
 
     public function readAll(User $user): bool

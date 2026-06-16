@@ -58,7 +58,9 @@ final class SettingService implements SettingServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Setting::where($field, $value)->get();
+            return Setting::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();

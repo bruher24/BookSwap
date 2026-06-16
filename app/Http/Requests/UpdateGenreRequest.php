@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Genre;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -23,8 +24,9 @@ final class UpdateGenreRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
+        $genre = $this->route('genre');
         $this->merge([
-            'genre_id' => $this->route('genre')->id,
+            'genre_id' => $genre instanceof Genre ? $genre->id : $genre,
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\BookType;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -23,8 +24,9 @@ final class UpdateBookTypeRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
+        $bookType = $this->route('book_type');
         $this->merge([
-            'book_type_id' => $this->route('book_type')->id,
+            'book_type_id' => $bookType instanceof BookType ? $bookType->id : $bookType,
         ]);
     }
 

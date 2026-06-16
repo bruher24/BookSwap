@@ -16,6 +16,9 @@ use Throwable;
 
 final class ChatService implements ChatServiceInterface
 {
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function __construct(private readonly UserServiceInterface $userService)
     {
     }
@@ -68,7 +71,9 @@ final class ChatService implements ChatServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Chat::where($field, $value)->withoutTrashed()->get();
+            return Chat::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();

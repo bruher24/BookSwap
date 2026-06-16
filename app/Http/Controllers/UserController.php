@@ -8,7 +8,9 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserResource;
+use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
+use App\Models\TradeOffer;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
@@ -91,12 +93,28 @@ final class UserController extends Controller
         Gate::authorize('rate', $user);
 
         $validated = $request->validated();
+        $requestUser = $request->user() ?? null;
 
-        if (!$userService->rate($user, $request->user(), (int)$validated['rate'])) {
+        if (!isset($requestUser) || !$userService->rate($user, $requestUser, (int)$validated['rate'])) {
             $errors = ['Ошибка при оценке пользователя'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function history(TradeOfferServiceInterface $tradeOfferService): JsonResponse
+    {
+        Gate::authorize('history', TradeOffer::class);
+
+        $user = request()->user() ?? null;
+
+        if (!isset($user)) {
+            $errors = ['Пользователь не авторизован'];
+            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+
+        $history = $tradeOfferService->getTradeHistory($user);
+        return (new SuccessResource($history->toArray()))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

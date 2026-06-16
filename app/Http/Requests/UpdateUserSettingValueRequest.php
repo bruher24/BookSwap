@@ -22,8 +22,7 @@ final class UpdateUserSettingValueRequest extends FormRequest
     #[Override]
     public function prepareForValidation(): void
     {
-        $setting = $this->route('setting');
-        $this->values = $setting?->available_values ?? [];
+        $this->values = $this->route('setting')->available_values ?? [];
     }
 
     /**

@@ -152,6 +152,7 @@ final class BookService implements BookServiceInterface
                 Log::debug("Stored in cache: " . $cacheKey);
 
                 $query = Book::query()
+                    ->withoutTrashed()
                     ->where('is_available', '1')
                     ->when(!empty($filters['name']), function (Builder $q) use ($filters) {
                         $q->where('name', 'like', '%' . $filters['name'] . '%');

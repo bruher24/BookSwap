@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePhotoRequest;
-use App\Http\Requests\UpdatePhotoRequest;
 use App\Http\Resources\FailureResource;
 use App\Http\Resources\PhotoResource;
 use App\Http\Resources\SuccessResource;
@@ -44,23 +43,6 @@ final class PhotoController extends Controller
 
     public function show(Photo $photo): JsonResponse
     {
-        $data = ['photo' => new PhotoResource($photo)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function update(PhotoServiceInterface $photoService, UpdatePhotoRequest $request, Photo $photo): JsonResponse
-    {
-        Gate::authorize('update', $photo);
-
-        $validated = $request->validated();
-        $photo = $photoService->update($photo, $validated);
-
-        if (!$photo) {
-            $errors = ['Ошибка при обновлении фото'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
-        }
-
         $data = ['photo' => new PhotoResource($photo)];
 
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);

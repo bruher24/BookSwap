@@ -55,7 +55,7 @@ final class AuthorApiTest extends TestCase
 
     public function test_not_found_get_author(): void
     {
-        $newId = (int)$this->author->id + 1;
+        $newId = $this->author->id + 1;
         $response = $this->getJson("/api/v1/authors/$newId");
         $response->assertNotFound();
     }
@@ -111,7 +111,7 @@ final class AuthorApiTest extends TestCase
         Sanctum::actingAs($this->owner);
 
         $this->authorUpdatePayload['user_id'] = $this->owner->id;
-        $newId = (int)$this->author->id + 1;
+        $newId = $this->author->id + 1;
         $response = $this->patchJson("/api/v1/authors/$newId", $this->authorUpdatePayload);
         $response->assertNotFound();
     }
@@ -133,7 +133,7 @@ final class AuthorApiTest extends TestCase
     public function test_not_found_delete_author(): void
     {
         Sanctum::actingAs($this->owner);
-        $newId = (int)$this->author->id + 1;
+        $newId = $this->author->id + 1;
         $response = $this->deleteJson("/api/v1/authors/$newId");
         $response->assertAccepted();
     }

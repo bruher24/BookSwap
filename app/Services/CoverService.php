@@ -68,7 +68,9 @@ final class CoverService implements CoverServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Cover::where($field, $value)->get();
+            return Cover::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
@@ -84,7 +86,7 @@ final class CoverService implements CoverServiceInterface
 
             $cover->delete();
 
-            if ($cover->id !== Cover::BASE_COVER_ID) {
+            if (isset($oldPath) && $cover->id !== Cover::BASE_COVER_ID) {
                 DeleteFileJob::dispatch($oldPath)->afterCommit();
             }
 

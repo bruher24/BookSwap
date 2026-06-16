@@ -74,7 +74,9 @@ final class BookTypeService implements BookTypeServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return BookType::where($field, $value)->get();
+            return BookType::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();

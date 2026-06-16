@@ -56,7 +56,7 @@ final class BookTypeApiTest extends TestCase
 
     public function test_not_found_get_book_type(): void
     {
-        $newId = (int)$this->bookType->id + 1;
+        $newId = $this->bookType->id + 1;
         $response = $this->getJson("/api/v1/book_types/$newId");
         $response->assertNotFound();
     }
@@ -112,7 +112,7 @@ final class BookTypeApiTest extends TestCase
     public function test_not_found_update_book_type(): void
     {
         Sanctum::actingAs($this->admin, ['admin']);
-        $newId = (int)$this->bookType->id + 1;
+        $newId = $this->bookType->id + 1;
         $response = $this->patchJson("/api/v1/book_types/$newId", $this->bookTypeUpdatePayload);
         $response->assertNotFound();
     }
@@ -134,7 +134,7 @@ final class BookTypeApiTest extends TestCase
     public function test_not_found_delete_book_type(): void
     {
         Sanctum::actingAs($this->admin, ['admin']);
-        $newId = (int)$this->bookType->id + 1;
+        $newId = $this->bookType->id + 1;
         $response = $this->deleteJson("/api/v1/book_types/$newId");
         $response->assertAccepted();
     }

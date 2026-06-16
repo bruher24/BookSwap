@@ -58,7 +58,9 @@ final class MessageService implements MessageServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Message::where($field, $value)->get();
+            return Message::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();

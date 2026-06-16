@@ -15,7 +15,7 @@ final class SearchController extends Controller
     public function __invoke(SearchRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $query = (string)$validated['query'];
+        $query = $validated['query'];
 
         $foundBooks = Book::search($query)->get();
         $foundAuthors = Author::search($query)->get();

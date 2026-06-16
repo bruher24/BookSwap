@@ -74,7 +74,9 @@ final class GenreService implements GenreServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Genre::where($field, $value)->get();
+            return Genre::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();

@@ -61,7 +61,7 @@ final class SettingApiTest extends TestCase
     public function test_not_found_get_setting(): void
     {
         Sanctum::actingAs($this->user);
-        $newId = (int)$this->setting->id + 1;
+        $newId = $this->setting->id + 1;
         $response = $this->getJson("/api/v1/settings/$newId");
         $response->assertNotFound();
     }
@@ -117,7 +117,7 @@ final class SettingApiTest extends TestCase
     public function test_not_found_update_setting(): void
     {
         Sanctum::actingAs($this->admin);
-        $newId = (int)$this->setting->id + 1;
+        $newId = $this->setting->id + 1;
         $response = $this->patchJson("/api/v1/settings/$newId", $this->settingUpdatePayload);
         $response->assertNotFound();
     }
@@ -139,7 +139,7 @@ final class SettingApiTest extends TestCase
     public function test_not_found_delete_setting(): void
     {
         Sanctum::actingAs($this->admin);
-        $newId = (int)$this->setting->id + 1;
+        $newId = $this->setting->id + 1;
         $response = $this->deleteJson("/api/v1/settings/$newId");
         $response->assertAccepted();
     }

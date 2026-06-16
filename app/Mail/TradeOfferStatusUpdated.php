@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class TradeOfferStatusUpdated extends Mailable
+final class TradeOfferStatusUpdated extends Mailable
 {
     use Queueable;
     use SerializesModels;

@@ -24,8 +24,9 @@ final class UpdateAuthorRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
+        $author = $this->route('author');
         $this->merge([
-            'author_id' => $this->route('author')->id,
+            'author_id' => $author instanceof Author ? $author->id : $author,
         ]);
     }
 

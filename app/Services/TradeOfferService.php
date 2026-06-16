@@ -105,7 +105,9 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return TradeOffer::where($field, $value)->get();
+            return TradeOffer::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
@@ -152,12 +154,12 @@ final class TradeOfferService implements TradeOfferServiceInterface
 
     public function bySender(User $sender): Collection
     {
-        return $this->where('sender_id', $sender->id);
+        return $this->where('sender_id', (string)$sender->id);
     }
 
     public function byReceiver(User $receiver): Collection
     {
-        return $this->where('receiver_id', $receiver->id);
+        return $this->where('receiver_id', (string)$receiver->id);
     }
 
     public function accept(TradeOffer $tradeOffer): bool
@@ -207,7 +209,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
-    public function tradeHistory(User $user): \Illuminate\Support\Collection
+    public function getTradeHistory(User $user): \Illuminate\Support\Collection
     {
         $history = TradeOffer::query()
             ->where('sender_id', $user->id)

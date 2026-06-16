@@ -20,6 +20,8 @@ interface NotificationServiceInterface
 
     public function delete(Notification $notification): bool;
 
+    public function read(Notification $notification): bool;
+
     public function byUser(User $user): Collection;
 
     public function readAll(User $user): bool;

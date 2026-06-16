@@ -58,7 +58,7 @@ final class FilterApiTest extends TestCase
 
     public function test_not_found_get_filter(): void
     {
-        $newId = (int)$this->filter->id + 1;
+        $newId = $this->filter->id + 1;
         $response = $this->getJson("/api/v1/filters/$newId");
         $response->assertNotFound();
     }
@@ -114,7 +114,7 @@ final class FilterApiTest extends TestCase
     public function test_not_found_update_filter(): void
     {
         Sanctum::actingAs($this->admin);
-        $newId = (int)$this->filter->id + 1;
+        $newId = $this->filter->id + 1;
         $response = $this->patchJson("/api/v1/filters/$newId", $this->filterUpdatePayload);
         $response->assertNotFound();
     }
@@ -136,7 +136,7 @@ final class FilterApiTest extends TestCase
     public function test_not_found_delete_filter(): void
     {
         Sanctum::actingAs($this->admin);
-        $newId = (int)$this->filter->id + 1;
+        $newId = $this->filter->id + 1;
         $response = $this->deleteJson("/api/v1/filters/$newId");
         $response->assertAccepted();
     }

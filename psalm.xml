@@ -26,6 +26,7 @@
                 <directory name="app/Http/Requests"/>
                 <directory name="app/Listeners"/>
                 <directory name="app/Models"/>
+                <directory name="app/Observers"/>
                 <directory name="database/factories"/>
                 <directory name="database/migrations"/>
                 <directory name="database/seeders"/>

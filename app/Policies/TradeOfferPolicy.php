@@ -118,4 +118,11 @@ final class TradeOfferPolicy
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
+
+    public function history(): Response
+    {
+        return Auth::check()
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
+    }
 }

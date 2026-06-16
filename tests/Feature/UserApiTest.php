@@ -119,7 +119,7 @@ final class UserApiTest extends TestCase
             'rater_id' => $this->user->id,
             'rate' => 5,
         ]);
-        $this->assertEquals(5.0, (float)$this->target->refresh()->rating);
+        $this->assertEquals(5.0, $this->target->refresh()->rating);
     }
 
     public function test_user_cannot_rate_itself(): void

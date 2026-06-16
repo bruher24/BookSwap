@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\BookCondition;
 use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -25,8 +26,9 @@ final class UpdateBookRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
+        $book = $this->route('book');
         $this->merge([
-            'book_id' => $this->route('book')->id,
+            'book_id' => $book instanceof Book ? $book->id : $book,
         ]);
     }
 

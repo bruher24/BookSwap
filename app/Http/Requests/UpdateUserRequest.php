@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -23,8 +24,9 @@ final class UpdateUserRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
+        $user = $this->route('user');
         $this->merge([
-            'user_id' => $this->route('user')->id,
+            'user_id' => $user instanceof User ? $user->id : $user,
         ]);
     }
 

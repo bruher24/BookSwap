@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Filter;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -23,8 +24,9 @@ final class UpdateFilterRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
+        $filter = $this->route('filter');
         $this->merge([
-            'filter_id' => $this->route('filter')->id,
+            'filter_id' => $filter instanceof Filter ? $filter->id : $filter,
         ]);
     }
 

@@ -50,7 +50,7 @@
                 </style>
 </head>
 <body>
-<section><h1>Total violations: 336</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
+<section><h1>Total violations: 261</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
 <ul id="psalmErrors">
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Enums/BookCondition.php:13</h3>
@@ -62,275 +62,25 @@
 <pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/label/**##)##**/(): string</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyAssignmentValue">
-<h3>app/Events/TradeOfferCreated.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyAssignmentValue</li>
-</ul>
-<p>$this-&gt;receiver with non-nullable declared type 'App\Models\User' cannot be assigned nullable type 'App\Models\User|null'</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">        $this-&gt;receiver = /**##(##**/User::find($this-&gt;tradeOffer-&gt;receiver_id)/**##)##**/;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/148">Psalm #148</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyAssignmentValue">
-<h3>app/Events/TradeOfferUpdated.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyAssignmentValue</li>
-</ul>
-<p>$this-&gt;receiver with non-nullable declared type 'App\Models\User' cannot be assigned nullable type 'App\Models\User|null'</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">        $this-&gt;receiver = /**##(##**/User::find($this-&gt;tradeOffer-&gt;receiver_id)/**##)##**/;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/148">Psalm #148</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyInvalidArgument">
-<h3>app/Http/Controllers/AuthController.php:55</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyInvalidArgument</li>
-</ul>
-<p>Argument 2 of Illuminate\Support\Facades\Auth::attempt expects bool, but possibly different type '0'|'1'|0|1|bool provided</p>
-<pre data-start="55" class="line-numbersx"><code class="language-php">        if (!Auth::attempt($validated, /**##(##**/$remember/**##)##**/)) {</code></pre>
-<small><a target="_blank" href="https://psalm.dev/092">Psalm #92</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidScalarArgument">
-<h3>app/Http/Controllers/ChatController.php:93</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidScalarArgument</li>
-</ul>
-<p>Argument 1 of App\Interfaces\UserServiceInterface::get expects string, but int|numeric-string provided</p>
-<pre data-start="93" class="line-numbersx"><code class="language-php">        $sender = $userService-&gt;get(/**##(##**/$validated['sender_id']/**##)##**/);</code></pre>
-<small><a target="_blank" href="https://psalm.dev/012">Psalm #12</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
-<h3>app/Http/Controllers/ChatController.php:116</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullArgument</li>
-</ul>
-<p>Argument 2 of App\Interfaces\ChatServiceInterface::block cannot be null, possibly null value provided</p>
-<pre data-start="116" class="line-numbersx"><code class="language-php">        if (!$chatService-&gt;block($chat, /**##(##**/$request-&gt;user()/**##)##**/)) {</code></pre>
-<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>app/Http/Controllers/SearchController.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to string</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">        $query = /**##(##**/(string)$validated['query']/**##)##**/;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
-<h3>app/Http/Controllers/UserController.php:95</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullArgument</li>
-</ul>
-<p>Argument 2 of App\Interfaces\UserServiceInterface::rate cannot be null, possibly null value provided</p>
-<pre data-start="95" class="line-numbersx"><code class="language-php">        if (!$userService-&gt;rate($user, /**##(##**/$request-&gt;user()/**##)##**/, (int)$validated['rate'])) {</code></pre>
-<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Http/Requests/RateUserRequest.php:8</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Http\Requests\RateUserRequest is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/RateUserRequest/**##)##**/ extends FormRequest</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Http/Requests/SendMessageRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
-</ul>
-<p>Cannot get property on possibly null variable of type null|string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'chat_id' =&gt; /**##(##**/$this-&gt;route('chat')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
-</li>
   <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/SendMessageRequest.php:27</h3>
+<h3>app/Http/Requests/UpdateUserSettingValueRequest.php:25</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>InvalidPropertyFetch</li>
 </ul>
 <p>Cannot fetch property on non-object  of type string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'chat_id' =&gt; /**##(##**/$this-&gt;route('chat')-&gt;id/**##)##**/,</code></pre>
+<pre data-start="25" class="line-numbersx"><code class="language-php">        $this-&gt;values = /**##(##**/$this-&gt;route('setting')-&gt;available_values/**##)##**/ ?? [];</code></pre>
 <small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Http/Requests/UpdateAuthorRequest.php:28</h3>
+  <li data-severity="error" data-psalm-type="TypeDoesNotContainType">
+<h3>app/Http/Requests/UpdateUserSettingValueRequest.php:25</h3>
 <ul class="tags">
 <li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
+<li>TypeDoesNotContainType</li>
 </ul>
-<p>Cannot get property on possibly null variable of type null|string</p>
-<pre data-start="28" class="line-numbersx"><code class="language-php">            'author_id' =&gt; /**##(##**/$this-&gt;route('author')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/UpdateAuthorRequest.php:28</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object  of type string</p>
-<pre data-start="28" class="line-numbersx"><code class="language-php">            'author_id' =&gt; /**##(##**/$this-&gt;route('author')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Http/Requests/UpdateBookRequest.php:29</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
-</ul>
-<p>Cannot get property on possibly null variable of type null|string</p>
-<pre data-start="29" class="line-numbersx"><code class="language-php">            'book_id' =&gt; /**##(##**/$this-&gt;route('book')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/UpdateBookRequest.php:29</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object  of type string</p>
-<pre data-start="29" class="line-numbersx"><code class="language-php">            'book_id' =&gt; /**##(##**/$this-&gt;route('book')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Http/Requests/UpdateBookTypeRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
-</ul>
-<p>Cannot get property on possibly null variable of type null|string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'book_type_id' =&gt; /**##(##**/$this-&gt;route('book_type')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/UpdateBookTypeRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object  of type string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'book_type_id' =&gt; /**##(##**/$this-&gt;route('book_type')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Http/Requests/UpdateFilterRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
-</ul>
-<p>Cannot get property on possibly null variable of type null|string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'filter_id' =&gt; /**##(##**/$this-&gt;route('filter')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/UpdateFilterRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object  of type string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'filter_id' =&gt; /**##(##**/$this-&gt;route('filter')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Http/Requests/UpdateGenreRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
-</ul>
-<p>Cannot get property on possibly null variable of type null|string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'genre_id' =&gt; /**##(##**/$this-&gt;route('genre')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/UpdateGenreRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object  of type string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'genre_id' =&gt; /**##(##**/$this-&gt;route('genre')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Http/Requests/UpdateSettingRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
-</ul>
-<p>Cannot get property on possibly null variable of type null|string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'setting_id' =&gt; /**##(##**/$this-&gt;route('setting')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/UpdateSettingRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object  of type string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'setting_id' =&gt; /**##(##**/$this-&gt;route('setting')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Http/Requests/UpdateTradeOfferStatusRequest.php:10</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Http\Requests\UpdateTradeOfferStatusRequest is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">class /**##(##**/UpdateTradeOfferStatusRequest/**##)##**/ extends FormRequest</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Http/Requests/UpdateUserRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
-</ul>
-<p>Cannot get property on possibly null variable of type null|string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'user_id' =&gt; /**##(##**/$this-&gt;route('user')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/UpdateUserRequest.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object  of type string</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">            'user_id' =&gt; /**##(##**/$this-&gt;route('user')-&gt;id/**##)##**/,</code></pre>
-<small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidPropertyFetch">
-<h3>app/Http/Requests/UpdateUserSettingValueRequest.php:26</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidPropertyFetch</li>
-</ul>
-<p>Cannot fetch property on non-object $setting of type string</p>
-<pre data-start="26" class="line-numbersx"><code class="language-php">        $this-&gt;values = /**##(##**/$setting?-&gt;available_values/**##)##**/ ?? [];</code></pre>
-<small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Http/Requests/WhereBookRequest.php:8</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Http\Requests\WhereBookRequest is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/WhereBookRequest/**##)##**/ extends FormRequest</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
+<p>Type null for $&lt;tmp coalesce var&gt;520 is never isset</p>
+<pre data-start="25" class="line-numbersx"><code class="language-php">        $this-&gt;values = /**##(##**/$this-&gt;route('setting')-&gt;available_values/**##)##**/ ?? [];</code></pre>
+<small><a target="_blank" href="https://psalm.dev/056">Psalm #56</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PropertyNotSetInConstructor">
 <h3>app/Http/Resources/MessageCollectionResource.php:8</h3>
@@ -339,18 +89,8 @@
 <li>PropertyNotSetInConstructor</li>
 </ul>
 <p>Property App\Http\Resources\MessageCollectionResource::$collects is not defined in constructor of App\Http\Resources\MessageCollectionResource or in any methods called in the constructor</p>
-<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/MessageCollectionResource/**##)##**/ extends ResourceCollection</code></pre>
+<pre data-start="8" class="line-numbersx"><code class="language-php">final class /**##(##**/MessageCollectionResource/**##)##**/ extends ResourceCollection</code></pre>
 <small><a target="_blank" href="https://psalm.dev/074">Psalm #74</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Http/Resources/MessageCollectionResource.php:8</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Http\Resources\MessageCollectionResource is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/MessageCollectionResource/**##)##**/ extends ResourceCollection</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>app/Http/Resources/MessageCollectionResource.php:15</h3>
@@ -548,13 +288,23 @@
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/NotificationServiceInterface.php:25</h3>
+<h3>app/Interfaces/NotificationServiceInterface.php:23</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedMethod</li>
+</ul>
+<p>Cannot find any calls to method App\Interfaces\NotificationServiceInterface::read</p>
+<pre data-start="23" class="line-numbersx"><code class="language-php">    public function /**##(##**/read/**##)##**/(Notification $notification): bool;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
+<h3>app/Interfaces/NotificationServiceInterface.php:27</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find any calls to method App\Interfaces\NotificationServiceInterface::readAll</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/readAll/**##)##**/(User $user): bool;</code></pre>
+<pre data-start="27" class="line-numbersx"><code class="language-php">    public function /**##(##**/readAll/**##)##**/(User $user): bool;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
@@ -578,13 +328,13 @@
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/TradeOfferServiceInterface.php:35</h3>
+<h3>app/Interfaces/TradeOfferServiceInterface.php:13</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find any calls to method App\Interfaces\TradeOfferServiceInterface::tradeHistory</p>
-<pre data-start="35" class="line-numbersx"><code class="language-php">    public function /**##(##**/tradeHistory/**##)##**/(User $user): \Illuminate\Support\Collection;</code></pre>
+<p>Cannot find explicit calls to method App\Interfaces\TradeOfferServiceInterface::get (but did find some potential callers)</p>
+<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/get/**##)##**/(string $id): TradeOffer|false;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
@@ -596,26 +346,6 @@
 <p>Cannot find explicit calls to method App\Interfaces\UserServiceInterface::where (but did find some potential callers)</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Jobs/DeleteFileJob.php:9</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Jobs\DeleteFileJob is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/DeleteFileJob/**##)##**/ implements ShouldQueue</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Mail/TradeOfferReceived.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Mail\TradeOfferReceived is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">class /**##(##**/TradeOfferReceived/**##)##**/ extends Mailable</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
 <h3>app/Mail/TradeOfferReceived.php:23</h3>
@@ -636,16 +366,6 @@
 <p>Cannot find any references to property App\Mail\TradeOfferReceived::$receiver</p>
 <pre data-start="24" class="line-numbersx"><code class="language-php">        public User /**##(##**/$receiver/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Mail/TradeOfferStatusUpdated.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Mail\TradeOfferStatusUpdated is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">class /**##(##**/TradeOfferStatusUpdated/**##)##**/ extends Mailable</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
 <h3>app/Mail/TradeOfferStatusUpdated.php:23</h3>
@@ -726,216 +446,6 @@
 <p>Cannot fetch property on non-object $this-&gt;created_at of type string</p>
 <pre data-start="55" class="line-numbersx"><code class="language-php">            'created_at' =&gt; /**##(##**/$this-&gt;created_at-&gt;timestamp/**##)##**/,</code></pre>
 <small><a target="_blank" href="https://psalm.dev/029">Psalm #29</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Models/Rating.php:8</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Models\Rating is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/Rating/**##)##**/ extends Model</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/AuthorObserver.php:17</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\AuthorObserver::created</p>
-<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/created/**##)##**/(Author $author): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/AuthorObserver.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\AuthorObserver::updated</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/updated/**##)##**/(Author $author): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/AuthorObserver.php:33</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\AuthorObserver::deleted</p>
-<pre data-start="33" class="line-numbersx"><code class="language-php">    public function /**##(##**/deleted/**##)##**/(Author $author): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/AuthorObserver.php:41</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\AuthorObserver::restored</p>
-<pre data-start="41" class="line-numbersx"><code class="language-php">    public function /**##(##**/restored/**##)##**/(Author $author): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/AuthorObserver.php:49</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\AuthorObserver::forceDeleted</p>
-<pre data-start="49" class="line-numbersx"><code class="language-php">    public function /**##(##**/forceDeleted/**##)##**/(Author $author): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/BookObserver.php:17</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\BookObserver::created</p>
-<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/created/**##)##**/(Book $book): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/BookObserver.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\BookObserver::updated</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/updated/**##)##**/(Book $book): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/BookObserver.php:33</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\BookObserver::deleted</p>
-<pre data-start="33" class="line-numbersx"><code class="language-php">    public function /**##(##**/deleted/**##)##**/(Book $book): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/BookObserver.php:41</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\BookObserver::restored</p>
-<pre data-start="41" class="line-numbersx"><code class="language-php">    public function /**##(##**/restored/**##)##**/(Book $book): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/BookObserver.php:49</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\BookObserver::forceDeleted</p>
-<pre data-start="49" class="line-numbersx"><code class="language-php">    public function /**##(##**/forceDeleted/**##)##**/(Book $book): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/TradeOfferObserver.php:17</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\TradeOfferObserver::created</p>
-<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/created/**##)##**/(TradeOffer $tradeOffer): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/TradeOfferObserver.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\TradeOfferObserver::updated</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/updated/**##)##**/(TradeOffer $tradeOffer): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/TradeOfferObserver.php:35</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\TradeOfferObserver::deleted</p>
-<pre data-start="35" class="line-numbersx"><code class="language-php">    public function /**##(##**/deleted/**##)##**/(TradeOffer $tradeOffer): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/TradeOfferObserver.php:43</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\TradeOfferObserver::restored</p>
-<pre data-start="43" class="line-numbersx"><code class="language-php">    public function /**##(##**/restored/**##)##**/(TradeOffer $tradeOffer): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/TradeOfferObserver.php:51</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\TradeOfferObserver::forceDeleted</p>
-<pre data-start="51" class="line-numbersx"><code class="language-php">    public function /**##(##**/forceDeleted/**##)##**/(TradeOffer $tradeOffer): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/UserObserver.php:17</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\UserObserver::created</p>
-<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/created/**##)##**/(User $user): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/UserObserver.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\UserObserver::updated</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/updated/**##)##**/(User $user): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/UserObserver.php:33</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\UserObserver::deleted</p>
-<pre data-start="33" class="line-numbersx"><code class="language-php">    public function /**##(##**/deleted/**##)##**/(User $user): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/UserObserver.php:41</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\UserObserver::restored</p>
-<pre data-start="41" class="line-numbersx"><code class="language-php">    public function /**##(##**/restored/**##)##**/(User $user): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Observers/UserObserver.php:49</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Observers\UserObserver::forceDeleted</p>
-<pre data-start="49" class="line-numbersx"><code class="language-php">    public function /**##(##**/forceDeleted/**##)##**/(User $user): void</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="UnusedParam">
 <h3>app/Policies/AuthorPolicy.php:12</h3>
@@ -1917,16 +1427,6 @@
 <pre data-start="77" class="line-numbersx"><code class="language-php">    public function forceDelete(User $user, User /**##(##**/$target/**##)##**/): Response</code></pre>
 <small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
-<h3>app/Providers/HorizonServiceProvider.php:8</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>ClassMustBeFinal</li>
-</ul>
-<p>Class App\Providers\HorizonServiceProvider is never extended and is not part of the public API, and thus must be made final.</p>
-<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/HorizonServiceProvider/**##)##**/ extends HorizonApplicationServiceProvider</code></pre>
-<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
-</li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>app/Providers/HorizonServiceProvider.php:13</h3>
 <ul class="tags">
@@ -2016,23 +1516,23 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/AuthorService.php:86</h3>
+<h3>app/Services/AuthorService.php:88</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\AuthorService::update should have the "Override" attribute</p>
-<pre data-start="86" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Author $author, array $data): Author|false/**##)##**/</code></pre>
+<pre data-start="88" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Author $author, array $data): Author|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/AuthorService.php:100</h3>
+<h3>app/Services/AuthorService.php:102</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\AuthorService::delete should have the "Override" attribute</p>
-<pre data-start="100" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Author $author): bool/**##)##**/</code></pre>
+<pre data-start="102" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Author $author): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -2086,23 +1586,23 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookService.php:193</h3>
+<h3>app/Services/BookService.php:194</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\BookService::update should have the "Override" attribute</p>
-<pre data-start="193" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Book $book, array $data): Book|false/**##)##**/</code></pre>
+<pre data-start="194" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Book $book, array $data): Book|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookService.php:229</h3>
+<h3>app/Services/BookService.php:230</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\BookService::delete should have the "Override" attribute</p>
-<pre data-start="229" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Book $book): bool/**##)##**/</code></pre>
+<pre data-start="230" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Book $book): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -2146,113 +1646,103 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookTypeService.php:84</h3>
+<h3>app/Services/BookTypeService.php:86</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\BookTypeService::update should have the "Override" attribute</p>
-<pre data-start="84" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(BookType $bookType, array $data): BookType|false/**##)##**/</code></pre>
+<pre data-start="86" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(BookType $bookType, array $data): BookType|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookTypeService.php:98</h3>
+<h3>app/Services/BookTypeService.php:100</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\BookTypeService::delete should have the "Override" attribute</p>
-<pre data-start="98" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(BookType $bookType): bool/**##)##**/</code></pre>
+<pre data-start="100" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(BookType $bookType): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Services/ChatService.php:19</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Services\ChatService::__construct</p>
-<pre data-start="19" class="line-numbersx"><code class="language-php">    public function /**##(##**/__construct/**##)##**/(private readonly UserServiceInterface $userService)</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:23</h3>
+<h3>app/Services/ChatService.php:26</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::create should have the "Override" attribute</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Chat|false/**##)##**/</code></pre>
+<pre data-start="26" class="line-numbersx"><code class="language-php">    /**##(##**/public function create(array $data): Chat|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:58</h3>
+<h3>app/Services/ChatService.php:61</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::get should have the "Override" attribute</p>
-<pre data-start="58" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(string $id): Chat|false/**##)##**/</code></pre>
+<pre data-start="61" class="line-numbersx"><code class="language-php">    /**##(##**/public function get(string $id): Chat|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:68</h3>
+<h3>app/Services/ChatService.php:71</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::where should have the "Override" attribute</p>
-<pre data-start="68" class="line-numbersx"><code class="language-php">    /**##(##**/public function where(string $field, string $value): Collection/**##)##**/</code></pre>
+<pre data-start="71" class="line-numbersx"><code class="language-php">    /**##(##**/public function where(string $field, string $value): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:78</h3>
+<h3>app/Services/ChatService.php:83</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::delete should have the "Override" attribute</p>
-<pre data-start="78" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Chat $chat): bool/**##)##**/</code></pre>
+<pre data-start="83" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Chat $chat): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:93</h3>
+<h3>app/Services/ChatService.php:98</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::byuser should have the "Override" attribute</p>
-<pre data-start="93" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
+<pre data-start="98" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:111</h3>
+<h3>app/Services/ChatService.php:116</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::messages should have the "Override" attribute</p>
-<pre data-start="111" class="line-numbersx"><code class="language-php">    /**##(##**/public function messages(Chat $chat): Collection/**##)##**/</code></pre>
+<pre data-start="116" class="line-numbersx"><code class="language-php">    /**##(##**/public function messages(Chat $chat): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:127</h3>
+<h3>app/Services/ChatService.php:132</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::sendmessage should have the "Override" attribute</p>
-<pre data-start="127" class="line-numbersx"><code class="language-php">    /**##(##**/public function sendMessage(Chat $chat, User $sender, string $body): Message|false/**##)##**/</code></pre>
+<pre data-start="132" class="line-numbersx"><code class="language-php">    /**##(##**/public function sendMessage(Chat $chat, User $sender, string $body): Message|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:155</h3>
+<h3>app/Services/ChatService.php:160</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::block should have the "Override" attribute</p>
-<pre data-start="155" class="line-numbersx"><code class="language-php">    /**##(##**/public function block(Chat $chat, User $user): bool/**##)##**/</code></pre>
+<pre data-start="160" class="line-numbersx"><code class="language-php">    /**##(##**/public function block(Chat $chat, User $user): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -2296,44 +1786,34 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/CoverService.php:78</h3>
+<h3>app/Services/CoverService.php:80</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\CoverService::delete should have the "Override" attribute</p>
-<pre data-start="78" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Cover $cover): bool/**##)##**/</code></pre>
+<pre data-start="80" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Cover $cover): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="RedundantCondition">
-<h3>app/Services/CoverService.php:87</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCondition</li>
-</ul>
-<p>'1' can never contain int</p>
-<pre data-start="87" class="line-numbersx"><code class="language-php">            if (/**##(##**/$cover-&gt;id !== Cover::BASE_COVER_ID/**##)##**/) {</code></pre>
-<small><a target="_blank" href="https://psalm.dev/122">Psalm #122</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCondition">
-<h3>app/Services/CoverService.php:87</h3>
+<h3>app/Services/CoverService.php:89</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>RedundantCondition</li>
 </ul>
 <p>Type int for $cover-&gt;id is never =string(1)</p>
-<pre data-start="87" class="line-numbersx"><code class="language-php">            if (/**##(##**/$cover-&gt;id !== Cover::BASE_COVER_ID/**##)##**/) {</code></pre>
+<pre data-start="89" class="line-numbersx"><code class="language-php">            if (/**##(##**/isset($oldPath) &amp;&amp; $cover-&gt;id !== Cover::BASE_COVER_ID/**##)##**/) {</code></pre>
 <small><a target="_blank" href="https://psalm.dev/122">Psalm #122</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
-<h3>app/Services/CoverService.php:88</h3>
+  <li data-severity="error" data-psalm-type="RedundantCondition">
+<h3>app/Services/CoverService.php:89</h3>
 <ul class="tags">
 <li class="severity error">error</li>
-<li>PossiblyNullArgument</li>
+<li>RedundantCondition</li>
 </ul>
-<p>Argument 1 of App\Jobs\DeleteFileJob::__construct cannot be null, possibly null value provided</p>
-<pre data-start="88" class="line-numbersx"><code class="language-php">                DeleteFileJob::dispatch(/**##(##**/$oldPath/**##)##**/)-&gt;afterCommit();</code></pre>
-<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+<p>'1' can never contain int</p>
+<pre data-start="89" class="line-numbersx"><code class="language-php">            if (isset($oldPath) &amp;&amp; /**##(##**/$cover-&gt;id !== Cover::BASE_COVER_ID/**##)##**/) {</code></pre>
+<small><a target="_blank" href="https://psalm.dev/122">Psalm #122</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>app/Services/FilterService.php:30</h3>
@@ -2376,23 +1856,23 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/FilterService.php:84</h3>
+<h3>app/Services/FilterService.php:86</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\FilterService::update should have the "Override" attribute</p>
-<pre data-start="84" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Filter $filter, array $data): Filter|false/**##)##**/</code></pre>
+<pre data-start="86" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Filter $filter, array $data): Filter|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/FilterService.php:98</h3>
+<h3>app/Services/FilterService.php:100</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\FilterService::delete should have the "Override" attribute</p>
-<pre data-start="98" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Filter $filter): bool/**##)##**/</code></pre>
+<pre data-start="100" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Filter $filter): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -2436,23 +1916,23 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/GenreService.php:84</h3>
+<h3>app/Services/GenreService.php:86</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\GenreService::update should have the "Override" attribute</p>
-<pre data-start="84" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Genre $genre, array $data): Genre|false/**##)##**/</code></pre>
+<pre data-start="86" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Genre $genre, array $data): Genre|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/GenreService.php:98</h3>
+<h3>app/Services/GenreService.php:100</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\GenreService::delete should have the "Override" attribute</p>
-<pre data-start="98" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Genre $genre): bool/**##)##**/</code></pre>
+<pre data-start="100" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Genre $genre): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -2496,23 +1976,23 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/MessageService.php:68</h3>
+<h3>app/Services/MessageService.php:70</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\MessageService::update should have the "Override" attribute</p>
-<pre data-start="68" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Message $message, array $data): Message|false/**##)##**/</code></pre>
+<pre data-start="70" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Message $message, array $data): Message|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/MessageService.php:82</h3>
+<h3>app/Services/MessageService.php:84</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\MessageService::delete should have the "Override" attribute</p>
-<pre data-start="82" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Message $message): bool/**##)##**/</code></pre>
+<pre data-start="84" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Message $message): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -2556,53 +2036,53 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/NotificationService.php:69</h3>
+<h3>app/Services/NotificationService.php:71</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\NotificationService::update should have the "Override" attribute</p>
-<pre data-start="69" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Notification $notification, array $data): Notification|false/**##)##**/</code></pre>
+<pre data-start="71" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Notification $notification, array $data): Notification|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/NotificationService.php:83</h3>
+<h3>app/Services/NotificationService.php:85</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\NotificationService::delete should have the "Override" attribute</p>
-<pre data-start="83" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Notification $notification): bool/**##)##**/</code></pre>
+<pre data-start="85" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Notification $notification): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/NotificationService.php:97</h3>
+<h3>app/Services/NotificationService.php:99</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\NotificationService::read should have the "Override" attribute</p>
+<pre data-start="99" class="line-numbersx"><code class="language-php">    /**##(##**/public function read(Notification $notification): bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/NotificationService.php:117</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\NotificationService::byuser should have the "Override" attribute</p>
-<pre data-start="97" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
+<pre data-start="117" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="InvalidScalarArgument">
-<h3>app/Services/NotificationService.php:99</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidScalarArgument</li>
-</ul>
-<p>Argument 2 of App\Services\NotificationService::where expects string, but int provided</p>
-<pre data-start="99" class="line-numbersx"><code class="language-php">        return $this-&gt;where('user_id', /**##(##**/$user-&gt;id/**##)##**/);</code></pre>
-<small><a target="_blank" href="https://psalm.dev/012">Psalm #12</a></small>
-</li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/NotificationService.php:102</h3>
+<h3>app/Services/NotificationService.php:122</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\NotificationService::readall should have the "Override" attribute</p>
-<pre data-start="102" class="line-numbersx"><code class="language-php">    /**##(##**/public function readAll(User $user): bool/**##)##**/</code></pre>
+<pre data-start="122" class="line-numbersx"><code class="language-php">    /**##(##**/public function readAll(User $user): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -2646,84 +2126,34 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/PhotoService.php:78</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>MissingOverrideAttribute</li>
-</ul>
-<p>Method App\Services\PhotoService::update should have the "Override" attribute</p>
-<pre data-start="78" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Photo $photo, array $data): Photo|false/**##)##**/</code></pre>
-<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCondition">
-<h3>app/Services/PhotoService.php:92</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCondition</li>
-</ul>
-<p>'1' can never contain int</p>
-<pre data-start="92" class="line-numbersx"><code class="language-php">            if (/**##(##**/$photo-&gt;id !== Photo::BASE_PHOTO_ID/**##)##**/) {</code></pre>
-<small><a target="_blank" href="https://psalm.dev/122">Psalm #122</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCondition">
-<h3>app/Services/PhotoService.php:92</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCondition</li>
-</ul>
-<p>Type int for $photo-&gt;id is never =string(1)</p>
-<pre data-start="92" class="line-numbersx"><code class="language-php">            if (/**##(##**/$photo-&gt;id !== Photo::BASE_PHOTO_ID/**##)##**/) {</code></pre>
-<small><a target="_blank" href="https://psalm.dev/122">Psalm #122</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
-<h3>app/Services/PhotoService.php:93</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullArgument</li>
-</ul>
-<p>Argument 1 of App\Jobs\DeleteFileJob::__construct cannot be null, possibly null value provided</p>
-<pre data-start="93" class="line-numbersx"><code class="language-php">                DeleteFileJob::dispatch(/**##(##**/$oldPath/**##)##**/)-&gt;afterCommit();</code></pre>
-<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/PhotoService.php:105</h3>
+<h3>app/Services/PhotoService.php:80</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\PhotoService::delete should have the "Override" attribute</p>
-<pre data-start="105" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Photo $photo): bool/**##)##**/</code></pre>
+<pre data-start="80" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Photo $photo): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="RedundantCondition">
-<h3>app/Services/PhotoService.php:114</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCondition</li>
-</ul>
-<p>'1' can never contain int</p>
-<pre data-start="114" class="line-numbersx"><code class="language-php">            if (/**##(##**/$photo-&gt;id !== Photo::BASE_PHOTO_ID/**##)##**/) {</code></pre>
-<small><a target="_blank" href="https://psalm.dev/122">Psalm #122</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCondition">
-<h3>app/Services/PhotoService.php:114</h3>
+<h3>app/Services/PhotoService.php:89</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>RedundantCondition</li>
 </ul>
 <p>Type int for $photo-&gt;id is never =string(1)</p>
-<pre data-start="114" class="line-numbersx"><code class="language-php">            if (/**##(##**/$photo-&gt;id !== Photo::BASE_PHOTO_ID/**##)##**/) {</code></pre>
+<pre data-start="89" class="line-numbersx"><code class="language-php">            if (/**##(##**/isset($oldPath) &amp;&amp; $photo-&gt;id !== Photo::BASE_PHOTO_ID/**##)##**/) {</code></pre>
 <small><a target="_blank" href="https://psalm.dev/122">Psalm #122</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
-<h3>app/Services/PhotoService.php:115</h3>
+  <li data-severity="error" data-psalm-type="RedundantCondition">
+<h3>app/Services/PhotoService.php:89</h3>
 <ul class="tags">
 <li class="severity error">error</li>
-<li>PossiblyNullArgument</li>
+<li>RedundantCondition</li>
 </ul>
-<p>Argument 1 of App\Jobs\DeleteFileJob::__construct cannot be null, possibly null value provided</p>
-<pre data-start="115" class="line-numbersx"><code class="language-php">                DeleteFileJob::dispatch(/**##(##**/$oldPath/**##)##**/)-&gt;afterCommit();</code></pre>
-<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+<p>'1' can never contain int</p>
+<pre data-start="89" class="line-numbersx"><code class="language-php">            if (isset($oldPath) &amp;&amp; /**##(##**/$photo-&gt;id !== Photo::BASE_PHOTO_ID/**##)##**/) {</code></pre>
+<small><a target="_blank" href="https://psalm.dev/122">Psalm #122</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>app/Services/SettingService.php:16</h3>
@@ -2766,23 +2196,23 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/SettingService.php:68</h3>
+<h3>app/Services/SettingService.php:70</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\SettingService::update should have the "Override" attribute</p>
-<pre data-start="68" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Setting $setting, array $data): Setting|false/**##)##**/</code></pre>
+<pre data-start="70" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(Setting $setting, array $data): Setting|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/SettingService.php:82</h3>
+<h3>app/Services/SettingService.php:84</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\SettingService::delete should have the "Override" attribute</p>
-<pre data-start="82" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Setting $setting): bool/**##)##**/</code></pre>
+<pre data-start="84" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(Setting $setting): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -2826,113 +2256,93 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:115</h3>
+<h3>app/Services/TradeOfferService.php:117</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\TradeOfferService::update should have the "Override" attribute</p>
-<pre data-start="115" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false/**##)##**/</code></pre>
+<pre data-start="117" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:134</h3>
+<h3>app/Services/TradeOfferService.php:136</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\TradeOfferService::delete should have the "Override" attribute</p>
-<pre data-start="134" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(TradeOffer $tradeOffer): bool/**##)##**/</code></pre>
+<pre data-start="136" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(TradeOffer $tradeOffer): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:148</h3>
+<h3>app/Services/TradeOfferService.php:150</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\TradeOfferService::items should have the "Override" attribute</p>
-<pre data-start="148" class="line-numbersx"><code class="language-php">    /**##(##**/public function items(TradeOffer $tradeOffer): Collection/**##)##**/</code></pre>
+<pre data-start="150" class="line-numbersx"><code class="language-php">    /**##(##**/public function items(TradeOffer $tradeOffer): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:153</h3>
+<h3>app/Services/TradeOfferService.php:155</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\TradeOfferService::bysender should have the "Override" attribute</p>
-<pre data-start="153" class="line-numbersx"><code class="language-php">    /**##(##**/public function bySender(User $sender): Collection/**##)##**/</code></pre>
+<pre data-start="155" class="line-numbersx"><code class="language-php">    /**##(##**/public function bySender(User $sender): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="InvalidScalarArgument">
-<h3>app/Services/TradeOfferService.php:155</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidScalarArgument</li>
-</ul>
-<p>Argument 2 of App\Services\TradeOfferService::where expects string, but int provided</p>
-<pre data-start="155" class="line-numbersx"><code class="language-php">        return $this-&gt;where('sender_id', /**##(##**/$sender-&gt;id/**##)##**/);</code></pre>
-<small><a target="_blank" href="https://psalm.dev/012">Psalm #12</a></small>
-</li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:158</h3>
+<h3>app/Services/TradeOfferService.php:160</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\TradeOfferService::byreceiver should have the "Override" attribute</p>
-<pre data-start="158" class="line-numbersx"><code class="language-php">    /**##(##**/public function byReceiver(User $receiver): Collection/**##)##**/</code></pre>
+<pre data-start="160" class="line-numbersx"><code class="language-php">    /**##(##**/public function byReceiver(User $receiver): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="InvalidScalarArgument">
-<h3>app/Services/TradeOfferService.php:160</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidScalarArgument</li>
-</ul>
-<p>Argument 2 of App\Services\TradeOfferService::where expects string, but int provided</p>
-<pre data-start="160" class="line-numbersx"><code class="language-php">        return $this-&gt;where('receiver_id', /**##(##**/$receiver-&gt;id/**##)##**/);</code></pre>
-<small><a target="_blank" href="https://psalm.dev/012">Psalm #12</a></small>
-</li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:163</h3>
+<h3>app/Services/TradeOfferService.php:165</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\TradeOfferService::accept should have the "Override" attribute</p>
-<pre data-start="163" class="line-numbersx"><code class="language-php">    /**##(##**/public function accept(TradeOffer $tradeOffer): bool/**##)##**/</code></pre>
+<pre data-start="165" class="line-numbersx"><code class="language-php">    /**##(##**/public function accept(TradeOffer $tradeOffer): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:173</h3>
+<h3>app/Services/TradeOfferService.php:175</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\TradeOfferService::reject should have the "Override" attribute</p>
-<pre data-start="173" class="line-numbersx"><code class="language-php">    /**##(##**/public function reject(TradeOffer $tradeOffer): bool/**##)##**/</code></pre>
+<pre data-start="175" class="line-numbersx"><code class="language-php">    /**##(##**/public function reject(TradeOffer $tradeOffer): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:191</h3>
+<h3>app/Services/TradeOfferService.php:193</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\TradeOfferService::finish should have the "Override" attribute</p>
-<pre data-start="191" class="line-numbersx"><code class="language-php">    /**##(##**/public function finish(TradeOffer $tradeOffer): bool/**##)##**/</code></pre>
+<pre data-start="193" class="line-numbersx"><code class="language-php">    /**##(##**/public function finish(TradeOffer $tradeOffer): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/TradeOfferService.php:210</h3>
+<h3>app/Services/TradeOfferService.php:212</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
-<p>Method App\Services\TradeOfferService::tradehistory should have the "Override" attribute</p>
-<pre data-start="210" class="line-numbersx"><code class="language-php">    /**##(##**/public function tradeHistory(User $user): \Illuminate\Support\Collection/**##)##**/</code></pre>
+<p>Method App\Services\TradeOfferService::gettradehistory should have the "Override" attribute</p>
+<pre data-start="212" class="line-numbersx"><code class="language-php">    /**##(##**/public function getTradeHistory(User $user): \Illuminate\Support\Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -3006,33 +2416,33 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:69</h3>
+<h3>app/Services/UserService.php:71</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::update should have the "Override" attribute</p>
-<pre data-start="69" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(User $user, array $data): User|false/**##)##**/</code></pre>
+<pre data-start="71" class="line-numbersx"><code class="language-php">    /**##(##**/public function update(User $user, array $data): User|false/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:104</h3>
+<h3>app/Services/UserService.php:106</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::delete should have the "Override" attribute</p>
-<pre data-start="104" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(User $user): bool/**##)##**/</code></pre>
+<pre data-start="106" class="line-numbersx"><code class="language-php">    /**##(##**/public function delete(User $user): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/UserService.php:118</h3>
+<h3>app/Services/UserService.php:120</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\UserService::rate should have the "Override" attribute</p>
-<pre data-start="118" class="line-numbersx"><code class="language-php">    /**##(##**/public function rate(User $user, User $rater, int $rate): bool/**##)##**/</code></pre>
+<pre data-start="120" class="line-numbersx"><code class="language-php">    /**##(##**/public function rate(User $user, User $rater, int $rate): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
@@ -3220,36 +2630,6 @@
 <pre data-start="18" class="line-numbersx"><code class="language-php">    private User /**##(##**/$otherUser/**##)##**/;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/150">Psalm #150</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/AuthorApiTest.php:58</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="58" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;author-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/AuthorApiTest.php:114</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="114" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;author-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/AuthorApiTest.php:136</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="136" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;author-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
   <li data-severity="error" data-psalm-type="InvalidOperand">
 <h3>tests/Feature/BookApiTest.php:72</h3>
 <ul class="tags">
@@ -3259,136 +2639,6 @@
 <p>Cannot concatenate with a int&lt;0, max&gt;|null</p>
 <pre data-start="72" class="line-numbersx"><code class="language-php">        $response = $this-&gt;getJson('/api/v1/books/where?book_type_id[]=' . /**##(##**/$this-&gt;book-&gt;book_type_id/**##)##**/);</code></pre>
 <small><a target="_blank" href="https://psalm.dev/058">Psalm #58</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/BookTypeApiTest.php:59</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="59" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;bookType-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/BookTypeApiTest.php:115</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="115" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;bookType-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/BookTypeApiTest.php:137</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="137" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;bookType-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/FilterApiTest.php:61</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="61" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;filter-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/FilterApiTest.php:117</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="117" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;filter-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/FilterApiTest.php:139</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="139" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;filter-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/GenreApiTest.php:59</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="59" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;genre-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/GenreApiTest.php:115</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="115" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;genre-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/GenreApiTest.php:137</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="137" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;genre-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/SettingApiTest.php:64</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="64" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;setting-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/SettingApiTest.php:120</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="120" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;setting-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/SettingApiTest.php:142</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to int</p>
-<pre data-start="142" class="line-numbersx"><code class="language-php">        $newId = /**##(##**/(int)$this-&gt;setting-&gt;id/**##)##**/ + 1;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="RedundantCast">
-<h3>tests/Feature/UserApiTest.php:122</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>RedundantCast</li>
-</ul>
-<p>Redundant cast to float</p>
-<pre data-start="122" class="line-numbersx"><code class="language-php">        $this-&gt;assertEquals(5.0, /**##(##**/(float)$this-&gt;target-&gt;refresh()-&gt;rating/**##)##**/);</code></pre>
-<small><a target="_blank" href="https://psalm.dev/262">Psalm #262</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
 <h3>tests/TestCase.php:10</h3>

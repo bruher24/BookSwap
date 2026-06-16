@@ -56,7 +56,7 @@ final class GenreApiTest extends TestCase
 
     public function test_not_found_get_genre(): void
     {
-        $newId = (int)$this->genre->id + 1;
+        $newId = $this->genre->id + 1;
         $response = $this->getJson("/api/v1/genres/$newId");
         $response->assertNotFound();
     }
@@ -112,7 +112,7 @@ final class GenreApiTest extends TestCase
     public function test_not_found_update_genre(): void
     {
         Sanctum::actingAs($this->admin);
-        $newId = (int)$this->genre->id + 1;
+        $newId = $this->genre->id + 1;
         $response = $this->patchJson("/api/v1/genres/$newId", $this->genreUpdatePayload);
         $response->assertNotFound();
     }
@@ -134,7 +134,7 @@ final class GenreApiTest extends TestCase
     public function test_not_found_delete_genre(): void
     {
         Sanctum::actingAs($this->admin);
-        $newId = (int)$this->genre->id + 1;
+        $newId = $this->genre->id + 1;
         $response = $this->deleteJson("/api/v1/genres/$newId");
         $response->assertAccepted();
     }

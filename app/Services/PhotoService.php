@@ -68,37 +68,12 @@ final class PhotoService implements PhotoServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Photo::where($field, $value)->get();
+            return Photo::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
-        }
-    }
-
-    public function update(Photo $photo, array $data): Photo|false
-    {
-        try {
-            DB::beginTransaction();
-
-            $path = $this->storeFile($data['src']);
-            if ($path === false) {
-                throw new Exception('Ошибка при сохранении файла');
-            }
-
-            $oldPath = $photo->src;
-
-            $photo->updateOrFail(['src' => $path]);
-
-            if ($photo->id !== Photo::BASE_PHOTO_ID) {
-                DeleteFileJob::dispatch($oldPath)->afterCommit();
-            }
-
-            DB::commit();
-            return $photo->refresh();
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return false;
         }
     }
 
@@ -111,7 +86,7 @@ final class PhotoService implements PhotoServiceInterface
 
             $photo->delete();
 
-            if ($photo->id !== Photo::BASE_PHOTO_ID) {
+            if (isset($oldPath) && $photo->id !== Photo::BASE_PHOTO_ID) {
                 DeleteFileJob::dispatch($oldPath)->afterCommit();
             }
 

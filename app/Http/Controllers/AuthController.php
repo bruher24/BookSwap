@@ -49,7 +49,7 @@ final class AuthController extends Controller
         }
 
         $validated = $request->validated();
-        $remember = $validated['remember'] ?? false;
+        $remember = isset($validated['remember']) && $validated['remember'] == '1';
         unset($validated['remember']);
 
         if (!Auth::attempt($validated, $remember)) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Chat;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -23,8 +24,9 @@ final class SendMessageRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
+        $chat = $this->route('chat');
         $this->merge([
-            'chat_id' => $this->route('chat')->id,
+            'chat_id' => $chat instanceof Chat ? $chat->id : $chat,
         ]);
     }
 
@@ -38,13 +40,13 @@ final class SendMessageRequest extends FormRequest
         return [
             'chat_id' => [
                 'required',
-                'integer',
+                'string',
                 Rule::exists('chats', 'id')
                     ->withoutTrashed(),
             ],
             'sender_id' => [
                 'required',
-                'integer',
+                'string',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
             ],

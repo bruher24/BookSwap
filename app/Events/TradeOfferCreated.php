@@ -16,6 +16,7 @@ final class TradeOfferCreated
 
     /**
      * Create a new event instance.
+     * @psalm-suppress PossiblyNullPropertyAssignmentValue
      */
     public function __construct(
         public TradeOffer $tradeOffer

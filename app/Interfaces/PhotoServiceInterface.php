@@ -15,7 +15,5 @@ interface PhotoServiceInterface
 
     public function where(string $field, string $value): Collection;
 
-    public function update(Photo $photo, array $data): Photo|false;
-
     public function delete(Photo $photo): bool;
 }

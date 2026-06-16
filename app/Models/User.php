@@ -59,6 +59,7 @@ final class User extends Authenticatable implements Cacheable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'rating' => 'float',
         ];
     }
 

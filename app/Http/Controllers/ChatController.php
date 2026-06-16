@@ -113,7 +113,9 @@ final class ChatController extends Controller
     {
         Gate::authorize('block', $chat);
 
-        if (!$chatService->block($chat, $request->user())) {
+        $user = $request->user() ?? null;
+
+        if (!isset($user) || !$chatService->block($chat, $user)) {
             $errors = ['Ошибка при блокировке чата'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

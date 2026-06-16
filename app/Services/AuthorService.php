@@ -76,7 +76,9 @@ final class AuthorService implements AuthorServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Author::where($field, $value)->get();
+            return Author::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();

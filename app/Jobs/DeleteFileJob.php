@@ -6,7 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Storage;
 
-class DeleteFileJob implements ShouldQueue
+final class DeleteFileJob implements ShouldQueue
 {
     use Queueable;
 

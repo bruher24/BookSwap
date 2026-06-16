@@ -74,7 +74,9 @@ final class FilterService implements FilterServiceInterface
     public function where(string $field, string $value): Collection
     {
         try {
-            return Filter::where($field, $value)->get();
+            return Filter::where($field, $value)
+                ->withoutTrashed()
+                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();

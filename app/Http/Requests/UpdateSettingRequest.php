@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Setting;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -23,8 +24,9 @@ final class UpdateSettingRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
+        $setting = $this->route('setting');
         $this->merge([
-            'setting_id' => $this->route('setting')->id,
+            'setting_id' => $setting instanceof Setting ? $setting->id : $setting,
         ]);
     }
 
