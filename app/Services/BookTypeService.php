@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class BookTypeService implements BookTypeServiceInterface
@@ -27,6 +28,7 @@ final class BookTypeService implements BookTypeServiceInterface
         return $data;
     }
 
+    #[Override]
     public function create(array $data): BookType|false
     {
         $formattedData = $this->formatData($data);
@@ -48,6 +50,7 @@ final class BookTypeService implements BookTypeServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): BookType|false
     {
         try {
@@ -58,6 +61,7 @@ final class BookTypeService implements BookTypeServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -71,6 +75,7 @@ final class BookTypeService implements BookTypeServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -83,6 +88,7 @@ final class BookTypeService implements BookTypeServiceInterface
         }
     }
 
+    #[Override]
     public function update(BookType $bookType, array $data): BookType|false
     {
         try {
@@ -97,6 +103,7 @@ final class BookTypeService implements BookTypeServiceInterface
         }
     }
 
+    #[Override]
     public function delete(BookType $bookType): bool
     {
         try {

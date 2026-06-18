@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Setting;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -22,7 +23,8 @@ final class UpdateUserSettingValueRequest extends FormRequest
     #[Override]
     public function prepareForValidation(): void
     {
-        $this->values = $this->route('setting')->available_values ?? [];
+        $setting = $this->route('setting');
+        $this->values = $setting instanceof Setting ? $setting->available_values : [];
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\BookType;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<BookType>
@@ -15,6 +16,7 @@ final class BookTypeFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

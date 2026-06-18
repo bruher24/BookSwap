@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class UserService implements UserServiceInterface
 {
+    #[Override]
     public function create(array $data): User|false
     {
         try {
@@ -33,6 +35,7 @@ final class UserService implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): User|false
     {
         try {
@@ -43,6 +46,7 @@ final class UserService implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -56,6 +60,7 @@ final class UserService implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -68,6 +73,7 @@ final class UserService implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function update(User $user, array $data): User|false
     {
         try {
@@ -103,6 +109,7 @@ final class UserService implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function delete(User $user): bool
     {
         try {
@@ -117,6 +124,7 @@ final class UserService implements UserServiceInterface
         }
     }
 
+    #[Override]
     public function rate(User $user, User $rater, int $rate): bool
     {
         try {

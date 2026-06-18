@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class FilterService implements FilterServiceInterface
@@ -27,6 +28,7 @@ final class FilterService implements FilterServiceInterface
         return $data;
     }
 
+    #[Override]
     public function create(array $data): Filter|false
     {
         $formattedData = $this->formatData($data);
@@ -48,6 +50,7 @@ final class FilterService implements FilterServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Filter|false
     {
         try {
@@ -58,6 +61,7 @@ final class FilterService implements FilterServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -71,6 +75,7 @@ final class FilterService implements FilterServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -83,6 +88,7 @@ final class FilterService implements FilterServiceInterface
         }
     }
 
+    #[Override]
     public function update(Filter $filter, array $data): Filter|false
     {
         try {
@@ -97,6 +103,7 @@ final class FilterService implements FilterServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Filter $filter): bool
     {
         try {

@@ -23,84 +23,21 @@
         <PossiblyUnusedMethod>
             <errorLevel type="suppress">
                 <directory name="app/Http/Controllers"/>
-                <directory name="app/Http/Requests"/>
-                <directory name="app/Listeners"/>
                 <directory name="app/Models"/>
                 <directory name="app/Observers"/>
-                <directory name="database/factories"/>
-                <directory name="database/migrations"/>
-                <directory name="database/seeders"/>
             </errorLevel>
         </PossiblyUnusedMethod>
         <PossiblyUnusedProperty>
             <errorLevel type="suppress">
                 <directory name="app/Events"/>
-                <directory name="app/Listeners"/>
-                <file name="app/Mail/EmailVerification.php"/>
+                <directory name="app/Mail"/>
             </errorLevel>
         </PossiblyUnusedProperty>
-        <UndefinedThisPropertyFetch>
+        <UnusedParam>
             <errorLevel type="suppress">
-                <directory name="app/Models"/>
+                <directory name="app/Policies"/>
             </errorLevel>
-        </UndefinedThisPropertyFetch>
-        <InvalidReturnType>
-            <errorLevel type="suppress">
-                <directory name="app/Models"/>
-            </errorLevel>
-        </InvalidReturnType>
-        <InvalidReturnStatement>
-            <errorLevel type="suppress">
-                <directory name="app/Models"/>
-            </errorLevel>
-        </InvalidReturnStatement>
-        <MissingTemplateParam>
-            <errorLevel type="suppress">
-                <directory name="app/Models"/>
-            </errorLevel>
-        </MissingTemplateParam>
-        <UnusedClosureParam>
-            <errorLevel type="suppress">
-                <directory name="database/factories"/>
-            </errorLevel>
-        </UnusedClosureParam>
-        <UndefinedMagicPropertyFetch>
-            <errorLevel type="suppress">
-                <directory name="app"/>
-                <directory name="database"/>
-                <directory name="tests"/>
-            </errorLevel>
-        </UndefinedMagicPropertyFetch>
-        <UndefinedMagicMethod>
-            <errorLevel type="suppress">
-                <directory name="app"/>
-                <directory name="database"/>
-                <directory name="tests"/>
-            </errorLevel>
-        </UndefinedMagicMethod>
-        <UndefinedMagicPropertyAssignment>
-            <errorLevel type="suppress">
-                <directory name="app"/>
-                <directory name="database"/>
-                <directory name="tests"/>
-            </errorLevel>
-        </UndefinedMagicPropertyAssignment>
-        <MoreSpecificReturnType>
-            <errorLevel type="suppress">
-                <directory name="app/Services"/>
-            </errorLevel>
-        </MoreSpecificReturnType>
-        <LessSpecificReturnStatement>
-            <errorLevel type="suppress">
-                <directory name="app/Services"/>
-            </errorLevel>
-        </LessSpecificReturnStatement>
-        <MissingClosureParamType>
-            <errorLevel type="suppress">
-                <directory name="app/Http/Requests"/>
-                <file name="app/Providers/SwaggerUiServiceProvider.php"/>
-            </errorLevel>
-        </MissingClosureParamType>
+        </UnusedParam>
         <UnusedClass>
             <errorLevel type="suppress">
                 <directory name="app/Listeners"/>
@@ -108,11 +45,6 @@
                 <directory name="database/factories"/>
             </errorLevel>
         </UnusedClass>
-        <UndefinedThisPropertyAssignment>
-            <errorLevel type="suppress">
-                <directory name="app/Models"/>
-            </errorLevel>
-        </UndefinedThisPropertyAssignment>
     </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\LaravelPlugin\Plugin"/>

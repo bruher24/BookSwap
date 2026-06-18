@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Genre;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Genre>
@@ -15,6 +16,7 @@ final class GenreFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

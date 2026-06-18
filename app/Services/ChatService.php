@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class ChatService implements ChatServiceInterface
@@ -23,6 +24,7 @@ final class ChatService implements ChatServiceInterface
     {
     }
 
+    #[Override]
     public function create(array $data): Chat|false
     {
         try {
@@ -58,6 +60,7 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Chat|false
     {
         try {
@@ -68,6 +71,7 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -80,6 +84,7 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Chat $chat): bool
     {
         try {
@@ -95,6 +100,7 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function byUser(User $user): Collection
     {
         try {
@@ -113,6 +119,7 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function messages(Chat $chat): Collection
     {
         try {
@@ -129,6 +136,7 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function sendMessage(Chat $chat, User $sender, string $body): Message|false
     {
         try {
@@ -157,6 +165,7 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function block(Chat $chat, User $user): bool
     {
         try {

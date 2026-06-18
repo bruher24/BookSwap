@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Override;
 use Throwable;
 
 final class PhotoService implements PhotoServiceInterface
 {
+    #[Override]
     public function create(array $data): Photo|false
     {
         try {
@@ -42,6 +44,7 @@ final class PhotoService implements PhotoServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Photo|false
     {
         try {
@@ -52,6 +55,7 @@ final class PhotoService implements PhotoServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -65,6 +69,7 @@ final class PhotoService implements PhotoServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -77,6 +82,7 @@ final class PhotoService implements PhotoServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Photo $photo): bool
     {
         try {

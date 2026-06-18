@@ -26,7 +26,6 @@ final class EmailVerification extends Mailable
 
     /**
      * Get the message envelope.
-     * @psalm-suppress PossiblyUnusedMethod
      */
     public function envelope(): Envelope
     {
@@ -37,7 +36,6 @@ final class EmailVerification extends Mailable
 
     /**
      * Get the message content definition.
-     * @psalm-suppress PossiblyUnusedMethod
      */
     public function content(): Content
     {
@@ -49,7 +47,6 @@ final class EmailVerification extends Mailable
 
     /**
      * Get the attachments for the message.
-     * @psalm-suppress PossiblyUnusedMethod
      *
      * @return array<int, Attachment>
      */

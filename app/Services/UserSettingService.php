@@ -8,10 +8,12 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class UserSettingService implements UserSettingServiceInterface
 {
+    #[Override]
     public function updateSetting(User $user, Setting $setting, string $value): Setting|false
     {
         try {

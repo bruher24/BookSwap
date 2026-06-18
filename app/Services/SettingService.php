@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class SettingService implements SettingServiceInterface
 {
+    #[Override]
     public function create(array $data): Setting|false
     {
         try {
@@ -32,6 +34,7 @@ final class SettingService implements SettingServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Setting|false
     {
         try {
@@ -42,6 +45,7 @@ final class SettingService implements SettingServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -55,6 +59,7 @@ final class SettingService implements SettingServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -67,6 +72,7 @@ final class SettingService implements SettingServiceInterface
         }
     }
 
+    #[Override]
     public function update(Setting $setting, array $data): Setting|false
     {
         try {
@@ -81,6 +87,7 @@ final class SettingService implements SettingServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Setting $setting): bool
     {
         try {

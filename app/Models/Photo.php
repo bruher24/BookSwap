@@ -18,7 +18,7 @@ final class Photo extends Model implements Cacheable
     use CacheInvalidation;
 
     public const string CACHE_KEY = 'photos';
-    public const string BASE_PHOTO_ID = '1';
+    public const int BASE_PHOTO_ID = 1;
 
     public $fillable = [
         'src',

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class GenreService implements GenreServiceInterface
@@ -27,6 +28,7 @@ final class GenreService implements GenreServiceInterface
         return $data;
     }
 
+    #[Override]
     public function create(array $data): Genre|false
     {
         $formattedData = $this->formatData($data);
@@ -48,6 +50,7 @@ final class GenreService implements GenreServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Genre|false
     {
         try {
@@ -58,6 +61,7 @@ final class GenreService implements GenreServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -71,6 +75,7 @@ final class GenreService implements GenreServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -83,6 +88,7 @@ final class GenreService implements GenreServiceInterface
         }
     }
 
+    #[Override]
     public function update(Genre $genre, array $data): Genre|false
     {
         try {
@@ -97,6 +103,7 @@ final class GenreService implements GenreServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Genre $genre): bool
     {
         try {

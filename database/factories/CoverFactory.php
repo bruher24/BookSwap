@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Cover;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Cover>
@@ -15,6 +16,7 @@ final class CoverFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

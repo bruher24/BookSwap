@@ -8,8 +8,6 @@ use Override;
 
 /**
  * @extends Factory<Author>
- * @psalm-suppress UnusedClass
- * @psalm-suppress PropertyNotSetInConstructor
  */
 final class AuthorFactory extends Factory
 {

@@ -47,16 +47,10 @@ final class UpdateAuthorRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                function ($attribute, $value, $fail) {
-                    $exists = Author::where('lastname', request('lastname'))
-                        ->where('firstname', request('firstname'))
-                        ->where('patronymic', request('patronymic'))
-                        ->whereNot('id', request('author_id'))
-                        ->exists();
-                    if ($exists) {
-                        $fail('Автор с таким ФИО уже существует!');
-                    }
-                }
+                Rule::unique('authors', 'lastname')
+                    ->where('firstname', $this->input('firstname'))
+                    ->where('patronymic', $this->input('patronymic'))
+                    ->ignore($this->input('author_id')),
             ],
             'firstname' => [
                 'required',

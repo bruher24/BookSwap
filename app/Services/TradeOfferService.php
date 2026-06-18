@@ -12,10 +12,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class TradeOfferService implements TradeOfferServiceInterface
 {
+    #[Override]
     public function create(array $data): TradeOffer|false
     {
         try {
@@ -79,6 +81,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
             ]);
     }
 
+    #[Override]
     public function get(string $id): TradeOffer|false
     {
         try {
@@ -89,6 +92,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -102,6 +106,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -114,6 +119,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    #[Override]
     public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false
     {
         try {
@@ -133,6 +139,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    #[Override]
     public function delete(TradeOffer $tradeOffer): bool
     {
         try {
@@ -147,21 +154,25 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    #[Override]
     public function items(TradeOffer $tradeOffer): Collection
     {
         return $tradeOffer->books()->withoutTrashed()->get();
     }
 
+    #[Override]
     public function bySender(User $sender): Collection
     {
         return $this->where('sender_id', (string)$sender->id);
     }
 
+    #[Override]
     public function byReceiver(User $receiver): Collection
     {
         return $this->where('receiver_id', (string)$receiver->id);
     }
 
+    #[Override]
     public function accept(TradeOffer $tradeOffer): bool
     {
         try {
@@ -172,6 +183,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    #[Override]
     public function reject(TradeOffer $tradeOffer): bool
     {
         try {
@@ -190,6 +202,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    #[Override]
     public function finish(TradeOffer $tradeOffer): bool
     {
         try {
@@ -209,6 +222,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    #[Override]
     public function getTradeHistory(User $user): \Illuminate\Support\Collection
     {
         $history = TradeOffer::query()

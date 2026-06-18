@@ -7,6 +7,7 @@ use App\Interfaces\UserServiceInterface;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class AuthService implements AuthServiceInterface
@@ -18,6 +19,7 @@ final class AuthService implements AuthServiceInterface
     {
     }
 
+    #[Override]
     public function verifyEmail(string $userId): bool
     {
         try {

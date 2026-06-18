@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Setting;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Setting>
@@ -15,6 +16,7 @@ final class SettingFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

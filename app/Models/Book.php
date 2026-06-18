@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Laravel\Scout\Searchable;
 
 final class Book extends Model implements Cacheable
@@ -52,7 +53,9 @@ final class Book extends Model implements Cacheable
             'id' => (string)$this->id,
             'name' => $this->name,
             'publishing_house' => $this->publishing_house,
-            'created_at' => $this->created_at->timestamp,
+            'created_at' => $this->created_at instanceof Carbon
+                ? $this->created_at->timestamp
+                : $this->created_at,
         ];
     }
 

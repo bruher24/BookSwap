@@ -18,7 +18,7 @@ final class Cover extends Model implements Cacheable
     use CacheInvalidation;
 
     public const string CACHE_KEY = 'covers';
-    public const string BASE_COVER_ID = '1';
+    public const int BASE_COVER_ID = 1;
 
     public $fillable = [
         'src',

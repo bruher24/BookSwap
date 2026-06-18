@@ -10,7 +10,6 @@ use Override;
 
 /**
  * @extends Factory<User>
- * @psalm-suppress PropertyNotSetInConstructor
  */
 final class UserFactory extends Factory
 {
@@ -38,6 +37,7 @@ final class UserFactory extends Factory
 
     /**
      * Indicate that the model's email address should be unverified.
+     * @psalm-suppress UnusedClosureParam
      */
     public function unverified(): UserFactory
     {

@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\TradeOfferStatus;
 use App\Models\TradeOffer;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<TradeOffer>
@@ -16,6 +17,7 @@ final class TradeOfferFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

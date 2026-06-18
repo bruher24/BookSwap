@@ -69,15 +69,9 @@ final class UpdateBookRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:100',
-                function ($attribute, $value, $fail) {
-                    $exists = Author::where('lastname', request('authorLastname'))
-                        ->where('firstname', request('authorFirstname'))
-                        ->where('patronymic', request('authorPatronymic'))
-                        ->exists();
-                    if ($exists) {
-                        $fail('Автор с таким ФИО уже существует!');
-                    }
-                }
+                Rule::unique('authors', 'lastname')
+                    ->where('firstname', $this->input('firstname'))
+                    ->where('patronymic', $this->input('patronymic')),
             ],
             'authorFirstname' => 'required_without:author_id|nullable|string|max:100',
             'authorPatronymic' => 'nullable|string|max:100',

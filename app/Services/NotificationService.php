@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class NotificationService implements NotificationServiceInterface
 {
+    #[Override]
     public function create(array $data): Notification|false
     {
         try {
@@ -33,6 +35,7 @@ final class NotificationService implements NotificationServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Notification|false
     {
         try {
@@ -43,6 +46,7 @@ final class NotificationService implements NotificationServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -56,6 +60,7 @@ final class NotificationService implements NotificationServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -68,6 +73,7 @@ final class NotificationService implements NotificationServiceInterface
         }
     }
 
+    #[Override]
     public function update(Notification $notification, array $data): Notification|false
     {
         try {
@@ -82,6 +88,7 @@ final class NotificationService implements NotificationServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Notification $notification): bool
     {
         try {
@@ -96,6 +103,7 @@ final class NotificationService implements NotificationServiceInterface
         }
     }
 
+    #[Override]
     public function read(Notification $notification): bool
     {
         try {
@@ -114,11 +122,13 @@ final class NotificationService implements NotificationServiceInterface
         }
     }
 
+    #[Override]
     public function byUser(User $user): Collection
     {
         return $this->where('user_id', (string)$user->id);
     }
 
+    #[Override]
     public function readAll(User $user): bool
     {
         return !!Notification::where('user_id', $user->id)->update(['seen' => true]);

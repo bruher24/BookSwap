@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Photo;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Photo>
@@ -15,6 +16,7 @@ final class PhotoFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

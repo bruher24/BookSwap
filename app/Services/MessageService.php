@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class MessageService implements MessageServiceInterface
 {
+    #[Override]
     public function create(array $data): Message|false
     {
         try {
@@ -32,6 +34,7 @@ final class MessageService implements MessageServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Message|false
     {
         try {
@@ -42,6 +45,7 @@ final class MessageService implements MessageServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -55,6 +59,7 @@ final class MessageService implements MessageServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -67,6 +72,7 @@ final class MessageService implements MessageServiceInterface
         }
     }
 
+    #[Override]
     public function update(Message $message, array $data): Message|false
     {
         try {
@@ -81,6 +87,7 @@ final class MessageService implements MessageServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Message $message): bool
     {
         try {

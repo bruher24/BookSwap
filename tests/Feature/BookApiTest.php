@@ -69,8 +69,7 @@ final class BookApiTest extends TestCase
 
     public function test_where_book_filters_available_books(): void
     {
-        $response = $this->getJson('/api/v1/books/where?book_type_id[]=' . $this->book->book_type_id);
-
+        $response = $this->getJson('/api/v1/books/where?book_type_id[]=' . (string)$this->book->book_type_id);
         $response->assertOk();
         $response->assertJsonPath('data.books.0.id', $this->book->id);
     }

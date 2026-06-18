@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 use Laravel\Scout\Searchable;
 
 final class Author extends Model implements Cacheable
@@ -45,7 +46,9 @@ final class Author extends Model implements Cacheable
             'id' => (string)$this->id,
             'lastname' => $this->lastname,
             'firstname' => $this->firstname,
-            'created_at' => $this->created_at->timestamp,
+            'created_at' => $this->created_at instanceof Carbon
+                ? $this->created_at->timestamp
+                : $this->created_at,
         ];
     }
 
@@ -53,12 +56,12 @@ final class Author extends Model implements Cacheable
     {
         return "$this->lastname "
             . mb_substr($this->firstname, 0, 1) . '.'
-            . ($this->patronymic ? ' ' . mb_substr($this->patronymic, 0, 1) . '.' : '');
+            . (isset($this->patronymic) && strlen($this->patronymic) ? ' ' . mb_substr($this->patronymic, 0, 1) . '.' : '');
     }
 
     public function getFullNameAttribute(): string
     {
-        return "$this->lastname $this->firstname" . ($this->patronymic ? " $this->patronymic" : '');
+        return "$this->lastname $this->firstname" . (isset($this->patronymic) && strlen($this->patronymic) ? " $this->patronymic" : '');
     }
 
     public function books(): BelongsToMany

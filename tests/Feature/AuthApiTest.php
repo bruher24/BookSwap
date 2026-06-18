@@ -15,7 +15,6 @@ final class AuthApiTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
-    private User $otherUser;
 
     private array $registerPayload;
     private array $loginPayload;
@@ -40,8 +39,6 @@ final class AuthApiTest extends TestCase
             'email' => 'new@user.com',
             'password' => '1234',
         ];
-
-        $this->otherUser = User::factory()->unverified()->createOne();
     }
 
     private function spaPostJson(string $uri, array $data = []): TestResponse

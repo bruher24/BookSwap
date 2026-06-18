@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\BookCondition;
 use App\Models\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Book>
@@ -16,6 +17,7 @@ final class BookFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

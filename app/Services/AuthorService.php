@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class AuthorService implements AuthorServiceInterface
@@ -29,6 +30,7 @@ final class AuthorService implements AuthorServiceInterface
         return $data;
     }
 
+    #[Override]
     public function create(array $data): Author|false
     {
         $formattedData = $this->formatData($data);
@@ -50,6 +52,7 @@ final class AuthorService implements AuthorServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Author|false
     {
         try {
@@ -60,6 +63,7 @@ final class AuthorService implements AuthorServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -73,6 +77,7 @@ final class AuthorService implements AuthorServiceInterface
         }
     }
 
+    #[Override]
     public function where(string $field, string $value): Collection
     {
         try {
@@ -85,6 +90,7 @@ final class AuthorService implements AuthorServiceInterface
         }
     }
 
+    #[Override]
     public function update(Author $author, array $data): Author|false
     {
         try {
@@ -99,6 +105,7 @@ final class AuthorService implements AuthorServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Author $author): bool
     {
         try {

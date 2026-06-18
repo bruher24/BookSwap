@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\BookCondition;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\Cover;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Override;
 use Throwable;
 
 final class BookService implements BookServiceInterface
@@ -30,6 +32,7 @@ final class BookService implements BookServiceInterface
         return $data;
     }
 
+    #[Override]
     public function create(array $data): Book|false
     {
         try {
@@ -90,6 +93,7 @@ final class BookService implements BookServiceInterface
         return $authors;
     }
 
+    #[Override]
     public function attach(Book $book, array $authors): bool
     {
         try {
@@ -119,6 +123,7 @@ final class BookService implements BookServiceInterface
         }
     }
 
+    #[Override]
     public function get(string $id): Book|false
     {
         try {
@@ -129,6 +134,7 @@ final class BookService implements BookServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -142,6 +148,7 @@ final class BookService implements BookServiceInterface
         }
     }
 
+    #[Override]
     public function where(array $filters): Collection
     {
         try {
@@ -191,6 +198,7 @@ final class BookService implements BookServiceInterface
         }
     }
 
+    #[Override]
     public function update(Book $book, array $data): Book|false
     {
         try {
@@ -227,6 +235,7 @@ final class BookService implements BookServiceInterface
         }
     }
 
+    #[Override]
     public function delete(Book $book): bool
     {
         try {

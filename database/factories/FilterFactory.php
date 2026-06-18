@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Filter;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Filter>
@@ -15,6 +16,7 @@ final class FilterFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [

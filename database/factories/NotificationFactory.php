@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Notification;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Override;
 
 /**
  * @extends Factory<Notification>
@@ -15,6 +16,7 @@ final class NotificationFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function definition(): array
     {
         return [
