@@ -18,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         channels: env('APP_ENV') === 'testing' ? null : __DIR__ . '/../routes/channels.php',
         health: '/up',
+        then: function () {
+            Route::middleware('api')
+                ->group(base_path('routes/admin.php'));
+        },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
