@@ -130,33 +130,6 @@ services:
         networks:
             - app-network
 
-#    sequin:
-#        image: sequin/sequin:latest
-#        container_name: app-sequin
-#        restart: always
-#        ports:
-#            - "7376:7376"
-#        environment:
-#            PG_HOSTNAME: ${DB_HOST}
-#            PG_DATABASE: ${DB_DATABASE}
-#            PG_PORT: ${DB_PORT}
-#            PG_USERNAME: ${DB_USERNAME}
-#            PG_PASSWORD: ${DB_PASSWORD}
-#            PG_POOL_SIZE: 20
-#            SECRET_KEY_BASE: wDPLYus0pvD6qJhKJICO4dauYPXfO/Yl782Zjtpew5qRBDp7CZvbWtQmY0eB13If
-#            VAULT_KEY: 2Sig69bIpuSm2kv0VQfDekET2qy8qUZGI8v3/h3ASiY=
-#            REDIS_URL: http://app-redis:6379
-#            CONFIG_FILE_PATH: /config/playground.yml
-#        volumes:
-#            - ./playground.yml:/config/playground.yml
-#        depends_on:
-#            redis:
-#                condition: service_started
-#            postgres:
-#                condition: service_healthy
-#        networks:
-#            - app-network
-
 networks:
     app-network:
         driver: bridge
