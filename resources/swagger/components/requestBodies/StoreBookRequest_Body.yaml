@@ -7,3 +7,9 @@ content:
     examples:
       default:
         $ref: "examples/StoreBookRequest_Example.yaml"
+  multipart/form-data:
+    schema:
+      $ref: "../schemas/requests/StoreBookRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/StoreBookRequest_Example.yaml"

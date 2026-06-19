@@ -1,7 +1,5 @@
 type: object
 properties:
-  user_id:
-    type: integer
   name:
     type: string
     maxLength: 100
@@ -73,12 +71,11 @@ properties:
         maxLength: 13
       - type: 'null'
 required:
-  - user_id
   - name
   - page_count
   - book_type_id
 
-oneOf:
+anyOf:
   - required: [author_id]
   - required: [authorLastname, authorFirstname]
 

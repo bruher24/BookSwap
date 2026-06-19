@@ -62,7 +62,7 @@ properties:
   publication_year:
     oneOf:
       - type: string
-        format: date
+        pattern: '^\d{4}$'
       - type: 'null'
   book_type_id:
     type: integer

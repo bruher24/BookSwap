@@ -40,13 +40,13 @@ final class SendMessageRequest extends FormRequest
         return [
             'chat_id' => [
                 'required',
-                'string',
+                'integer',
                 Rule::exists('chats', 'id')
                     ->withoutTrashed(),
             ],
             'sender_id' => [
                 'required',
-                'string',
+                'integer',
                 Rule::exists('users', 'id')
                     ->withoutTrashed(),
             ],

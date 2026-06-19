@@ -26,9 +26,10 @@ final class BookController extends Controller
 
     public function store(StoreBookRequest $request, BookServiceInterface $bookService): JsonResponse
     {
-        Gate::authorize('create', [Book::class, $request->input('user_id')]);
+        Gate::authorize('create', Book::class);
 
         $validated = $request->validated();
+        $validated['user_id'] = $request->user()->id;
         $book = $bookService->create($validated);
 
         if (!$book) {

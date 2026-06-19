@@ -25,12 +25,6 @@ final class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => [
-                'required',
-                'integer',
-                Rule::exists('users', 'id')
-                    ->withoutTrashed(),
-            ],
             'name' => [
                 'required',
                 'string',

@@ -35,9 +35,9 @@ final class BookPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, int $userId): Response
+    public function create(User $user): Response
     {
-        return Auth::check() && $user->id === $userId
+        return Auth::check()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

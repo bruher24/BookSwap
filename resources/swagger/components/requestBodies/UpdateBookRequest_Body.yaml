@@ -7,4 +7,9 @@ content:
     examples:
       default:
         $ref: "examples/UpdateBookRequest_Example.yaml"
-
+  multipart/form-data:
+    schema:
+      $ref: "../schemas/requests/UpdateBookRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateBookRequest_Example.yaml"

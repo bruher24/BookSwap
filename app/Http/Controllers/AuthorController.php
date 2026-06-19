@@ -28,6 +28,7 @@ final class AuthorController extends Controller
         Gate::authorize('create', Author::class);
 
         $validated = $request->validated();
+        $validated['user_id'] = $request->user()->id;
         $author = $authorService->create($validated);
 
         if (!$author) {

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\BookCondition;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\Cover;
@@ -82,14 +81,17 @@ final class BookService implements BookServiceInterface
                 $authors['ids'][] = $data['author_id' . ($i == 0 ? '' : $i)];
             }
         }
-        if (isset($data['authorFirstname'])) {
+
+        if (isset($data['authorLastname'], $data['authorFirstname'])) {
             $authors['new'] = [
+                'user_id' => $data['user_id'],
                 'lastname' => $data['authorLastname'],
                 'firstname' => $data['authorFirstname'],
-                'patronymic' => $data['authorPatronymic'],
-                'birthdate' => $data['authorBirthdate'],
+                'patronymic' => $data['authorPatronymic'] ?? null,
+                'birthdate' => $data['authorBirthdate'] ?? null,
             ];
         }
+
         return $authors;
     }
 
@@ -206,7 +208,7 @@ final class BookService implements BookServiceInterface
 
             if (isset($data['cover'])) {
                 $coverData = [
-                    'user_id' => $data['user_id'],
+                    'user_id' => $book->user_id,
                     'file' => $data['cover'],
                 ];
 
@@ -218,6 +220,7 @@ final class BookService implements BookServiceInterface
             $formattedData = $this->formatData($data);
             $book->updateOrFail($formattedData);
 
+            $data['user_id'] = $book->user_id;
             $authors = $this->filterAuthorsData($data);
 
             if (!empty($authors)) {

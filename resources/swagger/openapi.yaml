@@ -212,6 +212,7 @@ paths:
             type: array
             items:
               type: string
+              pattern: '^\d{4}$'
         - name: page_count[]
           in: query
           required: false
@@ -220,28 +221,28 @@ paths:
             minItems: 2
             maxItems: 2
             items:
-              type: string
+              type: integer
         - name: book_type_id[]
           in: query
           required: false
           schema:
             type: array
             items:
-              type: string
+              type: integer
         - name: author_id[]
           in: query
           required: false
           schema:
             type: array
             items:
-              type: string
+              type: integer
         - name: genre_id[]
           in: query
           required: false
           schema:
             type: array
             items:
-              type: string
+              type: integer
       responses:
         "200":
           $ref: "components/responses/api/BookCollection_Response.yaml"
