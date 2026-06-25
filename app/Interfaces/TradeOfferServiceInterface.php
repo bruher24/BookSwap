@@ -10,7 +10,7 @@ interface TradeOfferServiceInterface
 {
     public function create(array $data): TradeOffer|false;
 
-    public function get(string $id): TradeOffer|false;
+    public function get(int $id): TradeOffer|false;
 
     public function getAll(): Collection;
 

@@ -47,7 +47,7 @@ final class ChatController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(ChatServiceInterface $chatService, string $chatId): JsonResponse
+    public function destroy(ChatServiceInterface $chatService, int $chatId): JsonResponse
     {
         $chat = $chatService->get($chatId);
 
@@ -90,7 +90,7 @@ final class ChatController extends Controller
         Gate::authorize('send', [$chat, $request->input('sender_id')]);
 
         $validated = $request->validated();
-        $sender = $userService->get($validated['sender_id']);
+        $sender = $userService->get((int)$validated['sender_id']);
 
         if (!$sender) {
             $errors = ['Отправитель не найден'];
@@ -109,13 +109,14 @@ final class ChatController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function block(Request $request, ChatServiceInterface $chatService, Chat $chat): JsonResponse
     {
         Gate::authorize('block', $chat);
 
-        $user = $request->user() ?? null;
-
-        if (!isset($user) || !$chatService->block($chat, $user)) {
+        if (!$chatService->block($chat, $request->user())) {
             $errors = ['Ошибка при блокировке чата'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

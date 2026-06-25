@@ -82,7 +82,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
     }
 
     #[Override]
-    public function get(string $id): TradeOffer|false
+    public function get(int $id): TradeOffer|false
     {
         try {
             return TradeOffer::findOrFail($id);

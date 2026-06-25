@@ -11,7 +11,7 @@ interface ChatServiceInterface
 {
     public function create(array $data): Chat|false;
 
-    public function get(string $id): Chat|false;
+    public function get(int $id): Chat|false;
 
     public function where(string $field, string $value): Collection;
 

@@ -51,7 +51,7 @@ final class FilterService implements FilterServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Filter|false
+    public function get(int $id): Filter|false
     {
         try {
             return Filter::findOrFail($id);

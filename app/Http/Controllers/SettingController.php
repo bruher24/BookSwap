@@ -68,7 +68,7 @@ final class SettingController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(SettingServiceInterface $settingService, string $settingId): JsonResponse
+    public function destroy(SettingServiceInterface $settingService, int $settingId): JsonResponse
     {
         $setting = $settingService->get($settingId);
 

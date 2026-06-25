@@ -70,7 +70,7 @@ final class UserController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(UserServiceInterface $userService, string $userId): JsonResponse
+    public function destroy(UserServiceInterface $userService, int $userId): JsonResponse
     {
         $user = $userService->get($userId);
 
@@ -88,14 +88,16 @@ final class UserController extends Controller
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function rate(RateUserRequest $request, UserServiceInterface $userService, User $user): JsonResponse
     {
         Gate::authorize('rate', $user);
 
         $validated = $request->validated();
-        $requestUser = $request->user() ?? null;
 
-        if (!isset($requestUser) || !$userService->rate($user, $requestUser, (int)$validated['rate'])) {
+        if (!$userService->rate($user, $request->user(), (int)$validated['rate'])) {
             $errors = ['Ошибка при оценке пользователя'];
             return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
         }

@@ -198,6 +198,9 @@ final class BookApiTest extends TestCase
         $response->assertOk();
     }
 
+    /**
+     * @psalm-suppress PossiblyNullPropertyFetch, UndefinedInterfaceMethod
+     */
     public function test_user_can_update_owned_book_cover(): void
     {
         Sanctum::actingAs($this->owner);

@@ -45,7 +45,7 @@ final class PhotoService implements PhotoServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Photo|false
+    public function get(int $id): Photo|false
     {
         try {
             return Photo::findOrFail($id);

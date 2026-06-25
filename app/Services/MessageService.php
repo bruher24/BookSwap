@@ -35,7 +35,7 @@ final class MessageService implements MessageServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Message|false
+    public function get(int $id): Message|false
     {
         try {
             return Message::findOrFail($id);

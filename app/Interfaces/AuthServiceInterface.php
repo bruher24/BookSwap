@@ -4,5 +4,5 @@ namespace App\Interfaces;
 
 interface AuthServiceInterface
 {
-    public function verifyEmail(string $userId): bool;
+    public function verifyEmail(int $userId): bool;
 }

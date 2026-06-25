@@ -9,7 +9,7 @@ interface AuthorServiceInterface
 {
     public function create(array $data): Author|false;
 
-    public function get(string $id): Author|false;
+    public function get(int $id): Author|false;
 
     public function getAll(): Collection;
 

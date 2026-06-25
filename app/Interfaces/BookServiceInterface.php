@@ -9,7 +9,7 @@ interface BookServiceInterface
 {
     public function create(array $data): Book|false;
 
-    public function get(string $id): Book|false;
+    public function get(int $id): Book|false;
 
     public function getAll(): Collection;
 

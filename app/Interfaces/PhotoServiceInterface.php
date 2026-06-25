@@ -9,7 +9,7 @@ interface PhotoServiceInterface
 {
     public function create(array $data): Photo|false;
 
-    public function get(string $id): Photo|false;
+    public function get(int $id): Photo|false;
 
     public function getAll(): Collection;
 

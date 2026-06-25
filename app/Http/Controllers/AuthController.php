@@ -80,11 +80,9 @@ final class AuthController extends Controller
         return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function verifyEmail(Request $request, AuthServiceInterface $authService): RedirectResponse
+    public function verifyEmail(Request $request, AuthServiceInterface $authService, int $userId): RedirectResponse
     {
-        $userId = $request->route('userId') ?? null;
-
-        if (!$request->hasValidSignature() || !isset($userId)) {
+        if (!$request->hasValidSignature()) {
             abort(Response::HTTP_BAD_REQUEST);
         }
 

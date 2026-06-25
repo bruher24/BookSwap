@@ -50,7 +50,7 @@
                 </style>
 </head>
 <body>
-<section><h1>Total violations: 23</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
+<section><h1>Total violations: 22</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
 <ul id="psalmErrors">
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Enums/BookCondition.php:13</h3>
@@ -129,7 +129,7 @@
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find explicit calls to method App\Interfaces\MessageServiceInterface::get (but did find some potential callers)</p>
-<pre data-start="12" class="line-numbersx"><code class="language-php">    public function /**##(##**/get/**##)##**/(string $id): Message|false;</code></pre>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public function /**##(##**/get/**##)##**/(int $id): Message|false;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
@@ -189,7 +189,7 @@
 <li>PossiblyUnusedMethod</li>
 </ul>
 <p>Cannot find explicit calls to method App\Interfaces\NotificationServiceInterface::get (but did find some potential callers)</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/get/**##)##**/(string $id): Notification|false;</code></pre>
+<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/get/**##)##**/(int $id): Notification|false;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
@@ -260,16 +260,6 @@
 </ul>
 <p>Cannot find explicit calls to method App\Interfaces\SettingServiceInterface::where (but did find some potential callers)</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/TradeOfferServiceInterface.php:13</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\TradeOfferServiceInterface::get (but did find some potential callers)</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/get/**##)##**/(string $id): TradeOffer|false;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">

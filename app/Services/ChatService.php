@@ -61,7 +61,7 @@ final class ChatService implements ChatServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Chat|false
+    public function get(int $id): Chat|false
     {
         try {
             return Chat::findOrFail($id);

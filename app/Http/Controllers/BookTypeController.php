@@ -64,7 +64,7 @@ final class BookTypeController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(BookTypeServiceInterface $bookTypeService, string $bookTypeId): JsonResponse
+    public function destroy(BookTypeServiceInterface $bookTypeService, int $bookTypeId): JsonResponse
     {
         $bookType = $bookTypeService->get($bookTypeId);
 

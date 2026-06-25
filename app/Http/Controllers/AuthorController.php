@@ -23,6 +23,9 @@ final class AuthorController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullPropertyFetch
+     */
     public function store(AuthorServiceInterface $authorService, StoreAuthorRequest $request): JsonResponse
     {
         Gate::authorize('create', Author::class);
@@ -64,7 +67,7 @@ final class AuthorController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(AuthorServiceInterface $authorService, string $authorId): JsonResponse
+    public function destroy(AuthorServiceInterface $authorService, int $authorId): JsonResponse
     {
         $author = $authorService->get($authorId);
 

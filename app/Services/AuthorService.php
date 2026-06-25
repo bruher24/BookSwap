@@ -53,7 +53,7 @@ final class AuthorService implements AuthorServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Author|false
+    public function get(int $id): Author|false
     {
         try {
             return Author::findOrFail($id);

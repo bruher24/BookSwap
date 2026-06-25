@@ -48,7 +48,7 @@ final class CoverController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(CoverServiceInterface $coverService, string $coverId): JsonResponse
+    public function destroy(CoverServiceInterface $coverService, int $coverId): JsonResponse
     {
         $cover = $coverService->get($coverId);
 

@@ -35,7 +35,7 @@ final class SettingService implements SettingServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Setting|false
+    public function get(int $id): Setting|false
     {
         try {
             return Setting::findOrFail($id);

@@ -51,7 +51,7 @@ final class GenreService implements GenreServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Genre|false
+    public function get(int $id): Genre|false
     {
         try {
             return Genre::findOrFail($id);

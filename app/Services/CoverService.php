@@ -45,7 +45,7 @@ final class CoverService implements CoverServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Cover|false
+    public function get(int $id): Cover|false
     {
         try {
             return Cover::findOrFail($id);

@@ -9,7 +9,7 @@ interface UserServiceInterface
 {
     public function create(array $data): User|false;
 
-    public function get(string $id): User|false;
+    public function get(int $id): User|false;
 
     public function getAll(): Collection;
 

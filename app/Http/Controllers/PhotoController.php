@@ -48,7 +48,7 @@ final class PhotoController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(PhotoServiceInterface $photoService, string $photoId): JsonResponse
+    public function destroy(PhotoServiceInterface $photoService, int $photoId): JsonResponse
     {
         $photo = $photoService->get($photoId);
 

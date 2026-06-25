@@ -72,8 +72,14 @@ final class TradeOfferController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
+    public function destroy(TradeOfferServiceInterface $tradeOfferService, int $tradeOfferId): JsonResponse
     {
+        $tradeOffer = $tradeOfferService->get($tradeOfferId);
+
+        if (!$tradeOffer) {
+            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        }
+
         Gate::authorize('delete', $tradeOffer);
 
         if (!$tradeOfferService->delete($tradeOffer)) {

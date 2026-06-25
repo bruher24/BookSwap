@@ -126,7 +126,7 @@ final class BookService implements BookServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Book|false
+    public function get(int $id): Book|false
     {
         try {
             return Book::findOrFail($id);

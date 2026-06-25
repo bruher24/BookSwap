@@ -64,7 +64,7 @@ final class GenreController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(GenreServiceInterface $genreService, string $genreId): JsonResponse
+    public function destroy(GenreServiceInterface $genreService, int $genreId): JsonResponse
     {
         $genre = $genreService->get($genreId);
 

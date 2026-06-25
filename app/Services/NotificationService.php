@@ -36,7 +36,7 @@ final class NotificationService implements NotificationServiceInterface
     }
 
     #[Override]
-    public function get(string $id): Notification|false
+    public function get(int $id): Notification|false
     {
         try {
             return Notification::findOrFail($id);

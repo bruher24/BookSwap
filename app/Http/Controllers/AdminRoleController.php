@@ -2,32 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
-class AdminRoleController extends Controller
+final class AdminRoleController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
-
+        return response()->json();
     }
 
-    public function show()
+    public function show(): JsonResponse
     {
-
+        return response()->json();
     }
 
-    public function store()
+    public function store(): JsonResponse
     {
-
+        return response()->json();
     }
 
-    public function update()
+    public function update(): JsonResponse
     {
-
+        return response()->json();
     }
 
-    public function destroy()
+    public function destroy(): JsonResponse
     {
-
+        return response()->json();
     }
 }

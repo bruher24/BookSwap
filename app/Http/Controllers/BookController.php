@@ -24,6 +24,9 @@ final class BookController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullPropertyFetch
+     */
     public function store(StoreBookRequest $request, BookServiceInterface $bookService): JsonResponse
     {
         Gate::authorize('create', Book::class);
@@ -66,7 +69,7 @@ final class BookController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(BookServiceInterface $bookService, string $bookId): JsonResponse
+    public function destroy(BookServiceInterface $bookService, int $bookId): JsonResponse
     {
         $book = $bookService->get($bookId);
 

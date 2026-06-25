@@ -64,7 +64,7 @@ final class FilterController extends Controller
         return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function destroy(FilterServiceInterface $filterService, string $filterId): JsonResponse
+    public function destroy(FilterServiceInterface $filterService, int $filterId): JsonResponse
     {
         $filter = $filterService->get($filterId);
 

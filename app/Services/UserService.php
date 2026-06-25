@@ -36,7 +36,7 @@ final class UserService implements UserServiceInterface
     }
 
     #[Override]
-    public function get(string $id): User|false
+    public function get(int $id): User|false
     {
         try {
             return User::findOrFail($id);
