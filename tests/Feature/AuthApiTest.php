@@ -10,6 +10,8 @@ use Laravel\Sanctum\Sanctum;
 use Override;
 use Tests\TestCase;
 
+// TODO: добавить тесты ролей
+
 final class AuthApiTest extends TestCase
 {
     use RefreshDatabase;

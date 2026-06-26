@@ -1,5 +1,7 @@
 <?php
 
+// TODO: добавить недостающие роуты ресурсов
+
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
