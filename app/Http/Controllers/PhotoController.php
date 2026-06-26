@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePhotoRequest;
-use App\Http\Resources\FailureResource;
 use App\Http\Resources\PhotoResource;
-use App\Http\Resources\SuccessResource;
 use App\Interfaces\PhotoServiceInterface;
 use App\Models\Photo;
 use Illuminate\Http\JsonResponse;
@@ -19,9 +17,8 @@ final class PhotoController extends Controller
         Gate::authorize('viewAny', Photo::class);
 
         $photos = $photoService->getAll();
-        $data = ['photos' => PhotoResource::collection($photos)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return PhotoResource::collection($photos)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(PhotoServiceInterface $photoService, StorePhotoRequest $request): JsonResponse
@@ -32,20 +29,15 @@ final class PhotoController extends Controller
         $photo = $photoService->create($validated);
 
         if (!$photo) {
-            $errors = ['Ошибка при создании фото'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при создании фото', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['photo' => new PhotoResource($photo)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new PhotoResource($photo))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Photo $photo): JsonResponse
     {
-        $data = ['photo' => new PhotoResource($photo)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new PhotoResource($photo))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function destroy(PhotoServiceInterface $photoService, int $photoId): JsonResponse
@@ -53,16 +45,15 @@ final class PhotoController extends Controller
         $photo = $photoService->get($photoId);
 
         if (!$photo) {
-            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+            return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
         Gate::authorize('delete', $photo);
 
         if (!$photoService->delete($photo)) {
-            $errors = ['Ошибка при удалении фото'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при удалении фото', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }

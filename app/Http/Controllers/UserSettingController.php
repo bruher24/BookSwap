@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserSettingValueRequest;
-use App\Http\Resources\FailureResource;
 use App\Http\Resources\SettingResource;
-use App\Http\Resources\SuccessResource;
 use App\Interfaces\UserSettingServiceInterface;
 use App\Models\Setting;
 use App\Models\User;
@@ -20,9 +18,8 @@ final class UserSettingController extends Controller
         Gate::authorize('settings', $user);
 
         $userSettings = $user->settings()->get();
-        $data = ['settings' => SettingResource::collection($userSettings)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return SettingResource::collection($userSettings)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function update(UserSettingServiceInterface $userSettingService, UpdateUserSettingValueRequest $request, User $user, Setting $setting): JsonResponse
@@ -33,12 +30,9 @@ final class UserSettingController extends Controller
         $updated = $userSettingService->updateSetting($user, $setting, $validated['value']);
 
         if (!$updated) {
-            $errors = ['Ошибка при обновлении настроек'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при обновлении настроек', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['setting' => new SettingResource($setting)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new SettingResource($setting))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

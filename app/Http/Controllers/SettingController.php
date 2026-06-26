@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
-use App\Http\Resources\FailureResource;
 use App\Http\Resources\SettingResource;
-use App\Http\Resources\SuccessResource;
 use App\Interfaces\SettingServiceInterface;
 use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
@@ -20,9 +18,8 @@ final class SettingController extends Controller
         Gate::authorize('viewAny', Setting::class);
 
         $settings = $settingService->getAll();
-        $data = ['settings' => SettingResource::collection($settings)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return SettingResource::collection($settings)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(SettingServiceInterface $settingService, StoreSettingRequest $request): JsonResponse
@@ -33,22 +30,17 @@ final class SettingController extends Controller
         $setting = $settingService->create($validated);
 
         if (!$setting) {
-            $errors = ['Ошибка при создании настройки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при создании настройки', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['setting' => new SettingResource($setting)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new SettingResource($setting))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Setting $setting): JsonResponse
     {
         Gate::authorize('view', $setting);
 
-        $data = ['setting' => new SettingResource($setting)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new SettingResource($setting))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function update(SettingServiceInterface $settingService, UpdateSettingRequest $request, Setting $setting): JsonResponse
@@ -59,13 +51,10 @@ final class SettingController extends Controller
         $setting = $settingService->update($setting, $validated);
 
         if (!$setting) {
-            $errors = ['Ошибка при обновлении настройки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при обновлении настройки', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['setting' => new SettingResource($setting)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new SettingResource($setting))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function destroy(SettingServiceInterface $settingService, int $settingId): JsonResponse
@@ -73,16 +62,15 @@ final class SettingController extends Controller
         $setting = $settingService->get($settingId);
 
         if (!$setting) {
-            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+            return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
         Gate::authorize('delete', $setting);
 
         if (!$settingService->delete($setting)) {
-            $errors = ['Ошибка при удалении настройки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при удалении настройки', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }

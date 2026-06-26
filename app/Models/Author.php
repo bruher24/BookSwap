@@ -7,6 +7,7 @@ use App\Traits\CacheInvalidation;
 use Database\Factories\AuthorFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
@@ -67,5 +68,10 @@ final class Author extends Model implements Cacheable
     public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class);
+    }
+
+    public function users(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

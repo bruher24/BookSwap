@@ -2,20 +2,25 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Override;
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 
-final class CoverResource extends JsonResource
+final class CoverResource extends JsonApiResource
 {
     /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
+     * The resource's attributes.
      */
-    #[Override]
-    public function toArray(Request $request): array
-    {
-        return parent::toArray($request);
-    }
+    public array $attributes = [
+        'user_id',
+        'src',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    /**
+     * The resource's relationships.
+     */
+    public array $relationships = [
+        'books' => BookResource::class,
+    ];
 }

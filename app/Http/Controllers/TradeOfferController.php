@@ -7,8 +7,6 @@ use App\Http\Requests\StoreTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferStatusRequest;
 use App\Http\Resources\BookResource;
-use App\Http\Resources\FailureResource;
-use App\Http\Resources\SuccessResource;
 use App\Http\Resources\TradeOfferResource;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Models\TradeOffer;
@@ -24,9 +22,8 @@ final class TradeOfferController extends Controller
         Gate::authorize('viewAny', TradeOffer::class);
 
         $tradeOffers = $tradeOfferService->getAll();
-        $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return TradeOfferResource::collection($tradeOffers)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(TradeOfferServiceInterface $tradeOfferService, StoreTradeOfferRequest $request): JsonResponse
@@ -37,22 +34,17 @@ final class TradeOfferController extends Controller
         $tradeOffer = $tradeOfferService->create($validated);
 
         if (!$tradeOffer) {
-            $errors = ['Ошибка при создании сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при создании сделки', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['tradeOffer' => new TradeOfferResource($tradeOffer)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new TradeOfferResource($tradeOffer))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(TradeOffer $tradeOffer): JsonResponse
     {
         Gate::authorize('view', $tradeOffer);
 
-        $data = ['tradeOffer' => new TradeOfferResource($tradeOffer)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new TradeOfferResource($tradeOffer))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function update(TradeOfferServiceInterface $tradeOfferService, UpdateTradeOfferRequest $request, TradeOffer $tradeOffer): JsonResponse
@@ -63,13 +55,10 @@ final class TradeOfferController extends Controller
         $tradeOffer = $tradeOfferService->update($tradeOffer, $validated);
 
         if (!$tradeOffer) {
-            $errors = ['Ошибка при обновлении сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при обновлении сделки', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['tradeOffer' => new TradeOfferResource($tradeOffer)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new TradeOfferResource($tradeOffer))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function destroy(TradeOfferServiceInterface $tradeOfferService, int $tradeOfferId): JsonResponse
@@ -77,17 +66,16 @@ final class TradeOfferController extends Controller
         $tradeOffer = $tradeOfferService->get($tradeOfferId);
 
         if (!$tradeOffer) {
-            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+            return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
         Gate::authorize('delete', $tradeOffer);
 
         if (!$tradeOfferService->delete($tradeOffer)) {
-            $errors = ['Ошибка при удалении сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при удалении сделки', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 
     public function items(TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
@@ -95,9 +83,8 @@ final class TradeOfferController extends Controller
         Gate::authorize('view', $tradeOffer);
 
         $items = $tradeOfferService->items($tradeOffer);
-        $data = ['items' => BookResource::collection($items)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return BookResource::collection($items)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function bySender(TradeOfferServiceInterface $tradeOfferService, User $sender): JsonResponse
@@ -105,9 +92,8 @@ final class TradeOfferController extends Controller
         Gate::authorize('bySender', [TradeOffer::class, $sender]);
 
         $tradeOffers = $tradeOfferService->bySender($sender);
-        $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return TradeOfferResource::collection($tradeOffers)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function byReceiver(TradeOfferServiceInterface $tradeOfferService, User $receiver): JsonResponse
@@ -115,9 +101,8 @@ final class TradeOfferController extends Controller
         Gate::authorize('byReceiver', [TradeOffer::class, $receiver]);
 
         $tradeOffers = $tradeOfferService->byReceiver($receiver);
-        $data = ['tradeOffers' => TradeOfferResource::collection($tradeOffers)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return TradeOfferResource::collection($tradeOffers)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function updateStatus(UpdateTradeOfferStatusRequest $request, TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
@@ -143,10 +128,9 @@ final class TradeOfferController extends Controller
         }
 
         if (!$result) {
-            $errors = ['Ошибка при обновлении статуса сделки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при обновлении статуса сделки', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
+        return $this->successResponse();
     }
 }

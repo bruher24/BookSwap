@@ -4,17 +4,13 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 
-final class MessageResource extends JsonApiResource
+final class RoleResource extends JsonApiResource
 {
     /**
      * The resource's attributes.
      */
     public array $attributes = [
-        'chat_id',
-        'sender_id',
-        'subject',
-        'body',
-        'seen',
+        'name',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -24,6 +20,6 @@ final class MessageResource extends JsonApiResource
      * The resource's relationships.
      */
     public array $relationships = [
-        'chat' => ChatResource::class,
+        'users' => UserResource::class,
     ];
 }

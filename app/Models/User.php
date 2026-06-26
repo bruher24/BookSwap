@@ -131,4 +131,9 @@ final class User extends Authenticatable implements Cacheable
     {
         return $this->hasMany(Rating::class);
     }
+
+    public function authors(): HasMany
+    {
+        return $this->hasMany(Author::class);
+    }
 }

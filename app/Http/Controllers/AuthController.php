@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\StoreUserRequest;
-use App\Http\Resources\FailureResource;
-use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserResource;
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
@@ -20,32 +18,26 @@ final class AuthController extends Controller
     public function register(UserServiceInterface $userService, StoreUserRequest $request): JsonResponse
     {
         if (Auth::check()) {
-            $errors = ['Аутентифицированный пользователь не может регистрироваться'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
+            return $this->errorResponse('Аутентифицированный пользователь не может регистрироваться', Response::HTTP_FORBIDDEN);
         }
 
         $validated = $request->validated();
         $user = $userService->create($validated);
 
         if (!$user) {
-            $errors = ['Ошибка при регистрации'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при регистрации', Response::HTTP_BAD_REQUEST);
         }
 
         Auth::login($user);
         $request->session()->regenerate();
-        $data = [
-            'user' => new UserResource($user)
-        ];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new UserResource($user))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function login(AuthRequest $request): JsonResponse
     {
         if (Auth::check()) {
-            $errors = ['Пользователь уже аутентифицирован'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_FORBIDDEN);
+            return $this->errorResponse('Пользователь уже аутентифицирован', Response::HTTP_FORBIDDEN);
         }
 
         $validated = $request->validated();
@@ -53,31 +45,26 @@ final class AuthController extends Controller
         unset($validated['remember']);
 
         if (!Auth::attempt($validated, $remember)) {
-            $errors = ['Неправильный логин или пароль'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_UNAUTHORIZED);
+            return $this->errorResponse('Неправильный логин или пароль', Response::HTTP_UNAUTHORIZED);
         }
 
         $request->session()->regenerate();
         $user = Auth::user();
-        $data = [
-            'user' => new UserResource($user)
-        ];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new UserResource($user))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function logout(Request $request): JsonResponse
     {
         if (!Auth::check()) {
-            $errors = ['Гость не может выйти'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Гость не может выйти', Response::HTTP_BAD_REQUEST);
         }
 
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
+        return $this->successResponse();
     }
 
     public function verifyEmail(Request $request, AuthServiceInterface $authService, int $userId): RedirectResponse

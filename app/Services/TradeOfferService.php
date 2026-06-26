@@ -223,7 +223,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
     }
 
     #[Override]
-    public function getTradeHistory(User $user): \Illuminate\Support\Collection
+    public function tradeHistory(User $user): \Illuminate\Support\Collection
     {
         $history = TradeOffer::query()
             ->where('sender_id', $user->id)
@@ -231,11 +231,12 @@ final class TradeOfferService implements TradeOfferServiceInterface
             ->withoutTrashed()
             ->get();
 
-        return collect([
-            TradeOfferStatus::Pending->value => $history->where('status', TradeOfferStatus::Pending),
-            TradeOfferStatus::Accepted->value => $history->where('status', TradeOfferStatus::Accepted),
-            TradeOfferStatus::Rejected->value => $history->where('status', TradeOfferStatus::Rejected),
-            TradeOfferStatus::Finished->value => $history->where('status', TradeOfferStatus::Finished),
-        ]);
+        $data = [];
+
+        foreach (TradeOfferStatus::cases() as $case) {
+            $data[$case->value] = $history->where('status', $case);
+        }
+
+        return collect($data);
     }
 }

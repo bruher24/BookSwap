@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use App\Http\Resources\AuthorResource;
-use App\Http\Resources\FailureResource;
-use App\Http\Resources\SuccessResource;
 use App\Interfaces\AuthorServiceInterface;
 use App\Models\Author;
 use Illuminate\Http\JsonResponse;
@@ -18,9 +16,8 @@ final class AuthorController extends Controller
     public function index(AuthorServiceInterface $authorService): JsonResponse
     {
         $authors = $authorService->getAll();
-        $data = ['authors' => AuthorResource::collection($authors)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return AuthorResource::collection($authors)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -35,20 +32,15 @@ final class AuthorController extends Controller
         $author = $authorService->create($validated);
 
         if (!$author) {
-            $errors = ['Ошибка при создании автора'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при создании автора', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['author' => new AuthorResource($author)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new AuthorResource($author))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Author $author): JsonResponse
     {
-        $data = ['author' => new AuthorResource($author)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new AuthorResource($author))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function update(AuthorServiceInterface $authorService, UpdateAuthorRequest $request, Author $author): JsonResponse
@@ -59,12 +51,10 @@ final class AuthorController extends Controller
         $author = $authorService->update($author, $validated);
 
         if (!$author) {
-            $errors = ['Ошибка при обновлении автора'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при обновлении автора', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['author' => new AuthorResource($author)];
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new AuthorResource($author))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function destroy(AuthorServiceInterface $authorService, int $authorId): JsonResponse
@@ -72,16 +62,15 @@ final class AuthorController extends Controller
         $author = $authorService->get($authorId);
 
         if (!$author) {
-            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+            return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
         Gate::authorize('delete', $author);
 
         if (!$authorService->delete($author)) {
-            $errors = ['Ошибка при удалении автора'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при удалении автора', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }

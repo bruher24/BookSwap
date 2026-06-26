@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RateUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\FailureResource;
-use App\Http\Resources\SuccessResource;
+use App\Http\Resources\TradeOfferHistoryResource;
+use App\Http\Resources\TradeOfferResource;
 use App\Http\Resources\UserResource;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
@@ -23,9 +23,8 @@ final class UserController extends Controller
         Gate::authorize('viewAny', User::class);
 
         $users = $userService->getAll();
-        $data = ['users' => UserResource::collection($users)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return UserResource::collection($users)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(UserServiceInterface $userService, StoreUserRequest $request): JsonResponse
@@ -36,21 +35,17 @@ final class UserController extends Controller
         $user = $userService->create($validated);
 
         if (!$user) {
-            $errors = ['Ошибка при создании пользователя'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при создании пользователя', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['user' => new UserResource($user)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new UserResource($user))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(User $user): JsonResponse
     {
         Gate::authorize('view', $user);
 
-        $data = ['user' => new UserResource($user)];
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new UserResource($user))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function update(UserServiceInterface $userService, UpdateUserRequest $request, User $user): JsonResponse
@@ -61,13 +56,10 @@ final class UserController extends Controller
         $user = $userService->update($user, $validated);
 
         if (!$user) {
-            $errors = ['Ошибка при обновлении пользователя'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при обновлении пользователя', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['user' => new UserResource($user)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new UserResource($user))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function destroy(UserServiceInterface $userService, int $userId): JsonResponse
@@ -75,17 +67,16 @@ final class UserController extends Controller
         $user = $userService->get($userId);
 
         if (!$user) {
-            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+            return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
         Gate::authorize('delete', $user);
 
         if (!$userService->delete($user)) {
-            $errors = ['Ошибка при удалении пользователя'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при удалении пользователя', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 
     /**
@@ -98,11 +89,10 @@ final class UserController extends Controller
         $validated = $request->validated();
 
         if (!$userService->rate($user, $request->user(), (int)$validated['rate'])) {
-            $errors = ['Ошибка при оценке пользователя'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при оценке пользователя', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_OK);
+        return $this->successResponse();
     }
 
     public function history(TradeOfferServiceInterface $tradeOfferService): JsonResponse
@@ -112,11 +102,11 @@ final class UserController extends Controller
         $user = request()->user() ?? null;
 
         if (!isset($user)) {
-            $errors = ['Пользователь не авторизован'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Пользователь не авторизован', Response::HTTP_BAD_REQUEST);
         }
 
-        $history = $tradeOfferService->getTradeHistory($user);
-        return (new SuccessResource($history->toArray()))->response()->setStatusCode(Response::HTTP_OK);
+        $history = $tradeOfferService->tradeHistory($user);
+
+        return (new TradeOfferHistoryResource($history))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

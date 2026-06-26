@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Middleware\EnsureUserIsAdmin;
-use App\Http\Resources\FailureResource;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -18,11 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__ . '/../routes/api.php',
         commands: __DIR__ . '/../routes/console.php',
         channels: env('APP_ENV') === 'testing' ? null : __DIR__ . '/../routes/channels.php',
-        health: '/up',
-        then: function () {
-            Route::middleware('api')
-                ->group(base_path('routes/admin.php'));
-        },
+        health: '/up'
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
@@ -36,8 +31,15 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->renderable(function (NotFoundHttpException $e, Request $request) {
             if ($request->wantsJson()) {
-                $errors = ['Not found'];
-                return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_NOT_FOUND);
+                return response()->json([
+                    'errors' => [
+                        [
+                            'status' => (string) Response::HTTP_NOT_FOUND,
+                            'title' => Response::$statusTexts[Response::HTTP_NOT_FOUND] ?? 'Error',
+                            'detail' => 'Not found',
+                        ],
+                    ],
+                ], Response::HTTP_NOT_FOUND)->header('Content-Type', 'application/vnd.api+json');
             }
         });
     })

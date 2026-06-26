@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\SearchResultsResource;
-use App\Http\Resources\SuccessResource;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
@@ -28,8 +27,6 @@ final class SearchController extends Controller
             'total' => $total,
         ]);
 
-        $data = ['search_results' => $searchResults];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return $searchResults->response()->setStatusCode(Response::HTTP_OK);
     }
 }

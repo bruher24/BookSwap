@@ -32,5 +32,5 @@ interface TradeOfferServiceInterface
 
     public function finish(TradeOffer $tradeOffer): bool;
 
-    public function getTradeHistory(User $user): \Illuminate\Support\Collection;
+    public function tradeHistory(User $user): \Illuminate\Support\Collection;
 }

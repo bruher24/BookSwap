@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
@@ -21,6 +22,14 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->name('api.')
     ->middleware(['auth:sanctum', 'throttle:api'])
     ->group(function () {
+        Route::prefix('admin')->name('admin.')->controller(AdminAuthController::class)
+            ->middleware('admin')
+            ->group(function () {
+                Route::post('login', 'login')->name('login')->withoutMiddleware(['auth:sanctum', 'admin']);
+                Route::post('logout', 'logout')->name('logout');
+                Route::get('profile', 'profile')->name('profile');
+            });
+
         Route::prefix('auth')->name('auth.')->controller(AuthController::class)
             ->group(function () {
                 Route::post('register', 'register')->name('register')->withoutMiddleware('auth:sanctum');

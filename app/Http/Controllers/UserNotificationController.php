@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationResource;
-use App\Http\Resources\SuccessResource;
 use App\Interfaces\NotificationServiceInterface;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -17,8 +16,7 @@ final class UserNotificationController extends Controller
         Gate::authorize('notifications', $user);
 
         $notifications = $notificationService->byUser($user);
-        $data = ['notifications' => NotificationResource::collection($notifications)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return NotificationResource::collection($notifications)->response()->setStatusCode(Response::HTTP_OK);
     }
 }

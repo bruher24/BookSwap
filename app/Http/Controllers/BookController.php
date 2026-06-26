@@ -6,8 +6,6 @@ use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Http\Requests\WhereBookRequest;
 use App\Http\Resources\BookResource;
-use App\Http\Resources\FailureResource;
-use App\Http\Resources\SuccessResource;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
@@ -19,9 +17,8 @@ final class BookController extends Controller
     public function index(BookServiceInterface $bookService): JsonResponse
     {
         $books = $bookService->getAll();
-        $data = ['books' => BookResource::collection($books)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return BookResource::collection($books)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     /**
@@ -36,20 +33,15 @@ final class BookController extends Controller
         $book = $bookService->create($validated);
 
         if (!$book) {
-            $errors = ['Ошибка при создании книги'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при создании книги', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['book' => new BookResource($book)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new BookResource($book))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Book $book): JsonResponse
     {
-        $data = ['book' => new BookResource($book)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new BookResource($book))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function update(UpdateBookRequest $request, BookServiceInterface $bookService, Book $book): JsonResponse
@@ -60,13 +52,10 @@ final class BookController extends Controller
         $book = $bookService->update($book, $validated);
 
         if (!$book) {
-            $errors = ['Ошибка при обновлении книги'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при обновлении книги', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['book' => new BookResource($book)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new BookResource($book))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function destroy(BookServiceInterface $bookService, int $bookId): JsonResponse
@@ -74,17 +63,16 @@ final class BookController extends Controller
         $book = $bookService->get($bookId);
 
         if (!$book) {
-            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+            return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
         Gate::authorize('delete', $book);
 
         if (!$bookService->delete($book)) {
-            $errors = ['Ошибка при удалении книги'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при удалении книги', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 
     public function where(WhereBookRequest $request, BookServiceInterface $bookService): JsonResponse
@@ -92,8 +80,7 @@ final class BookController extends Controller
         $validated = $request->validated();
 
         $books = $bookService->where($validated);
-        $data = ['books' => BookResource::collection($books)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return BookResource::collection($books)->response()->setStatusCode(Response::HTTP_OK);
     }
 }

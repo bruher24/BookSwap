@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreGenreRequest;
 use App\Http\Requests\UpdateGenreRequest;
-use App\Http\Resources\FailureResource;
 use App\Http\Resources\GenreResource;
-use App\Http\Resources\SuccessResource;
 use App\Interfaces\GenreServiceInterface;
 use App\Models\Genre;
 use Illuminate\Http\JsonResponse;
@@ -18,9 +16,8 @@ final class GenreController extends Controller
     public function index(GenreServiceInterface $genreService): JsonResponse
     {
         $genres = $genreService->getAll();
-        $data = ['genres' => GenreResource::collection($genres)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return GenreResource::collection($genres)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(GenreServiceInterface $genreService, StoreGenreRequest $request): JsonResponse
@@ -31,20 +28,15 @@ final class GenreController extends Controller
         $genre = $genreService->create($validated);
 
         if (!$genre) {
-            $errors = ['Ошибка при создании жанра'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при создании жанра', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['genre' => new GenreResource($genre)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new GenreResource($genre))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Genre $genre): JsonResponse
     {
-        $data = ['genre' => new GenreResource($genre)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new GenreResource($genre))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function update(GenreServiceInterface $genreService, UpdateGenreRequest $request, Genre $genre): JsonResponse
@@ -55,13 +47,10 @@ final class GenreController extends Controller
         $genre = $genreService->update($genre, $validated);
 
         if (!$genre) {
-            $errors = ['Ошибка при обновлении жанра'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при обновлении жанра', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['genre' => new GenreResource($genre)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new GenreResource($genre))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function destroy(GenreServiceInterface $genreService, int $genreId): JsonResponse
@@ -69,16 +58,15 @@ final class GenreController extends Controller
         $genre = $genreService->get($genreId);
 
         if (!$genre) {
-            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+            return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
         Gate::authorize('delete', $genre);
 
         if (!$genreService->delete($genre)) {
-            $errors = ['Ошибка при удалении жанра'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при удалении жанра', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }

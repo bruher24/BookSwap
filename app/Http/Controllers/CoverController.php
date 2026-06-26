@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCoverRequest;
 use App\Http\Resources\CoverResource;
-use App\Http\Resources\FailureResource;
-use App\Http\Resources\SuccessResource;
 use App\Interfaces\CoverServiceInterface;
 use App\Models\Cover;
 use Illuminate\Http\JsonResponse;
@@ -19,9 +17,8 @@ final class CoverController extends Controller
         Gate::authorize('viewAny', Cover::class);
 
         $covers = $coverService->getAll();
-        $data = ['covers' => CoverResource::collection($covers)];
 
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return CoverResource::collection($covers)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function store(CoverServiceInterface $coverService, StoreCoverRequest $request): JsonResponse
@@ -32,20 +29,15 @@ final class CoverController extends Controller
         $cover = $coverService->create($validated);
 
         if (!$cover) {
-            $errors = ['Ошибка при создании обложки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при создании обложки', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = ['cover' => new CoverResource($cover)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_CREATED);
+        return (new CoverResource($cover))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Cover $cover): JsonResponse
     {
-        $data = ['cover' => new CoverResource($cover)];
-
-        return (new SuccessResource($data))->response()->setStatusCode(Response::HTTP_OK);
+        return (new CoverResource($cover))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function destroy(CoverServiceInterface $coverService, int $coverId): JsonResponse
@@ -53,16 +45,15 @@ final class CoverController extends Controller
         $cover = $coverService->get($coverId);
 
         if (!$cover) {
-            return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+            return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
         Gate::authorize('delete', $cover);
 
         if (!$coverService->delete($cover)) {
-            $errors = ['Ошибка при удалении обложки'];
-            return (new FailureResource($errors))->response()->setStatusCode(Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Ошибка при удалении обложки', Response::HTTP_BAD_REQUEST);
         }
 
-        return (new SuccessResource())->response()->setStatusCode(Response::HTTP_ACCEPTED);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }
