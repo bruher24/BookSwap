@@ -10,6 +10,7 @@ use App\Http\Controllers\CoverController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TradeOfferController;
@@ -109,6 +110,15 @@ Route::prefix('v1')->name('api.')
                 Route::post('/', 'store')->name('store');
                 Route::get('{photo}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
                 Route::delete('{photo}', 'destroy')->name('destroy');
+            });
+
+        Route::prefix('roles')->name('roles.')->controller(RoleController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('{role}', 'show')->name('show');
+                Route::patch('{role}', 'update')->name('update');
+                Route::delete('{role}', 'destroy')->name('destroy');
             });
 
         Route::get('search', SearchController::class)->name('search')->withoutMiddleware('auth:sanctum');
