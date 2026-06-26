@@ -1,28 +1,48 @@
 type: object
 properties:
   id:
-    type: integer
-  pair_key:
     type: string
-  created_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+  type:
+    type: string
+    enum:
+      - chats
+  attributes:
+    type: object
+    properties:
+      pair_key:
+        type: string
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - pair_key
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - pair_key
-  - created_at
-  - updated_at
-  - deleted_at
+  - type
+  - attributes
 title: ChatResource

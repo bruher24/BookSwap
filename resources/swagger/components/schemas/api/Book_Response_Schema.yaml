@@ -1,10 +1,6 @@
-ApiResponse_Schema_Book:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          book:
-            $ref: '../../schemas/resources/BookResource.yaml'
+type: object
+properties:
+  data:
+    $ref: ../../schemas/resources/BookResource.yaml
+required:
+  - data

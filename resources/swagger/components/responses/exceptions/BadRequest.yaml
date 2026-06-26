@@ -1,14 +1,15 @@
-description: "Bad request"
+description: "Bad Request"
 content:
-  application/json:
+  application/vnd.api+json:
     schema:
       type: object
       properties:
-        message:
-          type: string
-          description: "Errors overview"
+        errors:
+          type: array
+          items:
+            $ref: ../../schemas/api/ErrorObject.yaml
       required:
-        - message
+        - errors
     examples:
       default:
-        $ref: "examples/BadRequest_Example.yaml"
+        $ref: examples/BadRequest_Example.yaml

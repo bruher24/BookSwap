@@ -1,34 +1,54 @@
 type: object
 properties:
   id:
-    type: integer
-  name:
     type: string
-  by_fields:
+  type:
     type: string
-  is_active:
-    type: boolean
-  created_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+    enum:
+      - filters
+  attributes:
+    type: object
+    properties:
+      name:
+        type: string
+      by_fields:
+        type: string
+      is_active:
+        type: boolean
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - name
+      - by_fields
+      - is_active
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - name
-  - by_fields
-  - is_active
-  - created_at
-  - updated_at
-  - deleted_at
+  - type
+  - attributes
 title: FilterResource

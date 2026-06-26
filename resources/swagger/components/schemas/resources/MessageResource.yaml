@@ -1,40 +1,68 @@
 type: object
 properties:
   id:
-    type: integer
-  body:
     type: string
-  chat_id:
-    type: integer
-  sender_id:
-    oneOf:
-      - type: integer
-      - type: 'null'
-  subject:
-    oneOf:
-      - type: string
-      - type: 'null'
-  seen:
-    type: boolean
-  created_at:
+  type:
     type: string
-    format: date-time
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+    enum:
+      - messages
+  attributes:
+    type: object
+    properties:
+      chat_id:
+        type: integer
+      sender_id:
+        oneOf:
+          -
+            type: integer
+          -
+            type: null
+      subject:
+        oneOf:
+          -
+            type: string
+          -
+            type: null
+      body:
+        type: string
+      seen:
+        type: boolean
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - chat_id
+      - sender_id
+      - subject
+      - body
+      - seen
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - chat_id
-  - body
-  - sender_id
-  - subject
-  - seen
-  - created_at
+  - type
+  - attributes
 title: MessageResource

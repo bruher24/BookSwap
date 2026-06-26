@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferStatusRequest;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\TradeOfferHistoryResource;
 use App\Http\Resources\TradeOfferResource;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Models\TradeOffer;
@@ -132,5 +133,20 @@ final class TradeOfferController extends Controller
         }
 
         return $this->successResponse();
+    }
+
+    public function history(TradeOfferServiceInterface $tradeOfferService): JsonResponse
+    {
+        Gate::authorize('history', TradeOffer::class);
+
+        $user = request()->user() ?? null;
+
+        if (!isset($user)) {
+            return $this->errorResponse('Пользователь не авторизован', Response::HTTP_BAD_REQUEST);
+        }
+
+        $history = $tradeOfferService->tradeHistory($user);
+
+        return (new TradeOfferHistoryResource($history))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

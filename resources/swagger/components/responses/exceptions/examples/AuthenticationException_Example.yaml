@@ -1,4 +1,7 @@
 summary: AuthenticationExceptionExample
-value: {
-  message: "Unauthenticated",
-}
+value:
+  errors:
+    -
+      status: 401
+      title: Unauthorized
+      detail: Unauthenticated

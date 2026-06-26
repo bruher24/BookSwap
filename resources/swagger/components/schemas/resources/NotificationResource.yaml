@@ -2,31 +2,56 @@ type: object
 properties:
   id:
     type: string
-  subject:
+  type:
     type: string
-  body:
-    type: string
-  user_id:
-    type: integer
-  seen:
-    type: boolean
-  created_at:
-    type: 'string'
-    format: date-time
-  updated_at:
-    oneOf:
-      - type: 'string'
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: 'string'
-        format: date-time
-      - type: 'null'
+    enum:
+      - notifications
+  attributes:
+    type: object
+    properties:
+      subject:
+        type: string
+      body:
+        type: string
+      user_id:
+        type: integer
+      seen:
+        type: boolean
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - subject
+      - body
+      - user_id
+      - seen
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - subject
-  - body
-  - user_id
-  - seen
+  - type
+  - attributes
 title: NotificationResource

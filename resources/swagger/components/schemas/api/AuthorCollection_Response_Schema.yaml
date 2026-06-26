@@ -1,12 +1,8 @@
-ApiResponse_Schema_AuthorCollection:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          authors:
-            type: array
-            items:
-              $ref: '../../schemas/resources/AuthorResource.yaml'
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: ../../schemas/resources/AuthorResource.yaml
+required:
+  - data

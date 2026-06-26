@@ -1,33 +1,55 @@
 type: object
 properties:
   id:
-    type: integer
-  user_id:
-    type: integer
-  src:
-    oneOf:
-      - type: string
-      - type: 'null'
-  created_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+    type: string
+  type:
+    type: string
+    enum:
+      - photos
+  attributes:
+    type: object
+    properties:
+      user_id:
+        type: integer
+      src:
+        oneOf:
+          -
+            type: string
+          -
+            type: null
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - user_id
+      - src
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - user_id
-  - src
-  - created_at
-  - updated_at
-  - deleted_at
+  - type
+  - attributes
 title: PhotoResource

@@ -40,7 +40,7 @@ final class CoverApiTest extends TestCase
 
         $this->cover = Cover::factory()->createOne(['user_id' => $this->owner->id]);
 
-        $this->coverFile = UploadedFile::fake()->image('cover.jpg');
+        $this->coverFile = UploadedFile::fake()->create('cover.jpg', 100, 'image/jpeg');
 
         $this->coverCreatePayload = Cover::factory()->raw();
     }
@@ -105,7 +105,7 @@ final class CoverApiTest extends TestCase
 
         /** @var FilesystemAdapter $disk */
         $disk = Storage::disk('public');
-        $disk->assertExists($response->json('data.cover.src'));
+        $disk->assertExists($response->json('data.attributes.src'));
     }
 
     public function test_validation_error_create_cover(): void

@@ -1,24 +1,40 @@
 summary: AuthorResourceCollectionExample
 value:
-  data:
-    authors:
-      - {
-        id: 1,
-        lastname: "Doe",
-        firstname: "John",
-        patronymic: "Petrovich",
-        birthdate: "1998-01-01",
-        created_at: "2025-12-06 14:32",
-        updated_at: "2025-12-06 14:32",
-        deleted_at: "2025-12-06 14:32"
-      }
-      - {
-        id: 2,
-        lastname: "Torwalds",
-        firstname: "Linus",
-        patronymic: "Ivanovich",
-        birthdate: "1955-10-27",
-        created_at: "2025-12-06 14:32",
-        updated_at: "2025-12-06 14:32",
-        deleted_at: "2025-12-06 14:32"
-      }
+  {
+      "data": [
+          {
+              "id": "1",
+              "type": "authors",
+              "attributes": {
+                  "user_id": 1,
+                  "lastname": "Doe",
+                  "firstname": "John",
+                  "patronymic": null,
+                  "birthdate": "1990-01-01",
+                  "formattedName": "J. Doe",
+                  "fullName": "John Doe",
+                  "created_at": "2025-12-06T14:32:00Z",
+                  "updated_at": "2025-12-06T14:32:00Z",
+                  "deleted_at": null
+              },
+              "relationships": {}
+          },
+          {
+              "id": "2",
+              "type": "authors",
+              "attributes": {
+                  "user_id": 1,
+                  "lastname": "Doe",
+                  "firstname": "John",
+                  "patronymic": null,
+                  "birthdate": "1990-01-01",
+                  "formattedName": "J. Doe",
+                  "fullName": "John Doe",
+                  "created_at": "2025-12-06T14:32:00Z",
+                  "updated_at": "2025-12-06T14:32:00Z",
+                  "deleted_at": null
+              },
+              "relationships": {}
+          }
+      ]
+  }

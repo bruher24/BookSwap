@@ -1,28 +1,48 @@
 type: object
 properties:
   id:
-    type: integer
-  name:
     type: string
-  created_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+  type:
+    type: string
+    enum:
+      - genres
+  attributes:
+    type: object
+    properties:
+      name:
+        type: string
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - name
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - name
-  - created_at
-  - updated_at
-  - deleted_at
+  - type
+  - attributes
 title: GenreResource

@@ -590,6 +590,21 @@ paths:
         "422":
           $ref: "components/responses/exceptions/ValidationException.yaml"
 
+  /trade_offers/history:
+    get:
+      operationId: trade_offers.history
+      tags:
+        - TradeOffer
+      responses:
+        "200":
+          $ref: "components/responses/api/TradeOfferHistory_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+
   /trade_offers/by_sender/{sender}:
     parameters:
       - $ref: "components/parameters/sender.yaml"

@@ -1,12 +1,8 @@
-ApiResponse_Schema_BookTypeCollection:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          bookTypes:
-            type: array
-            items:
-              $ref: '../../schemas/resources/BookTypeResource.yaml'
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: ../../schemas/resources/BookTypeResource.yaml
+required:
+  - data

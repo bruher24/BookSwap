@@ -1,71 +1,108 @@
 type: object
 properties:
   id:
-    type: integer
-  user_id:
-    type: integer
-  name:
     type: string
-  is_available:
-    type: boolean
-  publishing_house:
-    oneOf:
-      - type: string
-      - type: 'null'
-  publication_year:
-    oneOf:
-      - type: integer
-      - type: 'null'
-  isbn:
-    oneOf:
-      - type: string
-      - type: 'null'
-  page_count:
-    type: integer
-  condition:
+  type:
     type: string
     enum:
-      - perfect
-      - good
-      - normal
-      - bad
-      - terrible
-  book_type_id:
-    type: integer
-  cover_id:
-    oneOf:
-      - type: integer
-      - type: 'null'
-  trade_offer_id:
-    oneOf:
-      - type: integer
-      - type: 'null'
-  created_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+      - books
+  attributes:
+    type: object
+    properties:
+      name:
+        type: string
+      user_id:
+        type: integer
+      publishing_house:
+        oneOf:
+          -
+            type: string
+          -
+            type: null
+      publication_year:
+        oneOf:
+          -
+            type: integer
+          -
+            type: null
+      isbn:
+        oneOf:
+          -
+            type: string
+          -
+            type: null
+      page_count:
+        type: integer
+      condition:
+        type: string
+        enum:
+          - perfect
+          - good
+          - normal
+          - bad
+          - terrible
+      book_type_id:
+        oneOf:
+          -
+            type: integer
+          -
+            type: null
+      cover_id:
+        oneOf:
+          -
+            type: integer
+          -
+            type: null
+      is_available:
+        type: boolean
+      trade_offer_id:
+        oneOf:
+          -
+            type: integer
+          -
+            type: null
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - name
+      - user_id
+      - publishing_house
+      - publication_year
+      - isbn
+      - page_count
+      - condition
+      - book_type_id
+      - cover_id
+      - is_available
+      - trade_offer_id
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - user_id
-  - name
-  - is_available
-  - page_count
-  - condition
-  - book_type_id
-  - cover_id
-  - trade_offer_id
-  - created_at
-  - updated_at
-  - deleted_at
+  - type
+  - attributes
 title: BookResource

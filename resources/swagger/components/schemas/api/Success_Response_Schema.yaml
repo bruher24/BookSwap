@@ -1,9 +1,6 @@
-ApiResponse_Schema_Success:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: array
-        maxItems: 0
-        description: "Empty payload"
+type: object
+properties:
+  meta:
+    type: object
+required:
+  - meta

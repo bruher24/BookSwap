@@ -1,0 +1,15 @@
+summary: TradeOfferHistoryResourceExample
+value:
+  {
+      "data": {
+          "id": "trade-offer-history",
+          "type": "trade_offer_histories",
+          "attributes": {
+              "pending": [],
+              "accepted": [],
+              "rejected": [],
+              "finished": []
+          },
+          "relationships": {}
+      }
+  }

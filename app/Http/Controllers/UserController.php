@@ -94,19 +94,4 @@ final class UserController extends Controller
 
         return $this->successResponse();
     }
-
-    public function history(TradeOfferServiceInterface $tradeOfferService): JsonResponse
-    {
-        Gate::authorize('history', TradeOffer::class);
-
-        $user = request()->user() ?? null;
-
-        if (!isset($user)) {
-            return $this->errorResponse('Пользователь не авторизован', Response::HTTP_BAD_REQUEST);
-        }
-
-        $history = $tradeOfferService->tradeHistory($user);
-
-        return (new TradeOfferHistoryResource($history))->response()->setStatusCode(Response::HTTP_OK);
-    }
 }

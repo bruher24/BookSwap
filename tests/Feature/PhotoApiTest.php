@@ -40,7 +40,7 @@ final class PhotoApiTest extends TestCase
 
         $this->photo = Photo::factory()->createOne(['user_id' => $this->owner->id]);
 
-        $this->photoFile = UploadedFile::fake()->image('photo.jpg');
+        $this->photoFile = UploadedFile::fake()->create('photo.jpg', 100, 'image/jpeg');
 
         $this->photoCreatePayload = Photo::factory()->raw();
     }
@@ -105,7 +105,7 @@ final class PhotoApiTest extends TestCase
 
         /** @var FilesystemAdapter $disk */
         $disk = Storage::disk('public');
-        $disk->assertExists($response->json('data.photo.src'));
+        $disk->assertExists($response->json('data.attributes.src'));
     }
 
     public function test_validation_error_create_photo(): void

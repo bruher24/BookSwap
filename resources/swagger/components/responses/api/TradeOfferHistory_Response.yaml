@@ -1,0 +1,8 @@
+description: "OK"
+content:
+  application/vnd.api+json:
+    schema:
+      $ref: "../../schemas/api/TradeOfferHistory_Response_Schema.yaml"
+    examples:
+      success:
+        $ref: "examples/TradeOfferHistoryResource_Example.yaml"

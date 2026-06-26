@@ -1,4 +1,7 @@
 summary: ModelNotFoundExceptionExample
-value: {
-  message: "Model not found",
-}
+value:
+  errors:
+    -
+      status: 404
+      title: "Not Found"
+      detail: "Resource not found"

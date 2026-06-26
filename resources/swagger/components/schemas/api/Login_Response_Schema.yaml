@@ -1,7 +1,6 @@
-Login_Response_Schema:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        $ref: "../resources/LoginResource.yaml"
+type: object
+properties:
+  data:
+    $ref: ../../schemas/resources/UserResource.yaml
+required:
+  - data

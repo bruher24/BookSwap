@@ -1,51 +1,53 @@
 summary: SearchResultsResourceExample
 value:
-  data:
-    search_results:
-      books:
-        - id: 1
-          user_id: 1
-          name: "The Holy Bible"
-          publishing_house: "moscowbook"
-          publication_year: 2012
-          isbn: "1234567890"
-          page_count: 199
-          book_type_id: 2
-          cover_id: 1
-          created_at: "2025-12-06 14:32"
-          updated_at: "2025-12-06 14:32"
-          deleted_at: "2025-12-06 14:32"
-
-        - id: 2
-          user_id: 2
-          name: "Dictionary"
-          publishing_house: "piterbook"
-          publication_year: 1875
-          isbn: "0987654321"
-          page_count: 587
-          book_type_id: 1
-          cover_id: 4
-          created_at: "2025-12-06 14:32"
-          updated_at: "2025-12-06 14:32"
-          deleted_at: "2025-12-06 14:32"
-
-      authors:
-        - id: 1
-          lastname: "Doe"
-          firstname: "John"
-          patronymic: "Petrovich"
-          birthdate: "1998-01-01"
-          created_at: "2025-12-06 14:32"
-          updated_at: "2025-12-06 14:32"
-          deleted_at: "2025-12-06 14:32"
-
-        - id: 2
-          lastname: "Torwalds"
-          firstname: "Linus"
-          patronymic: "Ivanovich"
-          birthdate: "1955-10-27"
-          created_at: "2025-12-06 14:32"
-          updated_at: "2025-12-06 14:32"
-          deleted_at: "2025-12-06 14:32"
-
-      total: 4
+  {
+      "data": {
+          "id": "search-results",
+          "type": "search_results",
+          "attributes": {
+              "books": [
+                  {
+                      "id": "1",
+                      "type": "books",
+                      "attributes": {
+                          "name": "The Holy Bible",
+                          "user_id": 1,
+                          "publishing_house": "moscowbook",
+                          "publication_year": 2012,
+                          "isbn": "1234567890",
+                          "page_count": 199,
+                          "condition": "good",
+                          "book_type_id": 2,
+                          "cover_id": 1,
+                          "is_available": true,
+                          "trade_offer_id": null,
+                          "created_at": "2025-12-06T14:32:00Z",
+                          "updated_at": "2025-12-06T14:32:00Z",
+                          "deleted_at": null
+                      },
+                      "relationships": {}
+                  }
+              ],
+              "authors": [
+                  {
+                      "id": "1",
+                      "type": "authors",
+                      "attributes": {
+                          "user_id": 1,
+                          "lastname": "Doe",
+                          "firstname": "John",
+                          "patronymic": null,
+                          "birthdate": "1990-01-01",
+                          "formattedName": "J. Doe",
+                          "fullName": "John Doe",
+                          "created_at": "2025-12-06T14:32:00Z",
+                          "updated_at": "2025-12-06T14:32:00Z",
+                          "deleted_at": null
+                      },
+                      "relationships": {}
+                  }
+              ],
+              "total": 2
+          }
+      }
+  }

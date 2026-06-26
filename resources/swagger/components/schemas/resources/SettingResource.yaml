@@ -1,41 +1,63 @@
 type: object
 properties:
   id:
-    type: integer
-  name:
     type: string
-  label:
+  type:
     type: string
-  description:
-    oneOf:
-      - type: string
-      - type: 'null'
-  available_values:
-    type: array
-    items:
-      type: string
-  created_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+    enum:
+      - settings
+  attributes:
+    type: object
+    properties:
+      name:
+        type: string
+      label:
+        type: string
+      description:
+        oneOf:
+          -
+            type: string
+          -
+            type: null
+      available_values:
+        type: array
+        items:
+          type: string
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - name
+      - label
+      - description
+      - available_values
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - name
-  - label
-  - description
-  - available_values
-  - created_at
-  - updated_at
-  - deleted_at
+  - type
+  - attributes
 title: SettingResource

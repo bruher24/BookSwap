@@ -1,22 +1,15 @@
-description: "Validation error"
+description: "Unprocessable Entity"
 content:
-  application/json:
+  application/vnd.api+json:
     schema:
       type: object
       properties:
-        message:
-          type: string
-          description: "Errors overview"
         errors:
-          type: object
-          description: "A detailed description of each field that failed validation"
-          additionalProperties:
-            type: array
-            items:
-              type: string
+          type: array
+          items:
+            $ref: ../../schemas/api/ErrorObject.yaml
       required:
-        - message
         - errors
     examples:
       default:
-        $ref: "examples/ValidationException_Example.yaml"
+        $ref: examples/ValidationException_Example.yaml

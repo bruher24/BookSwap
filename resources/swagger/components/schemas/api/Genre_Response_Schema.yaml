@@ -1,10 +1,6 @@
-ApiResponse_Schema_Genre:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          genre:
-            $ref: '../../schemas/resources/GenreResource.yaml'
+type: object
+properties:
+  data:
+    $ref: ../../schemas/resources/GenreResource.yaml
+required:
+  - data

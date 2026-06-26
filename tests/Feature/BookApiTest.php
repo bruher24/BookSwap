@@ -75,7 +75,7 @@ final class BookApiTest extends TestCase
     {
         $response = $this->getJson('/api/v1/books/where?book_type_id[]=' . (string)$this->book->book_type_id);
         $response->assertOk();
-        $response->assertJsonPath('data.books.0.id', $this->book->id);
+        $response->assertJsonPath('data.0.id', (string)$this->book->id);
     }
 
     public function test_where_book_filters_by_name(): void
@@ -85,7 +85,7 @@ final class BookApiTest extends TestCase
         $response = $this->getJson('/api/v1/books/where?name=Needle');
 
         $response->assertOk();
-        $response->assertJsonPath('data.books.0.id', $this->book->id);
+        $response->assertJsonPath('data.0.id', (string)$this->book->id);
     }
 
     public function test_where_book_rejects_name_as_array(): void
@@ -109,7 +109,7 @@ final class BookApiTest extends TestCase
         $response = $this->getJson('/api/v1/books/where?page_count[]=100&page_count[]=300');
 
         $response->assertOk();
-        $response->assertJsonPath('data.books.0.id', $this->book->id);
+        $response->assertJsonPath('data.0.id', (string)$this->book->id);
     }
 
     public function test_get_book(): void
@@ -138,7 +138,7 @@ final class BookApiTest extends TestCase
 
         $response = $this->postJson('/api/v1/books', $this->bookCreatePayload);
         $response->assertCreated();
-        $response->assertJsonPath('data.book.user_id', $this->owner->id);
+        $response->assertJsonPath('data.attributes.user_id', $this->owner->id);
     }
 
     public function test_user_id_from_create_book_payload_is_ignored(): void
@@ -150,7 +150,7 @@ final class BookApiTest extends TestCase
         $response = $this->postJson('/api/v1/books', $this->bookCreatePayload);
 
         $response->assertCreated();
-        $response->assertJsonPath('data.book.user_id', $this->owner->id);
+        $response->assertJsonPath('data.attributes.user_id', $this->owner->id);
     }
 
     public function test_user_can_create_book_with_new_author_without_optional_author_fields(): void
@@ -207,16 +207,17 @@ final class BookApiTest extends TestCase
         $payload = $this->bookUpdatePayload;
         $payload['author_id'] = $this->author->id;
         $payload['condition'] = 'good';
-        $payload['cover'] = UploadedFile::fake()->image('updated-cover.png');
+        $payload['cover'] = UploadedFile::fake()->create('updated-cover.png', 100, 'image/png');
 
         $response = $this->patch("/api/v1/books/{$this->book->id}", $payload);
 
         $response->assertOk();
+        $coverId = $response->json('data.attributes.cover_id');
         $this->assertDatabaseHas('covers', [
-            'id' => $response->json('data.book.cover_id'),
+            'id' => $coverId,
             'user_id' => $this->owner->id,
         ]);
-        Storage::disk('public')->assertExists(Cover::find($response->json('data.book.cover_id'))->src);
+        Storage::disk('public')->assertExists(Cover::find($coverId)->src);
     }
 
     public function test_validation_error_update_book(): void

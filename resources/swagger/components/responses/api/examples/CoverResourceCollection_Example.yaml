@@ -1,18 +1,30 @@
 summary: CoverResourceCollectionExample
 value:
-  data:
-    covers:
-      - {
-        id: 1,
-        src: "/path/to/file",
-        created_at: "2025-12-06 14:32",
-        updated_at: "2025-12-06 14:32",
-        deleted_at: "2025-12-06 14:32",
-      }
-      - {
-        id: 2,
-        src: "/path/to/another/file",
-        created_at: "2025-12-06 14:32",
-        updated_at: "2025-12-06 14:32",
-        deleted_at: "2025-12-06 14:32",
-      }
+  {
+      "data": [
+          {
+              "id": "1",
+              "type": "covers",
+              "attributes": {
+                  "user_id": 1,
+                  "src": "covers/cover.jpg",
+                  "created_at": "2025-12-06T14:32:00Z",
+                  "updated_at": "2025-12-06T14:32:00Z",
+                  "deleted_at": null
+              },
+              "relationships": {}
+          },
+          {
+              "id": "2",
+              "type": "covers",
+              "attributes": {
+                  "user_id": 2,
+                  "src": "covers/cover-2.jpg",
+                  "created_at": "2025-12-06T14:32:00Z",
+                  "updated_at": "2025-12-06T14:32:00Z",
+                  "deleted_at": null
+              },
+              "relationships": {}
+          }
+      ]
+  }

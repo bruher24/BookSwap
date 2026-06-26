@@ -1,12 +1,8 @@
-ApiResponse_Schema_UserCollection:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          users:
-            type: array
-            items:
-              $ref: '../../schemas/resources/UserResource.yaml'
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: ../../schemas/resources/UserResource.yaml
+required:
+  - data

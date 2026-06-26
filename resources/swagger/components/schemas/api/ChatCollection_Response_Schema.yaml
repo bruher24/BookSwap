@@ -1,12 +1,8 @@
-ApiResponse_Schema_ChatCollection:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          chats:
-            type: array
-            items:
-              $ref: '../../schemas/resources/ChatResource.yaml'
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: ../../schemas/resources/ChatResource.yaml
+required:
+  - data

@@ -1,10 +1,6 @@
-ApiResponse_Schema_SearchResults:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          search_results:
-            $ref: '../../schemas/resources/SearchResultsResource.yaml'
+type: object
+properties:
+  data:
+    $ref: ../../schemas/resources/SearchResultsResource.yaml
+required:
+  - data

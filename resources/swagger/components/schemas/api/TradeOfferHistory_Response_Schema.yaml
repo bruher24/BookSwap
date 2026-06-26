@@ -1,0 +1,6 @@
+type: object
+properties:
+  data:
+    $ref: ../../schemas/resources/TradeOfferHistoryResource.yaml
+required:
+  - data

@@ -193,9 +193,9 @@ final class TradeOfferApiTest extends TestCase
         $response = $this->postJson('/api/v1/trade_offers', $this->tradeOfferAsSenderCreatePayload);
         $response->assertCreated();
 
-        $tradeOfferId = $response->json('data.tradeOffer.id');
+        $tradeOfferId = $response->json('data.id');
 
-        $response->assertJsonPath('data.tradeOffer.status', TradeOfferStatus::Pending->value);
+        $response->assertJsonPath('data.attributes.status', TradeOfferStatus::Pending->value);
         $this->assertDatabaseHas('trade_offers', [
             'id' => $tradeOfferId,
             'sender_id' => $this->anotherSender->id,
@@ -429,7 +429,7 @@ final class TradeOfferApiTest extends TestCase
 
         $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}/items");
         $response->assertOk();
-        $response->assertJsonCount(6, 'data.items');
+        $response->assertJsonCount(6, 'data');
     }
 
     public function test_user_can_get_items_of_trade_offer_as_receiver(): void

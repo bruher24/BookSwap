@@ -1,6 +1,6 @@
 description: "OK"
 content:
-  application/json:
+  application/vnd.api+json:
     schema:
       $ref: "../../schemas/api/MessageCollection_Response_Schema.yaml"
     examples:

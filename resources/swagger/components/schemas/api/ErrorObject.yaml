@@ -1,0 +1,18 @@
+type: object
+properties:
+  status:
+    type: string
+  title:
+    type: string
+  detail:
+    type: string
+  source:
+    type: object
+  code:
+    type: string
+  meta:
+    type: object
+required:
+  - status
+  - title
+  - detail

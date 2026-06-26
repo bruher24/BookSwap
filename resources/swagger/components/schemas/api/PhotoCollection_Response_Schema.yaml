@@ -1,12 +1,8 @@
-ApiResponse_Schema_PhotoCollection:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          photos:
-            type: array
-            items:
-              $ref: '../../schemas/resources/PhotoResource.yaml'
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: ../../schemas/resources/PhotoResource.yaml
+required:
+  - data

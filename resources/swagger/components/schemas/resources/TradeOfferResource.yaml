@@ -1,39 +1,67 @@
 type: object
 properties:
   id:
-    type: integer
-  sender_id:
-    type: integer
-  receiver_id:
-    type: integer
-  status:
+    type: string
+  type:
     type: string
     enum:
-      - pending
-      - accepted
-      - rejected
-      - finished
-  created_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+      - trade_offers
+  attributes:
+    type: object
+    properties:
+      sender_id:
+        oneOf:
+          -
+            type: integer
+          -
+            type: null
+      receiver_id:
+        oneOf:
+          -
+            type: integer
+          -
+            type: null
+      status:
+        type: string
+        enum:
+          - pending
+          - accepted
+          - rejected
+          - finished
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - sender_id
+      - receiver_id
+      - status
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - sender_id
-  - receiver_id
-  - status
-  - created_at
-  - updated_at
-  - deleted_at
+  - type
+  - attributes
 title: TradeOfferResource

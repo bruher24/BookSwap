@@ -1,8 +1,7 @@
 summary: ValidationExceptionExample
-value: {
-  message: "Field1 must be <rule> and <amount> more errors",
-  errors: {
-    Field1: "Field1 must be <rule>",
-    Field2: "Field2 must be <rule>"
-  }
-}
+value:
+  errors:
+    -
+      status: 422
+      title: "Unprocessable Entity"
+      detail: "The given data was invalid."

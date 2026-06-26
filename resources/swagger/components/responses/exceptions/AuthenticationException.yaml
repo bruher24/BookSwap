@@ -1,14 +1,15 @@
-description: "Unauthenticated"
+description: Unauthorized
 content:
-  application/json:
+  application/vnd.api+json:
     schema:
       type: object
       properties:
-        message:
-          type: string
-          description: "Errors overview"
+        errors:
+          type: array
+          items:
+            $ref: ../../schemas/api/ErrorObject.yaml
       required:
-        - message
+        - errors
     examples:
       default:
-        $ref: "examples/AuthenticationException_Example.yaml"
+        $ref: examples/AuthenticationException_Example.yaml

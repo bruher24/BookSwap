@@ -1,6 +1,6 @@
 description: "Accepted"
 content:
-  application/json:
+  application/vnd.api+json:
     schema:
       $ref: "../../schemas/api/Success_Response_Schema.yaml"
     examples:

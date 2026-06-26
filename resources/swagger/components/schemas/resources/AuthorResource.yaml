@@ -1,44 +1,74 @@
 type: object
 properties:
   id:
-    type: integer
-  user_id:
-    type: integer
-  lastname:
     type: string
-  firstname:
+  type:
     type: string
-  patronymic:
-    oneOf:
-      - type: string
-      - type: 'null'
-  birthdate:
-    oneOf:
-      - type: string
-      - type: 'null'
-  created_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  updated_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
-  deleted_at:
-    oneOf:
-      - type: string
-        format: date-time
-      - type: 'null'
+    enum:
+      - authors
+  attributes:
+    type: object
+    properties:
+      user_id:
+        type: integer
+      lastname:
+        type: string
+      firstname:
+        type: string
+      patronymic:
+        oneOf:
+          -
+            type: string
+          -
+            type: null
+      birthdate:
+        oneOf:
+          -
+            type: string
+          -
+            type: null
+      formattedName:
+        type: string
+      fullName:
+        type: string
+      created_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      updated_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+      deleted_at:
+        oneOf:
+          -
+            type: string
+            format: date-time
+          -
+            type: null
+    required:
+      - user_id
+      - lastname
+      - firstname
+      - patronymic
+      - birthdate
+      - formattedName
+      - fullName
+      - created_at
+      - updated_at
+      - deleted_at
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
 required:
   - id
-  - user_id
-  - lastname
-  - firstname
-  - patronymic
-  - birthdate
-  - created_at
-  - updated_at
-  - deleted_at
+  - type
+  - attributes
 title: AuthorResource

@@ -133,6 +133,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('by_sender/{sender}', 'bySender')->name('bySender');
                 Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver');
                 Route::patch('{trade_offer}/update_status', 'updateStatus')->name('updateStatus');
+                Route::get('history', 'history')->name('history');
             });
 
         Route::prefix('users')->name('users.')->controller(UserController::class)

@@ -1,0 +1,41 @@
+type: object
+properties:
+  id:
+    type: string
+  type:
+    type: string
+    enum:
+      - trade_offer_histories
+  attributes:
+    type: object
+    properties:
+      pending:
+        type: array
+        items:
+          $ref: ./TradeOfferResource.yaml
+      accepted:
+        type: array
+        items:
+          $ref: ./TradeOfferResource.yaml
+      rejected:
+        type: array
+        items:
+          $ref: ./TradeOfferResource.yaml
+      finished:
+        type: array
+        items:
+          $ref: ./TradeOfferResource.yaml
+    required:
+      - pending
+      - accepted
+      - rejected
+      - finished
+  relationships:
+    type: object
+    additionalProperties:
+      type: object
+required:
+  - id
+  - type
+  - attributes
+title: TradeOfferHistoryResource

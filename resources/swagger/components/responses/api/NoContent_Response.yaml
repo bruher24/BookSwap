@@ -1,6 +1,6 @@
 description: "No Content"
 content:
-  application/json:
+  application/vnd.api+json:
     schema:
       type: 'null'
     examples:

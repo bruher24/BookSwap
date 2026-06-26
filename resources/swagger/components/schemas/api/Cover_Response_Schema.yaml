@@ -1,10 +1,6 @@
-ApiResponse_Schema_Cover:
-allOf:
-  - $ref: 'Response_Schema.yaml'
-  - type: object
-    properties:
-      data:
-        type: object
-        properties:
-          cover:
-            $ref: '../../schemas/resources/CoverResource.yaml'
+type: object
+properties:
+  data:
+    $ref: ../../schemas/resources/CoverResource.yaml
+required:
+  - data
