@@ -18,6 +18,9 @@ return new class () extends Migration {
             $table->string('password');
             $table->string('city', 50)->nullable();
             $table->decimal('rating', 3, 2)->default(0);
+            $table->string('phone')->nullable()->unique();
+            $table->string('telegram_id')->nullable()->unique();
+            $table->string('vk_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

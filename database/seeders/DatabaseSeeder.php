@@ -24,7 +24,6 @@ final class DatabaseSeeder extends Seeder
             NotificationSeeder::class,
             ChatSeeder::class,
             MessageSeeder::class,
-            PhoneSeeder::class,
             GenreSeeder::class,
             AuthorSeeder::class,
             CoverSeeder::class,

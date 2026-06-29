@@ -33,7 +33,7 @@ final class User extends Authenticatable implements Cacheable
         'email',
         'password',
         'city',
-        'rating'
+        'rating',
     ];
 
     protected $hidden = [
@@ -43,14 +43,18 @@ final class User extends Authenticatable implements Cacheable
 
     public $appends = [
         'mainRole',
-        'registeredDiff'
+        'registeredDiff',
     ];
 
     protected $with = [
         'roles',
         'books',
-        'phone',
         'photo',
+        'settings',
+        'chats',
+        'notifications',
+        'ratings',
+        'authors',
     ];
 
     #[Override]
@@ -97,11 +101,6 @@ final class User extends Authenticatable implements Cacheable
         return $this->hasMany(Book::class);
     }
 
-    public function phone(): HasOne
-    {
-        return $this->hasOne(Phone::class);
-    }
-
     public function photo(): HasOne
     {
         return $this->hasOne(Photo::class);
@@ -135,5 +134,10 @@ final class User extends Authenticatable implements Cacheable
     public function authors(): HasMany
     {
         return $this->hasMany(Author::class);
+    }
+
+    public function favorites(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'user_favorite_books');
     }
 }

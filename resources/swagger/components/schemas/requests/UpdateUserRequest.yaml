@@ -24,7 +24,7 @@ properties:
     oneOf:
       - type: string
       - type: 'null'
-  phone_number:
+  phone:
     oneOf:
       - type: string
       - type: 'null'

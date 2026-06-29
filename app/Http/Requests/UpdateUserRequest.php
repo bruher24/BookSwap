@@ -73,11 +73,26 @@ final class UpdateUserRequest extends FormRequest
                 'string',
                 'same:password'
             ],
-            'phone_number' => [
+            'phone' => [
                 'nullable',
                 'string',
-                Rule::unique('phones', 'number')
-                    ->whereNot('user_id', $this->input('user_id')),
+                Rule::unique('users', 'phone')
+                    ->ignore($this->input('user_id'))
+                    ->withoutTrashed(),
+            ],
+            'telegram_id' => [
+                'nullable',
+                'string',
+                Rule::unique('users', 'telegram_id')
+                    ->ignore($this->input('user_id'))
+                    ->withoutTrashed(),
+            ],
+            'vk_id' => [
+                'nullable',
+                'string',
+                Rule::unique('users', 'vk_id')
+                    ->ignore($this->input('user_id'))
+                    ->withoutTrashed(),
             ],
             'city' => [
                 'string',

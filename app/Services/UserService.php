@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\UserServiceInterface;
+use App\Models\Book;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -77,16 +78,9 @@ final class UserService implements UserServiceInterface
     public function update(User $user, array $data): User|false
     {
         try {
-            if (isset($data['phone_number'])) {
-                $phoneNumber = str_replace(' ', '', $data['phone_number']);
-                if ($user->phone()->exists()) {
-                    $user->phone()->update(['number' => $phoneNumber]);
-                } else {
-                    $user->phone()->create(['number' => $phoneNumber]);
-                }
+            if (isset($data['phone'])) {
+                $data['phone'] = str_replace(' ', '', $data['phone']);
             }
-
-            unset($data['phone_number']);
 
             if (isset($data['password'])) {
                 if (!Hash::check($data['old_password'], $user->getAuthPassword())) {
@@ -144,6 +138,51 @@ final class UserService implements UserServiceInterface
         } catch (Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
+            return false;
+        }
+    }
+
+    #[Override]
+    public function favorites(User $user): Collection
+    {
+        try {
+            return Cache::remember('favorites_' . $user->id, 600, function () use ($user) {
+                Log::debug('Stored in cache: ' . 'favorites_' . $user->id);
+                return $user->favorites()->get();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+
+            return new Collection();
+        }
+    }
+
+    #[Override]
+    public function addToFavorites(User $user, Book $book): bool
+    {
+        try {
+            $user->favorites()->syncWithoutDetachingOrFail($book);
+            Cache::forget('favorites_' . $user->id);
+
+            return true;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+
+            return false;
+        }
+    }
+
+    #[Override]
+    public function removeFromFavorites(User $user, Book $book): bool
+    {
+        try {
+            $user->favorites()->detachOrFail($book);
+            Cache::forget('favorites_' . $user->id);
+
+            return true;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+
             return false;
         }
     }

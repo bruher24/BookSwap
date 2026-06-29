@@ -13,6 +13,11 @@ final class Rating extends Model
         'rate',
     ];
 
+    protected $with = [
+        'user',
+        'rater',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

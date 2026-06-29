@@ -74,3 +74,5 @@ final class SettingController extends Controller
         return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }
+
+// TODO: byUser, updateForUser

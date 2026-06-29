@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RateUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\TradeOfferHistoryResource;
-use App\Http\Resources\TradeOfferResource;
+use App\Http\Resources\BookResource;
 use App\Http\Resources\UserResource;
-use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
-use App\Models\TradeOffer;
+use App\Models\Book;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -93,5 +92,36 @@ final class UserController extends Controller
         }
 
         return $this->successResponse();
+    }
+
+    public function favorites(UserService $userService, User $user): JsonResponse
+    {
+        Gate::authorize('favorites', $user);
+
+        $favorites = $userService->favorites($user);
+
+        return BookResource::collection($favorites)->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function like(UserService $userService, User $user, Book $book): JsonResponse
+    {
+        Gate::authorize('favorites', $user);
+
+        if (!$userService->addToFavorites($user, $book)) {
+            return $this->errorResponse('Ошибка добавления книги в избранное', Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->successResponse();
+    }
+
+    public function dislike(UserService $userService, User $user, Book $book): JsonResponse
+    {
+        Gate::authorize('favorites', $user);
+
+        if (!$userService->removeFromFavorites($user, $book)) {
+            return $this->errorResponse('Ошибка удаления книги из избранного', Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }

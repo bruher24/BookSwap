@@ -11,15 +11,14 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CoverController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TradeOfferController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserFavoritesController;
-use App\Http\Controllers\UserNotificationController;
-use App\Http\Controllers\UserSettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.')
@@ -106,6 +105,26 @@ Route::prefix('v1')->name('api.')
                 Route::delete('{genre}', 'destroy')->name('destroy');
             });
 
+        Route::prefix('messages')->name('messages.')->controller(MessageController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('{message}', 'show')->name('show');
+                Route::patch('{message}', 'update')->name('update');
+                Route::delete('{message}', 'destroy')->name('destroy');
+            });
+
+        Route::prefix('notifications')->name('notifications.')->controller(NotificationController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('{notification}', 'show')->name('show');
+                Route::patch('{notification}', 'update')->name('update');
+                Route::delete('{notification}', 'destroy')->name('destroy');
+                Route::get('by_user/{user}', 'byUser')->name('byUser');
+                Route::patch('{notification}/read', 'read')->name('read');
+            });
+
         Route::prefix('photos')->name('photos.')->controller(PhotoController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -132,6 +151,8 @@ Route::prefix('v1')->name('api.')
                 Route::get('{setting}', 'show')->name('show');
                 Route::patch('{setting}', 'update')->name('update');
                 Route::delete('{setting}', 'destroy')->name('destroy');
+                Route::get('by_user/{user}', 'byUser')->name('byUser');
+                Route::patch('{setting}/update_for_user/{user}', 'updateForUser')->name('updateForUser');
             });
 
         Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
@@ -156,26 +177,8 @@ Route::prefix('v1')->name('api.')
                 Route::patch('{user}', 'update')->name('update');
                 Route::delete('{user}', 'destroy')->name('destroy');
                 Route::patch('{user}/rate', 'rate')->name('rate');
-
-                Route::prefix('{user}/favorites')->name('favorites.')
-                    ->controller(UserFavoritesController::class)
-                    ->group(function () {
-                        Route::get('/', 'index')->name('index');
-                        Route::post('{book}', 'like')->name('like');
-                        Route::delete('{book}', 'dislike')->name('dislike');
-                    });
-
-                Route::prefix('{user}/notifications')->name('notifications.')
-                    ->controller(UserNotificationController::class)
-                    ->group(function () {
-                        Route::get('/', 'index')->name('index');
-                    });
-
-                Route::prefix('{user}/settings')->name('settings.')
-                    ->controller(UserSettingController::class)
-                    ->group(function () {
-                        Route::get('/', 'index')->name('index');
-                        Route::patch('{setting}', 'update')->name('update');
-                    });
+                Route::get('{user}/favorites', 'favorites')->name('favorites');
+                Route::patch('{user}/like/{book}', 'like')->name('like');
+                Route::patch('{user}/dislike/{book}', 'dislike')->name('dislike');
             });
     });

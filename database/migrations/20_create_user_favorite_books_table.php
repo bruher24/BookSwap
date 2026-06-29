@@ -10,11 +10,12 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users_favorite_books', function (Blueprint $table) {
+        Schema::create('user_favorite_books', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('book_id')->constrained('books')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
-            $table->softDeletes();
+
+            $table->unique(['user_id', 'book_id']);
         });
     }
 
@@ -23,6 +24,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users_favorite_books');
+        Schema::dropIfExists('user_favorite_books');
     }
 };

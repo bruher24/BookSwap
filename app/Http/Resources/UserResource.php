@@ -28,7 +28,6 @@ final class UserResource extends JsonApiResource
     public array $relationships = [
         'roles' => RoleResource::class,
         'books' => BookResource::class,
-        'phone',
         'photo' => PhotoResource::class,
         'settings' => SettingResource::class,
         'chats' => ChatResource::class,
