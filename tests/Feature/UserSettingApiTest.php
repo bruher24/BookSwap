@@ -44,15 +44,21 @@ final class UserSettingApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->getJson("/api/v1/users/{$this->user->id}/settings");
+        $response = $this->getJson("/api/v1/settings/by_user/{$this->user->id}");
         $response->assertOk();
+    }
+
+    public function test_guest_cannot_index_user_settings(): void
+    {
+        $response = $this->getJson("/api/v1/settings/by_user/{$this->user->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_user_cannot_index_others_settings(): void
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->getJson("/api/v1/users/{$this->user->id}/settings");
+        $response = $this->getJson("/api/v1/settings/by_user/{$this->user->id}");
         $response->assertForbidden();
     }
 
@@ -60,15 +66,21 @@ final class UserSettingApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->patchJson("/api/v1/users/{$this->user->id}/settings/{$this->setting->id}", $this->validSettingsPayload);
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}/update_for_user/{$this->user->id}", $this->validSettingsPayload);
         $response->assertOk();
+    }
+
+    public function test_guest_cannot_update_user_settings(): void
+    {
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}/update_for_user/{$this->user->id}", $this->validSettingsPayload);
+        $response->assertUnauthorized();
     }
 
     public function test_user_cannot_update_others_settings(): void
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/users/{$this->user->id}/settings/{$this->setting->id}", $this->validSettingsPayload);
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}/update_for_user/{$this->user->id}", $this->validSettingsPayload);
         $response->assertForbidden();
     }
 
@@ -76,14 +88,14 @@ final class UserSettingApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->patchJson("/api/v1/users/{$this->user->id}/settings/{$this->setting->id}", $this->emptySettingsPayload);
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}/update_for_user/{$this->user->id}", $this->emptySettingsPayload);
         $response->assertStatus(422);
     }
 
     public function test_invalid_settings_update_returns_validation_error(): void
     {
         Sanctum::actingAs($this->user);
-        $response = $this->patchJson("/api/v1/users/{$this->user->id}/settings/{$this->setting->id}", $this->invalidSettingsPayload);
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}/update_for_user/{$this->user->id}", $this->invalidSettingsPayload);
         $response->assertStatus(422);
     }
 }

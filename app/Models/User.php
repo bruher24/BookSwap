@@ -48,13 +48,7 @@ final class User extends Authenticatable implements Cacheable
 
     protected $with = [
         'roles',
-        'books',
         'photo',
-        'settings',
-        'chats',
-        'notifications',
-        'ratings',
-        'authors',
     ];
 
     #[Override]

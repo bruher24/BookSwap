@@ -90,6 +90,12 @@ final class AuthorApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_update_author(): void
+    {
+        $response = $this->patchJson("/api/v1/authors/{$this->author->id}", $this->authorUpdatePayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_user_can_update_owned_author(): void
     {
         Sanctum::actingAs($this->owner);
@@ -121,6 +127,12 @@ final class AuthorApiTest extends TestCase
         Sanctum::actingAs($this->other);
         $response = $this->deleteJson("/api/v1/authors/{$this->author->id}");
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_delete_author(): void
+    {
+        $response = $this->deleteJson("/api/v1/authors/{$this->author->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_user_can_delete_owned_author(): void

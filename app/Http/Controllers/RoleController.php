@@ -22,8 +22,6 @@ final class RoleController extends Controller
 
     public function store(RoleServiceInterface $roleService, StoreRoleRequest $request): JsonResponse
     {
-        Gate::authorize('create', Role::class);
-
         $validated = $request->validated();
         $role = $roleService->create($validated);
 
@@ -41,8 +39,6 @@ final class RoleController extends Controller
 
     public function update(RoleServiceInterface $roleService, UpdateRoleRequest $request, Role $role): JsonResponse
     {
-        Gate::authorize('update', $role);
-
         $validated = $request->validated();
         $role = $roleService->update($role, $validated);
 
@@ -60,8 +56,6 @@ final class RoleController extends Controller
         if (!$role) {
             return $this->successResponse(Response::HTTP_ACCEPTED);
         }
-
-        Gate::authorize('delete', $role);
 
         if (!$roleService->delete($role)) {
             return $this->errorResponse('Ошибка при удалении роли', Response::HTTP_BAD_REQUEST);

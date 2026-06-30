@@ -14,8 +14,6 @@ final class PhotoController extends Controller
 {
     public function index(PhotoServiceInterface $photoService): JsonResponse
     {
-        Gate::authorize('viewAny', Photo::class);
-
         $photos = $photoService->getAll();
 
         return PhotoResource::collection($photos)->response()->setStatusCode(Response::HTTP_OK);
@@ -47,8 +45,6 @@ final class PhotoController extends Controller
         if (!$photo) {
             return $this->successResponse(Response::HTTP_ACCEPTED);
         }
-
-        Gate::authorize('delete', $photo);
 
         if (!$photoService->delete($photo)) {
             return $this->errorResponse('Ошибка при удалении фото', Response::HTTP_BAD_REQUEST);

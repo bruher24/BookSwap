@@ -17,6 +17,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ChatController extends Controller
 {
+    public function index(ChatServiceInterface $chatService): JsonResponse
+    {
+        $chats = $chatService->getAll();
+
+        return (ChatResource::collection($chats))->response()->setStatusCode(Response::HTTP_OK);
+    }
+
     public function store(ChatServiceInterface $chatService, StoreChatRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -46,8 +53,6 @@ final class ChatController extends Controller
         if (!$chat) {
             return $this->successResponse(Response::HTTP_ACCEPTED);
         }
-
-        Gate::authorize('delete', $chat);
 
         if (!$chatService->delete($chat)) {
             return $this->errorResponse('Ошибка при удалении чата', Response::HTTP_BAD_REQUEST);

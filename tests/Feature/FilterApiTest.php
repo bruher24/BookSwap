@@ -97,6 +97,12 @@ final class FilterApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_update_filter(): void
+    {
+        $response = $this->patchJson("/api/v1/filters/{$this->filter->id}", $this->filterUpdatePayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_admin_can_update_filter(): void
     {
         Sanctum::actingAs($this->admin);
@@ -124,6 +130,12 @@ final class FilterApiTest extends TestCase
         Sanctum::actingAs($this->user);
         $response = $this->deleteJson("/api/v1/filters/{$this->filter->id}");
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_delete_filter(): void
+    {
+        $response = $this->deleteJson("/api/v1/filters/{$this->filter->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_admin_can_delete_filter(): void

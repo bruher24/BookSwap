@@ -19,8 +19,6 @@ final class UserController extends Controller
 {
     public function index(UserServiceInterface $userService): JsonResponse
     {
-        Gate::authorize('viewAny', User::class);
-
         $users = $userService->getAll();
 
         return UserResource::collection($users)->response()->setStatusCode(Response::HTTP_OK);
@@ -28,8 +26,6 @@ final class UserController extends Controller
 
     public function store(UserServiceInterface $userService, StoreUserRequest $request): JsonResponse
     {
-        Gate::authorize('create', User::class);
-
         $validated = $request->validated();
         $user = $userService->create($validated);
 

@@ -95,6 +95,12 @@ final class BookTypeApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_update_book_type(): void
+    {
+        $response = $this->patchJson("/api/v1/book_types/{$this->bookType->id}", $this->bookTypeUpdatePayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_admin_can_update_book_type(): void
     {
         Sanctum::actingAs($this->admin, ['admin']);
@@ -122,6 +128,12 @@ final class BookTypeApiTest extends TestCase
         Sanctum::actingAs($this->user);
         $response = $this->deleteJson("/api/v1/book_types/{$this->bookType->id}");
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_delete_book_type(): void
+    {
+        $response = $this->deleteJson("/api/v1/book_types/{$this->bookType->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_admin_can_delete_book_type(): void

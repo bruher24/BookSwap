@@ -71,6 +71,19 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    public function getAll(): Collection
+    {
+        try {
+            return Cache::remember(Chat::CACHE_KEY, 600, function (): Collection {
+                Log::debug('Stored in cache: ' . Chat::CACHE_KEY);
+                return Chat::all();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+            return new Collection();
+        }
+    }
+
     #[Override]
     public function where(string $field, string $value): Collection
     {

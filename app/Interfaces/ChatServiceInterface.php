@@ -13,6 +13,8 @@ interface ChatServiceInterface
 
     public function get(int $id): Chat|false;
 
+    public function getAll(): Collection;
+
     public function where(string $field, string $value): Collection;
 
     public function delete(Chat $chat): bool;

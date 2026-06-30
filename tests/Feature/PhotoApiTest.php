@@ -53,6 +53,12 @@ final class PhotoApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_index_photo(): void
+    {
+        $response = $this->getJson('/api/v1/photos');
+        $response->assertUnauthorized();
+    }
+
     public function test_admin_can_index_photo(): void
     {
         Sanctum::actingAs($this->admin);
@@ -61,15 +67,21 @@ final class PhotoApiTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_everybody_can_get_photo(): void
+    public function test_guest_cannot_get_photo(): void
     {
         $response = $this->getJson('/api/v1/photos/' . $this->photo->id);
-        $response->assertOk();
+        $response->assertUnauthorized();
+    }
 
+    public function test_user_cannot_get_photo(): void
+    {
         Sanctum::actingAs($this->owner);
         $response = $this->getJson('/api/v1/photos/' . $this->photo->id);
-        $response->assertOk();
+        $response->assertForbidden();
+    }
 
+    public function test_admin_can_get_photo(): void
+    {
         Sanctum::actingAs($this->admin);
         $response = $this->getJson('/api/v1/photos/' . $this->photo->id);
         $response->assertOk();
@@ -77,6 +89,8 @@ final class PhotoApiTest extends TestCase
 
     public function test_not_found_get_photo(): void
     {
+        Sanctum::actingAs($this->admin);
+
         $response = $this->getJson('/api/v1/photos/999');
         $response->assertNotFound();
     }
@@ -121,7 +135,7 @@ final class PhotoApiTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_user_cannot_delete_others_photo(): void
+    public function test_user_cannot_delete_photo(): void
     {
         Sanctum::actingAs($this->other);
 
@@ -129,9 +143,15 @@ final class PhotoApiTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_user_can_delete_owned_photo(): void
+    public function test_guest_cannot_delete_photo(): void
     {
-        Sanctum::actingAs($this->owner);
+        $response = $this->deleteJson('/api/v1/photos/' . $this->photo->id);
+        $response->assertUnauthorized();
+    }
+
+    public function test_admin_can_delete_photo(): void
+    {
+        Sanctum::actingAs($this->admin);
 
         $response = $this->deleteJson('/api/v1/photos/' . $this->photo->id);
         $response->assertAccepted();
@@ -143,7 +163,7 @@ final class PhotoApiTest extends TestCase
 
     public function test_not_found_delete_photo(): void
     {
-        Sanctum::actingAs($this->other);
+        Sanctum::actingAs($this->admin);
 
         $response = $this->deleteJson('/api/v1/photos/999');
         $response->assertAccepted();

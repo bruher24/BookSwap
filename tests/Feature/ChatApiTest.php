@@ -55,6 +55,34 @@ final class ChatApiTest extends TestCase
         ];
     }
 
+    public function test_guest_cannot_index_chat(): void
+    {
+        $response = $this->getJson('/api/v1/chats');
+        $response->assertUnauthorized();
+    }
+
+    public function test_user_cannot_index_chat(): void
+    {
+        Sanctum::actingAs($this->firstUser);
+
+        $response = $this->getJson('/api/v1/chats');
+        $response->assertForbidden();
+    }
+
+    public function test_admin_can_index_chat(): void
+    {
+        Sanctum::actingAs($this->admin);
+
+        $response = $this->getJson('/api/v1/chats');
+        $response->assertOk();
+    }
+
+    public function test_guest_cannot_create_chat(): void
+    {
+        $response = $this->postJson('/api/v1/chats', $this->secondChatPayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_user_can_create_chat(): void
     {
         Sanctum::actingAs($this->other);
@@ -87,6 +115,12 @@ final class ChatApiTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_guest_cannot_get_chat(): void
+    {
+        $response = $this->getJson('/api/v1/chats/' . $this->chat->id);
+        $response->assertUnauthorized();
+    }
+
     public function test_user_can_get_owned_chat(): void
     {
         Sanctum::actingAs($this->firstUser);
@@ -109,6 +143,12 @@ final class ChatApiTest extends TestCase
 
         $response = $this->deleteJson('/api/v1/chats/' . $this->chat->id);
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_delete_chat(): void
+    {
+        $response = $this->deleteJson('/api/v1/chats/' . $this->chat->id);
+        $response->assertUnauthorized();
     }
 
     public function test_user_cannot_delete_others_chat(): void
@@ -135,6 +175,12 @@ final class ChatApiTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_guest_cannot_by_user_chat(): void
+    {
+        $response = $this->getJson("/api/v1/chats/by_user/{$this->firstUser->id}");
+        $response->assertUnauthorized();
+    }
+
     public function test_user_cannot_by_user_others_chat(): void
     {
         Sanctum::actingAs($this->other);
@@ -149,6 +195,12 @@ final class ChatApiTest extends TestCase
 
         $response = $this->getJson("/api/v1/chats/{$this->chat->id}/messages");
         $response->assertOk();
+    }
+
+    public function test_guest_cannot_get_messages_chat(): void
+    {
+        $response = $this->getJson("/api/v1/chats/{$this->chat->id}/messages");
+        $response->assertUnauthorized();
     }
 
     public function test_user_cannot_get_messages_others_chat(): void
@@ -167,6 +219,12 @@ final class ChatApiTest extends TestCase
         $response->assertCreated();
     }
 
+    public function test_guest_cannot_send_message_chat(): void
+    {
+        $response = $this->postJson("/api/v1/chats/{$this->chat->id}/messages", $this->messagePayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_user_cannot_send_message_others_chat(): void
     {
         Sanctum::actingAs($this->other);
@@ -181,6 +239,12 @@ final class ChatApiTest extends TestCase
 
         $response = $this->patchJson("/api/v1/chats/{$this->chat->id}/block");
         $response->assertAccepted();
+    }
+
+    public function test_guest_cannot_block_chat(): void
+    {
+        $response = $this->patchJson("/api/v1/chats/{$this->chat->id}/block");
+        $response->assertUnauthorized();
     }
 
     public function test_user_cannot_block_others_chat(): void

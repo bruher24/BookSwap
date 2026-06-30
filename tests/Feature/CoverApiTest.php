@@ -53,6 +53,12 @@ final class CoverApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_index_cover(): void
+    {
+        $response = $this->getJson('/api/v1/covers');
+        $response->assertUnauthorized();
+    }
+
     public function test_admin_can_index_cover(): void
     {
         Sanctum::actingAs($this->admin);
@@ -61,15 +67,21 @@ final class CoverApiTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_everybody_can_get_cover(): void
+    public function test_guest_cannot_get_cover(): void
     {
         $response = $this->getJson('/api/v1/covers/' . $this->cover->id);
-        $response->assertOk();
+        $response->assertUnauthorized();
+    }
 
+    public function test_user_cannot_get_cover(): void
+    {
         Sanctum::actingAs($this->owner);
         $response = $this->getJson('/api/v1/covers/' . $this->cover->id);
-        $response->assertOk();
+        $response->assertForbidden();
+    }
 
+    public function test_admin_can_get_cover(): void
+    {
         Sanctum::actingAs($this->admin);
         $response = $this->getJson('/api/v1/covers/' . $this->cover->id);
         $response->assertOk();
@@ -77,6 +89,8 @@ final class CoverApiTest extends TestCase
 
     public function test_not_found_get_cover(): void
     {
+        Sanctum::actingAs($this->admin);
+
         $response = $this->getJson('/api/v1/covers/999');
         $response->assertNotFound();
     }
@@ -121,7 +135,13 @@ final class CoverApiTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function test_user_cannot_delete_others_cover(): void
+    public function test_guest_cannot_delete_cover(): void
+    {
+        $response = $this->deleteJson('/api/v1/covers/' . $this->cover->id);
+        $response->assertUnauthorized();
+    }
+
+    public function test_user_cannot_delete_cover(): void
     {
         Sanctum::actingAs($this->other);
 
@@ -129,9 +149,9 @@ final class CoverApiTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_user_can_delete_owned_cover(): void
+    public function test_admin_can_delete_cover(): void
     {
-        Sanctum::actingAs($this->owner);
+        Sanctum::actingAs($this->admin);
 
         $response = $this->deleteJson('/api/v1/covers/' . $this->cover->id);
         $response->assertAccepted();
@@ -143,7 +163,7 @@ final class CoverApiTest extends TestCase
 
     public function test_not_found_delete_cover(): void
     {
-        Sanctum::actingAs($this->other);
+        Sanctum::actingAs($this->admin);
 
         $response = $this->deleteJson('/api/v1/covers/999');
         $response->assertAccepted();

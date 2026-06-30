@@ -16,8 +16,6 @@ final class NotificationController extends Controller
 {
     public function index(NotificationServiceInterface $notificationService): JsonResponse
     {
-        Gate::authorize('viewAny', Notification::class);
-
         $notifications = $notificationService->getAll();
 
         return NotificationResource::collection($notifications)->response()->setStatusCode(Response::HTTP_OK);
@@ -25,8 +23,6 @@ final class NotificationController extends Controller
 
     public function store(NotificationServiceInterface $notificationService, StoreNotificationRequest $request): JsonResponse
     {
-        Gate::authorize('create', Notification::class);
-
         $validated = $request->validated();
         $notification = $notificationService->create($validated);
 
@@ -39,15 +35,11 @@ final class NotificationController extends Controller
 
     public function show(Notification $notification): JsonResponse
     {
-        Gate::authorize('view', $notification);
-
         return (new NotificationResource($notification))->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function update(NotificationServiceInterface $notificationService, UpdateNotificationRequest $request, Notification $notification): JsonResponse
     {
-        Gate::authorize('update', $notification);
-
         $validated = $request->validated();
         $notification = $notificationService->update($notification, $validated);
 
@@ -66,8 +58,6 @@ final class NotificationController extends Controller
             return $this->successResponse(Response::HTTP_ACCEPTED);
         }
 
-        Gate::authorize('delete', $notification);
-
         if (!$notificationService->delete($notification)) {
             return $this->errorResponse('Ошибка при удалении уведомления', Response::HTTP_BAD_REQUEST);
         }
@@ -84,4 +74,4 @@ final class NotificationController extends Controller
     }
 }
 
-// TODO: byUser, read, StoreNotificationRequest, UpdateNotificationRequest
+// TODO: read, StoreNotificationRequest, UpdateNotificationRequest

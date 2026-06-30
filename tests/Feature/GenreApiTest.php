@@ -95,6 +95,12 @@ final class GenreApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_update_genre(): void
+    {
+        $response = $this->patchJson("/api/v1/genres/{$this->genre->id}", $this->genreUpdatePayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_admin_can_update_genre(): void
     {
         Sanctum::actingAs($this->admin);
@@ -122,6 +128,12 @@ final class GenreApiTest extends TestCase
         Sanctum::actingAs($this->user);
         $response = $this->deleteJson("/api/v1/genres/{$this->genre->id}");
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_delete_genre(): void
+    {
+        $response = $this->deleteJson("/api/v1/genres/{$this->genre->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_admin_can_delete_genre(): void

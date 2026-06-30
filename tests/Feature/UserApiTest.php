@@ -49,12 +49,24 @@ final class UserApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_index_user(): void
+    {
+        $response = $this->getJson('/api/v1/users');
+        $response->assertUnauthorized();
+    }
+
     public function test_user_cannot_create_user(): void
     {
         Sanctum::actingAs($this->user);
 
         $response = $this->postJson('/api/v1/users', $this->userCreatePayload);
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_create_user(): void
+    {
+        $response = $this->postJson('/api/v1/users', $this->userCreatePayload);
+        $response->assertUnauthorized();
     }
 
     public function test_admin_can_create_user(): void
@@ -69,6 +81,12 @@ final class UserApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
+        $response = $this->getJson("/api/v1/users/{$this->target->id}");
+        $response->assertOk();
+    }
+
+    public function test_guest_can_get_user(): void
+    {
         $response = $this->getJson("/api/v1/users/{$this->target->id}");
         $response->assertOk();
     }
@@ -89,6 +107,12 @@ final class UserApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_update_user(): void
+    {
+        $response = $this->patchJson("/api/v1/users/{$this->target->id}", $this->userUpdatePayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_user_can_delete_itself(): void
     {
         Sanctum::actingAs($this->user);
@@ -103,6 +127,12 @@ final class UserApiTest extends TestCase
 
         $response = $this->deleteJson("/api/v1/users/{$this->target->id}");
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_delete_user(): void
+    {
+        $response = $this->deleteJson("/api/v1/users/{$this->target->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_user_can_rate_another_user(): void
@@ -120,6 +150,15 @@ final class UserApiTest extends TestCase
             'rate' => 5,
         ]);
         $this->assertEquals(5.0, $this->target->refresh()->rating);
+    }
+
+    public function test_guest_cannot_rate_user(): void
+    {
+        $response = $this->patchJson("/api/v1/users/{$this->target->id}/rate", [
+            'rate' => 5,
+        ]);
+
+        $response->assertUnauthorized();
     }
 
     public function test_user_cannot_rate_itself(): void

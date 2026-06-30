@@ -20,8 +20,6 @@ final class TradeOfferController extends Controller
 {
     public function index(TradeOfferServiceInterface $tradeOfferService): JsonResponse
     {
-        Gate::authorize('viewAny', TradeOffer::class);
-
         $tradeOffers = $tradeOfferService->getAll();
 
         return TradeOfferResource::collection($tradeOffers)->response()->setStatusCode(Response::HTTP_OK);
@@ -69,8 +67,6 @@ final class TradeOfferController extends Controller
         if (!$tradeOffer) {
             return $this->successResponse(Response::HTTP_ACCEPTED);
         }
-
-        Gate::authorize('delete', $tradeOffer);
 
         if (!$tradeOfferService->delete($tradeOffer)) {
             return $this->errorResponse('Ошибка при удалении сделки', Response::HTTP_BAD_REQUEST);

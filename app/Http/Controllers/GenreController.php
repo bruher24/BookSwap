@@ -22,8 +22,6 @@ final class GenreController extends Controller
 
     public function store(GenreServiceInterface $genreService, StoreGenreRequest $request): JsonResponse
     {
-        Gate::authorize('create', Genre::class);
-
         $validated = $request->validated();
         $genre = $genreService->create($validated);
 
@@ -41,8 +39,6 @@ final class GenreController extends Controller
 
     public function update(GenreServiceInterface $genreService, UpdateGenreRequest $request, Genre $genre): JsonResponse
     {
-        Gate::authorize('update', $genre);
-
         $validated = $request->validated();
         $genre = $genreService->update($genre, $validated);
 
@@ -60,8 +56,6 @@ final class GenreController extends Controller
         if (!$genre) {
             return $this->successResponse(Response::HTTP_ACCEPTED);
         }
-
-        Gate::authorize('delete', $genre);
 
         if (!$genreService->delete($genre)) {
             return $this->errorResponse('Ошибка при удалении жанра', Response::HTTP_BAD_REQUEST);

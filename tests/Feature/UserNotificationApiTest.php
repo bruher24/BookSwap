@@ -32,15 +32,21 @@ final class UserNotificationApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->getJson("/api/v1/users/{$this->user->id}/notifications");
+        $response = $this->getJson("/api/v1/notifications/by_user/{$this->user->id}");
         $response->assertOk();
+    }
+
+    public function test_guest_cannot_index_user_notifications(): void
+    {
+        $response = $this->getJson("/api/v1/notifications/by_user/{$this->user->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_user_cannot_index_others_notifications(): void
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->getJson("/api/v1/users/{$this->user->id}/notifications");
+        $response = $this->getJson("/api/v1/notifications/by_user/{$this->user->id}");
         $response->assertForbidden();
     }
 }

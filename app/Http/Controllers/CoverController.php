@@ -14,8 +14,6 @@ final class CoverController extends Controller
 {
     public function index(CoverServiceInterface $coverService): JsonResponse
     {
-        Gate::authorize('viewAny', Cover::class);
-
         $covers = $coverService->getAll();
 
         return CoverResource::collection($covers)->response()->setStatusCode(Response::HTTP_OK);

@@ -189,6 +189,12 @@ final class BookApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_update_book(): void
+    {
+        $response = $this->patchJson("/api/v1/books/{$this->book->id}", $this->bookUpdatePayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_user_can_update_owned_book(): void
     {
         Sanctum::actingAs($this->owner);
@@ -241,6 +247,12 @@ final class BookApiTest extends TestCase
         Sanctum::actingAs($this->other);
         $response = $this->deleteJson("/api/v1/books/{$this->book->id}");
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_delete_book(): void
+    {
+        $response = $this->deleteJson("/api/v1/books/{$this->book->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_user_can_delete_owned_book(): void

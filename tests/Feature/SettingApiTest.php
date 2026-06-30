@@ -44,23 +44,49 @@ final class SettingApiTest extends TestCase
         $this->settingUpdatePayload = Setting::factory()->raw();
     }
 
-    public function test_index_setting(): void
+    public function test_guest_cannot_index_setting(): void
+    {
+        $response = $this->getJson('/api/v1/settings');
+        $response->assertUnauthorized();
+    }
+
+    public function test_user_cannot_index_setting(): void
     {
         Sanctum::actingAs($this->user);
+        $response = $this->getJson('/api/v1/settings');
+        $response->assertForbidden();
+    }
+
+    public function test_admin_can_index_setting(): void
+    {
+        Sanctum::actingAs($this->admin);
         $response = $this->getJson('/api/v1/settings');
         $response->assertOk();
     }
 
-    public function test_get_setting(): void
+    public function test_guest_cannot_get_setting(): void
+    {
+        $response = $this->getJson("/api/v1/settings/{$this->setting->id}");
+        $response->assertUnauthorized();
+    }
+
+    public function test_user_can_get_setting(): void
     {
         Sanctum::actingAs($this->user);
         $response = $this->getJson("/api/v1/settings/{$this->setting->id}");
         $response->assertOk();
     }
 
+    public function test_admin_can_get_setting(): void
+    {
+        Sanctum::actingAs($this->admin);
+        $response = $this->getJson("/api/v1/settings/{$this->setting->id}");
+        $response->assertOk();
+    }
+
     public function test_not_found_get_setting(): void
     {
-        Sanctum::actingAs($this->user);
+        Sanctum::actingAs($this->admin);
         $newId = $this->setting->id + 1;
         $response = $this->getJson("/api/v1/settings/$newId");
         $response->assertNotFound();
@@ -100,6 +126,12 @@ final class SettingApiTest extends TestCase
         $response->assertForbidden();
     }
 
+    public function test_guest_cannot_update_setting(): void
+    {
+        $response = $this->patchJson("/api/v1/settings/{$this->setting->id}", $this->settingUpdatePayload);
+        $response->assertUnauthorized();
+    }
+
     public function test_admin_can_update_setting(): void
     {
         Sanctum::actingAs($this->admin);
@@ -127,6 +159,12 @@ final class SettingApiTest extends TestCase
         Sanctum::actingAs($this->user);
         $response = $this->deleteJson("/api/v1/settings/{$this->setting->id}");
         $response->assertForbidden();
+    }
+
+    public function test_guest_cannot_delete_setting(): void
+    {
+        $response = $this->deleteJson("/api/v1/settings/{$this->setting->id}");
+        $response->assertUnauthorized();
     }
 
     public function test_admin_can_delete_setting(): void

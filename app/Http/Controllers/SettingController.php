@@ -15,8 +15,6 @@ final class SettingController extends Controller
 {
     public function index(SettingServiceInterface $settingService): JsonResponse
     {
-        Gate::authorize('viewAny', Setting::class);
-
         $settings = $settingService->getAll();
 
         return SettingResource::collection($settings)->response()->setStatusCode(Response::HTTP_OK);
@@ -24,8 +22,6 @@ final class SettingController extends Controller
 
     public function store(SettingServiceInterface $settingService, StoreSettingRequest $request): JsonResponse
     {
-        Gate::authorize('create', Setting::class);
-
         $validated = $request->validated();
         $setting = $settingService->create($validated);
 
@@ -45,8 +41,6 @@ final class SettingController extends Controller
 
     public function update(SettingServiceInterface $settingService, UpdateSettingRequest $request, Setting $setting): JsonResponse
     {
-        Gate::authorize('update', $setting);
-
         $validated = $request->validated();
         $setting = $settingService->update($setting, $validated);
 
@@ -64,8 +58,6 @@ final class SettingController extends Controller
         if (!$setting) {
             return $this->successResponse(Response::HTTP_ACCEPTED);
         }
-
-        Gate::authorize('delete', $setting);
 
         if (!$settingService->delete($setting)) {
             return $this->errorResponse('Ошибка при удалении настройки', Response::HTTP_BAD_REQUEST);
