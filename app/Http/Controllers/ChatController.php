@@ -9,7 +9,6 @@ use App\Http\Resources\MessageResource;
 use App\Interfaces\ChatServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Chat;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -59,15 +58,6 @@ final class ChatController extends Controller
         }
 
         return $this->successResponse(Response::HTTP_ACCEPTED);
-    }
-
-    public function byUser(ChatServiceInterface $chatService, User $user): JsonResponse
-    {
-        Gate::authorize('chats', $user);
-
-        $chats = $chatService->byUser($user);
-
-        return ChatResource::collection($chats)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function messages(ChatServiceInterface $chatService, Chat $chat): JsonResponse

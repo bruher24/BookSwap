@@ -48,7 +48,7 @@ final class NotificationPolicy
      */
     public function update(User $user, Notification $notification): Response
     {
-        return $user->id === $notification->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -81,5 +81,12 @@ final class NotificationPolicy
         return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
+    }
+
+    public function read(User $user, Notification $notification): Response
+    {
+        return $user->id === $notification->user_id
+            ? Response::allow()
+            : Response::deny();
     }
 }

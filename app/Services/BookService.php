@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\Cover;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -251,5 +252,12 @@ final class BookService implements BookServiceInterface
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
+    }
+
+    public function byUser(User $user): Collection
+    {
+        return $user->books()
+            ->withoutTrashed()
+            ->get();
     }
 }

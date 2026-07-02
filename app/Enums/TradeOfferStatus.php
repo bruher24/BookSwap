@@ -8,6 +8,7 @@ enum TradeOfferStatus: string
     case Accepted = 'accepted';
     case Rejected = 'rejected';
     case Finished = 'finished';
+    case Canceled = 'canceled';
 
     public function label(): string
     {
@@ -15,6 +16,7 @@ enum TradeOfferStatus: string
             self::Pending => 'Ожидает ответа',
             self::Accepted => 'Принята',
             self::Rejected => 'Отклонена',
+            self::Canceled => 'Отменена',
             self::Finished => 'Завершена',
         };
     }

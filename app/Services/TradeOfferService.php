@@ -203,6 +203,25 @@ final class TradeOfferService implements TradeOfferServiceInterface
     }
 
     #[Override]
+    public function cancel(TradeOffer $tradeOffer): bool
+    {
+        try {
+            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Canceled])) {
+                foreach ($tradeOffer->books()->get() as $book) {
+                    $book->update(['is_available' => true]);
+                }
+
+                return true;
+            }
+
+            return false;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+            return false;
+        }
+    }
+
+    #[Override]
     public function finish(TradeOffer $tradeOffer): bool
     {
         try {

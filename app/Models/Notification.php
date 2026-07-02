@@ -7,6 +7,7 @@ use App\Traits\CacheInvalidation;
 use Database\Factories\NotificationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Notification extends Model implements Cacheable
@@ -24,4 +25,9 @@ final class Notification extends Model implements Cacheable
         'user_id',
         'seen'
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

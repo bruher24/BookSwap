@@ -27,6 +27,7 @@ class TradeOfferHistoryResource extends JsonApiResource
             'pending' => TradeOfferResource::collection($this->resource['pending'] ?? [])->toArray($request),
             'accepted' => TradeOfferResource::collection($this->resource['accepted'] ?? [])->toArray($request),
             'rejected' => TradeOfferResource::collection($this->resource['rejected'] ?? [])->toArray($request),
+            'canceled' => TradeOfferResource::collection($this->resource['canceled'] ?? [])->toArray($request),
             'finished' => TradeOfferResource::collection($this->resource['finished'] ?? [])->toArray($request),
         ];
     }

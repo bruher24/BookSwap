@@ -5,13 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RateUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\AuthorResource;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\ChatResource;
+use App\Http\Resources\NotificationResource;
+use App\Http\Resources\SettingResource;
+use App\Http\Resources\TradeOfferHistoryResource;
 use App\Http\Resources\UserResource;
+use App\Interfaces\AuthorServiceInterface;
+use App\Interfaces\BookServiceInterface;
+use App\Interfaces\ChatServiceInterface;
+use App\Interfaces\NotificationServiceInterface;
+use App\Interfaces\SettingServiceInterface;
+use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Book;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -90,34 +102,75 @@ final class UserController extends Controller
         return $this->successResponse();
     }
 
-    public function favorites(UserService $userService, User $user): JsonResponse
+    public function me(): JsonResponse
     {
-        Gate::authorize('favorites', $user);
+        return (new UserResource(Auth::user()))->response()->setStatusCode(Response::HTTP_OK);
+    }
 
-        $favorites = $userService->favorites($user);
+    public function favorites(UserService $userService): JsonResponse
+    {
+        $favorites = $userService->favorites(request()->user());
 
         return BookResource::collection($favorites)->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function like(UserService $userService, User $user, Book $book): JsonResponse
+    public function like(UserService $userService, Book $book): JsonResponse
     {
-        Gate::authorize('favorites', $user);
-
-        if (!$userService->addToFavorites($user, $book)) {
+        if (!$userService->addToFavorites(request()->user(), $book)) {
             return $this->errorResponse('Ошибка добавления книги в избранное', Response::HTTP_BAD_REQUEST);
         }
 
         return $this->successResponse();
     }
 
-    public function dislike(UserService $userService, User $user, Book $book): JsonResponse
+    public function dislike(UserService $userService, Book $book): JsonResponse
     {
-        Gate::authorize('favorites', $user);
-
-        if (!$userService->removeFromFavorites($user, $book)) {
+        if (!$userService->removeFromFavorites(request()->user(), $book)) {
             return $this->errorResponse('Ошибка удаления книги из избранного', Response::HTTP_BAD_REQUEST);
         }
 
         return $this->successResponse(Response::HTTP_ACCEPTED);
+    }
+
+    public function authors(AuthorServiceInterface $authorService): JsonResponse
+    {
+        $authors = $authorService->byUser(request()->user());
+
+        return AuthorResource::collection($authors)->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function books(BookServiceInterface $bookService): JsonResponse
+    {
+        $books = $bookService->byUser(request()->user());
+
+        return BookResource::collection($books)->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function chats(ChatServiceInterface $chatService): JsonResponse
+    {
+        $chats = $chatService->byUser(request()->user());
+
+        return ChatResource::collection($chats)->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function notifications(NotificationServiceInterface $notificationService): JsonResponse
+    {
+        $notifications = $notificationService->byUser(request()->user());
+
+        return NotificationResource::collection($notifications)->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function settings(SettingServiceInterface $settingService): JsonResponse
+    {
+        $settings = $settingService->byUser(request()->user());
+
+        return SettingResource::collection($settings)->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function tradeHistory(TradeOfferServiceInterface $tradeOfferService): JsonResponse
+    {
+        $history = $tradeOfferService->tradeHistory(request()->user());
+
+        return (new TradeOfferHistoryResource($history))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

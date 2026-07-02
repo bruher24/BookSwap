@@ -125,7 +125,9 @@ final class NotificationService implements NotificationServiceInterface
     #[Override]
     public function byUser(User $user): Collection
     {
-        return $this->where('user_id', (string)$user->id);
+        return $user->notifications()
+            ->withoutTrashed()
+            ->get();
     }
 
     #[Override]

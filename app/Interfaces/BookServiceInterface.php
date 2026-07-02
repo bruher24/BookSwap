@@ -3,6 +3,7 @@
 namespace App\Interfaces;
 
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 interface BookServiceInterface
@@ -20,4 +21,6 @@ interface BookServiceInterface
     public function delete(Book $book): bool;
 
     public function attach(Book $book, array $authors): bool;
+
+    public function byUser(User $user): Collection;
 }

@@ -27,7 +27,7 @@ Route::prefix('v1')->name('api.')
             ->group(function () {
                 Route::post('login', 'login')->name('login')->withoutMiddleware(['auth:sanctum', 'admin']);
                 Route::post('logout', 'logout')->name('logout');
-                Route::get('profile', 'profile')->name('profile');
+                Route::get('me', 'me')->name('me');
             });
 
         Route::prefix('auth')->name('auth.')->controller(AuthController::class)
@@ -72,7 +72,6 @@ Route::prefix('v1')->name('api.')
                 Route::post('/', 'store')->name('store');
                 Route::get('{chat}', 'show')->name('show');
                 Route::delete('{chat}', 'destroy')->name('destroy')->middleware('admin');
-                Route::get('by_user/{user}', 'byUser')->name('byUser');
                 Route::get('{chat}/messages', 'messages')->name('messages');
                 Route::post('{chat}/messages', 'send')->name('send');
                 Route::patch('{chat}/block', 'block')->name('block');
@@ -125,7 +124,6 @@ Route::prefix('v1')->name('api.')
                 Route::get('{notification}', 'show')->name('show');
                 Route::patch('{notification}', 'update')->name('update');
                 Route::delete('{notification}', 'destroy')->name('destroy');
-                Route::get('by_user/{user}', 'byUser')->name('byUser')->withoutMiddleware('admin');
                 Route::patch('{notification}/read', 'read')->name('read')->withoutMiddleware('admin');
             });
 
@@ -158,8 +156,7 @@ Route::prefix('v1')->name('api.')
                 Route::get('{setting}', 'show')->name('show')->withoutMiddleware('admin');
                 Route::patch('{setting}', 'update')->name('update');
                 Route::delete('{setting}', 'destroy')->name('destroy');
-                Route::get('by_user/{user}', 'byUser')->name('byUser')->withoutMiddleware('admin');
-                Route::patch('{setting}/update_for_user/{user}', 'updateForUser')->name('updateForUser')->withoutMiddleware('admin');
+                Route::patch('update_for_user/{setting}', 'updateForUser')->name('updateForUser')->withoutMiddleware('admin');
             });
 
         Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
@@ -170,22 +167,33 @@ Route::prefix('v1')->name('api.')
                 Route::patch('{trade_offer}', 'update')->name('update');
                 Route::delete('{trade_offer}', 'destroy')->name('destroy')->middleware('admin');
                 Route::get('{trade_offer}/items', 'items')->name('items');
-                Route::get('by_sender/{sender}', 'bySender')->name('bySender');
-                Route::get('by_receiver/{receiver}', 'byReceiver')->name('byReceiver');
                 Route::patch('{trade_offer}/update_status', 'updateStatus')->name('updateStatus');
-                Route::get('history', 'history')->name('history');
             });
 
-        Route::prefix('users')->name('users.')->controller(UserController::class)
+        Route::controller(UserController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index')->middleware('admin');
-                Route::post('/', 'store')->name('store')->middleware('admin');
-                Route::get('{user}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::patch('{user}', 'update')->name('update');
-                Route::delete('{user}', 'destroy')->name('destroy');
-                Route::patch('{user}/rate', 'rate')->name('rate');
-                Route::get('{user}/favorites', 'favorites')->name('favorites');
-                Route::patch('{user}/like/{book}', 'like')->name('like');
-                Route::patch('{user}/dislike/{book}', 'dislike')->name('dislike');
+                Route::prefix('users')->name('users.')
+                    ->group(function () {
+                        Route::get('/', 'index')->name('index')->middleware('admin');
+                        Route::post('/', 'store')->name('store')->middleware('admin');
+                        Route::get('{user}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
+                        Route::patch('{user}', 'update')->name('update');
+                        Route::delete('{user}', 'destroy')->name('destroy');
+                        Route::patch('{user}/rate', 'rate')->name('rate');
+                    });
+
+                Route::prefix('me')->name('me.')
+                    ->group(function () {
+                        Route::get('/', 'me')->name('me');
+                        Route::get('favorites', 'favorites')->name('favorites');
+                        Route::patch('like/{book}', 'like')->name('like');
+                        Route::patch('dislike/{book}', 'dislike')->name('dislike');
+                        Route::get('authors', 'authors')->name('authors');
+                        Route::get('books', 'books')->name('books');
+                        Route::get('chats', 'chats')->name('chats');
+                        Route::get('notifications', 'notifications')->name('notifications');
+                        Route::get('settings', 'settings')->name('settings');
+                        Route::get('trade_history', 'tradeHistory')->name('tradeHistory');
+                    });
             });
     });

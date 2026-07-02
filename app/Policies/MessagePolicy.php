@@ -26,9 +26,9 @@ final class MessagePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Message $message): Response
+    public function view(User $user): Response
     {
-        return $message->chat()->isUserBelongs($user)
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

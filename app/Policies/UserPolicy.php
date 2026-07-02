@@ -88,41 +88,6 @@ final class UserPolicy
             : Response::deny('Недостаточно прав');
     }
 
-    public function logout(User $user, User $target): Response
-    {
-        return $user->is($target)
-            ? Response::allow()
-            : Response::deny('Недостаточно прав');
-    }
-
-    public function chats(User $user, User $target): Response
-    {
-        return $user->is($target)
-            ? Response::allow()
-            : Response::deny('Недостаточно прав');
-    }
-
-    public function favorites(User $user, User $target): Response
-    {
-        return $user->is($target)
-            ? Response::allow()
-            : Response::deny('Недостаточно прав');
-    }
-
-    public function notifications(User $user, User $target): Response
-    {
-        return $user->is($target)
-            ? Response::allow()
-            : Response::deny('Недостаточно прав');
-    }
-
-    public function settings(User $user, User $target): Response
-    {
-        return $user->is($target)
-            ? Response::allow()
-            : Response::deny('Недостаточно прав');
-    }
-
     public function rate(User $user, User $target): Response
     {
         return Auth::check() && $user->isNot($target)

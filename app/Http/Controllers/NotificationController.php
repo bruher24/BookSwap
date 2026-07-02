@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateNotificationRequest;
 use App\Http\Resources\NotificationResource;
 use App\Interfaces\NotificationServiceInterface;
 use App\Models\Notification;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,14 +63,16 @@ final class NotificationController extends Controller
 
         return $this->successResponse(Response::HTTP_ACCEPTED);
     }
-    public function byUser(NotificationServiceInterface $notificationService, User $user): JsonResponse
+
+    public function read(NotificationServiceInterface $notificationService, Notification $notification): JsonResponse
     {
-        Gate::authorize('notifications', $user);
+        Gate::authorize('read', $notification);
 
-        $notifications = $notificationService->byUser($user);
+        if (!$notificationService->read($notification)) {
+            return $this->errorResponse('Ошибка при прочтении уведомления');
+        }
 
-        return NotificationResource::collection($notifications)->response()->setStatusCode(Response::HTTP_OK);
+        return $this->successResponse(Response::HTTP_ACCEPTED);
+
     }
 }
-
-// TODO: read, StoreNotificationRequest, UpdateNotificationRequest

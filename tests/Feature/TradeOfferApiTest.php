@@ -364,14 +364,26 @@ final class TradeOfferApiTest extends TestCase
         }
     }
 
-    public function test_user_can_update_status_to_rejected_as_sender(): void
+    public function test_user_can_update_status_to_canceled_as_sender(): void
     {
         Sanctum::actingAs($this->sender);
 
         $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
-            'status' => TradeOfferStatus::Rejected->value,
+            'status' => TradeOfferStatus::Canceled->value,
         ]);
         $response->assertOk();
+
+        $this->assertDatabaseHas('trade_offers', [
+            'id' => $this->tradeOffer->id,
+            'status' => TradeOfferStatus::Canceled->value,
+        ]);
+
+        foreach (array_merge($this->tradeOfferSenderBookIds, $this->tradeOfferReceiverBookIds) as $bookId) {
+            $this->assertDatabaseHas('books', [
+                'id' => $bookId,
+                'is_available' => true,
+            ]);
+        }
     }
 
     public function test_user_cannot_update_others_trade_offer_status_to_rejected(): void
@@ -486,48 +498,29 @@ final class TradeOfferApiTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_user_can_get_by_sender_trade_offers(): void
+    public function test_user_can_get_trade_history(): void
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->getJson("/api/v1/trade_offers/by_sender/{$this->sender->id}");
+        $response = $this->getJson('/api/v1/me/trade_history');
         $response->assertOk();
+        $response->assertJsonPath('data.id', 'trade-offer-history');
+        $response->assertJsonCount(1, 'data.attributes.pending');
     }
 
-    public function test_guest_cannot_get_by_sender_trade_offers(): void
+    public function test_guest_cannot_get_trade_history(): void
     {
-        $response = $this->getJson("/api/v1/trade_offers/by_sender/{$this->sender->id}");
+        $response = $this->getJson('/api/v1/me/trade_history');
         $response->assertUnauthorized();
     }
 
-    public function test_user_cannot_get_others_by_sender_trade_offers(): void
+    public function test_user_trade_history_does_not_include_others_trade_offers(): void
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->getJson("/api/v1/trade_offers/by_sender/{$this->sender->id}");
-        $response->assertForbidden();
-    }
-
-    public function test_user_can_get_by_receiver_trade_offers(): void
-    {
-        Sanctum::actingAs($this->receiver);
-
-        $response = $this->getJson("/api/v1/trade_offers/by_receiver/{$this->receiver->id}");
+        $response = $this->getJson('/api/v1/me/trade_history');
         $response->assertOk();
-    }
-
-    public function test_guest_cannot_get_by_receiver_trade_offers(): void
-    {
-        $response = $this->getJson("/api/v1/trade_offers/by_receiver/{$this->receiver->id}");
-        $response->assertUnauthorized();
-    }
-
-    public function test_user_cannot_get_others_by_receiver_trade_offers(): void
-    {
-        Sanctum::actingAs($this->other);
-
-        $response = $this->getJson("/api/v1/trade_offers/by_receiver/{$this->receiver->id}");
-        $response->assertForbidden();
+        $response->assertJsonCount(0, 'data.attributes.pending');
     }
 
     public function test_guest_cannot_delete_trade_offer(): void

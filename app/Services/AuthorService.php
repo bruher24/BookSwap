@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\AuthorServiceInterface;
 use App\Models\Author;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -118,5 +119,12 @@ final class AuthorService implements AuthorServiceInterface
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
+    }
+
+    public function byUser(User $user): Collection
+    {
+        return $user->authors()
+            ->withoutTrashed()
+            ->get();
     }
 }

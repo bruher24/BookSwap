@@ -8,7 +8,6 @@ use App\Http\Resources\MessageResource;
 use App\Interfaces\MessageServiceInterface;
 use App\Models\Message;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,8 +38,6 @@ class MessageController extends Controller
 
     public function show(Message $message): JsonResponse
     {
-        Gate::authorize('view', $message);
-
         return (new MessageResource($message))->response()->setStatusCode(Response::HTTP_OK);
     }
 
@@ -75,5 +72,3 @@ class MessageController extends Controller
         return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }
-
-// TODO: StoreMessageRequest, UpdateMessageRequest

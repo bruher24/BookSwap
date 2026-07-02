@@ -3,6 +3,7 @@
 namespace App\Interfaces;
 
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 interface SettingServiceInterface
@@ -18,4 +19,8 @@ interface SettingServiceInterface
     public function update(Setting $setting, array $data): Setting|false;
 
     public function delete(Setting $setting): bool;
+
+    public function byUser(User $user): Collection;
+
+    public function updateForUser(Setting $setting, User $user, string $value): bool;
 }

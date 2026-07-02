@@ -167,26 +167,29 @@ final class ChatApiTest extends TestCase
         $response->assertAccepted();
     }
 
-    public function test_user_can_by_user_owned_chat(): void
+    public function test_user_can_index_owned_chats(): void
     {
         Sanctum::actingAs($this->firstUser);
 
-        $response = $this->getJson("/api/v1/chats/by_user/{$this->firstUser->id}");
+        $response = $this->getJson('/api/v1/me/chats');
         $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.id', (string)$this->chat->id);
     }
 
-    public function test_guest_cannot_by_user_chat(): void
+    public function test_guest_cannot_index_owned_chats(): void
     {
-        $response = $this->getJson("/api/v1/chats/by_user/{$this->firstUser->id}");
+        $response = $this->getJson('/api/v1/me/chats');
         $response->assertUnauthorized();
     }
 
-    public function test_user_cannot_by_user_others_chat(): void
+    public function test_user_does_not_index_others_chats(): void
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->getJson("/api/v1/chats/by_user/{$this->firstUser->id}");
-        $response->assertForbidden();
+        $response = $this->getJson('/api/v1/me/chats');
+        $response->assertOk();
+        $response->assertJsonCount(0, 'data');
     }
 
     public function test_user_can_get_messages_owned_chat(): void

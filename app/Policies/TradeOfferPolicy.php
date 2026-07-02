@@ -93,21 +93,14 @@ final class TradeOfferPolicy
 
     public function reject(User $user, TradeOffer $tradeOffer): Response
     {
-        return $tradeOffer->isUserBelongs($user)
+        return $user->id === $tradeOffer->receiver_id
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
 
-    public function bySender(User $user, User $sender): Response
+    public function cancel(User $user, TradeOffer $tradeOffer): Response
     {
-        return $user->id === $sender->id
-            ? Response::allow()
-            : Response::deny('Недостаточно прав');
-    }
-
-    public function byReceiver(User $user, User $receiver): Response
-    {
-        return $user->id === $receiver->id
+        return $user->id === $tradeOffer->sender_id
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }
@@ -115,13 +108,6 @@ final class TradeOfferPolicy
     public function finish(User $user, TradeOffer $tradeOffer): Response
     {
         return $user->id === $tradeOffer->sender_id
-            ? Response::allow()
-            : Response::deny('Недостаточно прав');
-    }
-
-    public function history(): Response
-    {
-        return Auth::check()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

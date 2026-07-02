@@ -49,7 +49,7 @@ final class AdminAuthController extends Controller
         return $this->successResponse();
     }
 
-    public function profile(): JsonResponse
+    public function me(): JsonResponse
     {
         $user = Auth::user();
 

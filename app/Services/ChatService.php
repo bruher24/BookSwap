@@ -116,20 +116,14 @@ final class ChatService implements ChatServiceInterface
     #[Override]
     public function byUser(User $user): Collection
     {
-        try {
-            $chats = $user->chats()
-                ->withoutTrashed()
-                ->get();
+        $chats = $user->chats()
+            ->withoutTrashed()
+            ->get();
 
-            return Cache::remember('chats_' . $user->id, 600, function () use ($user, $chats): Collection {
-                Log::debug('Stored in cache: ' . 'chats_' . $user->id);
-                return $chats;
-            });
-
-        } catch (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return new Collection();
-        }
+        return Cache::remember('chats_' . $user->id, 600, function () use ($user, $chats): Collection {
+            Log::debug('Stored in cache: ' . 'chats_' . $user->id);
+            return $chats;
+        });
     }
 
     #[Override]

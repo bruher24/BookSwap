@@ -3,6 +3,7 @@
 namespace App\Interfaces;
 
 use App\Models\Author;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 interface AuthorServiceInterface
@@ -18,4 +19,6 @@ interface AuthorServiceInterface
     public function update(Author $author, array $data): Author|false;
 
     public function delete(Author $author): bool;
+
+    public function byUser(User $user): Collection;
 }

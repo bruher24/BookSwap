@@ -21,6 +21,10 @@ properties:
         type: array
         items:
           $ref: ./TradeOfferResource.yaml
+      canceled:
+        type: array
+        items:
+          $ref: ./TradeOfferResource.yaml
       finished:
         type: array
         items:
@@ -29,6 +33,7 @@ properties:
       - pending
       - accepted
       - rejected
+      - canceled
       - finished
   relationships:
     type: object

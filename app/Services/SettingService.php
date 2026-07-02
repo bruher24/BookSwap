@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\SettingServiceInterface;
 use App\Models\Setting;
+use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -41,6 +42,7 @@ final class SettingService implements SettingServiceInterface
             return Setting::findOrFail($id);
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
+
             return false;
         }
     }
@@ -51,10 +53,12 @@ final class SettingService implements SettingServiceInterface
         try {
             return Cache::remember(Setting::CACHE_KEY, 600, function (): Collection {
                 Log::debug('Stored in cache: ' . Setting::CACHE_KEY);
+
                 return Setting::all();
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
+
             return new Collection();
         }
     }
@@ -68,6 +72,7 @@ final class SettingService implements SettingServiceInterface
                 ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
+
             return new Collection();
         }
     }
@@ -76,13 +81,12 @@ final class SettingService implements SettingServiceInterface
     public function update(Setting $setting, array $data): Setting|false
     {
         try {
-            DB::beginTransaction();
             $setting->updateOrFail($data);
-            DB::commit();
+
             return $setting->refresh();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
+
             return false;
         }
     }
@@ -91,13 +95,32 @@ final class SettingService implements SettingServiceInterface
     public function delete(Setting $setting): bool
     {
         try {
-            DB::beginTransaction();
-            $setting->delete();
-            DB::commit();
+            $setting->deleteOrFail();
+
             return true;
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
+
+            return false;
+        }
+    }
+
+    public function byUser(User $user): Collection
+    {
+        return $user->settings()
+            ->withoutTrashed()
+            ->get();
+    }
+
+    public function updateForUser(Setting $setting, User $user, string $value): bool
+    {
+        try {
+            $user->settings()->syncWithoutDetachingOrFail([$setting->id => ['value' => $value]]);
+
+            return true;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+
             return false;
         }
     }

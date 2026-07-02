@@ -26,9 +26,11 @@ final class RolePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Role $role): bool
+    public function view(User $user, Role $role): Response
     {
-        return true;
+        return $user->isAdmin()
+            ? Response::allow()
+            : Response::deny('Недостаточно прав');
     }
 
     /**

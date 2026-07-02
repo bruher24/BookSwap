@@ -47,7 +47,7 @@ final class PhotoPolicy
      */
     public function update(User $user, Photo $photo): Response
     {
-        return $user->id === $photo->user_id
+        return $user->isAdmin()
             ? Response::allow()
             : Response::deny('Недостаточно прав');
     }

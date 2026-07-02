@@ -7,11 +7,9 @@ use App\Http\Requests\StoreTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferStatusRequest;
 use App\Http\Resources\BookResource;
-use App\Http\Resources\TradeOfferHistoryResource;
 use App\Http\Resources\TradeOfferResource;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Models\TradeOffer;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,24 +82,6 @@ final class TradeOfferController extends Controller
         return BookResource::collection($items)->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function bySender(TradeOfferServiceInterface $tradeOfferService, User $sender): JsonResponse
-    {
-        Gate::authorize('bySender', [TradeOffer::class, $sender]);
-
-        $tradeOffers = $tradeOfferService->bySender($sender);
-
-        return TradeOfferResource::collection($tradeOffers)->response()->setStatusCode(Response::HTTP_OK);
-    }
-
-    public function byReceiver(TradeOfferServiceInterface $tradeOfferService, User $receiver): JsonResponse
-    {
-        Gate::authorize('byReceiver', [TradeOffer::class, $receiver]);
-
-        $tradeOffers = $tradeOfferService->byReceiver($receiver);
-
-        return TradeOfferResource::collection($tradeOffers)->response()->setStatusCode(Response::HTTP_OK);
-    }
-
     public function updateStatus(UpdateTradeOfferStatusRequest $request, TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
     {
         $validated = $request->validated();
@@ -116,6 +96,10 @@ final class TradeOfferController extends Controller
                 Gate::authorize('reject', $tradeOffer);
                 $result = $tradeOfferService->reject($tradeOffer);
                 break;
+            case TradeOfferStatus::Canceled:
+                Gate::authorize('cancel', $tradeOffer);
+                $result = $tradeOfferService->cancel($tradeOffer);
+                break;
             case TradeOfferStatus::Finished:
                 Gate::authorize('finish', $tradeOffer);
                 $result = $tradeOfferService->finish($tradeOffer);
@@ -129,20 +113,5 @@ final class TradeOfferController extends Controller
         }
 
         return $this->successResponse();
-    }
-
-    public function history(TradeOfferServiceInterface $tradeOfferService): JsonResponse
-    {
-        Gate::authorize('history', TradeOffer::class);
-
-        $user = request()->user() ?? null;
-
-        if (!isset($user)) {
-            return $this->errorResponse('Пользователь не авторизован', Response::HTTP_BAD_REQUEST);
-        }
-
-        $history = $tradeOfferService->tradeHistory($user);
-
-        return (new TradeOfferHistoryResource($history))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

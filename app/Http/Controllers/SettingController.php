@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
+use App\Http\Requests\UpdateUserSettingValueRequest;
 use App\Http\Resources\SettingResource;
 use App\Interfaces\SettingServiceInterface;
 use App\Models\Setting;
@@ -65,6 +66,15 @@ final class SettingController extends Controller
 
         return $this->successResponse(Response::HTTP_ACCEPTED);
     }
-}
 
-// TODO: byUser, updateForUser
+    public function updateForUser(SettingServiceInterface $settingService, UpdateUserSettingValueRequest $request, Setting $setting): JsonResponse
+    {
+        $validated = $request->validated();
+
+        if (!$settingService->updateForUser($setting, $request->user(), $validated['value'])) {
+            return $this->errorResponse('Ошибка при обновлении настроек пользователя', Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->successResponse(Response::HTTP_ACCEPTED);
+    }
+}

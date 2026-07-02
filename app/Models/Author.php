@@ -70,7 +70,7 @@ final class Author extends Model implements Cacheable
         return $this->belongsToMany(Book::class);
     }
 
-    public function users(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

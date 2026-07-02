@@ -30,6 +30,8 @@ interface TradeOfferServiceInterface
 
     public function reject(TradeOffer $tradeOffer): bool;
 
+    public function cancel(TradeOffer $tradeOffer): bool;
+
     public function finish(TradeOffer $tradeOffer): bool;
 
     public function tradeHistory(User $user): \Illuminate\Support\Collection;
