@@ -143,5 +143,3 @@ volumes:
         driver: local
     typesense_data:
         driver: local
-    swagger:
-        driver: local

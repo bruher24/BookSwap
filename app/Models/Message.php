@@ -4,12 +4,16 @@ namespace App\Models;
 
 use App\Interfaces\Cacheable;
 use App\Traits\CacheInvalidation;
+use Database\Factories\MessageFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 final class Message extends Model implements Cacheable
 {
+    /** @use HasFactory<MessageFactory> */
+    use HasFactory;
     use SoftDeletes;
     use CacheInvalidation;
 

@@ -3,21 +3,18 @@
 namespace Database\Seeders;
 
 use App\Models\Photo;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 final class PhotoSeeder extends Seeder
 {
     public function run(): void
     {
-        $photos = [
-            [
-                'src' => 'avatars/avatar.png',
-                'user_id' => 1,
-            ],
-        ];
+        $admin = User::query()->where('email', 'admin@admin.com')->firstOrFail();
 
-        collect($photos)->each(function ($photo) {
-            Photo::create($photo);
-        });
+        Photo::query()->updateOrCreate(
+            ['src' => 'avatars/avatar.png'],
+            ['user_id' => $admin->id]
+        );
     }
 }

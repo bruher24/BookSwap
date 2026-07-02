@@ -17,8 +17,8 @@ final class RoleSeeder extends Seeder
                 'name' => 'user',
             ],
         ];
-        collect($roles)->each(function ($role) {
-            Role::create($role);
+        collect($roles)->each(function (array $role): void {
+            Role::query()->updateOrCreate(['name' => $role['name']], $role);
         });
     }
 }

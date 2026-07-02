@@ -23,8 +23,8 @@ final class BookTypeSeeder extends Seeder
                 'name' => 'Другое',
             ],
         ];
-        collect($bookTypes)->each(function ($bookType) {
-            BookType::create($bookType);
+        collect($bookTypes)->each(function (array $bookType): void {
+            BookType::query()->updateOrCreate(['name' => $bookType['name']], $bookType);
         });
     }
 }

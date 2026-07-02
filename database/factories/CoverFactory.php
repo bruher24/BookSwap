@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Cover;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
@@ -21,7 +22,8 @@ final class CoverFactory extends Factory
     {
         return [
             'src' => 'covers/' . $this->faker->uuid() . '.jpg',
-            'user_id' => 1,
+            'user_id' => fn () => User::query()->inRandomOrder()->value('id')
+                ?? User::factory()->createOne()->id,
         ];
     }
 }

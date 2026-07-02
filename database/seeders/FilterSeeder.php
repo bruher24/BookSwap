@@ -32,8 +32,8 @@ final class FilterSeeder extends Seeder
             ]
         ];
 
-        collect($filters)->each(function ($filter) {
-            Filter::create($filter);
+        collect($filters)->each(function (array $filter): void {
+            Filter::query()->updateOrCreate(['name' => $filter['name']], $filter);
         });
     }
 }

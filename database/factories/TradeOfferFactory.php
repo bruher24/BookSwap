@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\TradeOfferStatus;
 use App\Models\TradeOffer;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
@@ -20,9 +21,17 @@ final class TradeOfferFactory extends Factory
     #[Override]
     public function definition(): array
     {
+        $senderId = User::query()->inRandomOrder()->value('id')
+            ?? User::factory()->createOne()->id;
+        $receiverId = User::query()
+            ->whereKeyNot($senderId)
+            ->inRandomOrder()
+            ->value('id')
+            ?? User::factory()->createOne()->id;
+
         return [
-            'sender_id' => $this->faker->numberBetween(1, 100),
-            'receiver_id' => $this->faker->numberBetween(1, 100),
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
             'status' => TradeOfferStatus::Pending,
         ];
     }

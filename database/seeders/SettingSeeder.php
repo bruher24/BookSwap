@@ -23,8 +23,8 @@ final class SettingSeeder extends Seeder
                 'available_values' => ['on', 'off'],
             ]
         ];
-        collect($settings)->each(function ($setting) {
-            Setting::create($setting);
+        collect($settings)->each(function (array $setting): void {
+            Setting::query()->updateOrCreate(['name' => $setting['name']], $setting);
         });
     }
 }

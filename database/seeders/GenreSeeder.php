@@ -42,8 +42,8 @@ final class GenreSeeder extends Seeder
 
             ],
         ];
-        collect($genres)->each(function ($genre) {
-            Genre::create($genre);
+        collect($genres)->each(function (array $genre): void {
+            Genre::query()->updateOrCreate(['name' => $genre['name']], $genre);
         });
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Override;
 
@@ -22,7 +23,8 @@ final class NotificationFactory extends Factory
         return [
             'subject' => $this->faker->sentence,
             'body' => $this->faker->paragraph,
-            'user_id' => $this->faker->numberBetween(1, 100),
+            'user_id' => fn () => User::query()->inRandomOrder()->value('id')
+                ?? User::factory()->createOne()->id,
             'seen' => $this->faker->boolean,
         ];
     }

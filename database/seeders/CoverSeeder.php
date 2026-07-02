@@ -3,21 +3,18 @@
 namespace Database\Seeders;
 
 use App\Models\Cover;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 final class CoverSeeder extends Seeder
 {
     public function run(): void
     {
-        $covers = [
-            [
-                'src' => 'covers/cover.png',
-                'user_id' => 1,
-            ],
-        ];
+        $admin = User::query()->where('email', 'admin@admin.com')->firstOrFail();
 
-        collect($covers)->each(function ($cover) {
-            Cover::create($cover);
-        });
+        Cover::query()->updateOrCreate(
+            ['src' => 'covers/cover.png'],
+            ['user_id' => $admin->id]
+        );
     }
 }

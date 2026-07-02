@@ -29,7 +29,9 @@ final class DatabaseSeeder extends Seeder
             CoverSeeder::class,
             BookTypeSeeder::class,
             BookSeeder::class,
+            TradeOfferSeeder::class,
             FilterSeeder::class,
+            RatingSeeder::class,
         ]);
     }
 }
