@@ -2,9 +2,9 @@
 
 namespace App\Events;
 
-use App\Enums\TradeOfferStatus;
-use App\Models\TradeOffer;
-use App\Models\User;
+use App\Models\Message;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -15,41 +15,42 @@ use Override;
 
 #[Connection('redis')]
 #[Queue('reverb')]
-final class TradeOfferUpdated implements ShouldBroadcast
+final class MessageCreated implements ShouldBroadcast
 {
     use Dispatchable;
+    use InteractsWithSockets;
     use SerializesModels;
-
-    public User $receiver;
 
     /**
      * Create a new event instance.
-     * @psalm-suppress PossiblyNullPropertyAssignmentValue
      */
     public function __construct(
-        public TradeOffer $tradeOffer,
-        public TradeOfferStatus $newStatus
+        public Message $message
     ) {
-        $this->receiver = User::find($this->tradeOffer->receiver_id);
     }
 
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array<int, Channel>
+     */
     #[Override]
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('users.' . $this->receiver->id),
+            new PrivateChannel('chats.' . $this->message->chat->id),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'trade-offer.updated';
+        return 'message.created';
     }
 
     public function broadcastWith(): array
     {
         return [
-            'tradeOffer' => $this->tradeOffer,
+            'message' => $this->message,
         ];
     }
 }

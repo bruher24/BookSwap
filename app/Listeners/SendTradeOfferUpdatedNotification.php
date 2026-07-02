@@ -24,6 +24,7 @@ final class SendTradeOfferUpdatedNotification implements ShouldQueue
      */
     public function handle(TradeOfferUpdated $event): void
     {
+        // TODO: send notification
         $mail = (new TradeOfferStatusUpdated($event->tradeOffer, $event->receiver))
             ->onQueue('mail');
 

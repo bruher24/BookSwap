@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TradeOfferStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -32,6 +33,7 @@ final class StoreTradeOfferRequest extends FormRequest
                     ->withoutTrashed(),
                 Rule::unique('trade_offers', 'sender_id')
                     ->where('receiver_id', request('receiver_id'))
+                    ->where('status', TradeOfferStatus::Pending->value)
                     ->withoutTrashed(),
             ],
             'receiver_id' => [
@@ -42,6 +44,7 @@ final class StoreTradeOfferRequest extends FormRequest
                     ->withoutTrashed(),
                 Rule::unique('trade_offers', 'receiver_id')
                     ->where('sender_id', request('sender_id'))
+                    ->where('status', TradeOfferStatus::Pending->value)
                     ->withoutTrashed(),
             ],
             'sender_items' => [

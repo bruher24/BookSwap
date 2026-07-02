@@ -189,7 +189,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Rejected])) {
                 foreach ($tradeOffer->books()->get() as $book) {
-                    $book->update(['is_available' => true]);
+                    $book->update(['is_available' => true, 'trade_offer_id' => null]);
                 }
 
                 return true;
@@ -208,7 +208,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Canceled])) {
                 foreach ($tradeOffer->books()->get() as $book) {
-                    $book->update(['is_available' => true]);
+                    $book->update(['is_available' => true, 'trade_offer_id' => null]);
                 }
 
                 return true;
@@ -228,7 +228,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
             if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Finished])) {
                 foreach ($tradeOffer->books()->get() as $book) {
                     $newOwnerId = $book->user_id === $tradeOffer->sender_id ? $tradeOffer->receiver_id : $tradeOffer->sender_id;
-                    $book->update(['user_id' => $newOwnerId, 'is_available' => true]);
+                    $book->update(['user_id' => $newOwnerId, 'is_available' => true, 'trade_offer_id' => null]);
                 }
 
                 return true;

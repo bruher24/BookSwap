@@ -98,6 +98,7 @@ return [
 
     'waits' => [
         'redis:default' => 60,
+        'redis:reverb' => 10,
     ],
 
     /*
@@ -239,6 +240,19 @@ return [
                 'timeout' => 60,
                 'nice' => 0,
             ],
+            'reverb-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['reverb'],
+                'maxProcesses' => 1,
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'maxTime' => 0,
+                'maxJobs' => 0,
+                'memory' => 128,
+                'tries' => 3,
+                'timeout' => 60,
+                'nice' => 0,
+            ],
             'default-supervisor' => [
                 'connection' => 'redis',
                 'queue' => ['default'],
@@ -285,6 +299,19 @@ return [
                 'connection' => 'redis',
                 'queue' => ['mail'],
                 'maxProcesses' => 5,
+                'balance' => 'auto',
+                'autoScalingStrategy' => 'time',
+                'maxTime' => 0,
+                'maxJobs' => 0,
+                'memory' => 128,
+                'tries' => 3,
+                'timeout' => 60,
+                'nice' => 0,
+            ],
+            'reverb-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['reverb'],
+                'maxProcesses' => 1,
                 'balance' => 'auto',
                 'autoScalingStrategy' => 'time',
                 'maxTime' => 0,

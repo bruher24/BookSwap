@@ -20,10 +20,12 @@ use App\Interfaces\UserServiceInterface;
 use App\Interfaces\UserSettingServiceInterface;
 use App\Models\Author;
 use App\Models\Book;
+use App\Models\Message;
 use App\Models\TradeOffer;
 use App\Models\User;
 use App\Observers\AuthorObserver;
 use App\Observers\BookObserver;
+use App\Observers\MessageObserver;
 use App\Observers\TradeOfferObserver;
 use App\Observers\UserObserver;
 use App\Services\AuthorService;
@@ -86,6 +88,7 @@ final class AppServiceProvider extends ServiceProvider
 
         Author::observe(AuthorObserver::class);
         Book::observe(BookObserver::class);
+        Message::observe(MessageObserver::class);
         TradeOffer::observe(TradeOfferObserver::class);
         User::observe(UserObserver::class);
 
