@@ -31,7 +31,6 @@ final class UserResource extends JsonApiResource
         'photo' => PhotoResource::class,
         'settings' => SettingResource::class,
         'chats' => ChatResource::class,
-        'notifications' => NotificationResource::class,
         'ratings',
         'authors' => AuthorResource::class,
     ];

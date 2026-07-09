@@ -12,7 +12,7 @@ class MessageObserver
      */
     public function created(Message $message): void
     {
-        event((new MessageCreated($message))->dontBroadcastToCurrentUser());
+        MessageCreated::dispatch($message);
     }
 
     /**

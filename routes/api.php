@@ -116,17 +116,6 @@ Route::prefix('v1')->name('api.')
                 Route::delete('{message}', 'destroy')->name('destroy');
             });
 
-        Route::prefix('notifications')->name('notifications.')->controller(NotificationController::class)
-            ->middleware('admin')
-            ->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::post('/', 'store')->name('store');
-                Route::get('{notification}', 'show')->name('show');
-                Route::patch('{notification}', 'update')->name('update');
-                Route::delete('{notification}', 'destroy')->name('destroy');
-                Route::patch('{notification}/read', 'read')->name('read')->withoutMiddleware('admin');
-            });
-
         Route::prefix('photos')->name('photos.')->controller(PhotoController::class)
             ->middleware('admin')
             ->group(function () {
@@ -191,7 +180,6 @@ Route::prefix('v1')->name('api.')
                         Route::get('authors', 'authors')->name('authors');
                         Route::get('books', 'books')->name('books');
                         Route::get('chats', 'chats')->name('chats');
-                        Route::get('notifications', 'notifications')->name('notifications');
                         Route::get('settings', 'settings')->name('settings');
                         Route::get('trade_history', 'tradeHistory')->name('tradeHistory');
                     });
