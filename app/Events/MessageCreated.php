@@ -2,7 +2,9 @@
 
 namespace App\Events;
 
+use App\Http\Resources\MessageResource;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -21,12 +23,17 @@ final class MessageCreated implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
+    public User $receiver;
+
     /**
      * Create a new event instance.
      */
     public function __construct(
         public Message $message
     ) {
+        $this->receiver = $message->chat->users
+            ->where('id', '!=', $message->sender_id)
+            ->first();
     }
 
     /**
@@ -38,7 +45,7 @@ final class MessageCreated implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('chats.' . $this->message->chat->id),
+            new PrivateChannel('chats.' . $this->message->chat_id),
         ];
     }
 
@@ -50,7 +57,7 @@ final class MessageCreated implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'message' => $this->message,
+            'message' => new MessageResource($this->message),
         ];
     }
 }

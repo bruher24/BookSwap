@@ -114,12 +114,6 @@ final class User extends Authenticatable implements Cacheable
             ->withTimestamps();
     }
 
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class)
-            ->where('seen', false);
-    }
-
     public function ratings(): HasMany
     {
         return $this->hasMany(Rating::class);
@@ -133,5 +127,10 @@ final class User extends Authenticatable implements Cacheable
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'user_favorite_books');
+    }
+
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        return 'users.' . $this->id;
     }
 }

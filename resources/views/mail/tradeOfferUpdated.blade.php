@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Trade Offer Status Updated</title>
+    <title>Trade Offer Updated</title>
 </head>
 <body>
 <h1>Hello, {{ $receiver->name }}</h1>

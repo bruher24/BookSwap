@@ -8,6 +8,7 @@ use App\Events\TradeOfferForceDeleted;
 use App\Events\TradeOfferRestored;
 use App\Events\TradeOfferUpdated;
 use App\Models\TradeOffer;
+use Illuminate\Support\Facades\Auth;
 
 final class TradeOfferObserver
 {
@@ -24,9 +25,7 @@ final class TradeOfferObserver
      */
     public function updated(TradeOffer $tradeOffer): void
     {
-        if ($tradeOffer->isDirty('status')) {
-            TradeOfferUpdated::dispatch($tradeOffer, $tradeOffer->status);
-        }
+        TradeOfferUpdated::dispatch($tradeOffer, Auth::user());
     }
 
     /**

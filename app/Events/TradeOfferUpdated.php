@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Enums\TradeOfferStatus;
+use App\Http\Resources\TradeOfferResource;
 use App\Models\TradeOffer;
 use App\Models\User;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -20,7 +20,7 @@ final class TradeOfferUpdated implements ShouldBroadcast
     use Dispatchable;
     use SerializesModels;
 
-    public User $receiver;
+    public User $userToNotify;
 
     /**
      * Create a new event instance.
@@ -28,16 +28,19 @@ final class TradeOfferUpdated implements ShouldBroadcast
      */
     public function __construct(
         public TradeOffer $tradeOffer,
-        public TradeOfferStatus $newStatus
+        public User $updatedUser
     ) {
-        $this->receiver = User::find($this->tradeOffer->receiver_id);
+        $this->userToNotify = User::find($this->tradeOffer->receiver_id == $this->updatedUser->id
+            ? $this->tradeOffer->sender_id
+            : $this->tradeOffer->receiver_id);
     }
 
     #[Override]
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('users.' . $this->receiver->id),
+            new PrivateChannel('users.' . $this->tradeOffer->sender_id),
+            new PrivateChannel('users.' . $this->tradeOffer->receiver_id),
         ];
     }
 
@@ -49,7 +52,7 @@ final class TradeOfferUpdated implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'tradeOffer' => $this->tradeOffer,
+            'tradeOffer' => new TradeOfferResource($this->tradeOffer),
         ];
     }
 }

@@ -153,13 +153,6 @@ final class UserController extends Controller
         return ChatResource::collection($chats)->response()->setStatusCode(Response::HTTP_OK);
     }
 
-    public function notifications(NotificationServiceInterface $notificationService): JsonResponse
-    {
-        $notifications = $notificationService->byUser(request()->user());
-
-        return NotificationResource::collection($notifications)->response()->setStatusCode(Response::HTTP_OK);
-    }
-
     public function settings(SettingServiceInterface $settingService): JsonResponse
     {
         $settings = $settingService->byUser(request()->user());

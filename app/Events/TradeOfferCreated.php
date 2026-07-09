@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\TradeOfferResource;
 use App\Models\TradeOffer;
 use App\Models\User;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -19,8 +20,6 @@ final class TradeOfferCreated implements ShouldBroadcast
     use Dispatchable;
     use SerializesModels;
 
-    public User $receiver;
-
     /**
      * Create a new event instance.
      * @psalm-suppress PossiblyNullPropertyAssignmentValue
@@ -28,14 +27,14 @@ final class TradeOfferCreated implements ShouldBroadcast
     public function __construct(
         public TradeOffer $tradeOffer
     ) {
-        $this->receiver = User::find($this->tradeOffer->receiver_id);
     }
 
     #[Override]
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('users.' . $this->receiver->id),
+            new PrivateChannel('users.' . $this->tradeOffer->receiver_id),
+            new PrivateChannel('users.' . $this->tradeOffer->sender_id),
         ];
     }
 
@@ -47,7 +46,7 @@ final class TradeOfferCreated implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'tradeOffer' => $this->tradeOffer,
+            'tradeOffer' => new TradeOfferResource($this->tradeOffer),
         ];
     }
 }

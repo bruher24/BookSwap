@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-final class TradeOfferStatusUpdated extends Mailable
+final class TradeOfferNewStatus extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -42,8 +42,8 @@ final class TradeOfferStatusUpdated extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.tradeOfferStatusUpdated',
-            text: 'mail.tradeOfferStatusUpdated_text'
+            view: 'mail.tradeOfferUpdated',
+            text: 'mail.tradeOfferUpdated_text'
         );
     }
 
