@@ -2,23 +2,28 @@
 
 namespace App\Mail;
 
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class MessageReceived extends Mailable
+final class MessageReceived extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
+    public function __construct(
+        public Message $message,
+        public User $receiver,
+        public User $sender,
+    ) {
         //
     }
 
@@ -38,8 +43,8 @@ class MessageReceived extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.messageReceived',
-            text: 'mail.messageReceived_text',
+            view: 'mail.messageCreated',
+            text: 'mail.messageCreated_text',
         );
     }
 

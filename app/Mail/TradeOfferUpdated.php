@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-final class TradeOfferNewStatus extends Mailable
+final class TradeOfferUpdated extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -32,7 +32,7 @@ final class TradeOfferNewStatus extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Trade Offer Status Updated',
+            subject: 'Trade Offer Updated',
         );
     }
 

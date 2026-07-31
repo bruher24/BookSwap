@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Mail\MessageReceived;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class MessageCreatedNotification extends Notification implements ShouldQueue
@@ -21,35 +22,22 @@ class MessageCreatedNotification extends Notification implements ShouldQueue
         $this->afterCommit();
     }
 
-    public function via(object $notifiable): array
+    public function via(User $notifiable): array
     {
         return ['mail', 'database', 'broadcast'];
     }
 
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(User $notifiable): Mailable
     {
-        return (new MailMessage())
-            ->subject('Новое сообщение')
-            ->view('mail.messageCreated', [
-                'chat_id' => $this->message->chat_id,
-                'receiver' => $notifiable,
-                'sender' => $this->sender,
-                'body' => $this->message->body,
-            ])
-            ->text('mail.messageCreated_text', [
-                'chat_id' => $this->message->chat_id,
-                'receiver' => $notifiable,
-                'sender' => $this->sender,
-                'body' => $this->message->body,
-            ]);
+        return new MessageReceived($this->message, $notifiable, $this->sender);
     }
 
-    public function toBroadcast(object $notifiable): BroadcastMessage
+    public function toBroadcast(User $notifiable): BroadcastMessage
     {
         return new BroadcastMessage($this->payload());
     }
 
-    public function toArray(object $notifiable): array
+    public function toArray(User $notifiable): array
     {
         return $this->payload();
     }

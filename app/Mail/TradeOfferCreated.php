@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-final class TradeOfferReceived extends Mailable
+final class TradeOfferCreated extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -21,7 +21,8 @@ final class TradeOfferReceived extends Mailable
      */
     public function __construct(
         public TradeOffer $tradeOffer,
-        public User $receiver
+        public User $receiver,
+        public User $sender,
     ) {
         //
     }
@@ -32,7 +33,7 @@ final class TradeOfferReceived extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Trade Offer Received',
+            subject: 'Trade Offer Created',
         );
     }
 
@@ -42,8 +43,8 @@ final class TradeOfferReceived extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.tradeOfferReceived',
-            text: 'mail.tradeOfferReceived_text'
+            view: 'mail.tradeOfferCreated',
+            text: 'mail.tradeOfferCreated_text'
         );
     }
 

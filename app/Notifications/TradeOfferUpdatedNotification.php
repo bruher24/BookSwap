@@ -2,9 +2,12 @@
 
 namespace App\Notifications;
 
+use App\Mail\TradeOfferUpdated;
 use App\Models\TradeOffer;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -19,31 +22,22 @@ class TradeOfferUpdatedNotification extends Notification implements ShouldQueue
         $this->afterCommit();
     }
 
-    public function via(object $notifiable): array
+    public function via(User $notifiable): array
     {
         return ['mail', 'database', 'broadcast'];
     }
 
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(User $notifiable): Mailable
     {
-        return (new MailMessage())
-            ->subject('Сделка обновлена')
-            ->view('mail.tradeOfferUpdated', [
-                'tradeOffer' => $this->tradeOffer,
-                'receiver' => $notifiable,
-            ])
-            ->text('mail.tradeOfferUpdated_text', [
-                'tradeOffer' => $this->tradeOffer,
-                'receiver' => $notifiable,
-            ]);
+        return new TradeOfferUpdated($this->tradeOffer, $notifiable);
     }
 
-    public function toBroadcast(object $notifiable): BroadcastMessage
+    public function toBroadcast(User $notifiable): BroadcastMessage
     {
         return new BroadcastMessage($this->payload());
     }
 
-    public function toArray(object $notifiable): array
+    public function toArray(User $notifiable): array
     {
         return $this->payload();
     }

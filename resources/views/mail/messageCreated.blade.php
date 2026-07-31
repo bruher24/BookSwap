@@ -7,8 +7,8 @@
 <body>
 <h1>Hello, {{ $receiver->name }}</h1>
 <p>There is new message for you sent by {{ $sender->name }}!</p>
-<p>{{ $body }}</p>
+<p>{{ $message->body }}</p>
 <p>Follow the link to see the details:</p>
-<a href="{{ URL::signedRoute('api.chats.show', ['chat' => $chat->id]) }}">Show the details</a>
+<a href="{{ URL::signedRoute('api.chats.show', ['chat' => $message->chat_id]) }}">Show the details</a>
 </body>
 </html>
