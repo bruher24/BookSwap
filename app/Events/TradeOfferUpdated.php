@@ -20,8 +20,6 @@ final class TradeOfferUpdated implements ShouldBroadcast
     use Dispatchable;
     use SerializesModels;
 
-    public User $userToNotify;
-
     /**
      * Create a new event instance.
      * @psalm-suppress PossiblyNullPropertyAssignmentValue
@@ -30,9 +28,6 @@ final class TradeOfferUpdated implements ShouldBroadcast
         public TradeOffer $tradeOffer,
         public User $updatedUser
     ) {
-        $this->userToNotify = User::find($this->tradeOffer->receiver_id == $this->updatedUser->id
-            ? $this->tradeOffer->sender_id
-            : $this->tradeOffer->receiver_id);
     }
 
     #[Override]

@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\TradeOfferCreated;
 use App\Models\User;
+use App\Notifications\TradeOfferCreatedNotification;
 
 final class SendTradeOfferCreatedNotifications
 {
@@ -20,8 +21,13 @@ final class SendTradeOfferCreatedNotifications
      */
     public function handle(TradeOfferCreated $event): void
     {
-        // TODO: добавить уведомление
-        User::find($event->tradeOffer->receiver_id)
-            ->notify(new TradeOfferCreatedNotification($event->tradeOffer));
+        $sender = User::find($event->tradeOffer->sender_id);
+        $receiver = User::find($event->tradeOffer->receiver_id);
+
+        if (!$sender || !$receiver) {
+            return;
+        }
+
+        $receiver->notify(new TradeOfferCreatedNotification($event->tradeOffer, $sender));
     }
 }

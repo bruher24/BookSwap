@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\TradeOfferUpdated;
+use App\Models\User;
 use App\Notifications\TradeOfferUpdatedNotification;
 
 class SendTradeOfferUpdatedNotifications
@@ -20,7 +21,15 @@ class SendTradeOfferUpdatedNotifications
      */
     public function handle(TradeOfferUpdated $event): void
     {
-        $event->userToNotify->notify(new TradeOfferUpdatedNotification($event->tradeOffer));
+        $userToNotify = User::find($event->tradeOffer->receiver_id == $event->updatedUser->id
+            ? $event->tradeOffer->sender_id
+            : $event->tradeOffer->receiver_id);
+
+        if (!$userToNotify) {
+            return;
+        }
+
+        $userToNotify->notify(new TradeOfferUpdatedNotification($event->tradeOffer));
 
     }
 }

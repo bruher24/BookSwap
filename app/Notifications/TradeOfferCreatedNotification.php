@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Message;
+use App\Models\TradeOffer;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,13 +10,13 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MessageCreatedNotification extends Notification implements ShouldQueue
+class TradeOfferCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public function __construct(
-        public Message $message,
-        public User $sender,
+        public TradeOffer $tradeOffer,
+        public User $sender
     ) {
         $this->afterCommit();
     }
@@ -29,18 +29,16 @@ class MessageCreatedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage())
-            ->subject('Новое сообщение')
-            ->view('mail.messageCreated', [
-                'chat_id' => $this->message->chat_id,
+            ->subject('Сделка обновлена')
+            ->view('mail.tradeOfferCreated', [
+                'tradeOffer' => $this->tradeOffer,
                 'receiver' => $notifiable,
-                'sender' => $this->sender,
-                'body' => $this->message->body,
+                'sender' => $this->sender
             ])
-            ->text('mail.messageCreated_text', [
-                'chat_id' => $this->message->chat_id,
+            ->text('mail.tradeOfferCreated_text', [
+                'tradeOffer' => $this->tradeOffer,
                 'receiver' => $notifiable,
-                'sender' => $this->sender,
-                'body' => $this->message->body,
+                'sender' => $this->sender
             ]);
     }
 
@@ -65,16 +63,14 @@ class MessageCreatedNotification extends Notification implements ShouldQueue
 
     public function broadcastType(): string
     {
-        return 'notification.message.created';
+        return 'notification.trade-offer.created';
     }
 
     private function payload(): array
     {
         return [
-            'message_id' => $this->message->id,
-            'chat_id' => $this->message->chat_id,
-            'sender_id' => $this->message->sender_id,
-            'body' => $this->message->body,
+            'trade_offer_id' => $this->tradeOffer->id,
+            'sender_id' => $this->tradeOffer->sender_id,
         ];
     }
 }
