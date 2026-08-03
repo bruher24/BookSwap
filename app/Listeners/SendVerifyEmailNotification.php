@@ -3,11 +3,13 @@
 namespace App\Listeners;
 
 use App\Events\UserCreated;
-use App\Mail\EmailVerification;
+use App\Mail\VerifyEmail;
+use App\Models\User;
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-final class SendEmailVerification implements ShouldQueue
+final class SendVerifyEmailNotification implements ShouldQueue
 {
     public string $queue = 'listeners';
 
@@ -24,9 +26,6 @@ final class SendEmailVerification implements ShouldQueue
      */
     public function handle(UserCreated $event): void
     {
-        $mail = (new EmailVerification($event->user))
-            ->onQueue('mail');
-
-        Mail::to($event->user)->queue($mail);
+        $event->user->notify(new VerifyEmailNotification());
     }
 }

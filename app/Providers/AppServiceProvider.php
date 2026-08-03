@@ -16,7 +16,6 @@ use App\Interfaces\RoleServiceInterface;
 use App\Interfaces\SettingServiceInterface;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
-use App\Interfaces\UserSettingServiceInterface;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Message;
@@ -41,7 +40,6 @@ use App\Services\RoleService;
 use App\Services\SettingService;
 use App\Services\TradeOfferService;
 use App\Services\UserService;
-use App\Services\UserSettingService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Events\JobFailed;
@@ -65,15 +63,14 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(BookTypeServiceInterface::class, BookTypeService::class);
         $this->app->bind(ChatServiceInterface::class, ChatService::class);
         $this->app->bind(CoverServiceInterface::class, CoverService::class);
-        $this->app->bind(TradeOfferServiceInterface::class, TradeOfferService::class);
         $this->app->bind(FilterServiceInterface::class, FilterService::class);
         $this->app->bind(GenreServiceInterface::class, GenreService::class);
         $this->app->bind(MessageServiceInterface::class, MessageService::class);
         $this->app->bind(PhotoServiceInterface::class, PhotoService::class);
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
         $this->app->bind(SettingServiceInterface::class, SettingService::class);
+        $this->app->bind(TradeOfferServiceInterface::class, TradeOfferService::class);
         $this->app->bind(UserServiceInterface::class, UserService::class);
-        $this->app->bind(UserSettingServiceInterface::class, UserSettingService::class);
     }
 
     /**

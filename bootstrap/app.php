@@ -26,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'ability' => CheckForAnyAbility::class,
             'admin' => EnsureUserIsAdmin::class,
         ]);
+        // TODO: заменить на реальный адрес фронта
         $middleware->redirectGuestsTo('http://localhost:5173/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {

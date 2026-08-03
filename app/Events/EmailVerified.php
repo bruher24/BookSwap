@@ -2,24 +2,22 @@
 
 namespace App\Events;
 
-use App\Http\Resources\BookResource;
-use App\Models\Book;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Override;
 
-final class BookDeleted implements ShouldBroadcast
+class EmailVerified implements ShouldBroadcast
 {
     use Dispatchable;
+    use InteractsWithSockets;
     use SerializesModels;
 
-    /**
-     * Create a new event instance.
-     */
     public function __construct(
-        public Book $book
+        public User $user,
     ) {
     }
 
@@ -27,19 +25,12 @@ final class BookDeleted implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('books'),
+            new Channel('system'),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'deleted';
-    }
-
-    public function broadcastWith(): array
-    {
-        return [
-            'book' => new BookResource($this->book),
-        ];
+        return 'email-verified';
     }
 }

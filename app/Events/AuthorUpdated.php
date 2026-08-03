@@ -2,11 +2,15 @@
 
 namespace App\Events;
 
+use App\Http\Resources\AuthorResource;
 use App\Models\Author;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Override;
 
-final class AuthorUpdated
+final class AuthorUpdated implements ShouldBroadcast
 {
     use Dispatchable;
     use SerializesModels;
@@ -17,5 +21,25 @@ final class AuthorUpdated
     public function __construct(
         public Author $author
     ) {
+    }
+
+    #[Override]
+    public function broadcastOn(): array
+    {
+        return [
+            new Channel('authors'),
+        ];
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'updated';
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'author' => new AuthorResource($this->author),
+        ];
     }
 }

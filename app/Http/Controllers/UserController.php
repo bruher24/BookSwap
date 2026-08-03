@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RateUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UpdateUserSettingValueRequest;
 use App\Http\Resources\AuthorResource;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\ChatResource;
@@ -20,6 +21,7 @@ use App\Interfaces\SettingServiceInterface;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use App\Models\Book;
+use App\Models\Setting;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
@@ -165,5 +167,16 @@ final class UserController extends Controller
         $history = $tradeOfferService->tradeHistory(request()->user());
 
         return (new TradeOfferHistoryResource($history))->response()->setStatusCode(Response::HTTP_OK);
+    }
+
+    public function updateSetting(SettingServiceInterface $settingService, UpdateUserSettingValueRequest $request, Setting $setting): JsonResponse
+    {
+        $validated = $request->validated();
+
+        if (!$settingService->updateForUser($setting, $request->user(), $validated['value'])) {
+            return $this->errorResponse('Ошибка при обновлении настройки пользователя', Response::HTTP_BAD_REQUEST);
+        }
+
+        return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-final class EmailVerification extends Mailable
+final class VerifyEmail extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -40,8 +40,8 @@ final class EmailVerification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.verifyYourEmail',
-            text: 'mail.verifyYourEmail_text'
+            view: 'mail.verifyEmail',
+            text: 'mail.verifyEmail_text'
         );
     }
 

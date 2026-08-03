@@ -145,7 +145,6 @@ Route::prefix('v1')->name('api.')
                 Route::get('{setting}', 'show')->name('show')->withoutMiddleware('admin');
                 Route::patch('{setting}', 'update')->name('update');
                 Route::delete('{setting}', 'destroy')->name('destroy');
-                Route::patch('update_for_user/{setting}', 'updateForUser')->name('updateForUser')->withoutMiddleware('admin');
             });
 
         Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
@@ -174,13 +173,14 @@ Route::prefix('v1')->name('api.')
                 Route::prefix('me')->name('me.')
                     ->group(function () {
                         Route::get('/', 'me')->name('me');
-                        Route::get('favorites', 'favorites')->name('favorites');
-                        Route::patch('like/{book}', 'like')->name('like');
-                        Route::patch('dislike/{book}', 'dislike')->name('dislike');
                         Route::get('authors', 'authors')->name('authors');
                         Route::get('books', 'books')->name('books');
                         Route::get('chats', 'chats')->name('chats');
+                        Route::get('favorites', 'favorites')->name('favorites');
+                        Route::patch('like/{book}', 'like')->name('like');
+                        Route::patch('dislike/{book}', 'dislike')->name('dislike');
                         Route::get('settings', 'settings')->name('settings');
+                        Route::patch('update_setting/{setting}', 'updateSetting')->name('updateSetting');
                         Route::get('trade_history', 'tradeHistory')->name('tradeHistory');
                     });
             });

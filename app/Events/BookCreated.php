@@ -2,11 +2,15 @@
 
 namespace App\Events;
 
+use App\Http\Resources\BookResource;
 use App\Models\Book;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Override;
 
-final class BookCreated
+final class BookCreated implements ShouldBroadcast
 {
     use Dispatchable;
     use SerializesModels;
@@ -17,5 +21,25 @@ final class BookCreated
     public function __construct(
         public Book $book
     ) {
+    }
+
+    #[Override]
+    public function broadcastOn(): array
+    {
+        return [
+            new Channel('books'),
+        ];
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'created';
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'book' => new BookResource($this->book),
+        ];
     }
 }

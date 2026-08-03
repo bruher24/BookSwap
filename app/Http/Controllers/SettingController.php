@@ -66,15 +66,4 @@ final class SettingController extends Controller
 
         return $this->successResponse(Response::HTTP_ACCEPTED);
     }
-
-    public function updateForUser(SettingServiceInterface $settingService, UpdateUserSettingValueRequest $request, Setting $setting): JsonResponse
-    {
-        $validated = $request->validated();
-
-        if (!$settingService->updateForUser($setting, $request->user(), $validated['value'])) {
-            return $this->errorResponse('Ошибка при обновлении настроек пользователя', Response::HTTP_BAD_REQUEST);
-        }
-
-        return $this->successResponse(Response::HTTP_ACCEPTED);
-    }
 }

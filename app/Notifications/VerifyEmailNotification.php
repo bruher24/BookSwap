@@ -2,8 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Mail\TradeOfferUpdated;
-use App\Models\TradeOffer;
+use App\Mail\VerifyEmail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,14 +10,12 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class TradeOfferUpdatedNotification extends Notification implements ShouldQueue
+class VerifyEmailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(
-        public TradeOffer $tradeOffer,
-    ) {
-        $this->afterCommit();
+    public function __construct()
+    {
     }
 
     public function via(User $notifiable): array
@@ -28,17 +25,17 @@ class TradeOfferUpdatedNotification extends Notification implements ShouldQueue
 
     public function toMail(User $notifiable): Mailable
     {
-        return new TradeOfferUpdated($this->tradeOffer, $notifiable);
+        return new VerifyEmail($notifiable);
     }
 
     public function toBroadcast(User $notifiable): BroadcastMessage
     {
-        return new BroadcastMessage($this->payload());
+        return new BroadcastMessage($this->payload($notifiable));
     }
 
     public function toArray(User $notifiable): array
     {
-        return $this->payload();
+        return $this->payload($notifiable);
     }
 
     public function viaQueues(): array
@@ -52,17 +49,15 @@ class TradeOfferUpdatedNotification extends Notification implements ShouldQueue
 
     public function broadcastType(): string
     {
-        return 'notification.trade-offer.updated';
+        return 'notification.user.created';
     }
 
-    private function payload(): array
+    private function payload(User $user): array
     {
         return [
-            'trade_offer_id' => $this->tradeOffer->id,
-            'sender_id' => $this->tradeOffer->sender_id,
-            'receiver_id' => $this->tradeOffer->receiver_id,
-            'status' => $this->tradeOffer->status->value,
-            'status_label' => $this->tradeOffer->status->label(),
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'created_at' => $user->created_at,
         ];
     }
 }
