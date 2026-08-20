@@ -30,10 +30,9 @@ return [
              */
             'middleware' => [
                 'web',
-                // TODO: включить, когда появится фронт
-//                'auth:sanctum',
-//                'can:viewSwaggerUI'
-                //EnsureUserIsAuthorized::class,
+                // TODO: включить для прода
+                // 'auth:sanctum',
+                // EnsureUserIsAdmin::class,
             ],
 
             /*

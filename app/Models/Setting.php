@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Interfaces\Cacheable;
-use App\Traits\CacheInvalidation;
+use App\Traits\CacheInvalidationTrait;
 use Database\Factories\SettingFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +16,7 @@ final class Setting extends Model implements Cacheable
     /** @use HasFactory<SettingFactory> */
     use HasFactory;
     use SoftDeletes;
-    use CacheInvalidation;
+    use CacheInvalidationTrait;
 
     public const string CACHE_KEY = 'settings';
 

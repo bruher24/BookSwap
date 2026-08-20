@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Mail\TradeOfferCreated;
+use App\Mail\TradeOfferCreatedMail;
 use App\Models\TradeOffer;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -11,7 +11,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class TradeOfferCreatedNotification extends Notification implements ShouldQueue
+final class TradeOfferCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -29,7 +29,7 @@ class TradeOfferCreatedNotification extends Notification implements ShouldQueue
 
     public function toMail(User $notifiable): Mailable
     {
-        return new TradeOfferCreated($this->tradeOffer, $notifiable, $this->sender);
+        return new TradeOfferCreatedMail($this->tradeOffer, $notifiable, $this->sender);
     }
 
     public function toBroadcast(User $notifiable): BroadcastMessage

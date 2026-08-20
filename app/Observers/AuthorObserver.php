@@ -2,11 +2,11 @@
 
 namespace App\Observers;
 
-use App\Events\AuthorCreated;
-use App\Events\AuthorDeleted;
-use App\Events\AuthorForceDeleted;
-use App\Events\AuthorRestored;
-use App\Events\AuthorUpdated;
+use App\Events\AuthorCreatedEvent;
+use App\Events\AuthorDeletedEvent;
+use App\Events\AuthorForceDeletedEvent;
+use App\Events\AuthorRestoredEvent;
+use App\Events\AuthorUpdatedEvent;
 use App\Models\Author;
 
 final class AuthorObserver
@@ -16,7 +16,7 @@ final class AuthorObserver
      */
     public function created(Author $author): void
     {
-        AuthorCreated::dispatch($author);
+        AuthorCreatedEvent::dispatch($author);
     }
 
     /**
@@ -24,7 +24,7 @@ final class AuthorObserver
      */
     public function updated(Author $author): void
     {
-        AuthorUpdated::dispatch($author);
+        AuthorUpdatedEvent::dispatch($author);
     }
 
     /**
@@ -32,7 +32,7 @@ final class AuthorObserver
      */
     public function deleted(Author $author): void
     {
-        AuthorDeleted::dispatch($author);
+        AuthorDeletedEvent::dispatch($author);
     }
 
     /**
@@ -40,7 +40,7 @@ final class AuthorObserver
      */
     public function restored(Author $author): void
     {
-        AuthorRestored::dispatch($author);
+        AuthorRestoredEvent::dispatch($author);
     }
 
     /**
@@ -48,6 +48,6 @@ final class AuthorObserver
      */
     public function forceDeleted(Author $author): void
     {
-        AuthorForceDeleted::dispatch($author);
+        AuthorForceDeletedEvent::dispatch($author);
     }
 }

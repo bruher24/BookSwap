@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
-use App\Enums\TradeOfferStatus;
+use App\Enums\TradeOfferStatusEnum;
+use App\Events\TradeOfferUpdatedEvent;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Models\Book;
 use App\Models\TradeOffer;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -23,7 +25,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             DB::beginTransaction();
 
-            $data['status'] = TradeOfferStatus::Pending;
+            $data['status'] = TradeOfferStatusEnum::Pending;
             $tradeOffer = TradeOffer::create($data);
             $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
             DB::commit();
@@ -125,12 +127,14 @@ final class TradeOfferService implements TradeOfferServiceInterface
         try {
             DB::beginTransaction();
 
-            if ($tradeOffer->status !== TradeOfferStatus::Pending) {
-                throw new Exception('Можно изменять только сделки со статусом "' . TradeOfferStatus::Pending->label() . '"');
+            if ($tradeOffer->status !== TradeOfferStatusEnum::Pending) {
+                throw new Exception('Можно изменять только сделки со статусом "' . TradeOfferStatusEnum::Pending->label() . '"');
             }
 
             $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
             DB::commit();
+            TradeOfferUpdatedEvent::dispatch($tradeOffer, Auth::user());
+
             return $tradeOffer->refresh();
         } catch (Throwable $e) {
             DB::rollBack();
@@ -176,7 +180,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function accept(TradeOffer $tradeOffer): bool
     {
         try {
-            return $tradeOffer->updateOrFail(['status' => TradeOfferStatus::Accepted]);
+            return $tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Accepted]);
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -187,7 +191,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function reject(TradeOffer $tradeOffer): bool
     {
         try {
-            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Rejected])) {
+            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Rejected])) {
                 foreach ($tradeOffer->books()->get() as $book) {
                     $book->update(['is_available' => true, 'trade_offer_id' => null]);
                 }
@@ -206,7 +210,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function cancel(TradeOffer $tradeOffer): bool
     {
         try {
-            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Canceled])) {
+            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Canceled])) {
                 foreach ($tradeOffer->books()->get() as $book) {
                     $book->update(['is_available' => true, 'trade_offer_id' => null]);
                 }
@@ -225,7 +229,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function finish(TradeOffer $tradeOffer): bool
     {
         try {
-            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatus::Finished])) {
+            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Finished])) {
                 foreach ($tradeOffer->books()->get() as $book) {
                     $newOwnerId = $book->user_id === $tradeOffer->sender_id ? $tradeOffer->receiver_id : $tradeOffer->sender_id;
                     $book->update(['user_id' => $newOwnerId, 'is_available' => true, 'trade_offer_id' => null]);
@@ -252,7 +256,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
 
         $data = [];
 
-        foreach (TradeOfferStatus::cases() as $case) {
+        foreach (TradeOfferStatusEnum::cases() as $case) {
             $data[$case->value] = $history->where('status', $case);
         }
 

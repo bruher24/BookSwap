@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\MessageCreated;
+use App\Events\MessageCreatedEvent;
 use App\Models\User;
 use App\Notifications\MessageCreatedNotification;
 
@@ -19,7 +19,7 @@ final class SendMessageCreatedNotifications
     /**
      * Handle the event.
      */
-    public function handle(MessageCreated $event): void
+    public function handle(MessageCreatedEvent $event): void
     {
         $sender = User::find($event->message->sender_id);
 

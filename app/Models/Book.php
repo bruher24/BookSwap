@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\BookCondition;
+use App\Enums\BookConditionEnum;
 use App\Interfaces\Cacheable;
-use App\Traits\CacheInvalidation;
+use App\Traits\CacheInvalidationTrait;
 use Database\Factories\BookFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +21,7 @@ final class Book extends Model implements Cacheable
     use HasFactory;
     use SoftDeletes;
     use Searchable;
-    use CacheInvalidation;
+    use CacheInvalidationTrait;
 
     public const string CACHE_KEY = 'books';
 
@@ -40,7 +40,7 @@ final class Book extends Model implements Cacheable
     ];
 
     protected $casts = [
-        'condition' => BookCondition::class,
+        'condition' => BookConditionEnum::class,
     ];
 
     public function searchableAs(): string

@@ -2,11 +2,11 @@
 
 namespace App\Observers;
 
-use App\Events\TradeOfferCreated;
-use App\Events\TradeOfferDeleted;
-use App\Events\TradeOfferForceDeleted;
-use App\Events\TradeOfferRestored;
-use App\Events\TradeOfferUpdated;
+use App\Events\TradeOfferCreatedEvent;
+use App\Events\TradeOfferDeletedEvent;
+use App\Events\TradeOfferForceDeletedEvent;
+use App\Events\TradeOfferRestoredEvent;
+use App\Events\TradeOfferUpdatedEvent;
 use App\Models\TradeOffer;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,7 +17,7 @@ final class TradeOfferObserver
      */
     public function created(TradeOffer $tradeOffer): void
     {
-        TradeOfferCreated::dispatch($tradeOffer);
+        TradeOfferCreatedEvent::dispatch($tradeOffer);
     }
 
     /**
@@ -25,7 +25,7 @@ final class TradeOfferObserver
      */
     public function updated(TradeOffer $tradeOffer): void
     {
-        TradeOfferUpdated::dispatch($tradeOffer, Auth::user());
+        TradeOfferUpdatedEvent::dispatch($tradeOffer, Auth::user());
     }
 
     /**
@@ -33,7 +33,7 @@ final class TradeOfferObserver
      */
     public function deleted(TradeOffer $tradeOffer): void
     {
-        TradeOfferDeleted::dispatch($tradeOffer);
+        TradeOfferDeletedEvent::dispatch($tradeOffer);
     }
 
     /**
@@ -41,7 +41,7 @@ final class TradeOfferObserver
      */
     public function restored(TradeOffer $tradeOffer): void
     {
-        TradeOfferRestored::dispatch($tradeOffer);
+        TradeOfferRestoredEvent::dispatch($tradeOffer);
     }
 
     /**
@@ -49,6 +49,6 @@ final class TradeOfferObserver
      */
     public function forceDeleted(TradeOffer $tradeOffer): void
     {
-        TradeOfferForceDeleted::dispatch($tradeOffer);
+        TradeOfferForceDeletedEvent::dispatch($tradeOffer);
     }
 }

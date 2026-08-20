@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\BookCondition;
+use App\Enums\BookConditionEnum;
 use App\Models\Book;
 use App\Models\BookType;
 use App\Models\Cover;
@@ -31,7 +31,7 @@ final class BookFactory extends Factory
             'publication_year' => $this->faker->year(),
             'isbn' => $this->faker->isbn13(),
             'page_count' => $this->faker->numberBetween(50, 1000),
-            'condition' => $this->faker->randomElement(BookCondition::cases()),
+            'condition' => $this->faker->randomElement(BookConditionEnum::cases()),
             'book_type_id' => fn () => BookType::query()->inRandomOrder()->value('id')
                 ?? BookType::factory()->createOne()->id,
             'cover_id' => fn (array $attributes) => Cover::query()

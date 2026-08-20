@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Interfaces\UserServiceInterface;
 use App\Models\Book;
+use App\Models\Role;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,7 +28,9 @@ final class UserService implements UserServiceInterface
                 throw new Exception("Ошибка при создании типа");
             }
 
+            $user->roles()->attach(Role::where('name', 'user')->firstOrFail());
             DB::commit();
+
             return $user->refresh();
         } catch (Throwable $e) {
             DB::rollBack();

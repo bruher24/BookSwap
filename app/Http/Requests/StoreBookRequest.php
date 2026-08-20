@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\BookCondition;
+use App\Enums\BookConditionEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -74,7 +74,7 @@ final class StoreBookRequest extends FormRequest
             ],
             'condition' => [
                 'string',
-                Rule::in(BookCondition::cases()),
+                Rule::enum(BookConditionEnum::class),
             ],
             'publishing_house' => 'nullable|string',
             'publication_year' => [

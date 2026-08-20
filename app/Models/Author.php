@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Interfaces\Cacheable;
-use App\Traits\CacheInvalidation;
+use App\Traits\CacheInvalidationTrait;
 use Database\Factories\AuthorFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +17,7 @@ final class Author extends Model implements Cacheable
 {
     /** @use HasFactory<AuthorFactory> */
     use HasFactory;
-    use CacheInvalidation;
+    use CacheInvalidationTrait;
     use Searchable;
     use SoftDeletes;
 

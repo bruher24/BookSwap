@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\TradeOfferStatus;
+use App\Enums\TradeOfferStatusEnum;
 use App\Models\TradeOffer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -32,7 +32,7 @@ final class TradeOfferFactory extends Factory
         return [
             'sender_id' => $senderId,
             'receiver_id' => $receiverId,
-            'status' => TradeOfferStatus::Pending,
+            'status' => TradeOfferStatusEnum::Pending,
         ];
     }
 }

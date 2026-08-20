@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Mail\VerifyEmail;
+use App\Mail\VerifyEmailMail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class VerifyEmailNotification extends Notification implements ShouldQueue
+final class VerifyEmailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -25,7 +25,7 @@ class VerifyEmailNotification extends Notification implements ShouldQueue
 
     public function toMail(User $notifiable): Mailable
     {
-        return new VerifyEmail($notifiable);
+        return new VerifyEmailMail($notifiable);
     }
 
     public function toBroadcast(User $notifiable): BroadcastMessage

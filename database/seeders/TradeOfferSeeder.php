@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\TradeOfferStatus;
+use App\Enums\TradeOfferStatusEnum;
 use App\Models\Book;
 use App\Models\TradeOffer;
 use App\Models\User;
@@ -21,7 +21,7 @@ final class TradeOfferSeeder extends Seeder
                 'receiver_id' => $buyer->id,
             ],
             [
-                'status' => TradeOfferStatus::Pending,
+                'status' => TradeOfferStatusEnum::Pending,
             ]
         );
 

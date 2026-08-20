@@ -1,5 +1,5 @@
-@php use App\Enums\TradeOfferStatus; @endphp
-    <!doctype html>
+@php use App\Enums\TradeOfferStatusEnum; @endphp
+        <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">

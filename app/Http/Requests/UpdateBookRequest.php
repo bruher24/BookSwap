@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\BookCondition;
-use App\Models\Author;
+use App\Enums\BookConditionEnum;
 use App\Models\Book;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -83,7 +82,7 @@ final class UpdateBookRequest extends FormRequest
             'page_count' => 'required|integer|min:1',
             'condition' => [
                 'string',
-                Rule::in(BookCondition::cases()),
+                Rule::enum(BookConditionEnum::class),
             ],
             'cover' => [
                 'nullable',

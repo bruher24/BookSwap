@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Interfaces\Cacheable;
-use App\Traits\CacheInvalidation;
+use App\Traits\CacheInvalidationTrait;
 use Database\Factories\GenreFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +15,7 @@ final class Genre extends Model implements Cacheable
     /** @use HasFactory<GenreFactory> */
     use HasFactory;
     use SoftDeletes;
-    use CacheInvalidation;
+    use CacheInvalidationTrait;
 
     public const string CACHE_KEY = 'genres';
 

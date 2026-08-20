@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\TradeOfferStatus;
+use App\Enums\TradeOfferStatusEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

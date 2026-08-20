@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\TradeOfferStatus;
+use App\Enums\TradeOfferStatusEnum;
 use App\Http\Requests\StoreTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferRequest;
 use App\Http\Requests\UpdateTradeOfferStatusRequest;
@@ -85,22 +85,22 @@ final class TradeOfferController extends Controller
     public function updateStatus(UpdateTradeOfferStatusRequest $request, TradeOfferServiceInterface $tradeOfferService, TradeOffer $tradeOffer): JsonResponse
     {
         $validated = $request->validated();
-        $status = TradeOfferStatus::tryFrom($validated['status']);
+        $status = TradeOfferStatusEnum::tryFrom($validated['status']);
 
         switch ($status) {
-            case TradeOfferStatus::Accepted:
+            case TradeOfferStatusEnum::Accepted:
                 Gate::authorize('accept', $tradeOffer);
                 $result = $tradeOfferService->accept($tradeOffer);
                 break;
-            case TradeOfferStatus::Rejected:
+            case TradeOfferStatusEnum::Rejected:
                 Gate::authorize('reject', $tradeOffer);
                 $result = $tradeOfferService->reject($tradeOffer);
                 break;
-            case TradeOfferStatus::Canceled:
+            case TradeOfferStatusEnum::Canceled:
                 Gate::authorize('cancel', $tradeOffer);
                 $result = $tradeOfferService->cancel($tradeOffer);
                 break;
-            case TradeOfferStatus::Finished:
+            case TradeOfferStatusEnum::Finished:
                 Gate::authorize('finish', $tradeOffer);
                 $result = $tradeOfferService->finish($tradeOffer);
                 break;

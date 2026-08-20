@@ -2,11 +2,11 @@
 
 namespace App\Observers;
 
-use App\Events\BookCreated;
-use App\Events\BookDeleted;
-use App\Events\BookForceDeleted;
-use App\Events\BookRestored;
-use App\Events\BookUpdated;
+use App\Events\BookCreatedEvent;
+use App\Events\BookDeletedEvent;
+use App\Events\BookForceDeletedEvent;
+use App\Events\BookRestoredEvent;
+use App\Events\BookUpdatedEvent;
 use App\Models\Book;
 
 final class BookObserver
@@ -16,7 +16,7 @@ final class BookObserver
      */
     public function created(Book $book): void
     {
-        BookCreated::dispatch($book);
+        BookCreatedEvent::dispatch($book);
     }
 
     /**
@@ -24,7 +24,7 @@ final class BookObserver
      */
     public function updated(Book $book): void
     {
-        BookUpdated::dispatch($book);
+        BookUpdatedEvent::dispatch($book);
     }
 
     /**
@@ -32,7 +32,7 @@ final class BookObserver
      */
     public function deleted(Book $book): void
     {
-        BookDeleted::dispatch($book);
+        BookDeletedEvent::dispatch($book);
     }
 
     /**
@@ -40,7 +40,7 @@ final class BookObserver
      */
     public function restored(Book $book): void
     {
-        BookRestored::dispatch($book);
+        BookRestoredEvent::dispatch($book);
     }
 
     /**
@@ -48,6 +48,6 @@ final class BookObserver
      */
     public function forceDeleted(Book $book): void
     {
-        BookForceDeleted::dispatch($book);
+        BookForceDeletedEvent::dispatch($book);
     }
 }

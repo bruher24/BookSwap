@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\EnsureUserIsAdmin;
+use App\Http\Middleware\EnsureUserIsAdminMiddleware;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'abilities' => CheckAbilities::class,
             'ability' => CheckForAnyAbility::class,
-            'admin' => EnsureUserIsAdmin::class,
+            'admin' => EnsureUserIsAdminMiddleware::class,
         ]);
         // TODO: заменить на реальный адрес фронта
         $middleware->redirectGuestsTo('http://localhost:5173/login');

@@ -2,17 +2,17 @@
 
 namespace App\Observers;
 
-use App\Events\MessageCreated;
+use App\Events\MessageCreatedEvent;
 use App\Models\Message;
 
-class MessageObserver
+final class MessageObserver
 {
     /**
      * Handle the Message "created" event.
      */
     public function created(Message $message): void
     {
-        MessageCreated::dispatch($message);
+        MessageCreatedEvent::dispatch($message);
     }
 
     /**

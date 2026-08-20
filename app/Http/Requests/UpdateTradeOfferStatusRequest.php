@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\TradeOfferStatus;
+use App\Enums\TradeOfferStatusEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -27,8 +27,8 @@ final class UpdateTradeOfferStatusRequest extends FormRequest
         return [
             'status' => [
                 'required',
-                Rule::enum(TradeOfferStatus::class)
-                    ->except(TradeOfferStatus::Pending)
+                Rule::enum(TradeOfferStatusEnum::class)
+                    ->except(TradeOfferStatusEnum::Pending)
             ]
         ];
     }

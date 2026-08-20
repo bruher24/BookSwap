@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Interfaces\Cacheable;
-use App\Traits\CacheInvalidation;
+use App\Traits\CacheInvalidationTrait;
 use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +24,7 @@ final class User extends Authenticatable implements Cacheable
     use Notifiable;
     use SoftDeletes;
     use HasApiTokens;
-    use CacheInvalidation;
+    use CacheInvalidationTrait;
 
     public const string CACHE_KEY = 'users';
 

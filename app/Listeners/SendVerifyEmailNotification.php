@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\UserCreated;
-use App\Mail\VerifyEmail;
+use App\Events\UserCreatedEvent;
+use App\Mail\VerifyEmailMail;
 use App\Models\User;
 use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,7 +24,7 @@ final class SendVerifyEmailNotification implements ShouldQueue
     /**
      * Handle the event.
      */
-    public function handle(UserCreated $event): void
+    public function handle(UserCreatedEvent $event): void
     {
         $event->user->notify(new VerifyEmailNotification());
     }
