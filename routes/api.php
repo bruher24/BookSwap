@@ -35,7 +35,7 @@ Route::prefix('v1')->name('api.')
                 Route::post('register', 'register')->name('register')->withoutMiddleware('auth:sanctum');
                 Route::post('login', 'login')->name('login')->withoutMiddleware('auth:sanctum');
                 Route::post('logout', 'logout')->name('logout');
-                Route::get('verify_email/{userId}', 'verifyEmail')->name('verifyEmail')->withoutMiddleware('auth:sanctum');
+                Route::get('verify-email/{userId}', 'verifyEmail')->name('verifyEmail')->withoutMiddleware('auth:sanctum');
             });
 
         Route::prefix('authors')->name('authors.')->controller(AuthorController::class)
@@ -57,13 +57,13 @@ Route::prefix('v1')->name('api.')
                 Route::delete('{book}', 'destroy')->name('destroy');
             });
 
-        Route::prefix('book_types')->name('book_types.')->controller(BookTypeController::class)
+        Route::prefix('book-types')->name('book_types.')->controller(BookTypeController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index')->withoutMiddleware('auth:sanctum');
                 Route::post('/', 'store')->name('store')->middleware('admin');
-                Route::get('{book_type}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
-                Route::patch('{book_type}', 'update')->name('update')->middleware('admin');
-                Route::delete('{book_type}', 'destroy')->name('destroy')->middleware('admin');
+                Route::get('{bookType}', 'show')->name('show')->withoutMiddleware('auth:sanctum');
+                Route::patch('{bookType}', 'update')->name('update')->middleware('admin');
+                Route::delete('{bookType}', 'destroy')->name('destroy')->middleware('admin');
             });
 
         Route::prefix('chats')->name('chats.')->controller(ChatController::class)
@@ -147,15 +147,15 @@ Route::prefix('v1')->name('api.')
                 Route::delete('{setting}', 'destroy')->name('destroy');
             });
 
-        Route::prefix('trade_offers')->name('trade_offers.')->controller(TradeOfferController::class)
+        Route::prefix('trade-offers')->name('trade_offers.')->controller(TradeOfferController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index')->middleware('admin');
                 Route::post('/', 'store')->name('store');
-                Route::get('{trade_offer}', 'show')->name('show');
-                Route::patch('{trade_offer}', 'update')->name('update');
-                Route::delete('{trade_offer}', 'destroy')->name('destroy')->middleware('admin');
-                Route::get('{trade_offer}/items', 'items')->name('items');
-                Route::patch('{trade_offer}/update_status', 'updateStatus')->name('updateStatus');
+                Route::get('{tradeOffer}', 'show')->name('show');
+                Route::patch('{tradeOffer}', 'update')->name('update');
+                Route::delete('{tradeOffer}', 'destroy')->name('destroy')->middleware('admin');
+                Route::get('{tradeOffer}/items', 'items')->name('items');
+                Route::patch('{tradeOffer}/update-status', 'updateStatus')->name('updateStatus');
             });
 
         Route::controller(UserController::class)
@@ -180,8 +180,8 @@ Route::prefix('v1')->name('api.')
                         Route::patch('like/{book}', 'like')->name('like');
                         Route::patch('dislike/{book}', 'dislike')->name('dislike');
                         Route::get('settings', 'settings')->name('settings');
-                        Route::patch('update_setting/{setting}', 'updateSetting')->name('updateSetting');
-                        Route::get('trade_history', 'tradeHistory')->name('tradeHistory');
+                        Route::patch('settings/{setting}', 'updateSetting')->name('updateSetting');
+                        Route::get('trade-history', 'tradeHistory')->name('tradeHistory');
                     });
             });
     });

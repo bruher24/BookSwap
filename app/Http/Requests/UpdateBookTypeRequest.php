@@ -24,7 +24,7 @@ final class UpdateBookTypeRequest extends FormRequest
     #[Override]
     protected function prepareForValidation(): void
     {
-        $bookType = $this->route('book_type');
+        $bookType = $this->route('bookType');
         $this->merge([
             'book_type_id' => $bookType instanceof BookType ? $bookType->id : $bookType,
         ]);

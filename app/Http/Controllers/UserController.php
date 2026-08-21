@@ -9,14 +9,12 @@ use App\Http\Requests\UpdateUserSettingValueRequest;
 use App\Http\Resources\AuthorResource;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\ChatResource;
-use App\Http\Resources\NotificationResource;
 use App\Http\Resources\SettingResource;
 use App\Http\Resources\TradeOfferHistoryResource;
 use App\Http\Resources\UserResource;
 use App\Interfaces\AuthorServiceInterface;
 use App\Interfaces\BookServiceInterface;
 use App\Interfaces\ChatServiceInterface;
-use App\Interfaces\NotificationServiceInterface;
 use App\Interfaces\SettingServiceInterface;
 use App\Interfaces\TradeOfferServiceInterface;
 use App\Interfaces\UserServiceInterface;
@@ -111,14 +109,14 @@ final class UserController extends Controller
 
     public function favorites(UserService $userService): JsonResponse
     {
-        $favorites = $userService->favorites(request()->user());
+        $favorites = $userService->favorites(Auth::user());
 
         return BookResource::collection($favorites)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function like(UserService $userService, Book $book): JsonResponse
     {
-        if (!$userService->addToFavorites(request()->user(), $book)) {
+        if (!$userService->addToFavorites(Auth::user(), $book)) {
             return $this->errorResponse('Ошибка добавления книги в избранное', Response::HTTP_BAD_REQUEST);
         }
 
@@ -127,7 +125,7 @@ final class UserController extends Controller
 
     public function dislike(UserService $userService, Book $book): JsonResponse
     {
-        if (!$userService->removeFromFavorites(request()->user(), $book)) {
+        if (!$userService->removeFromFavorites(Auth::user(), $book)) {
             return $this->errorResponse('Ошибка удаления книги из избранного', Response::HTTP_BAD_REQUEST);
         }
 
@@ -136,35 +134,35 @@ final class UserController extends Controller
 
     public function authors(AuthorServiceInterface $authorService): JsonResponse
     {
-        $authors = $authorService->byUser(request()->user());
+        $authors = $authorService->byUser(Auth::user());
 
         return AuthorResource::collection($authors)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function books(BookServiceInterface $bookService): JsonResponse
     {
-        $books = $bookService->byUser(request()->user());
+        $books = $bookService->byUser(Auth::user());
 
         return BookResource::collection($books)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function chats(ChatServiceInterface $chatService): JsonResponse
     {
-        $chats = $chatService->byUser(request()->user());
+        $chats = $chatService->byUser(Auth::user());
 
         return ChatResource::collection($chats)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function settings(SettingServiceInterface $settingService): JsonResponse
     {
-        $settings = $settingService->byUser(request()->user());
+        $settings = $settingService->byUser(Auth::user());
 
         return SettingResource::collection($settings)->response()->setStatusCode(Response::HTTP_OK);
     }
 
     public function tradeHistory(TradeOfferServiceInterface $tradeOfferService): JsonResponse
     {
-        $history = $tradeOfferService->tradeHistory(request()->user());
+        $history = $tradeOfferService->tradeHistory(Auth::user());
 
         return (new TradeOfferHistoryResource($history))->response()->setStatusCode(Response::HTTP_OK);
     }
