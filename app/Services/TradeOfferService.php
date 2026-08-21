@@ -248,11 +248,9 @@ final class TradeOfferService implements TradeOfferServiceInterface
     #[Override]
     public function tradeHistory(User $user): \Illuminate\Support\Collection
     {
-        $history = TradeOffer::query()
-            ->where('sender_id', $user->id)
-            ->orWhere('receiver_id', $user->id)
-            ->withoutTrashed()
-            ->get();
+        $bySender = $this->bySender($user);
+        $byReceiver = $this->byReceiver($user);
+        $history = $bySender->merge($byReceiver);
 
         $data = [];
 

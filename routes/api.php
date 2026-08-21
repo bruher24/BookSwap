@@ -10,7 +10,6 @@ use App\Http\Controllers\CoverController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MessageController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SearchController;

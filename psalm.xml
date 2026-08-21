@@ -23,6 +23,7 @@
         <PossiblyUnusedMethod>
             <errorLevel type="suppress">
                 <directory name="app/Http/Controllers"/>
+                <directory name="app/Events"/>
                 <directory name="app/Models"/>
                 <directory name="app/Observers"/>
             </errorLevel>

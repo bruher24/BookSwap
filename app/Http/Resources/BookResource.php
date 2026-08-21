@@ -2,7 +2,11 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
+use JsonSerializable;
+use Override;
 
 final class BookResource extends JsonApiResource
 {
@@ -37,4 +41,12 @@ final class BookResource extends JsonApiResource
         'book_type' => BookTypeResource::class,
         'trade_offer' => TradeOfferResource::class,
     ];
+
+    #[Override]
+    public function toArray(Request $request): array|JsonSerializable|Arrayable
+    {
+        return array_merge(parent::toArray($request), [
+            'condition_label' => $this->condition?->label()
+        ]);
+    }
 }

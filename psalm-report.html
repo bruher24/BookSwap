@@ -50,26 +50,508 @@
                 </style>
 </head>
 <body>
-<section><h1>Total violations: 22</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
+<section><h1>Total violations: 98</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
 <ul id="psalmErrors">
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Enums/BookCondition.php:13</h3>
+<h3>app/Enums/BookConditionEnum.php:13</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find any calls to method App\Enums\BookCondition::label</p>
+<p>Cannot find explicit calls to method App\Enums\BookConditionEnum::label (but did find some potential callers)</p>
 <pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/label/**##)##**/(): string</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
+  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
+<h3>app/Events/MessageCreatedEvent.php:33</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullPropertyFetch</li>
+</ul>
+<p>Cannot get property on possibly null variable $message-&gt;chat of type App\Models\Chat|null</p>
+<pre data-start="33" class="line-numbersx"><code class="language-php">        $this-&gt;receiver = /**##(##**/$message-&gt;chat-&gt;users/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullPropertyAssignmentValue">
+<h3>app/Events/MessageCreatedEvent.php:33</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullPropertyAssignmentValue</li>
+</ul>
+<p>$this-&gt;receiver with non-nullable declared type 'App\Models\User' cannot be assigned nullable type 'App\Models\User|null'</p>
+<pre data-start="33" class="line-numbersx"><code class="language-php">        $this-&gt;receiver = /**##(##**/$message-&gt;chat-&gt;users
+            -&gt;where('id', '!=', $message-&gt;sender_id)
+            -&gt;first()/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/148">Psalm #148</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullReference">
+<h3>app/Events/MessageCreatedEvent.php:34</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullReference</li>
+</ul>
+<p>Cannot call method where on possibly null value</p>
+<pre data-start="34" class="line-numbersx"><code class="language-php">            -&gt;/**##(##**/where/**##)##**/('id', '!=', $message-&gt;sender_id)</code></pre>
+<small><a target="_blank" href="https://psalm.dev/083">Psalm #83</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidOperand">
+<h3>app/Events/TradeOfferCreatedEvent.php:34</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidOperand</li>
+</ul>
+<p>Cannot concatenate with a int&lt;0, max&gt;|null</p>
+<pre data-start="34" class="line-numbersx"><code class="language-php">            new PrivateChannel('users.' . /**##(##**/$this-&gt;tradeOffer-&gt;receiver_id/**##)##**/),</code></pre>
+<small><a target="_blank" href="https://psalm.dev/058">Psalm #58</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidOperand">
+<h3>app/Events/TradeOfferCreatedEvent.php:35</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidOperand</li>
+</ul>
+<p>Cannot concatenate with a int&lt;0, max&gt;|null</p>
+<pre data-start="35" class="line-numbersx"><code class="language-php">            new PrivateChannel('users.' . /**##(##**/$this-&gt;tradeOffer-&gt;sender_id/**##)##**/),</code></pre>
+<small><a target="_blank" href="https://psalm.dev/058">Psalm #58</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidOperand">
+<h3>app/Events/TradeOfferUpdatedEvent.php:36</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidOperand</li>
+</ul>
+<p>Cannot concatenate with a int&lt;0, max&gt;|null</p>
+<pre data-start="36" class="line-numbersx"><code class="language-php">            new PrivateChannel('users.' . /**##(##**/$this-&gt;tradeOffer-&gt;sender_id/**##)##**/),</code></pre>
+<small><a target="_blank" href="https://psalm.dev/058">Psalm #58</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidOperand">
+<h3>app/Events/TradeOfferUpdatedEvent.php:37</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidOperand</li>
+</ul>
+<p>Cannot concatenate with a int&lt;0, max&gt;|null</p>
+<pre data-start="37" class="line-numbersx"><code class="language-php">            new PrivateChannel('users.' . /**##(##**/$this-&gt;tradeOffer-&gt;receiver_id/**##)##**/),</code></pre>
+<small><a target="_blank" href="https://psalm.dev/058">Psalm #58</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
+<h3>app/Http/Controllers/MessageController.php:14</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>ClassMustBeFinal</li>
+</ul>
+<p>Class App\Http\Controllers\MessageController is never extended and is not part of the public API, and thus must be made final.</p>
+<pre data-start="14" class="line-numbersx"><code class="language-php">class /**##(##**/MessageController/**##)##**/ extends Controller</code></pre>
+<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:112</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 1 of App\Services\UserService::favorites cannot be null, possibly null value provided</p>
+<pre data-start="112" class="line-numbersx"><code class="language-php">        $favorites = $userService-&gt;favorites(/**##(##**/Auth::user()/**##)##**/);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:119</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 1 of App\Services\UserService::addToFavorites cannot be null, possibly null value provided</p>
+<pre data-start="119" class="line-numbersx"><code class="language-php">        if (!$userService-&gt;addToFavorites(/**##(##**/Auth::user()/**##)##**/, $book)) {</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:128</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 1 of App\Services\UserService::removeFromFavorites cannot be null, possibly null value provided</p>
+<pre data-start="128" class="line-numbersx"><code class="language-php">        if (!$userService-&gt;removeFromFavorites(/**##(##**/Auth::user()/**##)##**/, $book)) {</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:137</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 1 of App\Interfaces\AuthorServiceInterface::byUser cannot be null, possibly null value provided</p>
+<pre data-start="137" class="line-numbersx"><code class="language-php">        $authors = $authorService-&gt;byUser(/**##(##**/Auth::user()/**##)##**/);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:144</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 1 of App\Interfaces\BookServiceInterface::byUser cannot be null, possibly null value provided</p>
+<pre data-start="144" class="line-numbersx"><code class="language-php">        $books = $bookService-&gt;byUser(/**##(##**/Auth::user()/**##)##**/);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:151</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 1 of App\Interfaces\ChatServiceInterface::byUser cannot be null, possibly null value provided</p>
+<pre data-start="151" class="line-numbersx"><code class="language-php">        $chats = $chatService-&gt;byUser(/**##(##**/Auth::user()/**##)##**/);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:158</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 1 of App\Interfaces\SettingServiceInterface::byUser cannot be null, possibly null value provided</p>
+<pre data-start="158" class="line-numbersx"><code class="language-php">        $settings = $settingService-&gt;byUser(/**##(##**/Auth::user()/**##)##**/);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:165</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 1 of App\Interfaces\TradeOfferServiceInterface::tradeHistory cannot be null, possibly null value provided</p>
+<pre data-start="165" class="line-numbersx"><code class="language-php">        $history = $tradeOfferService-&gt;tradeHistory(/**##(##**/Auth::user()/**##)##**/);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Http/Controllers/UserController.php:174</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 2 of App\Interfaces\SettingServiceInterface::updateForUser cannot be null, possibly null value provided</p>
+<pre data-start="174" class="line-numbersx"><code class="language-php">        if (!$settingService-&gt;updateForUser($setting, /**##(##**/$request-&gt;user()/**##)##**/, $validated['value'])) {</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
+<h3>app/Http/Requests/UpdateMessageRequest.php:8</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>ClassMustBeFinal</li>
+</ul>
+<p>Class App\Http\Requests\UpdateMessageRequest is never extended and is not part of the public API, and thus must be made final.</p>
+<pre data-start="8" class="line-numbersx"><code class="language-php">class /**##(##**/UpdateMessageRequest/**##)##**/ extends FormRequest</code></pre>
+<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/AuthorResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\AuthorResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/AuthorResource.php:28</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\AuthorResource::$relationships</p>
+<pre data-start="28" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/BookResource.php:16</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\BookResource::$attributes</p>
+<pre data-start="16" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/BookResource.php:36</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\BookResource::$relationships</p>
+<pre data-start="36" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyInvalidArgument">
+<h3>app/Http/Resources/BookResource.php:48</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyInvalidArgument</li>
+</ul>
+<p>Argument 1 of array_merge expects array&lt;array-key, mixed&gt;, but possibly different type Illuminate\Contracts\Support\Arrayable|JsonSerializable|array&lt;array-key, mixed&gt; provided</p>
+<pre data-start="48" class="line-numbersx"><code class="language-php">        return array_merge(/**##(##**/parent::toArray($request)/**##)##**/, [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/092">Psalm #92</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedThisPropertyFetch">
+<h3>app/Http/Resources/BookResource.php:49</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedThisPropertyFetch</li>
+</ul>
+<p>Instance property App\Http\Resources\BookResource::$condition is not defined</p>
+<pre data-start="49" class="line-numbersx"><code class="language-php">            'condition_label' =&gt; /**##(##**/$this-&gt;condition/**##)##**/?-&gt;label()</code></pre>
+<small><a target="_blank" href="https://psalm.dev/041">Psalm #41</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/BookTypeResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\BookTypeResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/BookTypeResource.php:22</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\BookTypeResource::$relationships</p>
+<pre data-start="22" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/ChatResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\ChatResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/ChatResource.php:22</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\ChatResource::$relationships</p>
+<pre data-start="22" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/CoverResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\CoverResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/CoverResource.php:23</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\CoverResource::$relationships</p>
+<pre data-start="23" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/FilterResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\FilterResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/FilterResource.php:24</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\FilterResource::$relationships</p>
+<pre data-start="24" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [];</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/GenreResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\GenreResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/GenreResource.php:22</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\GenreResource::$relationships</p>
+<pre data-start="22" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/MessageResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\MessageResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/MessageResource.php:26</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\MessageResource::$relationships</p>
+<pre data-start="26" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/PhotoResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\PhotoResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/PhotoResource.php:23</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\PhotoResource::$relationships</p>
+<pre data-start="23" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [];</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/RoleResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\RoleResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/RoleResource.php:22</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\RoleResource::$relationships</p>
+<pre data-start="22" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/SearchResultsResource.php:41</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\SearchResultsResource::$relationships</p>
+<pre data-start="41" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [];</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/SettingResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\SettingResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/SettingResource.php:25</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\SettingResource::$relationships</p>
+<pre data-start="25" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
+<h3>app/Http/Resources/TradeOfferHistoryResource.php:9</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>ClassMustBeFinal</li>
+</ul>
+<p>Class App\Http\Resources\TradeOfferHistoryResource is never extended and is not part of the public API, and thus must be made final.</p>
+<pre data-start="9" class="line-numbersx"><code class="language-php">class /**##(##**/TradeOfferHistoryResource/**##)##**/ extends JsonApiResource</code></pre>
+<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/TradeOfferResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\TradeOfferResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/TradeOfferResource.php:24</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\TradeOfferResource::$relationships</p>
+<pre data-start="24" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/UserResource.php:12</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\UserResource::$attributes</p>
+<pre data-start="12" class="line-numbersx"><code class="language-php">    public array /**##(##**/$attributes/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedProperty">
+<h3>app/Http/Resources/UserResource.php:28</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedProperty</li>
+</ul>
+<p>Cannot find any references to property App\Http\Resources\UserResource::$relationships</p>
+<pre data-start="28" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
+<small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
+</li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/AuthorServiceInterface.php:16</h3>
+<h3>app/Interfaces/AuthorServiceInterface.php:17</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\AuthorServiceInterface::where (but did find some potential callers)</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
+<p>Cannot find any calls to method App\Interfaces\AuthorServiceInterface::where</p>
+<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
@@ -78,7 +560,7 @@
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\BookTypeServiceInterface::where (but did find some potential callers)</p>
+<p>Cannot find any calls to method App\Interfaces\BookTypeServiceInterface::where</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
@@ -88,7 +570,7 @@
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\CoverServiceInterface::where (but did find some potential callers)</p>
+<p>Cannot find any calls to method App\Interfaces\CoverServiceInterface::where</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
@@ -98,7 +580,7 @@
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\FilterServiceInterface::where (but did find some potential callers)</p>
+<p>Cannot find any calls to method App\Interfaces\FilterServiceInterface::where</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
@@ -108,38 +590,8 @@
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\GenreServiceInterface::where (but did find some potential callers)</p>
+<p>Cannot find any calls to method App\Interfaces\GenreServiceInterface::where</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/MessageServiceInterface.php:10</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\MessageServiceInterface::create (but did find some potential callers)</p>
-<pre data-start="10" class="line-numbersx"><code class="language-php">    public function /**##(##**/create/**##)##**/(array $data): Message|false;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/MessageServiceInterface.php:12</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\MessageServiceInterface::get (but did find some potential callers)</p>
-<pre data-start="12" class="line-numbersx"><code class="language-php">    public function /**##(##**/get/**##)##**/(int $id): Message|false;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/MessageServiceInterface.php:14</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\MessageServiceInterface::getAll</p>
-<pre data-start="14" class="line-numbersx"><code class="language-php">    public function /**##(##**/getAll/**##)##**/(): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
@@ -148,98 +600,8 @@
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\MessageServiceInterface::where (but did find some potential callers)</p>
+<p>Cannot find any calls to method App\Interfaces\MessageServiceInterface::where</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/MessageServiceInterface.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\MessageServiceInterface::update (but did find some potential callers)</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    public function /**##(##**/update/**##)##**/(Message $message, array $data): Message|false;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/MessageServiceInterface.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\MessageServiceInterface::delete (but did find some potential callers)</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    public function /**##(##**/delete/**##)##**/(Message $message): bool;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/NotificationServiceInterface.php:11</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\NotificationServiceInterface::create (but did find some potential callers)</p>
-<pre data-start="11" class="line-numbersx"><code class="language-php">    public function /**##(##**/create/**##)##**/(array $data): Notification|false;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/NotificationServiceInterface.php:13</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\NotificationServiceInterface::get (but did find some potential callers)</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/get/**##)##**/(int $id): Notification|false;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/NotificationServiceInterface.php:15</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\NotificationServiceInterface::getAll</p>
-<pre data-start="15" class="line-numbersx"><code class="language-php">    public function /**##(##**/getAll/**##)##**/(): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/NotificationServiceInterface.php:19</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\NotificationServiceInterface::update (but did find some potential callers)</p>
-<pre data-start="19" class="line-numbersx"><code class="language-php">    public function /**##(##**/update/**##)##**/(Notification $notification, array $data): Notification|false;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/NotificationServiceInterface.php:21</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find explicit calls to method App\Interfaces\NotificationServiceInterface::delete (but did find some potential callers)</p>
-<pre data-start="21" class="line-numbersx"><code class="language-php">    public function /**##(##**/delete/**##)##**/(Notification $notification): bool;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/NotificationServiceInterface.php:23</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\NotificationServiceInterface::read</p>
-<pre data-start="23" class="line-numbersx"><code class="language-php">    public function /**##(##**/read/**##)##**/(Notification $notification): bool;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/NotificationServiceInterface.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\NotificationServiceInterface::readAll</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">    public function /**##(##**/readAll/**##)##**/(User $user): bool;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
@@ -248,29 +610,437 @@
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\PhotoServiceInterface::where (but did find some potential callers)</p>
+<p>Cannot find any calls to method App\Interfaces\PhotoServiceInterface::where</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/SettingServiceInterface.php:16</h3>
+<h3>app/Interfaces/RoleServiceInterface.php:16</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\SettingServiceInterface::where (but did find some potential callers)</p>
+<p>Cannot find any calls to method App\Interfaces\RoleServiceInterface::where</p>
 <pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/UserServiceInterface.php:16</h3>
+<h3>app/Interfaces/SettingServiceInterface.php:17</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyUnusedMethod</li>
 </ul>
-<p>Cannot find explicit calls to method App\Interfaces\UserServiceInterface::where (but did find some potential callers)</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
+<p>Cannot find any calls to method App\Interfaces\SettingServiceInterface::where</p>
+<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
+<h3>app/Interfaces/TradeOfferServiceInterface.php:25</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedMethod</li>
+</ul>
+<p>Cannot find any calls to method App\Interfaces\TradeOfferServiceInterface::bySender</p>
+<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/bySender/**##)##**/(User $sender): Collection;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
+<h3>app/Interfaces/TradeOfferServiceInterface.php:27</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedMethod</li>
+</ul>
+<p>Cannot find any calls to method App\Interfaces\TradeOfferServiceInterface::byReceiver</p>
+<pre data-start="27" class="line-numbersx"><code class="language-php">    public function /**##(##**/byReceiver/**##)##**/(User $receiver): Collection;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
+<h3>app/Interfaces/UserServiceInterface.php:17</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedMethod</li>
+</ul>
+<p>Cannot find any calls to method App\Interfaces\UserServiceInterface::where</p>
+<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/MessageCreatedNotification.php:25</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="25" class="line-numbersx"><code class="language-php">    public function via(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/MessageCreatedNotification.php:35</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="35" class="line-numbersx"><code class="language-php">    public function toBroadcast(User /**##(##**/$notifiable/**##)##**/): BroadcastMessage</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/MessageCreatedNotification.php:40</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="40" class="line-numbersx"><code class="language-php">    public function toArray(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
+<h3>app/Notifications/MessageCreatedNotification.php:54</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedMethod</li>
+</ul>
+<p>Cannot find any calls to method App\Notifications\MessageCreatedNotification::broadcastType</p>
+<pre data-start="54" class="line-numbersx"><code class="language-php">    public function /**##(##**/broadcastType/**##)##**/(): string</code></pre>
+<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/TradeOfferCreatedNotification.php:25</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="25" class="line-numbersx"><code class="language-php">    public function via(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/TradeOfferCreatedNotification.php:35</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="35" class="line-numbersx"><code class="language-php">    public function toBroadcast(User /**##(##**/$notifiable/**##)##**/): BroadcastMessage</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/TradeOfferCreatedNotification.php:40</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="40" class="line-numbersx"><code class="language-php">    public function toArray(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
+<h3>app/Notifications/TradeOfferCreatedNotification.php:54</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedMethod</li>
+</ul>
+<p>Cannot find any calls to method App\Notifications\TradeOfferCreatedNotification::broadcastType</p>
+<pre data-start="54" class="line-numbersx"><code class="language-php">    public function /**##(##**/broadcastType/**##)##**/(): string</code></pre>
+<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/TradeOfferUpdatedNotification.php:24</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="24" class="line-numbersx"><code class="language-php">    public function via(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/TradeOfferUpdatedNotification.php:34</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="34" class="line-numbersx"><code class="language-php">    public function toBroadcast(User /**##(##**/$notifiable/**##)##**/): BroadcastMessage</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/TradeOfferUpdatedNotification.php:39</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="39" class="line-numbersx"><code class="language-php">    public function toArray(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
+<h3>app/Notifications/TradeOfferUpdatedNotification.php:53</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedMethod</li>
+</ul>
+<p>Cannot find any calls to method App\Notifications\TradeOfferUpdatedNotification::broadcastType</p>
+<pre data-start="53" class="line-numbersx"><code class="language-php">    public function /**##(##**/broadcastType/**##)##**/(): string</code></pre>
+<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Notifications/VerifyEmailNotification.php:21</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="21" class="line-numbersx"><code class="language-php">    public function via(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
+<h3>app/Notifications/VerifyEmailNotification.php:50</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyUnusedMethod</li>
+</ul>
+<p>Cannot find any calls to method App\Notifications\VerifyEmailNotification::broadcastType</p>
+<pre data-start="50" class="line-numbersx"><code class="language-php">    public function /**##(##**/broadcastType/**##)##**/(): string</code></pre>
+<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Observers/MessageObserver.php:21</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="21" class="line-numbersx"><code class="language-php">    public function updated(Message /**##(##**/$message/**##)##**/): void</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Observers/MessageObserver.php:29</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="29" class="line-numbersx"><code class="language-php">    public function deleted(Message /**##(##**/$message/**##)##**/): void</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Observers/MessageObserver.php:37</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="37" class="line-numbersx"><code class="language-php">    public function restored(Message /**##(##**/$message/**##)##**/): void</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedParam">
+<h3>app/Observers/MessageObserver.php:45</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedParam</li>
+</ul>
+<p>Param #1 is never referenced in this method</p>
+<pre data-start="45" class="line-numbersx"><code class="language-php">    public function forceDeleted(Message /**##(##**/$message/**##)##**/): void</code></pre>
+<small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Observers/TradeOfferObserver.php:28</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 2 of App\Events\TradeOfferUpdatedEvent::__construct cannot be null, possibly null value provided</p>
+<pre data-start="28" class="line-numbersx"><code class="language-php">        TradeOfferUpdatedEvent::dispatch($tradeOffer, /**##(##**/Auth::user()/**##)##**/);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="ClassMustBeFinal">
+<h3>app/Providers/TelescopeServiceProvider.php:11</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>ClassMustBeFinal</li>
+</ul>
+<p>Class App\Providers\TelescopeServiceProvider is never extended and is not part of the public API, and thus must be made final.</p>
+<pre data-start="11" class="line-numbersx"><code class="language-php">class /**##(##**/TelescopeServiceProvider/**##)##**/ extends TelescopeApplicationServiceProvider</code></pre>
+<small><a target="_blank" href="https://psalm.dev/361">Psalm #361</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Providers/TelescopeServiceProvider.php:16</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Providers\TelescopeServiceProvider::register should have the "Override" attribute</p>
+<pre data-start="16" class="line-numbersx"><code class="language-php">    /**
+     * Register any application services.
+     */
+    /**##(##**/public function register(): void/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="RiskyTruthyFalsyComparison">
+<h3>app/Providers/TelescopeServiceProvider.php:25</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>RiskyTruthyFalsyComparison</li>
+</ul>
+<p>Operand of type bool|string contains type string, which can be falsy and truthy. This can cause possibly unexpected behavior. Use strict comparison instead.</p>
+<pre data-start="25" class="line-numbersx"><code class="language-php">            return /**##(##**/$isLocal/**##)##**/ ||</code></pre>
+<small><a target="_blank" href="https://psalm.dev/356">Psalm #356</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="RiskyTruthyFalsyComparison">
+<h3>app/Providers/TelescopeServiceProvider.php:39</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>RiskyTruthyFalsyComparison</li>
+</ul>
+<p>Operand of type bool|string contains type string, which can be falsy and truthy. This can cause possibly unexpected behavior. Use strict comparison instead.</p>
+<pre data-start="39" class="line-numbersx"><code class="language-php">        if (/**##(##**/$this-&gt;app-&gt;environment('local')/**##)##**/) {</code></pre>
+<small><a target="_blank" href="https://psalm.dev/356">Psalm #356</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Providers/TelescopeServiceProvider.php:57</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Providers\TelescopeServiceProvider::gate should have the "Override" attribute</p>
+<pre data-start="57" class="line-numbersx"><code class="language-php">    /**
+     * Register the Telescope gate.
+     *
+     * This gate determines who can access Telescope in non-local environments.
+     */
+    /**##(##**/protected function gate(): void/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/AuthorService.php:124</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\AuthorService::byuser should have the "Override" attribute</p>
+<pre data-start="124" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/BookService.php:257</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\BookService::byuser should have the "Override" attribute</p>
+<pre data-start="257" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/ChatService.php:74</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\ChatService::getall should have the "Override" attribute</p>
+<pre data-start="74" class="line-numbersx"><code class="language-php">    /**##(##**/public function getAll(): Collection/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/SettingService.php:108</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\SettingService::byuser should have the "Override" attribute</p>
+<pre data-start="108" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
+<h3>app/Services/SettingService.php:115</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>MissingOverrideAttribute</li>
+</ul>
+<p>Method App\Services\SettingService::updateforuser should have the "Override" attribute</p>
+<pre data-start="115" class="line-numbersx"><code class="language-php">    /**##(##**/public function updateForUser(Setting $setting, User $user, string $value): bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="PossiblyNullArgument">
+<h3>app/Services/TradeOfferService.php:136</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>PossiblyNullArgument</li>
+</ul>
+<p>Argument 2 of App\Events\TradeOfferUpdatedEvent::__construct cannot be null, possibly null value provided</p>
+<pre data-start="136" class="line-numbersx"><code class="language-php">            TradeOfferUpdatedEvent::dispatch($tradeOffer, /**##(##**/Auth::user()/**##)##**/);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedProperty">
+<h3>tests/Feature/UserNotificationApiTest.php:17</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedProperty</li>
+</ul>
+<p>Cannot find any references to private property Tests\Feature\UserNotificationApiTest::$other</p>
+<pre data-start="17" class="line-numbersx"><code class="language-php">    private User /**##(##**/$other/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/150">Psalm #150</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedClass">
+<h3>tests/Feature/UserNotificationApiTest.php:18</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedClass</li>
+</ul>
+<p>Class, interface or enum named App\Models\Notification does not exist</p>
+<pre data-start="18" class="line-numbersx"><code class="language-php">    private /**##(##**/Notification/**##)##**/ $notification;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedClass">
+<h3>tests/Feature/UserNotificationApiTest.php:19</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedClass</li>
+</ul>
+<p>Class, interface or enum named App\Models\Notification does not exist</p>
+<pre data-start="19" class="line-numbersx"><code class="language-php">    private /**##(##**/Notification/**##)##**/ $otherNotification;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedClass">
+<h3>tests/Feature/UserNotificationApiTest.php:29</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedClass</li>
+</ul>
+<p>Class, interface or enum named App\Models\Notification does not exist</p>
+<pre data-start="29" class="line-numbersx"><code class="language-php">        $this-&gt;notification = /**##(##**/Notification/**##)##**/::factory()-&gt;create(['user_id' =&gt; $this-&gt;user-&gt;id, 'seen' =&gt; false]);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedClass">
+<h3>tests/Feature/UserNotificationApiTest.php:56</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedClass</li>
+</ul>
+<p>Cannot get properties of undefined class App\Models\Notification</p>
+<pre data-start="56" class="line-numbersx"><code class="language-php">        $response-&gt;assertJsonMissing(['id' =&gt; (string)/**##(##**/$this-&gt;otherNotification-&gt;id/**##)##**/]);</code></pre>
+<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedClass">
+<h3>tests/Feature/UserNotificationApiTest.php:63</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedClass</li>
+</ul>
+<p>Cannot get properties of undefined class App\Models\Notification</p>
+<pre data-start="63" class="line-numbersx"><code class="language-php">        $response = $this-&gt;patchJson("/api/v1/notifications/{/**##(##**/$this-&gt;notification-&gt;id/**##)##**/}/read");</code></pre>
+<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UndefinedClass">
+<h3>tests/Feature/UserNotificationApiTest.php:76</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UndefinedClass</li>
+</ul>
+<p>Cannot get properties of undefined class App\Models\Notification</p>
+<pre data-start="76" class="line-numbersx"><code class="language-php">        $response = $this-&gt;patchJson("/api/v1/notifications/{/**##(##**/$this-&gt;otherNotification-&gt;id/**##)##**/}/read");</code></pre>
+<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
 </li>
 </ul>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/prism.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/components/prism-markup-templating.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/components/prism-php.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/plugins/line-numbers/prism-line-numbers.min.js"></script><script type="text/javascript">
