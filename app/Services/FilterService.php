@@ -18,33 +18,17 @@ final class FilterService implements FilterServiceInterface
         'name',
     ];
 
-    private function formatData(array $data): array
-    {
-        foreach ($data as $key => &$value) {
-            if (in_array($key, $this->ucFirstFields)) {
-                $value = ucfirst($value);
-            }
-        }
-        return $data;
-    }
-
     #[Override]
     public function create(array $data): Filter|false
     {
         $formattedData = $this->formatData($data);
 
         try {
-            DB::beginTransaction();
-            $filter = new Filter($formattedData);
-
-            if (!$filter->save()) {
-                throw new Exception("Ошибка при создании типа");
-            }
-
-            DB::commit();
-            return $filter->refresh();
+            return DB::transaction(function () use ($formattedData) {
+                $filter = Filter::create($formattedData);
+                return $filter->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -92,12 +76,9 @@ final class FilterService implements FilterServiceInterface
     public function update(Filter $filter, array $data): Filter|false
     {
         try {
-            DB::beginTransaction();
             $filter->updateOrFail($data);
-            DB::commit();
             return $filter->refresh();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -107,14 +88,20 @@ final class FilterService implements FilterServiceInterface
     public function delete(Filter $filter): bool
     {
         try {
-            DB::beginTransaction();
-            $filter->delete();
-            DB::commit();
-            return true;
+            return $filter->deleteOrFail();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
+    }
+
+    private function formatData(array $data): array
+    {
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 }

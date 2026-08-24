@@ -8,6 +8,7 @@ use App\Http\Requests\WhereBookRequest;
 use App\Http\Resources\BookResource;
 use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
+use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ final class BookController extends Controller
         Gate::authorize('create', Book::class);
 
         $validated = $request->validated();
-        $validated['user_id'] = $request->user()->id;
+        $validated['user_id'] = Auth::user()->id;
         $book = $bookService->create($validated);
 
         if (!$book) {
@@ -79,7 +80,7 @@ final class BookController extends Controller
     {
         $validated = $request->validated();
 
-        $books = $bookService->where($validated);
+        $books = $bookService->filtered($validated);
 
         return BookResource::collection($books)->response()->setStatusCode(Response::HTTP_OK);
     }

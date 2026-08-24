@@ -22,23 +22,17 @@ final class PhotoService implements PhotoServiceInterface
     public function create(array $data): Photo|false
     {
         try {
-            DB::beginTransaction();
-            $path = $this->storeFile($data['src']);
+            return DB::transaction(function () use ($data) {
+                $path = $this->storeFile($data['src']);
 
-            if ($path === false) {
-                throw new Exception('Ошибка при сохранении файла');
-            }
+                if ($path === false) {
+                    throw new Exception('Ошибка при сохранении файла');
+                }
 
-            $photo = new Photo(['src' => $path, 'user_id' => $data['user_id']]);
-
-            if (!$photo->save()) {
-                throw new Exception("Ошибка при создании фото");
-            }
-
-            DB::commit();
-            return $photo->refresh();
+                $photo = Photo::create(['src' => $path, 'user_id' => $data['user_id']]);
+                return $photo->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -86,20 +80,17 @@ final class PhotoService implements PhotoServiceInterface
     public function delete(Photo $photo): bool
     {
         try {
-            DB::beginTransaction();
+            return DB::transaction(function () use ($photo) {
+                $oldPath = $photo->src;
+                $deleted = $photo->deleteOrFail();
 
-            $oldPath = $photo->src;
+                if (isset($oldPath) && $photo->id !== Photo::BASE_PHOTO_ID) {
+                    DeleteFileJob::dispatch($oldPath)->afterCommit();
+                }
 
-            $photo->delete();
-
-            if (isset($oldPath) && $photo->id !== Photo::BASE_PHOTO_ID) {
-                DeleteFileJob::dispatch($oldPath)->afterCommit();
-            }
-
-            DB::commit();
-            return true;
+                return $deleted;
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }

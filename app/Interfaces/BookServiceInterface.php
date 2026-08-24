@@ -14,13 +14,13 @@ interface BookServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(array $filters): Collection;
+    public function where(string $field, string $value): Collection;
 
     public function update(Book $book, array $data): Book|false;
 
     public function delete(Book $book): bool;
 
-    public function attach(Book $book, array $authors): bool;
+    public function filtered(array $filters): Collection;
 
     public function byUser(User $user): Collection;
 }

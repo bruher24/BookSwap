@@ -30,56 +30,39 @@ final class StoreBookRequest extends FormRequest
                 'string',
                 'max:100',
             ],
-            'author_id' => [
-                'required_without_all:authorLastname,authorFirstname',
-                'nullable',
+            'authors_ids' => [
+                'required',
+                'array',
+            ],
+            'authors_ids.*' => [
+                'required',
                 'integer',
+                'distinct',
                 Rule::exists('authors', 'id')
                     ->withoutTrashed(),
-            ],
-            'author_id1' => [
-                'nullable',
-                'integer',
-                Rule::exists('authors', 'id')
-                    ->withoutTrashed(),
-            ],
-            'author_id2' => [
-                'nullable',
-                'integer',
-                Rule::exists('authors', 'id')
-                    ->withoutTrashed(),
-            ],
-            'authorLastname' => [
-                'required_without:author_id',
-                'nullable',
-                'string',
-                'max:100',
-                Rule::unique('authors', 'lastname')
-                    ->where('firstname', $this->input('firstname'))
-                    ->where('patronymic', $this->input('patronymic')),
-            ],
-            'authorFirstname' => 'required_without:author_id|nullable|string|max:100',
-            'authorPatronymic' => 'nullable|string|max:100',
-            'authorBirthdate' => [
-                'nullable',
-                'date',
-                Rule::date()->beforeOrEqual(today()->subYears(14)),
             ],
             'page_count' => 'required|integer|min:1',
             'cover' => [
                 'nullable',
-                'file',
+                'image',
                 'mimes:jpeg,png',
                 'max:2048'
             ],
             'condition' => [
-                'string',
+                'required',
                 Rule::enum(BookConditionEnum::class),
             ],
-            'publishing_house' => 'nullable|string',
+            'publishing_house' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
             'publication_year' => [
                 'nullable',
-                Rule::date()->format('Y'),
+                'integer',
+                'digits:4',
+                'min:1000',
+                'max:' . now()->year,
             ],
             'book_type_id' => [
                 'required',
@@ -91,6 +74,7 @@ final class StoreBookRequest extends FormRequest
                 'nullable',
                 'string',
                 'size:13',
+                'regex:/^(97[89])\d{10}$/',
                 Rule::unique('books', 'isbn')
                     ->withoutTrashed(),
             ],

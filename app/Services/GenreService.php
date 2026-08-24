@@ -18,33 +18,17 @@ final class GenreService implements GenreServiceInterface
         'name',
     ];
 
-    private function formatData(array $data): array
-    {
-        foreach ($data as $key => &$value) {
-            if (in_array($key, $this->ucFirstFields)) {
-                $value = ucfirst($value);
-            }
-        }
-        return $data;
-    }
-
     #[Override]
     public function create(array $data): Genre|false
     {
         $formattedData = $this->formatData($data);
 
         try {
-            DB::beginTransaction();
-            $genre = new Genre($formattedData);
-
-            if (!$genre->save()) {
-                throw new Exception("Ошибка при создании типа");
-            }
-
-            DB::commit();
-            return $genre->refresh();
+            return DB::transaction(function () use ($formattedData) {
+                $genre = Genre::create($formattedData);
+                return $genre->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -92,12 +76,9 @@ final class GenreService implements GenreServiceInterface
     public function update(Genre $genre, array $data): Genre|false
     {
         try {
-            DB::beginTransaction();
             $genre->updateOrFail($data);
-            DB::commit();
             return $genre->refresh();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -107,14 +88,20 @@ final class GenreService implements GenreServiceInterface
     public function delete(Genre $genre): bool
     {
         try {
-            DB::beginTransaction();
-            $genre->delete();
-            DB::commit();
-            return true;
+            return $genre->deleteOrFail();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
+    }
+
+    private function formatData(array $data): array
+    {
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 }

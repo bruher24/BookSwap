@@ -90,28 +90,28 @@ final class TradeOfferController extends Controller
         switch ($status) {
             case TradeOfferStatusEnum::Accepted:
                 Gate::authorize('accept', $tradeOffer);
-                $result = $tradeOfferService->accept($tradeOffer);
+                $tradeOffer = $tradeOfferService->accept($tradeOffer);
                 break;
             case TradeOfferStatusEnum::Rejected:
                 Gate::authorize('reject', $tradeOffer);
-                $result = $tradeOfferService->reject($tradeOffer);
+                $tradeOffer = $tradeOfferService->reject($tradeOffer);
                 break;
             case TradeOfferStatusEnum::Canceled:
                 Gate::authorize('cancel', $tradeOffer);
-                $result = $tradeOfferService->cancel($tradeOffer);
+                $tradeOffer = $tradeOfferService->cancel($tradeOffer);
                 break;
             case TradeOfferStatusEnum::Finished:
                 Gate::authorize('finish', $tradeOffer);
-                $result = $tradeOfferService->finish($tradeOffer);
+                $tradeOffer = $tradeOfferService->finish($tradeOffer);
                 break;
             default:
-                $result = false;
+                $tradeOffer = false;
         }
 
-        if (!$result) {
+        if (!$tradeOffer) {
             return $this->errorResponse('Ошибка при обновлении статуса сделки', Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->successResponse();
+        return (new TradeOfferResource($tradeOffer))->response()->setStatusCode(Response::HTTP_OK);
     }
 }

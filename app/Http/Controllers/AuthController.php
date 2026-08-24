@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
-use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -67,14 +66,14 @@ final class AuthController extends Controller
         return $this->successResponse();
     }
 
-    public function verifyEmail(Request $request, AuthServiceInterface $authService, int $userId): RedirectResponse
+    public function verifyEmail(Request $request, UserServiceInterface $userService, int $userId): RedirectResponse
     {
         if (!$request->hasValidSignature()) {
             abort(Response::HTTP_BAD_REQUEST);
         }
 
         // TODO: заменить на реальные страницы фронта
-        if (!$authService->verifyEmail($userId)) {
+        if (!$userService->verifyEmail($userId)) {
             return response()->redirectTo('http://localhost:5173/failure');
         }
 

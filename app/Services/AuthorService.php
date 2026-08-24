@@ -15,21 +15,11 @@ use Throwable;
 
 final class AuthorService implements AuthorServiceInterface
 {
-    protected array $ucFirstFields = [
+    private array $ucFirstFields = [
         'lastname',
         'firstname',
         'patronymic',
     ];
-
-    private function formatData(array $data): array
-    {
-        foreach ($data as $key => &$value) {
-            if (in_array($key, $this->ucFirstFields)) {
-                $value = ucfirst($value);
-            }
-        }
-        return $data;
-    }
 
     #[Override]
     public function create(array $data): Author|false
@@ -37,17 +27,11 @@ final class AuthorService implements AuthorServiceInterface
         $formattedData = $this->formatData($data);
 
         try {
-            DB::beginTransaction();
-            $author = new Author($formattedData);
-
-            if (!$author->save()) {
-                throw new Exception("Ошибка при создании автора");
-            }
-
-            DB::commit();
-            return $author->refresh();
+            return DB::transaction(function () use ($formattedData) {
+                $author = Author::create($formattedData);
+                return $author->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -95,12 +79,9 @@ final class AuthorService implements AuthorServiceInterface
     public function update(Author $author, array $data): Author|false
     {
         try {
-            DB::beginTransaction();
             $author->updateOrFail($data);
-            DB::commit();
             return $author->refresh();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -110,12 +91,9 @@ final class AuthorService implements AuthorServiceInterface
     public function delete(Author $author): bool
     {
         try {
-            DB::beginTransaction();
-            $author->delete();
-            DB::commit();
+            $author->deleteOrFail();
             return true;
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -126,5 +104,15 @@ final class AuthorService implements AuthorServiceInterface
         return $user->authors()
             ->withoutTrashed()
             ->get();
+    }
+
+    private function formatData(array $data): array
+    {
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 }

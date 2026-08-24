@@ -28,33 +28,27 @@ final class ChatService implements ChatServiceInterface
     public function create(array $data): Chat|false
     {
         try {
-            DB::beginTransaction();
+            return DB::transaction(function () use ($data) {
+                $firstUser = $this->userService->get($data['first_user_id']);
+                $secondUser = $this->userService->get($data['second_user_id']);
 
-            $firstUser = $this->userService->get($data['first_user_id']);
-            $secondUser = $this->userService->get($data['second_user_id']);
+                if (empty($firstUser) || empty($secondUser)) {
+                    throw new Exception('Ошибка при получении пользователей');
+                }
 
-            if (!$firstUser || !$secondUser) {
-                throw new Exception('Ошибка при получении пользователей');
-            }
+                $pairKey = min([$firstUser->id, $secondUser->id]) . ':' . max([$firstUser->id, $secondUser->id]);
 
-            $pairKey = min([$firstUser->id, $secondUser->id]) . ':' . max([$firstUser->id, $secondUser->id]);
+                if ($this->where('pair_key', $pairKey)->isNotEmpty()) {
+                    throw new Exception('Чат между пользователями уже существует');
+                }
 
-            if ($this->where('pair_key', $pairKey)->isNotEmpty()) {
-                throw new Exception('Чат между этими пользователями уже существует');
-            }
+                $chat = Chat::create(['pair_key' => $pairKey]);
 
-            $chat = new Chat(['pair_key' => $pairKey]);
-
-            if (!$chat->save()) {
-                throw new Exception("Ошибка при создании чата");
-            }
-
-            $chat->users()->attach([$firstUser->id, $secondUser->id]);
-            DB::commit();
-            $this->invalidateUserChatsCache($chat);
-            return $chat->refresh();
+                $chat->users()->attachOrFail([$firstUser->id, $secondUser->id]);
+                $this->invalidateUserChatsCache($chat);
+                return $chat->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -101,13 +95,10 @@ final class ChatService implements ChatServiceInterface
     public function delete(Chat $chat): bool
     {
         try {
-            DB::beginTransaction();
-            $chat->delete();
-            DB::commit();
+            $deleted = $chat->deleteOrFail();
             $this->invalidateUserChatsCache($chat);
-            return true;
+            return $deleted;
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -147,26 +138,22 @@ final class ChatService implements ChatServiceInterface
     public function sendMessage(Chat $chat, User $sender, string $body): Message|false
     {
         try {
-            DB::beginTransaction();
+            return DB::transaction(function () use ($chat, $sender, $body) {
+                $data = [
+                    'sender_id' => $sender->id,
+                    'body' => $body,
+                ];
 
-            $data = [
-                'sender_id' => $sender->id,
-                'body' => $body,
-            ];
+                $message = $chat->messages()->create($data);
 
-            $message = $chat->messages()->create($data);
+                if (!$message instanceof Message) {
+                    throw new Exception('Ошибка при сохранении сообщения');
+                }
 
-            if (!$message instanceof Message) {
-                throw new Exception('Ошибка при сохранении сообщения');
-            }
-
-            DB::commit();
-
-            Cache::forget('messages_' . $chat->id);
-
-            return $message;
+                Cache::forget('messages_' . $chat->id);
+                return $message->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -176,18 +163,13 @@ final class ChatService implements ChatServiceInterface
     public function block(Chat $chat, User $user): bool
     {
         try {
-            DB::beginTransaction();
-
-            if (!$chat->users()->updateExistingPivot($user->id, ['has_blocked_the_chat' => true])) {
-                throw new Exception('Ошибка при обновлении чата');
-            }
-
-            DB::commit();
-            $this->invalidateUserChatsCache($chat);
-            return true;
+            return DB::transaction(function () use ($chat, $user) {
+                $updated = $chat->users()->updateExistingPivotOrFail($user->id, ['has_blocked_the_chat' => true]);
+                $this->invalidateUserChatsCache($chat);
+                return $updated;
+            });
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
-            DB::rollBack();
             return false;
         }
     }

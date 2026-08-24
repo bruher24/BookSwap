@@ -22,23 +22,17 @@ final class CoverService implements CoverServiceInterface
     public function create(array $data): Cover|false
     {
         try {
-            DB::beginTransaction();
-            $path = $this->storeFile($data['file']);
+            return DB::transaction(function () use ($data) {
+                $path = $this->storeFile($data['file']);
 
-            if ($path === false) {
-                throw new Exception('Ошибка при сохранении файла');
-            }
+                if ($path === false) {
+                    throw new Exception('Ошибка при сохранении файла');
+                }
 
-            $cover = new Cover(['src' => $path, 'user_id' => $data['user_id']]);
-
-            if (!$cover->save()) {
-                throw new Exception("Ошибка при создании обложки");
-            }
-
-            DB::commit();
-            return $cover->refresh();
+                $cover = Cover::create(['src' => $path, 'user_id' => $data['user_id']]);
+                return $cover->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -86,20 +80,17 @@ final class CoverService implements CoverServiceInterface
     public function delete(Cover $cover): bool
     {
         try {
-            DB::beginTransaction();
+            return DB::transaction(function () use ($cover) {
+                $oldPath = $cover->src;
+                $deleted = $cover->deleteOrFail();
 
-            $oldPath = $cover->src;
+                if (isset($oldPath) && $cover->id !== Cover::BASE_COVER_ID) {
+                    DeleteFileJob::dispatch($oldPath)->afterCommit();
+                }
 
-            $cover->delete();
-
-            if (isset($oldPath) && $cover->id !== Cover::BASE_COVER_ID) {
-                DeleteFileJob::dispatch($oldPath)->afterCommit();
-            }
-
-            DB::commit();
-            return true;
+                return $deleted;
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }

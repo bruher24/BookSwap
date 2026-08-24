@@ -18,33 +18,17 @@ final class BookTypeService implements BookTypeServiceInterface
         'name',
     ];
 
-    private function formatData(array $data): array
-    {
-        foreach ($data as $key => &$value) {
-            if (in_array($key, $this->ucFirstFields)) {
-                $value = ucfirst($value);
-            }
-        }
-        return $data;
-    }
-
     #[Override]
     public function create(array $data): BookType|false
     {
         $formattedData = $this->formatData($data);
 
         try {
-            DB::beginTransaction();
-            $bookType = new BookType($formattedData);
-
-            if (!$bookType->save()) {
-                throw new Exception("Ошибка при создании типа");
-            }
-
-            DB::commit();
-            return $bookType->refresh();
+            return DB::transaction(function () use ($formattedData) {
+                $bookType = BookType::create($formattedData);
+                return $bookType->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -92,12 +76,9 @@ final class BookTypeService implements BookTypeServiceInterface
     public function update(BookType $bookType, array $data): BookType|false
     {
         try {
-            DB::beginTransaction();
             $bookType->updateOrFail($data);
-            DB::commit();
             return $bookType->refresh();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -107,14 +88,20 @@ final class BookTypeService implements BookTypeServiceInterface
     public function delete(BookType $bookType): bool
     {
         try {
-            DB::beginTransaction();
-            $bookType->delete();
-            DB::commit();
-            return true;
+            return $bookType->deleteOrFail();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
+    }
+
+    private function formatData(array $data): array
+    {
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 }

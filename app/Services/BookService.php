@@ -6,7 +6,6 @@ use App\Interfaces\BookServiceInterface;
 use App\Models\Book;
 use App\Models\Cover;
 use App\Models\User;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -17,109 +16,35 @@ use Throwable;
 
 final class BookService implements BookServiceInterface
 {
-    protected array $ucFirstFields = [
+    private array $ucFirstFields = [
         'name',
         'publishing_house',
     ];
-
-    private function formatData(array $data): array
-    {
-        foreach ($data as $key => &$value) {
-            if (in_array($key, $this->ucFirstFields)) {
-                $value = ucfirst($value);
-            }
-        }
-        return $data;
-    }
 
     #[Override]
     public function create(array $data): Book|false
     {
         try {
-            DB::beginTransaction();
+            return DB::transaction(function () use ($data) {
+                if (isset($data['cover'])) {
+                    $coverData = [
+                        'user_id' => $data['user_id'],
+                        'file' => $data['cover'],
+                    ];
 
-            if (isset($data['cover'])) {
-                $coverData = [
-                    'user_id' => $data['user_id'],
-                    'file' => $data['cover'],
-                ];
+                    $cover = (new CoverService())->create($coverData);
+                    unset($data['cover']);
+                }
 
-                $cover = (new CoverService())->create($coverData);
-                $data['cover_id'] = $cover ? $cover->id : Cover::BASE_COVER_ID;
-                unset($data['cover']);
-            } else {
-                $data['cover_id'] = Cover::BASE_COVER_ID;
-            }
+                $data['cover_id'] = isset($cover) && $cover instanceof Cover
+                    ? $cover->id
+                    : Cover::BASE_COVER_ID;
 
-            $formattedData = $this->formatData($data);
-            $book = new Book($formattedData);
-
-            if (!$book->save()) {
-                throw new Exception('Ошибка при создании книги');
-            }
-
-            $authors = $this->filterAuthorsData($data);
-
-            if (!empty($authors) && !$this->attach($book, $authors)) {
-                throw new Exception('Ошибка при добавлении авторов');
-            }
-
-            DB::commit();
-            return $book->refresh();
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return false;
-        }
-    }
-
-    private function filterAuthorsData(array $data): array
-    {
-        $authors = [];
-
-        for ($i = 0; $i < 4; $i++) {
-            if (isset($data['author_id' . ($i == 0 ? '' : $i)])) {
-                $authors['ids'][] = $data['author_id' . ($i == 0 ? '' : $i)];
-            }
-        }
-
-        if (isset($data['authorLastname'], $data['authorFirstname'])) {
-            $authors['new'] = [
-                'user_id' => $data['user_id'],
-                'lastname' => $data['authorLastname'],
-                'firstname' => $data['authorFirstname'],
-                'patronymic' => $data['authorPatronymic'] ?? null,
-                'birthdate' => $data['authorBirthdate'] ?? null,
-            ];
-        }
-
-        return $authors;
-    }
-
-    #[Override]
-    public function attach(Book $book, array $authors): bool
-    {
-        try {
-            if (isset($authors['ids'])) {
-                $book->authors()->attach($authors['ids']);
-            }
-
-            if (isset($authors['new'])) {
-                $book->authors()->create($authors['new']);
-            }
-
-            return true;
-        } catch (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return false;
-        }
-    }
-
-    private function detach(Book $book, array $authors = []): bool
-    {
-        try {
-            $book->authors()->detach(!empty($authors) ? $authors : null);
-            return true;
+                $formattedData = $this->formatData($data);
+                $book = Book::create($formattedData);
+                $book->authors()->attachOrFail($data['authors_ids']);
+                return $book->refresh();
+            });
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -152,8 +77,71 @@ final class BookService implements BookServiceInterface
     }
 
     #[Override]
-    public function where(array $filters): Collection
+    public function where(string $field, string $value): Collection
     {
+        try {
+            return Book::where($field, $value)
+                ->withoutTrashed()
+                ->get();
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+            return new Collection();
+        }
+    }
+
+    #[Override]
+    public function update(Book $book, array $data): Book|false
+    {
+        try {
+            return DB::transaction(function () use ($book, $data) {
+                if (isset($data['cover'])) {
+                    $coverData = [
+                        'user_id' => $book->user_id,
+                        'file' => $data['cover'],
+                    ];
+
+                    $cover = (new CoverService())->create($coverData);
+                    $data['cover_id'] = $cover ? $cover->id : Cover::BASE_COVER_ID;
+                    unset($data['cover']);
+                }
+
+                $formattedData = $this->formatData($data);
+                $book->updateOrFail($formattedData);
+
+                if (!empty($data['authors_ids'])) {
+                    $book->authors()->syncOrFail($data['authors_ids']);
+                }
+
+                return $book->refresh();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+            return false;
+        }
+    }
+
+    #[Override]
+    public function delete(Book $book): bool
+    {
+        try {
+            $book->deleteOrFail();
+            return true;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
+            return false;
+        }
+    }
+
+    #[Override]
+    public function filtered(array $filters): Collection
+    {
+        if (empty($filters)) {
+            return Book::query()
+                ->where('is_available', 1)
+                ->withoutTrashed()
+                ->get();
+        }
+
         try {
             ksort($filters);
             $cacheKey = Book::CACHE_KEY . http_build_query($filters);
@@ -190,9 +178,7 @@ final class BookService implements BookServiceInterface
                         });
                     });
 
-
                 Log::debug($query->toRawSql());
-
                 return $query->get();
             });
         } catch (Throwable $e) {
@@ -201,63 +187,20 @@ final class BookService implements BookServiceInterface
         }
     }
 
-    #[Override]
-    public function update(Book $book, array $data): Book|false
-    {
-        try {
-            DB::beginTransaction();
-
-            if (isset($data['cover'])) {
-                $coverData = [
-                    'user_id' => $book->user_id,
-                    'file' => $data['cover'],
-                ];
-
-                $cover = (new CoverService())->create($coverData);
-                $data['cover_id'] = $cover ? $cover->id : Cover::BASE_COVER_ID;
-                unset($data['cover']);
-            }
-
-            $formattedData = $this->formatData($data);
-            $book->updateOrFail($formattedData);
-
-            $data['user_id'] = $book->user_id;
-            $authors = $this->filterAuthorsData($data);
-
-            if (!empty($authors)) {
-                if (!$this->detach($book) || !$this->attach($book, $authors)) {
-                    throw new Exception('Ошибка при добавлении авторов');
-                }
-            }
-
-            DB::commit();
-            return $book->refresh();
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return false;
-        }
-    }
-
-    #[Override]
-    public function delete(Book $book): bool
-    {
-        try {
-            DB::beginTransaction();
-            $book->delete();
-            DB::commit();
-            return true;
-        } catch (Throwable $e) {
-            DB::rollBack();
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return false;
-        }
-    }
-
     public function byUser(User $user): Collection
     {
         return $user->books()
             ->withoutTrashed()
             ->get();
+    }
+
+    private function formatData(array $data): array
+    {
+        foreach ($data as $key => &$value) {
+            if (in_array($key, $this->ucFirstFields)) {
+                $value = ucfirst($value);
+            }
+        }
+        return $data;
     }
 }

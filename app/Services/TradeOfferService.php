@@ -23,64 +23,16 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function create(array $data): TradeOffer|false
     {
         try {
-            DB::beginTransaction();
-
-            $data['status'] = TradeOfferStatusEnum::Pending;
-            $tradeOffer = TradeOffer::create($data);
-            $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
-            DB::commit();
-            return $tradeOffer->refresh();
+            return DB::transaction(function () use ($data) {
+                $data['status'] = TradeOfferStatusEnum::Pending;
+                $tradeOffer = TradeOffer::create($data);
+                $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
+                return $tradeOffer->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function attachBooksToTradeOffer(TradeOffer $tradeOffer, array $senderItems = [], array $receiverItems = []): void
-    {
-        $senderItems = array_values(array_unique($senderItems));
-
-        $senderBooks = Book::where('user_id', $tradeOffer->sender_id)
-            ->whereIn('id', $senderItems)
-            ->where('is_available', true)
-            ->withoutTrashed()
-            ->lockForUpdate();
-
-        $senderBooksCount = $senderBooks->count();
-
-        if ($senderBooksCount !== count($senderItems)) {
-            throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
-        }
-
-        $receiverItems = array_values(array_unique($receiverItems));
-
-        $receiverBooks = Book::where('user_id', $tradeOffer->receiver_id)
-            ->whereIn('id', $receiverItems)
-            ->where('is_available', true)
-            ->withoutTrashed()
-            ->lockForUpdate();
-
-        $receiverBooksCount = $receiverBooks->count();
-
-        if ($receiverBooksCount !== count($receiverItems)) {
-            throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
-        }
-
-        Book::where('trade_offer_id', $tradeOffer->id)
-            ->update([
-                'trade_offer_id' => null,
-                'is_available' => true
-            ]);
-
-        Book::whereIn('id', array_merge($senderItems, $receiverItems))
-            ->update([
-                'trade_offer_id' => $tradeOffer->id,
-                'is_available' => false
-            ]);
     }
 
     #[Override]
@@ -125,19 +77,16 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false
     {
         try {
-            DB::beginTransaction();
-
             if ($tradeOffer->status !== TradeOfferStatusEnum::Pending) {
                 throw new Exception('Можно изменять только сделки со статусом "' . TradeOfferStatusEnum::Pending->label() . '"');
             }
 
-            $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
-            DB::commit();
-            TradeOfferUpdatedEvent::dispatch($tradeOffer, Auth::user());
-
-            return $tradeOffer->refresh();
+            return DB::transaction(function () use ($tradeOffer, $data) {
+                $this->attachBooksToTradeOffer($tradeOffer, $data['sender_items'], $data['receiver_items']);
+                TradeOfferUpdatedEvent::dispatch($tradeOffer, Auth::user());
+                return $tradeOffer->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -147,12 +96,8 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function delete(TradeOffer $tradeOffer): bool
     {
         try {
-            DB::beginTransaction();
-            $tradeOffer->delete();
-            DB::commit();
-            return true;
+            return $tradeOffer->deleteOrFail();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -177,10 +122,11 @@ final class TradeOfferService implements TradeOfferServiceInterface
     }
 
     #[Override]
-    public function accept(TradeOffer $tradeOffer): bool
+    public function accept(TradeOffer $tradeOffer): TradeOffer | bool
     {
         try {
-            return $tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Accepted]);
+            $tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Accepted]);
+            return $tradeOffer->refresh();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -188,18 +134,18 @@ final class TradeOfferService implements TradeOfferServiceInterface
     }
 
     #[Override]
-    public function reject(TradeOffer $tradeOffer): bool
+    public function reject(TradeOffer $tradeOffer): TradeOffer | bool
     {
         try {
-            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Rejected])) {
+            return DB::transaction(function () use ($tradeOffer) {
+                $tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Rejected]);
+
                 foreach ($tradeOffer->books()->get() as $book) {
-                    $book->update(['is_available' => true, 'trade_offer_id' => null]);
+                    $book->updateOrFail(['is_available' => true, 'trade_offer_id' => null]);
                 }
 
-                return true;
-            }
-
-            return false;
+                return $tradeOffer->refresh();
+            });
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -207,18 +153,18 @@ final class TradeOfferService implements TradeOfferServiceInterface
     }
 
     #[Override]
-    public function cancel(TradeOffer $tradeOffer): bool
+    public function cancel(TradeOffer $tradeOffer): TradeOffer | bool
     {
         try {
-            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Canceled])) {
+            return DB::transaction(function () use ($tradeOffer) {
+                $tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Canceled]);
+
                 foreach ($tradeOffer->books()->get() as $book) {
-                    $book->update(['is_available' => true, 'trade_offer_id' => null]);
+                    $book->updateOrFail(['is_available' => true, 'trade_offer_id' => null]);
                 }
 
-                return true;
-            }
-
-            return false;
+                return $tradeOffer->refresh();
+            });
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -226,19 +172,19 @@ final class TradeOfferService implements TradeOfferServiceInterface
     }
 
     #[Override]
-    public function finish(TradeOffer $tradeOffer): bool
+    public function finish(TradeOffer $tradeOffer): TradeOffer | bool
     {
         try {
-            if ($tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Finished])) {
+            return DB::transaction(function () use ($tradeOffer) {
+                $tradeOffer->updateOrFail(['status' => TradeOfferStatusEnum::Finished]);
+
                 foreach ($tradeOffer->books()->get() as $book) {
                     $newOwnerId = $book->user_id === $tradeOffer->sender_id ? $tradeOffer->receiver_id : $tradeOffer->sender_id;
-                    $book->update(['user_id' => $newOwnerId, 'is_available' => true, 'trade_offer_id' => null]);
+                    $book->updateOrFail(['user_id' => $newOwnerId, 'is_available' => true, 'trade_offer_id' => null]);
                 }
 
-                return true;
-            }
-
-            return false;
+                return $tradeOffer->refresh();
+            });
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -259,5 +205,53 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
 
         return collect($data);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function attachBooksToTradeOffer(TradeOffer $tradeOffer, array $senderItems = [], array $receiverItems = []): void
+    {
+        DB::transaction(function () use ($tradeOffer, $senderItems, $receiverItems) {
+            $senderItems = array_values(array_unique($senderItems));
+
+            $senderBooks = Book::where('user_id', $tradeOffer->sender_id)
+                ->whereIn('id', $senderItems)
+                ->where('is_available', true)
+                ->withoutTrashed()
+                ->lockForUpdate();
+
+            $senderBooksCount = $senderBooks->count();
+
+            if ($senderBooksCount !== count($senderItems)) {
+                throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
+            }
+
+            $receiverItems = array_values(array_unique($receiverItems));
+
+            $receiverBooks = Book::where('user_id', $tradeOffer->receiver_id)
+                ->whereIn('id', $receiverItems)
+                ->where('is_available', true)
+                ->withoutTrashed()
+                ->lockForUpdate();
+
+            $receiverBooksCount = $receiverBooks->count();
+
+            if ($receiverBooksCount !== count($receiverItems)) {
+                throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
+            }
+
+            Book::where('trade_offer_id', $tradeOffer->id)
+                ->updateOrFail([
+                    'trade_offer_id' => null,
+                    'is_available' => true
+                ]);
+
+            Book::whereIn('id', array_merge($senderItems, $receiverItems))
+                ->updateOrFail([
+                    'trade_offer_id' => $tradeOffer->id,
+                    'is_available' => false
+                ]);
+        });
     }
 }

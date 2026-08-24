@@ -19,17 +19,11 @@ final class SettingService implements SettingServiceInterface
     public function create(array $data): Setting|false
     {
         try {
-            DB::beginTransaction();
-            $setting = new Setting($data);
-
-            if (!$setting->save()) {
-                throw new Exception("Ошибка при создании типа");
-            }
-
-            DB::commit();
-            return $setting->refresh();
+            return DB::transaction(function () use ($data) {
+                $setting = Setting::create($data);
+                return $setting->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -42,7 +36,6 @@ final class SettingService implements SettingServiceInterface
             return Setting::findOrFail($id);
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
-
             return false;
         }
     }
@@ -53,12 +46,10 @@ final class SettingService implements SettingServiceInterface
         try {
             return Cache::remember(Setting::CACHE_KEY, 600, function (): Collection {
                 Log::debug('Stored in cache: ' . Setting::CACHE_KEY);
-
                 return Setting::all();
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
-
             return new Collection();
         }
     }
@@ -72,7 +63,6 @@ final class SettingService implements SettingServiceInterface
                 ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
-
             return new Collection();
         }
     }
@@ -82,11 +72,9 @@ final class SettingService implements SettingServiceInterface
     {
         try {
             $setting->updateOrFail($data);
-
             return $setting->refresh();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
-
             return false;
         }
     }
@@ -95,12 +83,9 @@ final class SettingService implements SettingServiceInterface
     public function delete(Setting $setting): bool
     {
         try {
-            $setting->deleteOrFail();
-
-            return true;
+            return $setting->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
-
             return false;
         }
     }
@@ -116,11 +101,9 @@ final class SettingService implements SettingServiceInterface
     {
         try {
             $user->settings()->syncWithoutDetachingOrFail([$setting->id => ['value' => $value]]);
-
             return true;
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
-
             return false;
         }
     }

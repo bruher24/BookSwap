@@ -18,17 +18,11 @@ final class RoleService implements RoleServiceInterface
     public function create(array $data): Role|false
     {
         try {
-            DB::beginTransaction();
-            $role = new Role($data);
-
-            if (!$role->save()) {
-                throw new Exception("Ошибка при создании типа");
-            }
-
-            DB::commit();
-            return $role->refresh();
+            return DB::transaction(function () use ($data) {
+                $role = Role::create($data);
+                return $role->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -76,12 +70,9 @@ final class RoleService implements RoleServiceInterface
     public function update(Role $role, array $data): Role|false
     {
         try {
-            DB::beginTransaction();
             $role->updateOrFail($data);
-            DB::commit();
             return $role->refresh();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -91,12 +82,9 @@ final class RoleService implements RoleServiceInterface
     public function delete(Role $role): bool
     {
         try {
-            DB::beginTransaction();
-            $role->delete();
-            DB::commit();
+            $role->deleteOrFail();
             return true;
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }

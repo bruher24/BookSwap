@@ -21,19 +21,12 @@ final class UserService implements UserServiceInterface
     public function create(array $data): User|false
     {
         try {
-            DB::beginTransaction();
-            $user = new User($data);
-
-            if (!$user->save()) {
-                throw new Exception("Ошибка при создании типа");
-            }
-
-            $user->roles()->attach(Role::where('name', 'user')->firstOrFail());
-            DB::commit();
-
-            return $user->refresh();
+            return DB::transaction(function () use ($data) {
+                $user = User::create($data);
+                $user->roles()->attachOrFail(Role::where('name', 'user')->firstOrFail());
+                return $user->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -89,16 +82,9 @@ final class UserService implements UserServiceInterface
                 if (!Hash::check($data['old_password'], $user->getAuthPassword())) {
                     throw new Exception('Старый пароль указан неверно');
                 }
-
-                if ($data['password'] == null) {
-                    unset($data['password']);
-                }
             }
 
-            if (!$user->update($data)) {
-                throw new Exception('Ошибка при обновлении пользователя');
-            }
-
+            $user->updateOrFail($data);
             return $user->refresh();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
@@ -110,36 +96,30 @@ final class UserService implements UserServiceInterface
     public function delete(User $user): bool
     {
         try {
-            DB::beginTransaction();
-            $user->delete();
-            DB::commit();
-            return true;
+            return $user->deleteOrFail();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
 
     #[Override]
-    public function rate(User $user, User $rater, int $rate): bool
+    public function rate(User $user, User $rater, int $rate): User | bool
     {
         try {
-            DB::beginTransaction();
+            return DB::transaction(function () use ($user, $rater, $rate) {
+                $user->ratings()->updateOrCreate(
+                    ['rater_id' => $rater->id],
+                    ['rate' => $rate]
+                );
 
-            $user->ratings()->updateOrCreate(
-                ['rater_id' => $rater->id],
-                ['rate' => $rate]
-            );
+                $user->updateOrFail([
+                    'rating' => $user->ratings()->avg('rate') ?? 0
+                ]);
 
-            $user->updateOrFail([
-                'rating' => $user->ratings()->avg('rate') ?? 0
-            ]);
-
-            DB::commit();
-            return true;
+                return $user->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -186,6 +166,28 @@ final class UserService implements UserServiceInterface
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
 
+            return false;
+        }
+    }
+
+    #[Override]
+    public function verifyEmail(int $userId): bool
+    {
+        try {
+            $user = $this->get($userId);
+
+            if (!$user instanceof User) {
+                throw new Exception('Пользователь с указанным email не найден');
+            }
+
+            if ($user->hasVerifiedEmail()) {
+                return true;
+            }
+
+            $user->markEmailAsVerified();
+            return true;
+        } catch (Throwable $e) {
+            Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }

@@ -59,19 +59,19 @@ final class UpdateUserRequest extends FormRequest
             'old_password' => [
                 'required_with:password',
                 'nullable',
-                'string'
+                'string',
+                'current_password',
             ],
             'password' => [
                 'required_with:old_password',
                 'nullable',
                 'string',
-                'confirmed'
+                'confirmed',
             ],
             'password_confirmation' => [
-                'required_with:old_password',
+                'required_with:password',
                 'nullable',
                 'string',
-                'same:password'
             ],
             'phone' => [
                 'nullable',

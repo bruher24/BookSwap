@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Interfaces\AuthorServiceInterface;
-use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\BookServiceInterface;
 use App\Interfaces\BookTypeServiceInterface;
 use App\Interfaces\ChatServiceInterface;
@@ -27,7 +26,6 @@ use App\Observers\MessageObserver;
 use App\Observers\TradeOfferObserver;
 use App\Observers\UserObserver;
 use App\Services\AuthorService;
-use App\Services\AuthService;
 use App\Services\BookService;
 use App\Services\BookTypeService;
 use App\Services\ChatService;
@@ -58,7 +56,6 @@ final class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(AuthorServiceInterface::class, AuthorService::class);
-        $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(BookServiceInterface::class, BookService::class);
         $this->app->bind(BookTypeServiceInterface::class, BookTypeService::class);
         $this->app->bind(ChatServiceInterface::class, ChatService::class);

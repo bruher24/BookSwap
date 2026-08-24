@@ -18,17 +18,11 @@ final class MessageService implements MessageServiceInterface
     public function create(array $data): Message|false
     {
         try {
-            DB::beginTransaction();
-            $message = new Message($data);
-
-            if (!$message->save()) {
-                throw new Exception("Ошибка при создании типа");
-            }
-
-            DB::commit();
-            return $message->refresh();
+            return DB::transaction(function () use ($data) {
+                $message = Message::create($data);
+                return $message->refresh();
+            });
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -76,12 +70,9 @@ final class MessageService implements MessageServiceInterface
     public function update(Message $message, array $data): Message|false
     {
         try {
-            DB::beginTransaction();
             $message->updateOrFail($data);
-            DB::commit();
             return $message->refresh();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
@@ -91,12 +82,8 @@ final class MessageService implements MessageServiceInterface
     public function delete(Message $message): bool
     {
         try {
-            DB::beginTransaction();
-            $message->delete();
-            DB::commit();
-            return true;
+            return $message->deleteOrFail();
         } catch (Throwable $e) {
-            DB::rollBack();
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }

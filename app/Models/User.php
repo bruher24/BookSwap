@@ -61,6 +61,11 @@ final class User extends Authenticatable implements Cacheable
         ];
     }
 
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        return 'users.' . $this->id;
+    }
+
     public function getMainRoleAttribute(): ?int
     {
         return $this->roles()->min('id');
@@ -127,10 +132,5 @@ final class User extends Authenticatable implements Cacheable
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Book::class, 'user_favorite_books');
-    }
-
-    public function receivesBroadcastNotificationsOn(): string
-    {
-        return 'users.' . $this->id;
     }
 }
