@@ -13,8 +13,6 @@ interface FilterServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function update(Filter $filter, array $data): Filter|false;
 
     public function delete(Filter $filter): bool;

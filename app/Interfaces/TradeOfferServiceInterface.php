@@ -14,8 +14,6 @@ interface TradeOfferServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false;
 
     public function delete(TradeOffer $tradeOffer): bool;

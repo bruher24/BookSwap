@@ -38,7 +38,7 @@ final class ChatService implements ChatServiceInterface
 
                 $pairKey = min([$firstUser->id, $secondUser->id]) . ':' . max([$firstUser->id, $secondUser->id]);
 
-                if ($this->where('pair_key', $pairKey)->isNotEmpty()) {
+                if ($this->byPairKey($pairKey)->isNotEmpty()) {
                     throw new Exception('Чат между пользователями уже существует');
                 }
 
@@ -72,19 +72,6 @@ final class ChatService implements ChatServiceInterface
                 Log::debug('Stored in cache: ' . Chat::CACHE_KEY);
                 return Chat::all();
             });
-        } catch (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return new Collection();
-        }
-    }
-
-    #[Override]
-    public function where(string $field, string $value): Collection
-    {
-        try {
-            return Chat::where($field, $value)
-                ->withoutTrashed()
-                ->get();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return new Collection();
@@ -172,6 +159,13 @@ final class ChatService implements ChatServiceInterface
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
+    }
+
+    private function byPairKey(string $pairKey): Collection
+    {
+        return Chat::where('pair_key', $pairKey)
+            ->withoutTrashed()
+            ->get();
     }
 
     private function invalidateUserChatsCache(Chat $chat): void

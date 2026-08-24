@@ -77,19 +77,6 @@ final class BookService implements BookServiceInterface
     }
 
     #[Override]
-    public function where(string $field, string $value): Collection
-    {
-        try {
-            return Book::where($field, $value)
-                ->withoutTrashed()
-                ->get();
-        } catch (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return new Collection();
-        }
-    }
-
-    #[Override]
     public function update(Book $book, array $data): Book|false
     {
         try {

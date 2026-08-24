@@ -55,19 +55,6 @@ final class SettingService implements SettingServiceInterface
     }
 
     #[Override]
-    public function where(string $field, string $value): Collection
-    {
-        try {
-            return Setting::where($field, $value)
-                ->withoutTrashed()
-                ->get();
-        } catch (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return new Collection();
-        }
-    }
-
-    #[Override]
     public function update(Setting $setting, array $data): Setting|false
     {
         try {

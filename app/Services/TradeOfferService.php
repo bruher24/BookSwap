@@ -61,19 +61,6 @@ final class TradeOfferService implements TradeOfferServiceInterface
     }
 
     #[Override]
-    public function where(string $field, string $value): Collection
-    {
-        try {
-            return TradeOffer::where($field, $value)
-                ->withoutTrashed()
-                ->get();
-        } catch (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return new Collection();
-        }
-    }
-
-    #[Override]
     public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false
     {
         try {
@@ -112,13 +99,17 @@ final class TradeOfferService implements TradeOfferServiceInterface
     #[Override]
     public function bySender(User $sender): Collection
     {
-        return $this->where('sender_id', (string)$sender->id);
+        return TradeOffer::where('sender_id', (string)$sender->id)
+            ->withoutTrashed()
+            ->get();
     }
 
     #[Override]
     public function byReceiver(User $receiver): Collection
     {
-        return $this->where('receiver_id', (string)$receiver->id);
+        return TradeOffer::where('receiver_id', (string)$receiver->id)
+            ->withoutTrashed()
+            ->get();
     }
 
     #[Override]

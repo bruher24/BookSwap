@@ -13,8 +13,6 @@ interface RoleServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function update(Role $role, array $data): Role|false;
 
     public function delete(Role $role): bool;

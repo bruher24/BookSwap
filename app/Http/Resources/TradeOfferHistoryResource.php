@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\JsonApi\JsonApiResource;
 use Override;
 
-class TradeOfferHistoryResource extends JsonApiResource
+final class TradeOfferHistoryResource extends JsonApiResource
 {
     #[Override]
     public function toId(Request $request): string

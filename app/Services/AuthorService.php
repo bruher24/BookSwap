@@ -63,19 +63,6 @@ final class AuthorService implements AuthorServiceInterface
     }
 
     #[Override]
-    public function where(string $field, string $value): Collection
-    {
-        try {
-            return Author::where($field, $value)
-                ->withoutTrashed()
-                ->get();
-        } catch (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return new Collection();
-        }
-    }
-
-    #[Override]
     public function update(Author $author, array $data): Author|false
     {
         try {

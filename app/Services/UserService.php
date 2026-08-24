@@ -58,19 +58,6 @@ final class UserService implements UserServiceInterface
     }
 
     #[Override]
-    public function where(string $field, string $value): Collection
-    {
-        try {
-            return User::where($field, $value)
-                ->withoutTrashed()
-                ->get();
-        } catch (Throwable $e) {
-            Log::error($e->getMessage(), ['exception' => $e]);
-            return new Collection();
-        }
-    }
-
-    #[Override]
     public function update(User $user, array $data): User|false
     {
         try {

@@ -14,8 +14,6 @@ interface SettingServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function update(Setting $setting, array $data): Setting|false;
 
     public function delete(Setting $setting): bool;

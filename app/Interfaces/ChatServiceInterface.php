@@ -15,8 +15,6 @@ interface ChatServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function delete(Chat $chat): bool;
 
     public function byUser(User $user): Collection;

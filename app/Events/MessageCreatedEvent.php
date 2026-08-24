@@ -10,9 +10,9 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\Attributes\Connection;
 use Illuminate\Queue\Attributes\Queue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Event;
 use Override;
 
 #[Queue('reverb')]
@@ -26,6 +26,9 @@ final class MessageCreatedEvent implements ShouldBroadcast
 
     /**
      * Create a new event instance.
+     * @psalm-suppress PossiblyNullPropertyFetch
+     * @psalm-suppress PossiblyNullPropertyAssignmentValue
+     * @psalm-suppress PossiblyNullReference
      */
     public function __construct(
         public Message $message

@@ -25,6 +25,7 @@
                 <directory name="app/Http/Controllers"/>
                 <directory name="app/Events"/>
                 <directory name="app/Models"/>
+                <directory name="app/Notifications"/>
                 <directory name="app/Observers"/>
             </errorLevel>
         </PossiblyUnusedMethod>

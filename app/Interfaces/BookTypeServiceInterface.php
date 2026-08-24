@@ -13,8 +13,6 @@ interface BookTypeServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function update(BookType $bookType, array $data): BookType|false;
 
     public function delete(BookType $bookType): bool;

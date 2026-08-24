@@ -14,8 +14,6 @@ interface AuthorServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function update(Author $author, array $data): Author|false;
 
     public function delete(Author $author): bool;

@@ -13,7 +13,5 @@ interface CoverServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function delete(Cover $cover): bool;
 }

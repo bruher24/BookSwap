@@ -14,8 +14,6 @@ interface UserServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function update(User $user, array $data): User|false;
 
     public function delete(User $user): bool;

@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-class MessageController extends Controller
+final class MessageController extends Controller
 {
     public function index(MessageServiceInterface $messageService): JsonResponse
     {

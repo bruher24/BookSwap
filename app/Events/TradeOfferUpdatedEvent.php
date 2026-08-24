@@ -29,6 +29,9 @@ final class TradeOfferUpdatedEvent implements ShouldBroadcast
     ) {
     }
 
+    /**
+     * @psalm-suppress InvalidOperand
+     */
     #[Override]
     public function broadcastOn(): array
     {

@@ -50,7 +50,7 @@
                 </style>
 </head>
 <body>
-<section><h1>Total violations: 98</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
+<section><h1>Total violations: 99</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
 <ul id="psalmErrors">
   <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
 <h3>app/Enums/BookConditionEnum.php:13</h3>
@@ -61,16 +61,6 @@
 <p>Cannot find explicit calls to method App\Enums\BookConditionEnum::label (but did find some potential callers)</p>
 <pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/label/**##)##**/(): string</code></pre>
 <small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyNullPropertyFetch">
-<h3>app/Events/MessageCreatedEvent.php:33</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyNullPropertyFetch</li>
-</ul>
-<p>Cannot get property on possibly null variable $message-&gt;chat of type App\Models\Chat|null</p>
-<pre data-start="33" class="line-numbersx"><code class="language-php">        $this-&gt;receiver = /**##(##**/$message-&gt;chat-&gt;users/**##)##**/</code></pre>
-<small><a target="_blank" href="https://psalm.dev/082">Psalm #82</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyNullPropertyAssignmentValue">
 <h3>app/Events/MessageCreatedEvent.php:33</h3>
@@ -95,23 +85,23 @@
 <small><a target="_blank" href="https://psalm.dev/083">Psalm #83</a></small>
 </li>
   <li data-severity="error" data-psalm-type="InvalidOperand">
+<h3>app/Events/TradeOfferCreatedEvent.php:33</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidOperand</li>
+</ul>
+<p>Cannot concatenate with a int&lt;0, max&gt;|null</p>
+<pre data-start="33" class="line-numbersx"><code class="language-php">            new PrivateChannel('users.' . /**##(##**/$this-&gt;tradeOffer-&gt;receiver_id/**##)##**/),</code></pre>
+<small><a target="_blank" href="https://psalm.dev/058">Psalm #58</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidOperand">
 <h3>app/Events/TradeOfferCreatedEvent.php:34</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>InvalidOperand</li>
 </ul>
 <p>Cannot concatenate with a int&lt;0, max&gt;|null</p>
-<pre data-start="34" class="line-numbersx"><code class="language-php">            new PrivateChannel('users.' . /**##(##**/$this-&gt;tradeOffer-&gt;receiver_id/**##)##**/),</code></pre>
-<small><a target="_blank" href="https://psalm.dev/058">Psalm #58</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="InvalidOperand">
-<h3>app/Events/TradeOfferCreatedEvent.php:35</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>InvalidOperand</li>
-</ul>
-<p>Cannot concatenate with a int&lt;0, max&gt;|null</p>
-<pre data-start="35" class="line-numbersx"><code class="language-php">            new PrivateChannel('users.' . /**##(##**/$this-&gt;tradeOffer-&gt;sender_id/**##)##**/),</code></pre>
+<pre data-start="34" class="line-numbersx"><code class="language-php">            new PrivateChannel('users.' . /**##(##**/$this-&gt;tradeOffer-&gt;sender_id/**##)##**/),</code></pre>
 <small><a target="_blank" href="https://psalm.dev/058">Psalm #58</a></small>
 </li>
   <li data-severity="error" data-psalm-type="InvalidOperand">
@@ -544,126 +534,6 @@
 <pre data-start="28" class="line-numbersx"><code class="language-php">    public array /**##(##**/$relationships/**##)##**/ = [</code></pre>
 <small><a target="_blank" href="https://psalm.dev/149">Psalm #149</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/AuthorServiceInterface.php:17</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\AuthorServiceInterface::where</p>
-<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/BookTypeServiceInterface.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\BookTypeServiceInterface::where</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/CoverServiceInterface.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\CoverServiceInterface::where</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/FilterServiceInterface.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\FilterServiceInterface::where</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/GenreServiceInterface.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\GenreServiceInterface::where</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/MessageServiceInterface.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\MessageServiceInterface::where</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/PhotoServiceInterface.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\PhotoServiceInterface::where</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/RoleServiceInterface.php:16</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\RoleServiceInterface::where</p>
-<pre data-start="16" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/SettingServiceInterface.php:17</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\SettingServiceInterface::where</p>
-<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/TradeOfferServiceInterface.php:25</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\TradeOfferServiceInterface::bySender</p>
-<pre data-start="25" class="line-numbersx"><code class="language-php">    public function /**##(##**/bySender/**##)##**/(User $sender): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/TradeOfferServiceInterface.php:27</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\TradeOfferServiceInterface::byReceiver</p>
-<pre data-start="27" class="line-numbersx"><code class="language-php">    public function /**##(##**/byReceiver/**##)##**/(User $receiver): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Interfaces/UserServiceInterface.php:17</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Interfaces\UserServiceInterface::where</p>
-<pre data-start="17" class="line-numbersx"><code class="language-php">    public function /**##(##**/where/**##)##**/(string $field, string $value): Collection;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
   <li data-severity="error" data-psalm-type="UnusedParam">
 <h3>app/Notifications/MessageCreatedNotification.php:25</h3>
 <ul class="tags">
@@ -693,16 +563,6 @@
 <p>Param #1 is never referenced in this method</p>
 <pre data-start="40" class="line-numbersx"><code class="language-php">    public function toArray(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
 <small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Notifications/MessageCreatedNotification.php:54</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Notifications\MessageCreatedNotification::broadcastType</p>
-<pre data-start="54" class="line-numbersx"><code class="language-php">    public function /**##(##**/broadcastType/**##)##**/(): string</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="UnusedParam">
 <h3>app/Notifications/TradeOfferCreatedNotification.php:25</h3>
@@ -734,16 +594,6 @@
 <pre data-start="40" class="line-numbersx"><code class="language-php">    public function toArray(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
 <small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Notifications/TradeOfferCreatedNotification.php:54</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Notifications\TradeOfferCreatedNotification::broadcastType</p>
-<pre data-start="54" class="line-numbersx"><code class="language-php">    public function /**##(##**/broadcastType/**##)##**/(): string</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
   <li data-severity="error" data-psalm-type="UnusedParam">
 <h3>app/Notifications/TradeOfferUpdatedNotification.php:24</h3>
 <ul class="tags">
@@ -774,16 +624,6 @@
 <pre data-start="39" class="line-numbersx"><code class="language-php">    public function toArray(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
 <small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
 </li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Notifications/TradeOfferUpdatedNotification.php:53</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Notifications\TradeOfferUpdatedNotification::broadcastType</p>
-<pre data-start="53" class="line-numbersx"><code class="language-php">    public function /**##(##**/broadcastType/**##)##**/(): string</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
   <li data-severity="error" data-psalm-type="UnusedParam">
 <h3>app/Notifications/VerifyEmailNotification.php:21</h3>
 <ul class="tags">
@@ -793,16 +633,6 @@
 <p>Param #1 is never referenced in this method</p>
 <pre data-start="21" class="line-numbersx"><code class="language-php">    public function via(User /**##(##**/$notifiable/**##)##**/): array</code></pre>
 <small><a target="_blank" href="https://psalm.dev/135">Psalm #135</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Notifications/VerifyEmailNotification.php:50</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
-</ul>
-<p>Cannot find any calls to method App\Notifications\VerifyEmailNotification::broadcastType</p>
-<pre data-start="50" class="line-numbersx"><code class="language-php">    public function /**##(##**/broadcastType/**##)##**/(): string</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
 </li>
   <li data-severity="error" data-psalm-type="UnusedParam">
 <h3>app/Observers/MessageObserver.php:21</h3>
@@ -913,64 +743,244 @@
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/AuthorService.php:124</h3>
+<h3>app/Services/AuthorService.php:89</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\AuthorService::byuser should have the "Override" attribute</p>
-<pre data-start="124" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
+<pre data-start="89" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/BookService.php:257</h3>
+<h3>app/Services/BookService.php:177</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\BookService::byuser should have the "Override" attribute</p>
-<pre data-start="257" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
+<pre data-start="177" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
+  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
+<h3>app/Services/BookTypeService.php:75</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidNullableReturnType</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\BookTypeService::delete is not nullable, but 'bool|null' contains null</p>
+<pre data-start="75" class="line-numbersx"><code class="language-php">    public function delete(BookType $bookType): /**##(##**/bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/144">Psalm #144</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="NullableReturnStatement">
+<h3>app/Services/BookTypeService.php:78</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>NullableReturnStatement</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\BookTypeService::delete is not nullable, but the function returns 'bool|null'</p>
+<pre data-start="78" class="line-numbersx"><code class="language-php">            return /**##(##**/$bookType-&gt;deleteOrFail()/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/139">Psalm #139</a></small>
+</li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/ChatService.php:74</h3>
+<h3>app/Services/ChatService.php:68</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\ChatService::getall should have the "Override" attribute</p>
-<pre data-start="74" class="line-numbersx"><code class="language-php">    /**##(##**/public function getAll(): Collection/**##)##**/</code></pre>
+<pre data-start="68" class="line-numbersx"><code class="language-php">    /**##(##**/public function getAll(): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
+  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
+<h3>app/Services/ChatService.php:82</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidNullableReturnType</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\ChatService::delete is not nullable, but 'bool|null' contains null</p>
+<pre data-start="82" class="line-numbersx"><code class="language-php">    public function delete(Chat $chat): /**##(##**/bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/144">Psalm #144</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="NullableReturnStatement">
+<h3>app/Services/ChatService.php:87</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>NullableReturnStatement</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\ChatService::delete is not nullable, but the function returns 'bool|null'</p>
+<pre data-start="87" class="line-numbersx"><code class="language-php">            return /**##(##**/$deleted/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/139">Psalm #139</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
+<h3>app/Services/FilterService.php:75</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidNullableReturnType</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\FilterService::delete is not nullable, but 'bool|null' contains null</p>
+<pre data-start="75" class="line-numbersx"><code class="language-php">    public function delete(Filter $filter): /**##(##**/bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/144">Psalm #144</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="NullableReturnStatement">
+<h3>app/Services/FilterService.php:78</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>NullableReturnStatement</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\FilterService::delete is not nullable, but the function returns 'bool|null'</p>
+<pre data-start="78" class="line-numbersx"><code class="language-php">            return /**##(##**/$filter-&gt;deleteOrFail()/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/139">Psalm #139</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
+<h3>app/Services/GenreService.php:75</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidNullableReturnType</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\GenreService::delete is not nullable, but 'bool|null' contains null</p>
+<pre data-start="75" class="line-numbersx"><code class="language-php">    public function delete(Genre $genre): /**##(##**/bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/144">Psalm #144</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="NullableReturnStatement">
+<h3>app/Services/GenreService.php:78</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>NullableReturnStatement</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\GenreService::delete is not nullable, but the function returns 'bool|null'</p>
+<pre data-start="78" class="line-numbersx"><code class="language-php">            return /**##(##**/$genre-&gt;deleteOrFail()/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/139">Psalm #139</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
+<h3>app/Services/MessageService.php:69</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidNullableReturnType</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\MessageService::delete is not nullable, but 'bool|null' contains null</p>
+<pre data-start="69" class="line-numbersx"><code class="language-php">    public function delete(Message $message): /**##(##**/bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/144">Psalm #144</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="NullableReturnStatement">
+<h3>app/Services/MessageService.php:72</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>NullableReturnStatement</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\MessageService::delete is not nullable, but the function returns 'bool|null'</p>
+<pre data-start="72" class="line-numbersx"><code class="language-php">            return /**##(##**/$message-&gt;deleteOrFail()/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/139">Psalm #139</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
+<h3>app/Services/SettingService.php:70</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidNullableReturnType</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\SettingService::delete is not nullable, but 'bool|null' contains null</p>
+<pre data-start="70" class="line-numbersx"><code class="language-php">    public function delete(Setting $setting): /**##(##**/bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/144">Psalm #144</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="NullableReturnStatement">
+<h3>app/Services/SettingService.php:73</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>NullableReturnStatement</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\SettingService::delete is not nullable, but the function returns 'bool|null'</p>
+<pre data-start="73" class="line-numbersx"><code class="language-php">            return /**##(##**/$setting-&gt;deleteOrFail()/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/139">Psalm #139</a></small>
+</li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/SettingService.php:108</h3>
+<h3>app/Services/SettingService.php:80</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\SettingService::byuser should have the "Override" attribute</p>
-<pre data-start="108" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
+<pre data-start="80" class="line-numbersx"><code class="language-php">    /**##(##**/public function byUser(User $user): Collection/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="MissingOverrideAttribute">
-<h3>app/Services/SettingService.php:115</h3>
+<h3>app/Services/SettingService.php:87</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>MissingOverrideAttribute</li>
 </ul>
 <p>Method App\Services\SettingService::updateforuser should have the "Override" attribute</p>
-<pre data-start="115" class="line-numbersx"><code class="language-php">    /**##(##**/public function updateForUser(Setting $setting, User $user, string $value): bool/**##)##**/</code></pre>
+<pre data-start="87" class="line-numbersx"><code class="language-php">    /**##(##**/public function updateForUser(Setting $setting, User $user, string $value): bool/**##)##**/</code></pre>
 <small><a target="_blank" href="https://psalm.dev/358">Psalm #358</a></small>
 </li>
   <li data-severity="error" data-psalm-type="PossiblyNullArgument">
-<h3>app/Services/TradeOfferService.php:136</h3>
+<h3>app/Services/TradeOfferService.php:73</h3>
 <ul class="tags">
 <li class="severity error">error</li>
 <li>PossiblyNullArgument</li>
 </ul>
 <p>Argument 2 of App\Events\TradeOfferUpdatedEvent::__construct cannot be null, possibly null value provided</p>
-<pre data-start="136" class="line-numbersx"><code class="language-php">            TradeOfferUpdatedEvent::dispatch($tradeOffer, /**##(##**/Auth::user()/**##)##**/);</code></pre>
+<pre data-start="73" class="line-numbersx"><code class="language-php">                TradeOfferUpdatedEvent::dispatch($tradeOffer, /**##(##**/Auth::user()/**##)##**/);</code></pre>
 <small><a target="_blank" href="https://psalm.dev/078">Psalm #78</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
+<h3>app/Services/TradeOfferService.php:83</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidNullableReturnType</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\TradeOfferService::delete is not nullable, but 'bool|null' contains null</p>
+<pre data-start="83" class="line-numbersx"><code class="language-php">    public function delete(TradeOffer $tradeOffer): /**##(##**/bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/144">Psalm #144</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="NullableReturnStatement">
+<h3>app/Services/TradeOfferService.php:86</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>NullableReturnStatement</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\TradeOfferService::delete is not nullable, but the function returns 'bool|null'</p>
+<pre data-start="86" class="line-numbersx"><code class="language-php">            return /**##(##**/$tradeOffer-&gt;deleteOrFail()/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/139">Psalm #139</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="InvalidNullableReturnType">
+<h3>app/Services/UserService.php:83</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>InvalidNullableReturnType</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\UserService::delete is not nullable, but 'bool|null' contains null</p>
+<pre data-start="83" class="line-numbersx"><code class="language-php">    public function delete(User $user): /**##(##**/bool/**##)##**/</code></pre>
+<small><a target="_blank" href="https://psalm.dev/144">Psalm #144</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="NullableReturnStatement">
+<h3>app/Services/UserService.php:86</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>NullableReturnStatement</li>
+</ul>
+<p>The declared return type 'bool' for App\Services\UserService::delete is not nullable, but the function returns 'bool|null'</p>
+<pre data-start="86" class="line-numbersx"><code class="language-php">            return /**##(##**/$user-&gt;deleteOrFail()/**##)##**/;</code></pre>
+<small><a target="_blank" href="https://psalm.dev/139">Psalm #139</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedClosureParam">
+<h3>routes/channels.php:7</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedClosureParam</li>
+</ul>
+<p>Param user is never referenced in this method</p>
+<pre data-start="7" class="line-numbersx"><code class="language-php">Broadcast::channel('authors', function (User /**##(##**/$user/**##)##**/) {</code></pre>
+<small><a target="_blank" href="https://psalm.dev/188">Psalm #188</a></small>
+</li>
+  <li data-severity="error" data-psalm-type="UnusedClosureParam">
+<h3>routes/channels.php:11</h3>
+<ul class="tags">
+<li class="severity error">error</li>
+<li>UnusedClosureParam</li>
+</ul>
+<p>Param user is never referenced in this method</p>
+<pre data-start="11" class="line-numbersx"><code class="language-php">Broadcast::channel('books', function (User /**##(##**/$user/**##)##**/) {</code></pre>
+<small><a target="_blank" href="https://psalm.dev/188">Psalm #188</a></small>
 </li>
   <li data-severity="error" data-psalm-type="UnusedProperty">
 <h3>tests/Feature/UserNotificationApiTest.php:17</h3>

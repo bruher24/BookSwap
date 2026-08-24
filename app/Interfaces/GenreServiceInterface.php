@@ -13,8 +13,6 @@ interface GenreServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function update(Genre $genre, array $data): Genre|false;
 
     public function delete(Genre $genre): bool;

@@ -13,7 +13,5 @@ interface PhotoServiceInterface
 
     public function getAll(): Collection;
 
-    public function where(string $field, string $value): Collection;
-
     public function delete(Photo $photo): bool;
 }
