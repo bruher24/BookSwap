@@ -65,6 +65,7 @@ final class ChatService implements ChatServiceInterface
         }
     }
 
+    #[Override]
     public function getAll(): Collection
     {
         try {
@@ -82,7 +83,7 @@ final class ChatService implements ChatServiceInterface
     public function delete(Chat $chat): bool
     {
         try {
-            $deleted = $chat->deleteOrFail();
+            $deleted = !!$chat->deleteOrFail();
             $this->invalidateUserChatsCache($chat);
             return $deleted;
         } catch (Throwable $e) {

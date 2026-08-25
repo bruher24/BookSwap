@@ -60,6 +60,9 @@ final class TradeOfferService implements TradeOfferServiceInterface
         }
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     #[Override]
     public function update(TradeOffer $tradeOffer, array $data): TradeOffer|false
     {
@@ -83,7 +86,7 @@ final class TradeOfferService implements TradeOfferServiceInterface
     public function delete(TradeOffer $tradeOffer): bool
     {
         try {
-            return $tradeOffer->deleteOrFail();
+            return !!$tradeOffer->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;

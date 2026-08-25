@@ -70,13 +70,14 @@ final class SettingService implements SettingServiceInterface
     public function delete(Setting $setting): bool
     {
         try {
-            return $setting->deleteOrFail();
+            return !!$setting->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
 
+    #[Override]
     public function byUser(User $user): Collection
     {
         return $user->settings()
@@ -84,6 +85,7 @@ final class SettingService implements SettingServiceInterface
             ->get();
     }
 
+    #[Override]
     public function updateForUser(Setting $setting, User $user, string $value): bool
     {
         try {

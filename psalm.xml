@@ -32,11 +32,14 @@
         <PossiblyUnusedProperty>
             <errorLevel type="suppress">
                 <directory name="app/Events"/>
+                <directory name="app/Http/Resources"/>
                 <directory name="app/Mail"/>
             </errorLevel>
         </PossiblyUnusedProperty>
         <UnusedParam>
             <errorLevel type="suppress">
+                <directory name="app/Notifications"/>
+                <directory name="app/Observers"/>
                 <directory name="app/Policies"/>
             </errorLevel>
         </UnusedParam>

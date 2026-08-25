@@ -69,7 +69,7 @@ final class PhotoService implements PhotoServiceInterface
         try {
             return DB::transaction(function () use ($photo) {
                 $oldPath = $photo->src;
-                $deleted = $photo->deleteOrFail();
+                $deleted = !!$photo->deleteOrFail();
 
                 if (isset($oldPath) && $photo->id !== Photo::BASE_PHOTO_ID) {
                     DeleteFileJob::dispatch($oldPath)->afterCommit();

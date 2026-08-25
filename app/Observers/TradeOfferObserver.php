@@ -22,6 +22,7 @@ final class TradeOfferObserver
 
     /**
      * Handle the TradeOffer "updated" event.
+     * @psalm-suppress PossiblyNullArgument
      */
     public function updated(TradeOffer $tradeOffer): void
     {

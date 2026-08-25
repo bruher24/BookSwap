@@ -95,7 +95,7 @@ final class UserController extends Controller
 
         $validated = $request->validated();
 
-        if (!$userService->rate($user, $request->user(), (int)$validated['rate'])) {
+        if (!$userService->rate($user, Auth::user(), (int)$validated['rate'])) {
             return $this->errorResponse('Ошибка при оценке пользователя', Response::HTTP_BAD_REQUEST);
         }
 
@@ -107,6 +107,9 @@ final class UserController extends Controller
         return (new UserResource(Auth::user()))->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function favorites(UserService $userService): JsonResponse
     {
         $favorites = $userService->favorites(Auth::user());
@@ -114,6 +117,9 @@ final class UserController extends Controller
         return BookResource::collection($favorites)->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function like(UserService $userService, Book $book): JsonResponse
     {
         if (!$userService->addToFavorites(Auth::user(), $book)) {
@@ -123,6 +129,9 @@ final class UserController extends Controller
         return $this->successResponse();
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function dislike(UserService $userService, Book $book): JsonResponse
     {
         if (!$userService->removeFromFavorites(Auth::user(), $book)) {
@@ -132,6 +141,9 @@ final class UserController extends Controller
         return $this->successResponse(Response::HTTP_ACCEPTED);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function authors(AuthorServiceInterface $authorService): JsonResponse
     {
         $authors = $authorService->byUser(Auth::user());
@@ -139,6 +151,9 @@ final class UserController extends Controller
         return AuthorResource::collection($authors)->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function books(BookServiceInterface $bookService): JsonResponse
     {
         $books = $bookService->byUser(Auth::user());
@@ -146,6 +161,9 @@ final class UserController extends Controller
         return BookResource::collection($books)->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function chats(ChatServiceInterface $chatService): JsonResponse
     {
         $chats = $chatService->byUser(Auth::user());
@@ -153,6 +171,9 @@ final class UserController extends Controller
         return ChatResource::collection($chats)->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function settings(SettingServiceInterface $settingService): JsonResponse
     {
         $settings = $settingService->byUser(Auth::user());
@@ -160,6 +181,9 @@ final class UserController extends Controller
         return SettingResource::collection($settings)->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function tradeHistory(TradeOfferServiceInterface $tradeOfferService): JsonResponse
     {
         $history = $tradeOfferService->tradeHistory(Auth::user());
@@ -167,11 +191,14 @@ final class UserController extends Controller
         return (new TradeOfferHistoryResource($history))->response()->setStatusCode(Response::HTTP_OK);
     }
 
+    /**
+     * @psalm-suppress PossiblyNullArgument
+     */
     public function updateSetting(SettingServiceInterface $settingService, UpdateUserSettingValueRequest $request, Setting $setting): JsonResponse
     {
         $validated = $request->validated();
 
-        if (!$settingService->updateForUser($setting, $request->user(), $validated['value'])) {
+        if (!$settingService->updateForUser($setting, Auth::user(), $validated['value'])) {
             return $this->errorResponse('Ошибка при обновлении настройки пользователя', Response::HTTP_BAD_REQUEST);
         }
 

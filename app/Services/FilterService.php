@@ -75,7 +75,7 @@ final class FilterService implements FilterServiceInterface
     public function delete(Filter $filter): bool
     {
         try {
-            return $filter->deleteOrFail();
+            return !!$filter->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;

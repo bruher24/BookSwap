@@ -26,9 +26,7 @@ final class MessageCreatedEvent implements ShouldBroadcast
 
     /**
      * Create a new event instance.
-     * @psalm-suppress PossiblyNullPropertyFetch
-     * @psalm-suppress PossiblyNullPropertyAssignmentValue
-     * @psalm-suppress PossiblyNullReference
+     * @psalm-suppress PossiblyNullPropertyFetch, PossiblyNullPropertyAssignmentValue, PossiblyNullReference
      */
     public function __construct(
         public Message $message

@@ -75,7 +75,7 @@ final class GenreService implements GenreServiceInterface
     public function delete(Genre $genre): bool
     {
         try {
-            return $genre->deleteOrFail();
+            return !!$genre->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;

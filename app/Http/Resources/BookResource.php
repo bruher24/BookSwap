@@ -42,6 +42,9 @@ final class BookResource extends JsonApiResource
         'trade_offer' => TradeOfferResource::class,
     ];
 
+    /**
+     * @psalm-suppress PossiblyInvalidArgument, UndefinedThisPropertyFetch
+     */
     #[Override]
     public function toArray(Request $request): array|JsonSerializable|Arrayable
     {

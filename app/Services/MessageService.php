@@ -69,7 +69,7 @@ final class MessageService implements MessageServiceInterface
     public function delete(Message $message): bool
     {
         try {
-            return $message->deleteOrFail();
+            return !!$message->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;

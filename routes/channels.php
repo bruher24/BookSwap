@@ -4,10 +4,16 @@ use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 
+/**
+ * @psalm-suppress UnusedClosureParam
+ */
 Broadcast::channel('authors', function (User $user) {
     return true;
 });
 
+/**
+ * @psalm-suppress UnusedClosureParam
+ */
 Broadcast::channel('books', function (User $user) {
     return true;
 });

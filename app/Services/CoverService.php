@@ -69,7 +69,7 @@ final class CoverService implements CoverServiceInterface
         try {
             return DB::transaction(function () use ($cover) {
                 $oldPath = $cover->src;
-                $deleted = $cover->deleteOrFail();
+                $deleted = !!$cover->deleteOrFail();
 
                 if (isset($oldPath) && $cover->id !== Cover::BASE_COVER_ID) {
                     DeleteFileJob::dispatch($oldPath)->afterCommit();

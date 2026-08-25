@@ -83,7 +83,7 @@ final class UserService implements UserServiceInterface
     public function delete(User $user): bool
     {
         try {
-            return $user->deleteOrFail();
+            return !!$user->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;

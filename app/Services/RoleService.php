@@ -69,8 +69,7 @@ final class RoleService implements RoleServiceInterface
     public function delete(Role $role): bool
     {
         try {
-            $role->deleteOrFail();
-            return true;
+            return !!$role->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;

@@ -111,8 +111,7 @@ final class BookService implements BookServiceInterface
     public function delete(Book $book): bool
     {
         try {
-            $book->deleteOrFail();
-            return true;
+            return !!$book->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
@@ -174,6 +173,7 @@ final class BookService implements BookServiceInterface
         }
     }
 
+    #[Override]
     public function byUser(User $user): Collection
     {
         return $user->books()

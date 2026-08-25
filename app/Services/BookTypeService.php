@@ -75,7 +75,7 @@ final class BookTypeService implements BookTypeServiceInterface
     public function delete(BookType $bookType): bool
     {
         try {
-            return $bookType->deleteOrFail();
+            return !!$bookType->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;

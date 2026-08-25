@@ -78,14 +78,14 @@ final class AuthorService implements AuthorServiceInterface
     public function delete(Author $author): bool
     {
         try {
-            $author->deleteOrFail();
-            return true;
+            return !!$author->deleteOrFail();
         } catch (Throwable $e) {
             Log::error($e->getMessage(), ['exception' => $e]);
             return false;
         }
     }
 
+    #[Override]
     public function byUser(User $user): Collection
     {
         return $user->authors()
