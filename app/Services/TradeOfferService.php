@@ -213,11 +213,10 @@ final class TradeOfferService implements TradeOfferServiceInterface
                 ->whereIn('id', $senderItems)
                 ->where('is_available', true)
                 ->withoutTrashed()
-                ->lockForUpdate();
+                ->lockForUpdate()
+                ->get();
 
-            $senderBooksCount = $senderBooks->count();
-
-            if ($senderBooksCount !== count($senderItems)) {
+            if ($senderBooks->count() !== count($senderItems)) {
                 throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
             }
 
@@ -227,22 +226,21 @@ final class TradeOfferService implements TradeOfferServiceInterface
                 ->whereIn('id', $receiverItems)
                 ->where('is_available', true)
                 ->withoutTrashed()
-                ->lockForUpdate();
+                ->lockForUpdate()
+                ->get();
 
-            $receiverBooksCount = $receiverBooks->count();
-
-            if ($receiverBooksCount !== count($receiverItems)) {
+            if ($receiverBooks->count() !== count($receiverItems)) {
                 throw new Exception("Пользователи должны владеть всеми книгами, участвующими в сделке");
             }
 
             Book::where('trade_offer_id', $tradeOffer->id)
-                ->updateOrFail([
+                ->update([
                     'trade_offer_id' => null,
                     'is_available' => true
                 ]);
 
             Book::whereIn('id', array_merge($senderItems, $receiverItems))
-                ->updateOrFail([
+                ->update([
                     'trade_offer_id' => $tradeOffer->id,
                     'is_available' => false
                 ]);

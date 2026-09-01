@@ -33,6 +33,7 @@ final class MessageReceivedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: $this->receiver->email,
             subject: 'Message Received',
         );
     }

@@ -9,7 +9,9 @@ use App\Models\Cover;
 use App\Models\Role;
 use App\Models\TradeOffer;
 use App\Models\User;
+use App\Notifications\TradeOfferCreatedNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Sanctum\Sanctum;
 use Override;
 use Tests\TestCase;
@@ -150,13 +152,13 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->getJson('/api/v1/trade_offers');
+        $response = $this->getJson('/api/v1/trade-offers');
         $response->assertForbidden();
     }
 
     public function test_guest_cannot_index_trade_offer(): void
     {
-        $response = $this->getJson('/api/v1/trade_offers');
+        $response = $this->getJson('/api/v1/trade-offers');
         $response->assertUnauthorized();
     }
 
@@ -164,7 +166,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin);
 
-        $response = $this->getJson('/api/v1/trade_offers');
+        $response = $this->getJson('/api/v1/trade-offers');
         $response->assertOk();
     }
 
@@ -172,13 +174,13 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response = $this->getJson("/api/v1/trade-offers/{$this->tradeOffer->id}");
         $response->assertOk();
     }
 
     public function test_guest_cannot_get_trade_offer(): void
     {
-        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response = $this->getJson("/api/v1/trade-offers/{$this->tradeOffer->id}");
         $response->assertUnauthorized();
     }
 
@@ -186,7 +188,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response = $this->getJson("/api/v1/trade-offers/{$this->tradeOffer->id}");
         $response->assertOk();
     }
 
@@ -194,15 +196,17 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response = $this->getJson("/api/v1/trade-offers/{$this->tradeOffer->id}");
         $response->assertForbidden();
     }
 
     public function test_user_can_create_trade_offer_as_sender(): void
     {
         Sanctum::actingAs($this->anotherSender);
+        Notification::fake();
+        Notification::assertNothingSent();
 
-        $response = $this->postJson('/api/v1/trade_offers', $this->tradeOfferAsSenderCreatePayload);
+        $response = $this->postJson('/api/v1/trade-offers', $this->tradeOfferAsSenderCreatePayload);
         $response->assertCreated();
 
         $tradeOfferId = $response->json('data.id');
@@ -225,11 +229,13 @@ final class TradeOfferApiTest extends TestCase
                 'is_available' => false,
             ]);
         }
+
+        Notification::assertSentTo([$this->receiver], TradeOfferCreatedNotification::class);
     }
 
     public function test_guest_cannot_create_trade_offer(): void
     {
-        $response = $this->postJson('/api/v1/trade_offers', $this->tradeOfferAsSenderCreatePayload);
+        $response = $this->postJson('/api/v1/trade-offers', $this->tradeOfferAsSenderCreatePayload);
         $response->assertUnauthorized();
     }
 
@@ -237,7 +243,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->anotherReceiver);
 
-        $response = $this->postJson('/api/v1/trade_offers', $this->tradeOfferAsReceiverCreatePayload);
+        $response = $this->postJson('/api/v1/trade-offers', $this->tradeOfferAsReceiverCreatePayload);
         $response->assertForbidden();
     }
 
@@ -245,7 +251,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertOk();
 
         foreach (array_merge($this->tradeOfferSenderBookIds, $this->tradeOfferReceiverBookIds) as $bookId) {
@@ -270,7 +276,7 @@ final class TradeOfferApiTest extends TestCase
 
     public function test_guest_cannot_update_trade_offer(): void
     {
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertUnauthorized();
     }
 
@@ -278,7 +284,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertOk();
     }
 
@@ -286,7 +292,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertForbidden();
     }
 
@@ -295,7 +301,7 @@ final class TradeOfferApiTest extends TestCase
         Sanctum::actingAs($this->sender);
         $this->tradeOffer->update(['status' => TradeOfferStatusEnum::Accepted]);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}", $this->tradeOfferUpdatePayload);
         $response->assertBadRequest();
     }
 
@@ -303,7 +309,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Accepted->value,
         ]);
         $response->assertOk();
@@ -316,7 +322,7 @@ final class TradeOfferApiTest extends TestCase
 
     public function test_guest_cannot_update_trade_offer_status(): void
     {
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Accepted->value,
         ]);
         $response->assertUnauthorized();
@@ -326,7 +332,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Accepted->value,
         ]);
         $response->assertForbidden();
@@ -336,7 +342,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Accepted->value,
         ]);
         $response->assertForbidden();
@@ -346,7 +352,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Rejected->value,
         ]);
         $response->assertOk();
@@ -368,7 +374,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Canceled->value,
         ]);
         $response->assertOk();
@@ -390,7 +396,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Rejected->value,
         ]);
         $response->assertForbidden();
@@ -400,7 +406,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson('/api/v1/trade_offers/999999/update_status', [
+        $response = $this->patchJson('/api/v1/trade-offers/999999/update_status', [
             'status' => TradeOfferStatusEnum::Rejected->value,
         ]);
         $response->assertNotFound();
@@ -410,7 +416,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Finished->value,
         ]);
         $response->assertOk();
@@ -441,7 +447,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Finished->value,
         ]);
         $response->assertForbidden();
@@ -451,7 +457,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Finished->value,
         ]);
         $response->assertForbidden();
@@ -461,7 +467,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->patchJson("/api/v1/trade_offers/{$this->tradeOffer->id}/update_status", [
+        $response = $this->patchJson("/api/v1/trade-offers/{$this->tradeOffer->id}/update-status", [
             'status' => TradeOfferStatusEnum::Pending->value,
         ]);
         $response->assertUnprocessable();
@@ -471,14 +477,14 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}/items");
+        $response = $this->getJson("/api/v1/trade-offers/{$this->tradeOffer->id}/items");
         $response->assertOk();
         $response->assertJsonCount(6, 'data');
     }
 
     public function test_guest_cannot_get_items_of_trade_offer(): void
     {
-        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}/items");
+        $response = $this->getJson("/api/v1/trade-offers/{$this->tradeOffer->id}/items");
         $response->assertUnauthorized();
     }
 
@@ -486,7 +492,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->receiver);
 
-        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}/items");
+        $response = $this->getJson("/api/v1/trade-offers/{$this->tradeOffer->id}/items");
         $response->assertOk();
     }
 
@@ -494,7 +500,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->getJson("/api/v1/trade_offers/{$this->tradeOffer->id}/items");
+        $response = $this->getJson("/api/v1/trade-offers/{$this->tradeOffer->id}/items");
         $response->assertForbidden();
     }
 
@@ -502,7 +508,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->getJson('/api/v1/me/trade_history');
+        $response = $this->getJson('/api/v1/me/trade-history');
         $response->assertOk();
         $response->assertJsonPath('data.id', 'trade-offer-history');
         $response->assertJsonCount(1, 'data.attributes.pending');
@@ -510,7 +516,7 @@ final class TradeOfferApiTest extends TestCase
 
     public function test_guest_cannot_get_trade_history(): void
     {
-        $response = $this->getJson('/api/v1/me/trade_history');
+        $response = $this->getJson('/api/v1/me/trade-history');
         $response->assertUnauthorized();
     }
 
@@ -518,14 +524,14 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->getJson('/api/v1/me/trade_history');
+        $response = $this->getJson('/api/v1/me/trade-history');
         $response->assertOk();
         $response->assertJsonCount(0, 'data.attributes.pending');
     }
 
     public function test_guest_cannot_delete_trade_offer(): void
     {
-        $response = $this->deleteJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response = $this->deleteJson("/api/v1/trade-offers/{$this->tradeOffer->id}");
         $response->assertUnauthorized();
     }
 
@@ -533,7 +539,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->sender);
 
-        $response = $this->deleteJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response = $this->deleteJson("/api/v1/trade-offers/{$this->tradeOffer->id}");
         $response->assertForbidden();
     }
 
@@ -541,7 +547,7 @@ final class TradeOfferApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin);
 
-        $response = $this->deleteJson("/api/v1/trade_offers/{$this->tradeOffer->id}");
+        $response = $this->deleteJson("/api/v1/trade-offers/{$this->tradeOffer->id}");
         $response->assertAccepted();
     }
 }

@@ -32,6 +32,7 @@ final class TradeOfferUpdatedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            to: $this->receiver->email,
             subject: 'Trade Offer Updated',
         );
     }
