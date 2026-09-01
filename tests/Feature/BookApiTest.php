@@ -40,7 +40,7 @@ final class BookApiTest extends TestCase
     {
         parent::setUp();
 
-        Storage::fake('public');
+        Storage::fake('s3');
 
         $this->owner = User::factory()->createOne();
         $this->other = User::factory()->createOne();
@@ -210,7 +210,7 @@ final class BookApiTest extends TestCase
             'id' => $coverId,
             'user_id' => $this->owner->id,
         ]);
-        Storage::disk('public')->assertExists(Cover::find($coverId)->src);
+        Storage::disk('s3')->assertExists(Cover::find($coverId)->src);
     }
 
     public function test_validation_error_update_book(): void

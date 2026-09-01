@@ -87,6 +87,6 @@ final class CoverService implements CoverServiceInterface
     {
         $uuid = Str::uuid()->toString();
         $fileType = $file->getClientOriginalExtension();
-        return Storage::disk('public')->putFileAs('covers', $file, $uuid . "." . $fileType);
+        return Storage::disk('s3')->putFileAs('covers', $file, $uuid . "." . $fileType);
     }
 }

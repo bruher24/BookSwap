@@ -24,6 +24,6 @@ final class DeleteFileJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Storage::disk('public')->delete($this->filePathName);
+        Storage::disk('s3')->delete($this->filePathName);
     }
 }

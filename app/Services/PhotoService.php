@@ -87,6 +87,6 @@ final class PhotoService implements PhotoServiceInterface
     {
         $uuid = Str::uuid()->toString();
         $fileType = $file->getClientOriginalExtension();
-        return Storage::disk('public')->putFileAs('avatars', $file, $uuid . "." . $fileType);
+        return Storage::disk('s3')->putFileAs('avatars', $file, $uuid . "." . $fileType);
     }
 }

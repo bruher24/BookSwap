@@ -29,7 +29,7 @@ final class PhotoApiTest extends TestCase
     {
         parent::setUp();
 
-        Storage::fake('public');
+        Storage::fake('s3');
 
         $this->admin = User::factory()->unverified()->createOne();
         $role = Role::factory()->createOne(['name' => 'admin']);
@@ -118,7 +118,7 @@ final class PhotoApiTest extends TestCase
         ]);
 
         /** @var FilesystemAdapter $disk */
-        $disk = Storage::disk('public');
+        $disk = Storage::disk('s3');
         $disk->assertExists($response->json('data.attributes.src'));
     }
 
