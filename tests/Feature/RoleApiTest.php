@@ -14,13 +14,10 @@ final class RoleApiTest extends TestCase
     use RefreshDatabase;
 
     private array $roleCreatePayload;
-
     private array $roleUpdatePayload;
-
     private array $roleWrongPayload = [
         'name' => 123,
     ];
-
     private User $admin;
     private User $user;
     private Role $role;

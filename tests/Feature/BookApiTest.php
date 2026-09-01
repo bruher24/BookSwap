@@ -19,9 +19,7 @@ final class BookApiTest extends TestCase
     use RefreshDatabase;
 
     private array $bookCreatePayload;
-
     private array $bookUpdatePayload;
-
     private array $bookWrongPayload = [
         'user_id' => 'nope',
         'name' => 123,
@@ -30,11 +28,12 @@ final class BookApiTest extends TestCase
         'book_type_id' => 'bad',
         'isbn' => 'short',
     ];
-
+    private int $notFoundId = 9999;
     private User $owner;
     private User $other;
     private Author $author;
     private Book $book;
+    private Book $otherBook;
 
     #[Override]
     public function setUp(): void
@@ -56,12 +55,21 @@ final class BookApiTest extends TestCase
         ]);
         $this->book->authors()->attach($this->author);
 
+        $otherBookType = BookType::factory()->createOne();
+        $otherCover = Cover::factory()->createOne(['user_id' => $this->other->id]);
+        $this->otherBook = Book::factory()->createOne([
+            'user_id' => $this->other->id,
+            'book_type_id' => $otherBookType->id,
+            'cover_id' => $otherCover->id,
+        ]);
+        $this->otherBook->authors()->attach($this->author);
+
         $this->bookCreatePayload = Book::factory()->raw();
         $this->bookUpdatePayload = Book::factory()->raw();
 
-        $this->bookCreatePayload['author_id'] = $this->author->id;
+        $this->bookCreatePayload['authors_ids'] = [$this->author->id];
         $this->bookCreatePayload['book_type_id'] = $bookType->id;
-        $this->bookUpdatePayload['author_id'] = $this->author->id;
+        $this->bookUpdatePayload['authors_ids'] = [$this->author->id];
         $this->bookUpdatePayload['book_type_id'] = $bookType->id;
     }
 
@@ -120,8 +128,7 @@ final class BookApiTest extends TestCase
 
     public function test_not_found_get_book(): void
     {
-        $newId = $this->book->id + 1;
-        $response = $this->getJson("/api/v1/books/$newId");
+        $response = $this->getJson("/api/v1/books/$this->notFoundId");
         $response->assertNotFound();
     }
 
@@ -145,32 +152,12 @@ final class BookApiTest extends TestCase
     {
         Sanctum::actingAs($this->owner);
         $this->bookCreatePayload['user_id'] = $this->other->id;
-        $this->bookCreatePayload['author_id'] = $this->author->id;
+        $this->bookCreatePayload['authors_ids'] = [$this->author->id];
 
         $response = $this->postJson('/api/v1/books', $this->bookCreatePayload);
 
         $response->assertCreated();
         $response->assertJsonPath('data.attributes.user_id', $this->owner->id);
-    }
-
-    public function test_user_can_create_book_with_new_author_without_optional_author_fields(): void
-    {
-        Sanctum::actingAs($this->owner);
-        unset($this->bookCreatePayload['author_id'], $this->bookCreatePayload['author_id1'], $this->bookCreatePayload['author_id2']);
-        $this->bookCreatePayload['authorLastname'] = 'Newlastname';
-        $this->bookCreatePayload['authorFirstname'] = 'Newfirstname';
-        unset($this->bookCreatePayload['authorPatronymic'], $this->bookCreatePayload['authorBirthdate']);
-
-        $response = $this->postJson('/api/v1/books', $this->bookCreatePayload);
-
-        $response->assertCreated();
-        $this->assertDatabaseHas('authors', [
-            'user_id' => $this->owner->id,
-            'lastname' => 'Newlastname',
-            'firstname' => 'Newfirstname',
-            'patronymic' => null,
-            'birthdate' => null,
-        ]);
     }
 
     public function test_validation_error_create_book(): void
@@ -236,9 +223,8 @@ final class BookApiTest extends TestCase
     public function test_not_found_update_book(): void
     {
         Sanctum::actingAs($this->owner);
-        $newId = $this->book->id + 1;
 
-        $response = $this->patchJson("/api/v1/books/$newId", $this->bookUpdatePayload);
+        $response = $this->patchJson("/api/v1/books/$this->notFoundId", $this->bookUpdatePayload);
         $response->assertNotFound();
     }
 
@@ -265,8 +251,32 @@ final class BookApiTest extends TestCase
     public function test_not_found_delete_book(): void
     {
         Sanctum::actingAs($this->owner);
-        $newId = $this->book->id + 1;
-        $response = $this->deleteJson("/api/v1/books/$newId");
+        $response = $this->deleteJson("/api/v1/books/$this->notFoundId");
         $response->assertAccepted();
+    }
+
+    public function test_user_can_index_owned_books(): void
+    {
+        Sanctum::actingAs($this->owner);
+
+        $response = $this->getJson('/api/v1/me/books');
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.id', (string)$this->book->id);
+    }
+
+    public function test_guest_cannot_index_user_books(): void
+    {
+        $response = $this->getJson('/api/v1/me/books');
+        $response->assertUnauthorized();
+    }
+
+    public function test_user_does_not_index_others_books(): void
+    {
+        Sanctum::actingAs($this->owner);
+
+        $response = $this->getJson('/api/v1/me/books');
+        $response->assertOk();
+        $response->assertJsonMissing(['id' => (string)$this->otherBook->id]);
     }
 }

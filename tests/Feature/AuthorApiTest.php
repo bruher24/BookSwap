@@ -14,19 +14,18 @@ final class AuthorApiTest extends TestCase
     use RefreshDatabase;
 
     private array $authorCreatePayload;
-
     private array $authorUpdatePayload;
-
     private array $authorWrongPayload = [
         'lastname' => '!?.,',
         'firstname' => 452,
         'patronymic' => false,
         'birthdate' => 123
     ];
-
+    private int $notFoundId = 999999;
     private User $owner;
     private User $other;
     private Author $author;
+    private Author $otherAuthor;
 
     #[Override]
     public function setUp(): void
@@ -36,6 +35,7 @@ final class AuthorApiTest extends TestCase
         $this->owner = User::factory()->createOne();
         $this->other = User::factory()->createOne();
         $this->author = Author::factory()->createOne(['user_id' => $this->owner->id]);
+        $this->otherAuthor = Author::factory()->createOne(['user_id' => $this->other->id]);
 
         $this->authorCreatePayload = Author::factory()->raw();
         $this->authorUpdatePayload = Author::factory()->raw();
@@ -55,8 +55,7 @@ final class AuthorApiTest extends TestCase
 
     public function test_not_found_get_author(): void
     {
-        $newId = $this->author->id + 1;
-        $response = $this->getJson("/api/v1/authors/$newId");
+        $response = $this->getJson("/api/v1/authors/$this->notFoundId");
         $response->assertNotFound();
     }
 
@@ -117,8 +116,7 @@ final class AuthorApiTest extends TestCase
         Sanctum::actingAs($this->owner);
 
         $this->authorUpdatePayload['user_id'] = $this->owner->id;
-        $newId = $this->author->id + 1;
-        $response = $this->patchJson("/api/v1/authors/$newId", $this->authorUpdatePayload);
+        $response = $this->patchJson("/api/v1/authors/$this->notFoundId", $this->authorUpdatePayload);
         $response->assertNotFound();
     }
 
@@ -145,8 +143,32 @@ final class AuthorApiTest extends TestCase
     public function test_not_found_delete_author(): void
     {
         Sanctum::actingAs($this->owner);
-        $newId = $this->author->id + 1;
-        $response = $this->deleteJson("/api/v1/authors/$newId");
+        $response = $this->deleteJson("/api/v1/authors/$this->notFoundId");
         $response->assertAccepted();
+    }
+
+    public function test_user_can_index_owned_authors(): void
+    {
+        Sanctum::actingAs($this->owner);
+
+        $response = $this->getJson('/api/v1/me/authors');
+        $response->assertOk();
+        $response->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.id', (string)$this->author->id);
+    }
+
+    public function test_guest_cannot_index_user_authors(): void
+    {
+        $response = $this->getJson('/api/v1/me/authors');
+        $response->assertUnauthorized();
+    }
+
+    public function test_user_does_not_index_others_authors(): void
+    {
+        Sanctum::actingAs($this->owner);
+
+        $response = $this->getJson('/api/v1/me/authors');
+        $response->assertOk();
+        $response->assertJsonMissing(['id' => (string)$this->otherAuthor->id]);
     }
 }

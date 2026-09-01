@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -15,7 +16,6 @@ final class AuthApiTest extends TestCase
     use RefreshDatabase;
 
     private User $user;
-
     private array $registerPayload;
     private array $loginPayload;
 
@@ -27,6 +27,10 @@ final class AuthApiTest extends TestCase
         $this->user = User::factory()->unverified()->createOne([
             'email' => 'another@user.com',
             'password' => bcrypt('1234'),
+        ]);
+
+        Role::factory()->createOne([
+            'name' => 'user',
         ]);
 
         $this->loginPayload = [
@@ -41,19 +45,19 @@ final class AuthApiTest extends TestCase
         ];
     }
 
-    private function spaPostJson(string $uri, array $data = []): TestResponse
-    {
-        return $this
-            ->withHeader('Origin', 'http://localhost:5173')
-            ->postJson($uri, $data);
-    }
-
     public function test_user_cannot_register(): void
     {
         Sanctum::actingAs($this->user);
 
         $response = $this->spaPostJson('/api/v1/auth/register', $this->registerPayload);
         $response->assertStatus(403);
+    }
+
+    private function spaPostJson(string $uri, array $data = []): TestResponse
+    {
+        return $this
+            ->withHeader('Origin', 'http://localhost:5173')
+            ->postJson($uri, $data);
     }
 
     public function test_guest_can_register(): void
@@ -112,7 +116,7 @@ final class AuthApiTest extends TestCase
 
     public function test_verify_email_requires_valid_signature(): void
     {
-        $response = $this->get("/api/v1/auth/verify_email/{$this->user->id}");
+        $response = $this->get("/api/v1/auth/verify-email/{$this->user->id}");
 
         $response->assertBadRequest();
     }

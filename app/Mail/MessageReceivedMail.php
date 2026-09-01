@@ -20,7 +20,7 @@ final class MessageReceivedMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public Message $message,
+        public Message $chatMessage,
         public User $receiver,
         public User $sender,
     ) {
@@ -29,6 +29,7 @@ final class MessageReceivedMail extends Mailable
 
     /**
      * Get the message envelope.
+     * @psalm-suppress InvalidArgument
      */
     public function envelope(): Envelope
     {

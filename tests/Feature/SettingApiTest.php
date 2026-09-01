@@ -15,15 +15,12 @@ final class SettingApiTest extends TestCase
     use RefreshDatabase;
 
     private array $settingCreatePayload;
-
     private array $settingUpdatePayload;
-
     private array $settingWrongPayload = [
         'name' => 1,
         'label' => 2,
         'available_values' => 'bad',
     ];
-
     private User $admin;
     private User $user;
     private Setting $setting;

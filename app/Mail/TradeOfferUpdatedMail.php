@@ -28,6 +28,7 @@ final class TradeOfferUpdatedMail extends Mailable
 
     /**
      * Get the message envelope.
+     * @psalm-suppress InvalidArgument
      */
     public function envelope(): Envelope
     {

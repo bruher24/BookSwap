@@ -15,13 +15,10 @@ final class GenreApiTest extends TestCase
     use RefreshDatabase;
 
     private array $genreCreatePayload;
-
     private array $genreUpdatePayload;
-
     private array $genreWrongPayload = [
         'name' => 123,
     ];
-
     private User $admin;
     private User $user;
     private Genre $genre;

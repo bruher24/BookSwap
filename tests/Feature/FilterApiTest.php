@@ -15,15 +15,12 @@ final class FilterApiTest extends TestCase
     use RefreshDatabase;
 
     private array $filterCreatePayload;
-
     private array $filterUpdatePayload;
-
     private array $filterWrongPayload = [
         'name' => 1,
         'by_fields' => 2,
         'is_active' => 'bad',
     ];
-
     private User $admin;
     private User $user;
     private Filter $filter;

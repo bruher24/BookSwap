@@ -176,8 +176,8 @@ Route::prefix('v1')->name('api.')
                         Route::get('books', 'books')->name('books');
                         Route::get('chats', 'chats')->name('chats');
                         Route::get('favorites', 'favorites')->name('favorites');
-                        Route::patch('like/{book}', 'like')->name('like');
-                        Route::patch('dislike/{book}', 'dislike')->name('dislike');
+                        Route::post('like/{book}', 'like')->name('like');
+                        Route::delete('dislike/{book}', 'dislike')->name('dislike');
                         Route::get('settings', 'settings')->name('settings');
                         Route::patch('settings/{setting}', 'updateSetting')->name('updateSetting');
                         Route::get('trade-history', 'tradeHistory')->name('tradeHistory');

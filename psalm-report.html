@@ -50,87 +50,17 @@
                 </style>
 </head>
 <body>
-<section><h1>Total violations: 8</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
+<section><h1>Total violations: 1</h1></section><form><label><select class="filterable" data-filter-type="severity"><option value="">-- show all --</option></select><select class="filterable" data-filter-type="psalm-type"><option value="">-- show all --</option></select></label></form>
 <ul id="psalmErrors">
-  <li data-severity="error" data-psalm-type="PossiblyUnusedMethod">
-<h3>app/Enums/BookConditionEnum.php:13</h3>
+  <li data-severity="" data-psalm-type="">
+<h3>:</h3>
 <ul class="tags">
-<li class="severity error">error</li>
-<li>PossiblyUnusedMethod</li>
+<li class="severity ">
+<li>
 </ul>
-<p>Cannot find explicit calls to method App\Enums\BookConditionEnum::label (but did find some potential callers)</p>
-<pre data-start="13" class="line-numbersx"><code class="language-php">    public function /**##(##**/label/**##)##**/(): string</code></pre>
-<small><a target="_blank" href="https://psalm.dev/087">Psalm #87</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="UnusedProperty">
-<h3>tests/Feature/UserNotificationApiTest.php:18</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UnusedProperty</li>
-</ul>
-<p>Cannot find any references to private property Tests\Feature\UserNotificationApiTest::$other</p>
-<pre data-start="18" class="line-numbersx"><code class="language-php">    private User /**##(##**/$other/**##)##**/;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/150">Psalm #150</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedClass">
-<h3>tests/Feature/UserNotificationApiTest.php:19</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedClass</li>
-</ul>
-<p>Class, interface or enum named App\Models\Notification does not exist</p>
-<pre data-start="19" class="line-numbersx"><code class="language-php">    private /**##(##**/Notification/**##)##**/ $notification;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedClass">
-<h3>tests/Feature/UserNotificationApiTest.php:20</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedClass</li>
-</ul>
-<p>Class, interface or enum named App\Models\Notification does not exist</p>
-<pre data-start="20" class="line-numbersx"><code class="language-php">    private /**##(##**/Notification/**##)##**/ $otherNotification;</code></pre>
-<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedClass">
-<h3>tests/Feature/UserNotificationApiTest.php:30</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedClass</li>
-</ul>
-<p>Class, interface or enum named App\Models\Notification does not exist</p>
-<pre data-start="30" class="line-numbersx"><code class="language-php">        $this-&gt;notification = /**##(##**/Notification/**##)##**/::factory()-&gt;create(['user_id' =&gt; $this-&gt;user-&gt;id, 'seen' =&gt; false]);</code></pre>
-<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedClass">
-<h3>tests/Feature/UserNotificationApiTest.php:57</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedClass</li>
-</ul>
-<p>Cannot get properties of undefined class App\Models\Notification</p>
-<pre data-start="57" class="line-numbersx"><code class="language-php">        $response-&gt;assertJsonMissing(['id' =&gt; (string)/**##(##**/$this-&gt;otherNotification-&gt;id/**##)##**/]);</code></pre>
-<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedClass">
-<h3>tests/Feature/UserNotificationApiTest.php:64</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedClass</li>
-</ul>
-<p>Cannot get properties of undefined class App\Models\Notification</p>
-<pre data-start="64" class="line-numbersx"><code class="language-php">        $response = $this-&gt;patchJson("/api/v1/notifications/{/**##(##**/$this-&gt;notification-&gt;id/**##)##**/}/read");</code></pre>
-<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
-</li>
-  <li data-severity="error" data-psalm-type="UndefinedClass">
-<h3>tests/Feature/UserNotificationApiTest.php:77</h3>
-<ul class="tags">
-<li class="severity error">error</li>
-<li>UndefinedClass</li>
-</ul>
-<p>Cannot get properties of undefined class App\Models\Notification</p>
-<pre data-start="77" class="line-numbersx"><code class="language-php">        $response = $this-&gt;patchJson("/api/v1/notifications/{/**##(##**/$this-&gt;otherNotification-&gt;id/**##)##**/}/read");</code></pre>
-<small><a target="_blank" href="https://psalm.dev/019">Psalm #19</a></small>
+<p></p>
+<pre data-start="" class="line-numbersx"><code class="language-php">/**##(##**//**##)##**/</code></pre>
+<small><a target="_blank" href="">Psalm #</a></small>
 </li>
 </ul>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/prism.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/components/prism-markup-templating.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/components/prism-php.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/plugins/line-numbers/prism-line-numbers.min.js"></script><script type="text/javascript">

@@ -131,6 +131,10 @@ final class UserService implements UserServiceInterface
     public function addToFavorites(User $user, Book $book): bool
     {
         try {
+            if ($book->user()->is($user)) {
+                throw new Exception('Нельзя добавить в избранное собственную книгу');
+            }
+
             $user->favorites()->syncWithoutDetachingOrFail($book);
             Cache::forget('favorites_' . $user->id);
 

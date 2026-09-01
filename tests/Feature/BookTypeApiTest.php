@@ -44,74 +44,74 @@ final class BookTypeApiTest extends TestCase
 
     public function test_index_book_type(): void
     {
-        $response = $this->getJson('/api/v1/book_types');
+        $response = $this->getJson('/api/v1/book-types');
         $response->assertOk();
     }
 
     public function test_get_book_type(): void
     {
-        $response = $this->getJson("/api/v1/book_types/{$this->bookType->id}");
+        $response = $this->getJson("/api/v1/book-types/{$this->bookType->id}");
         $response->assertOk();
     }
 
     public function test_not_found_get_book_type(): void
     {
         $newId = $this->bookType->id + 1;
-        $response = $this->getJson("/api/v1/book_types/$newId");
+        $response = $this->getJson("/api/v1/book-types/$newId");
         $response->assertNotFound();
     }
 
     public function test_guest_cannot_create_book_type(): void
     {
-        $response = $this->postJson('/api/v1/book_types', $this->bookTypeCreatePayload);
+        $response = $this->postJson('/api/v1/book-types', $this->bookTypeCreatePayload);
         $response->assertUnauthorized();
     }
 
     public function test_user_cannot_create_book_type(): void
     {
         Sanctum::actingAs($this->user);
-        $response = $this->postJson('/api/v1/book_types', $this->bookTypeCreatePayload);
+        $response = $this->postJson('/api/v1/book-types', $this->bookTypeCreatePayload);
         $response->assertForbidden();
     }
 
     public function test_admin_can_create_book_type(): void
     {
         Sanctum::actingAs($this->admin, ['admin']);
-        $response = $this->postJson('/api/v1/book_types', $this->bookTypeCreatePayload);
+        $response = $this->postJson('/api/v1/book-types', $this->bookTypeCreatePayload);
         $response->assertCreated();
     }
 
     public function test_validation_error_create_book_type(): void
     {
         Sanctum::actingAs($this->admin, ['admin']);
-        $response = $this->postJson('/api/v1/book_types', $this->bookTypeWrongPayload);
+        $response = $this->postJson('/api/v1/book-types', $this->bookTypeWrongPayload);
         $response->assertStatus(422);
     }
 
     public function test_user_cannot_update_book_type(): void
     {
         Sanctum::actingAs($this->user);
-        $response = $this->patchJson("/api/v1/book_types/{$this->bookType->id}", $this->bookTypeUpdatePayload);
+        $response = $this->patchJson("/api/v1/book-types/{$this->bookType->id}", $this->bookTypeUpdatePayload);
         $response->assertForbidden();
     }
 
     public function test_guest_cannot_update_book_type(): void
     {
-        $response = $this->patchJson("/api/v1/book_types/{$this->bookType->id}", $this->bookTypeUpdatePayload);
+        $response = $this->patchJson("/api/v1/book-types/{$this->bookType->id}", $this->bookTypeUpdatePayload);
         $response->assertUnauthorized();
     }
 
     public function test_admin_can_update_book_type(): void
     {
         Sanctum::actingAs($this->admin, ['admin']);
-        $response = $this->patchJson("/api/v1/book_types/{$this->bookType->id}", $this->bookTypeUpdatePayload);
+        $response = $this->patchJson("/api/v1/book-types/{$this->bookType->id}", $this->bookTypeUpdatePayload);
         $response->assertOk();
     }
 
     public function test_validation_error_update_book_type(): void
     {
         Sanctum::actingAs($this->admin, ['admin']);
-        $response = $this->patchJson("/api/v1/book_types/{$this->bookType->id}", $this->bookTypeWrongPayload);
+        $response = $this->patchJson("/api/v1/book-types/{$this->bookType->id}", $this->bookTypeWrongPayload);
         $response->assertStatus(422);
     }
 
@@ -119,27 +119,27 @@ final class BookTypeApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin, ['admin']);
         $newId = $this->bookType->id + 1;
-        $response = $this->patchJson("/api/v1/book_types/$newId", $this->bookTypeUpdatePayload);
+        $response = $this->patchJson("/api/v1/book-types/$newId", $this->bookTypeUpdatePayload);
         $response->assertNotFound();
     }
 
     public function test_user_cannot_delete_book_type(): void
     {
         Sanctum::actingAs($this->user);
-        $response = $this->deleteJson("/api/v1/book_types/{$this->bookType->id}");
+        $response = $this->deleteJson("/api/v1/book-types/{$this->bookType->id}");
         $response->assertForbidden();
     }
 
     public function test_guest_cannot_delete_book_type(): void
     {
-        $response = $this->deleteJson("/api/v1/book_types/{$this->bookType->id}");
+        $response = $this->deleteJson("/api/v1/book-types/{$this->bookType->id}");
         $response->assertUnauthorized();
     }
 
     public function test_admin_can_delete_book_type(): void
     {
         Sanctum::actingAs($this->admin, ['admin']);
-        $response = $this->deleteJson("/api/v1/book_types/{$this->bookType->id}");
+        $response = $this->deleteJson("/api/v1/book-types/{$this->bookType->id}");
         $response->assertAccepted();
     }
 
@@ -147,7 +147,7 @@ final class BookTypeApiTest extends TestCase
     {
         Sanctum::actingAs($this->admin, ['admin']);
         $newId = $this->bookType->id + 1;
-        $response = $this->deleteJson("/api/v1/book_types/$newId");
+        $response = $this->deleteJson("/api/v1/book-types/$newId");
         $response->assertAccepted();
     }
 }

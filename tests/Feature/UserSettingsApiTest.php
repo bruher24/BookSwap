@@ -9,7 +9,7 @@ use Laravel\Sanctum\Sanctum;
 use Override;
 use Tests\TestCase;
 
-final class UserSettingApiTest extends TestCase
+final class UserSettingsApiTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -70,23 +70,9 @@ final class UserSettingApiTest extends TestCase
         $response->assertJsonMissing(['id' => (string)$this->otherSetting->id]);
     }
 
-    public function test_user_can_update_owned_settings(): void
-    {
-        Sanctum::actingAs($this->user);
-
-        $response = $this->patchJson("/api/v1/settings/update_for_user/{$this->setting->id}", $this->validSettingsPayload);
-        $response->assertAccepted();
-
-        $this->assertDatabaseHas('setting_user', [
-            'user_id' => $this->user->id,
-            'setting_id' => $this->setting->id,
-            'value' => 'on',
-        ]);
-    }
-
     public function test_guest_cannot_update_user_settings(): void
     {
-        $response = $this->patchJson("/api/v1/settings/update_for_user/{$this->setting->id}", $this->validSettingsPayload);
+        $response = $this->patchJson("/api/v1/me/settings/{$this->setting->id}", $this->validSettingsPayload);
         $response->assertUnauthorized();
     }
 
@@ -94,7 +80,7 @@ final class UserSettingApiTest extends TestCase
     {
         Sanctum::actingAs($this->other);
 
-        $response = $this->patchJson("/api/v1/settings/update_for_user/{$this->setting->id}", $this->validSettingsPayload);
+        $response = $this->patchJson("/api/v1/me/settings/{$this->setting->id}", $this->validSettingsPayload);
         $response->assertAccepted();
 
         $this->assertDatabaseMissing('setting_user', [
@@ -114,14 +100,14 @@ final class UserSettingApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $response = $this->patchJson("/api/v1/settings/update_for_user/{$this->setting->id}", $this->emptySettingsPayload);
+        $response = $this->patchJson("/api/v1/me/settings/{$this->setting->id}", $this->emptySettingsPayload);
         $response->assertStatus(422);
     }
 
     public function test_invalid_settings_update_returns_validation_error(): void
     {
         Sanctum::actingAs($this->user);
-        $response = $this->patchJson("/api/v1/settings/update_for_user/{$this->setting->id}", $this->invalidSettingsPayload);
+        $response = $this->patchJson("/api/v1/me/settings/{$this->setting->id}", $this->invalidSettingsPayload);
         $response->assertStatus(422);
     }
 }

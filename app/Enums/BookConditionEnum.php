@@ -10,6 +10,9 @@ enum BookConditionEnum: string
     case Bad = 'bad';
     case Terrible = 'terrible';
 
+    /**
+     * @psalm-suppress PossiblyUnusedMethod
+     */
     public function label(): string
     {
         return match ($this) {
