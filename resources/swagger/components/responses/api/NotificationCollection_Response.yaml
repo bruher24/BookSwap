@@ -1,8 +1,0 @@
-description: "OK"
-content:
-  application/vnd.api+json:
-    schema:
-      $ref: "../../schemas/api/NotificationCollection_Response_Schema.yaml"
-    examples:
-      success:
-        $ref: "examples/NotificationCollectionResource_Example.yaml"
