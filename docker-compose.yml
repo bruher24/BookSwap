@@ -4,7 +4,7 @@ services:
             context: .
             dockerfile: docker/nginx/Dockerfile
         container_name: app-nginx
-        restart: always
+        restart: unless-stopped
         ports:
             - "80:80"
             - "443:443"
@@ -24,8 +24,7 @@ services:
             context: .
             dockerfile: docker/app/Dockerfile
         container_name: app
-        restart: always
-        #        user: 33:33
+        restart: unless-stopped
         ports:
             - "3030:3030"
         extra_hosts:
@@ -42,7 +41,7 @@ services:
     postgres:
         image: postgres:latest
         container_name: app-postgres
-        restart: always
+        restart: unless-stopped
         user: "postgres"
         environment:
             POSTGRES_DB: ${DB_DATABASE}
@@ -64,7 +63,7 @@ services:
     adminer:
         image: adminer:latest
         container_name: app-adminer
-        restart: always
+        restart: unless-stopped
         environment:
             ADMINER_DEFAULT_DB_DRIVER: ${DB_CONNECTION}
             ADMINER_DEFAULT_DB_HOST: ${DB_HOST}:${DB_PORT}
@@ -81,6 +80,7 @@ services:
     mailhog:
         image: mailhog/mailhog
         container_name: app-mailhog
+        restart: unless-stopped
         ports:
             - "1025"
             - "8025:8025"
@@ -90,7 +90,7 @@ services:
     redis:
         image: redis:latest
         container_name: app-redis
-        restart: always
+        restart: unless-stopped
         user: "redis"
         command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
         ports:
@@ -103,19 +103,18 @@ services:
     redisinsight:
         image: redislabs/redisinsight:latest
         container_name: app-redisinsight
+        restart: unless-stopped
         ports:
             - "5540:${REDISINSIGHT_PORT}"
         volumes:
             - redisinsight:/db
-        restart: always
         networks:
             - app-network
 
     typesense:
         image: typesense/typesense:29.0
         container_name: app-typesense
-        restart: always
-        #        user: 33:33
+        restart: unless-stopped
         command: '--data-dir /data --api-key=xyz --enable-cors'
         ports:
             - "8108:${TYPESENSE_PORT}"
@@ -127,7 +126,7 @@ services:
     dashboard:
         image: ghcr.io/lewynation/typesense-admin-dashboard:latest
         container_name: app-dashboard
-        restart: always
+        restart: unless-stopped
         ports:
             - "3005:3000"
         networks:
