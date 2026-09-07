@@ -1,0 +1,4 @@
+summary: StoreRoleRequest_Example
+value: {
+  name: "Admin"
+}

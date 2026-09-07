@@ -1,0 +1,10 @@
+description: "Role update payload"
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/requests/UpdateRoleRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/UpdateRoleRequest_Example.yaml"
+

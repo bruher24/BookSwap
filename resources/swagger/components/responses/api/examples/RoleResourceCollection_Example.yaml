@@ -1,0 +1,28 @@
+summary: RoleResourceCollectionExample
+value:
+  {
+      "data": [
+          {
+              "id": "1",
+              "type": "roles",
+              "attributes": {
+                  "name": "Admin",
+                  "created_at": "2025-12-06T14:32:00Z",
+                  "updated_at": "2025-12-06T14:32:00Z",
+                  "deleted_at": null
+              },
+              "relationships": {}
+          },
+          {
+              "id": "2",
+              "type": "roles",
+              "attributes": {
+                  "name": "User",
+                  "created_at": "2025-12-06T14:32:00Z",
+                  "updated_at": "2025-12-06T14:32:00Z",
+                  "deleted_at": null
+              },
+              "relationships": {}
+          }
+      ]
+  }

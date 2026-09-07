@@ -589,6 +589,82 @@ paths:
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
+  /roles:
+    get:
+      operationId: roles.index
+      tags:
+        - Role
+      security: [ ]
+      responses:
+        "200":
+          $ref: "components/responses/api/RoleCollection_Response.yaml"
+    post:
+      operationId: roles.store
+      tags:
+        - Role
+      requestBody:
+        $ref: "components/requestBodies/StoreRoleRequest_Body.yaml"
+      responses:
+        "201":
+          $ref: "components/responses/api/Role_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
+
+
+  /roles/{role}:
+    parameters:
+      - $ref: "components/parameters/role.yaml"
+    get:
+      operationId: roles.show
+      tags:
+        - Role
+      security: [ ]
+      responses:
+        "200":
+          $ref: "components/responses/api/Role_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+    patch:
+      operationId: roles.update
+      tags:
+        - Role
+      requestBody:
+        $ref: "components/requestBodies/UpdateRoleRequest_Body.yaml"
+      responses:
+        "200":
+          $ref: "components/responses/api/Role_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
+    delete:
+      operationId: roles.destroy
+      tags:
+        - Role
+      responses:
+        "202":
+          $ref: "components/responses/api/Accepted_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+
   /trade-offers:
     get:
       operationId: trade_offers.index

@@ -1,0 +1,8 @@
+description: "OK"
+content:
+  application/vnd.api+json:
+    schema:
+      $ref: "../../schemas/api/RoleCollection_Response_Schema.yaml"
+    examples:
+      success:
+        $ref: "examples/RoleResourceCollection_Example.yaml"

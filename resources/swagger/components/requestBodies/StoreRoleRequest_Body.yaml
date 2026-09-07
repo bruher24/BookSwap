@@ -1,0 +1,9 @@
+description: "Role creation payload"
+required: true
+content:
+  application/json:
+    schema:
+      $ref: "../schemas/requests/StoreRoleRequest.yaml"
+    examples:
+      default:
+        $ref: "examples/StoreRoleRequest_Example.yaml"
