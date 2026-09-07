@@ -589,207 +589,6 @@ paths:
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
-  /roles:
-    get:
-      operationId: roles.index
-      tags:
-        - Role
-      security: [ ]
-      responses:
-        "200":
-          $ref: "components/responses/api/RoleCollection_Response.yaml"
-    post:
-      operationId: roles.store
-      tags:
-        - Role
-      requestBody:
-        $ref: "components/requestBodies/StoreRoleRequest_Body.yaml"
-      responses:
-        "201":
-          $ref: "components/responses/api/Role_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "422":
-          $ref: "components/responses/exceptions/ValidationException.yaml"
-
-
-  /roles/{role}:
-    parameters:
-      - $ref: "components/parameters/role.yaml"
-    get:
-      operationId: roles.show
-      tags:
-        - Role
-      security: [ ]
-      responses:
-        "200":
-          $ref: "components/responses/api/Role_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    patch:
-      operationId: roles.update
-      tags:
-        - Role
-      requestBody:
-        $ref: "components/requestBodies/UpdateRoleRequest_Body.yaml"
-      responses:
-        "200":
-          $ref: "components/responses/api/Role_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-        "422":
-          $ref: "components/responses/exceptions/ValidationException.yaml"
-    delete:
-      operationId: roles.destroy
-      tags:
-        - Role
-      responses:
-        "202":
-          $ref: "components/responses/api/Accepted_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-
-  /trade-offers:
-    get:
-      operationId: trade_offers.index
-      tags:
-        - TradeOffer
-      responses:
-        "200":
-          $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-    post:
-      operationId: trade_offers.store
-      tags:
-        - TradeOffer
-      requestBody:
-        $ref: "components/requestBodies/StoreTradeOfferRequest_Body.yaml"
-      responses:
-        "201":
-          $ref: "components/responses/api/TradeOffer_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "422":
-          $ref: "components/responses/exceptions/ValidationException.yaml"
-
-  /trade-offers/{tradeOffer}:
-    parameters:
-      - $ref: "components/parameters/trade_offer.yaml"
-    get:
-      operationId: trade_offers.show
-      tags:
-        - TradeOffer
-      responses:
-        "200":
-          $ref: "components/responses/api/TradeOffer_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-    patch:
-      operationId: trade_offers.update
-      tags:
-        - TradeOffer
-      requestBody:
-        $ref: "components/requestBodies/UpdateTradeOfferRequest_Body.yaml"
-      responses:
-        "200":
-          $ref: "components/responses/api/TradeOffer_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-        "422":
-          $ref: "components/responses/exceptions/ValidationException.yaml"
-    delete:
-      operationId: trade_offers.destroy
-      tags:
-        - TradeOffer
-      responses:
-        "202":
-          $ref: "components/responses/api/Accepted_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-
-  /trade-offers/{tradeOffer}/items:
-    parameters:
-      - $ref: "components/parameters/trade_offer.yaml"
-    get:
-      operationId: trade_offers.items
-      tags:
-        - TradeOffer
-      responses:
-        "200":
-          $ref: "components/responses/api/TradeOfferItems_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-
-  /trade-offers/{tradeOffer}/update-status:
-    parameters:
-      - $ref: "components/parameters/trade_offer.yaml"
-    patch:
-      operationId: trade_offers.updateStatus
-      tags:
-        - TradeOffer
-      requestBody:
-        $ref: "components/requestBodies/UpdateTradeOfferStatusRequest_Body.yaml"
-      responses:
-        "200":
-          $ref: "components/responses/api/Success_Response.yaml"
-        "400":
-          $ref: "components/responses/exceptions/BadRequest.yaml"
-        "401":
-          $ref: "components/responses/exceptions/AuthenticationException.yaml"
-        "403":
-          $ref: "components/responses/exceptions/Forbidden.yaml"
-        "404":
-          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
-        "422":
-          $ref: "components/responses/exceptions/ValidationException.yaml"
-
   /filters:
     get:
       operationId: filters.index
@@ -1002,6 +801,82 @@ paths:
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
 
+  /roles:
+    get:
+      operationId: roles.index
+      tags:
+        - Role
+      security: [ ]
+      responses:
+        "200":
+          $ref: "components/responses/api/RoleCollection_Response.yaml"
+    post:
+      operationId: roles.store
+      tags:
+        - Role
+      requestBody:
+        $ref: "components/requestBodies/StoreRoleRequest_Body.yaml"
+      responses:
+        "201":
+          $ref: "components/responses/api/Role_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
+
+
+  /roles/{role}:
+    parameters:
+      - $ref: "components/parameters/role.yaml"
+    get:
+      operationId: roles.show
+      tags:
+        - Role
+      security: [ ]
+      responses:
+        "200":
+          $ref: "components/responses/api/Role_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+    patch:
+      operationId: roles.update
+      tags:
+        - Role
+      requestBody:
+        $ref: "components/requestBodies/UpdateRoleRequest_Body.yaml"
+      responses:
+        "200":
+          $ref: "components/responses/api/Role_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
+    delete:
+      operationId: roles.destroy
+      tags:
+        - Role
+      responses:
+        "202":
+          $ref: "components/responses/api/Accepted_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+
   /search:
     parameters:
       - $ref: "components/parameters/query.yaml"
@@ -1104,6 +979,131 @@ paths:
           $ref: "components/responses/exceptions/AuthenticationException.yaml"
         "403":
           $ref: "components/responses/exceptions/Forbidden.yaml"
+
+  /trade-offers:
+    get:
+      operationId: trade_offers.index
+      tags:
+        - TradeOffer
+      responses:
+        "200":
+          $ref: "components/responses/api/TradeOfferCollection_Response.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+    post:
+      operationId: trade_offers.store
+      tags:
+        - TradeOffer
+      requestBody:
+        $ref: "components/requestBodies/StoreTradeOfferRequest_Body.yaml"
+      responses:
+        "201":
+          $ref: "components/responses/api/TradeOffer_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
+
+  /trade-offers/{tradeOffer}:
+    parameters:
+      - $ref: "components/parameters/trade_offer.yaml"
+    get:
+      operationId: trade_offers.show
+      tags:
+        - TradeOffer
+      responses:
+        "200":
+          $ref: "components/responses/api/TradeOffer_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+    patch:
+      operationId: trade_offers.update
+      tags:
+        - TradeOffer
+      requestBody:
+        $ref: "components/requestBodies/UpdateTradeOfferRequest_Body.yaml"
+      responses:
+        "200":
+          $ref: "components/responses/api/TradeOffer_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
+    delete:
+      operationId: trade_offers.destroy
+      tags:
+        - TradeOffer
+      responses:
+        "202":
+          $ref: "components/responses/api/Accepted_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+
+  /trade-offers/{tradeOffer}/items:
+    parameters:
+      - $ref: "components/parameters/trade_offer.yaml"
+    get:
+      operationId: trade_offers.items
+      tags:
+        - TradeOffer
+      responses:
+        "200":
+          $ref: "components/responses/api/TradeOfferItems_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+
+  /trade-offers/{tradeOffer}/update-status:
+    parameters:
+      - $ref: "components/parameters/trade_offer.yaml"
+    patch:
+      operationId: trade_offers.updateStatus
+      tags:
+        - TradeOffer
+      requestBody:
+        $ref: "components/requestBodies/UpdateTradeOfferStatusRequest_Body.yaml"
+      responses:
+        "200":
+          $ref: "components/responses/api/Success_Response.yaml"
+        "400":
+          $ref: "components/responses/exceptions/BadRequest.yaml"
+        "401":
+          $ref: "components/responses/exceptions/AuthenticationException.yaml"
+        "403":
+          $ref: "components/responses/exceptions/Forbidden.yaml"
+        "404":
+          $ref: "components/responses/exceptions/ModelNotFoundException.yaml"
+        "422":
+          $ref: "components/responses/exceptions/ValidationException.yaml"
 
   /users:
     get:
